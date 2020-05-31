@@ -1,6 +1,8 @@
 package kaptainwutax.featureutils.structure;
 
+import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
+import kaptainwutax.seedutils.mc.pos.CPos;
 import kaptainwutax.seedutils.mc.seed.ChunkSeeds;
 import kaptainwutax.featureutils.Feature;
 
@@ -25,6 +27,8 @@ public abstract class RegionStructure<C extends RegionStructure.Config, D extend
 	public Data<?> at(int chunkX, int chunkZ) {
 		return new Data<>(this, chunkX, chunkZ);
 	}
+
+	public abstract CPos getInRegion(long structureSeed, int regionX, int regionZ, ChunkRand rand);
 
 	public static class Config extends Feature.Config {
 		public final int spacing;

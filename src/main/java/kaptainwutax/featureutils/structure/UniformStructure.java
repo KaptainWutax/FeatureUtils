@@ -2,6 +2,7 @@ package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
+import kaptainwutax.seedutils.mc.pos.CPos;
 
 public class UniformStructure extends RegionStructure<RegionStructure.Config, RegionStructure.Data<?>> {
 
@@ -20,6 +21,16 @@ public class UniformStructure extends RegionStructure<RegionStructure.Config, Re
 	public boolean test(Data<?> data, long structureSeed, ChunkRand rand) {
 		rand.setSeed(data.baseRegionSeed + structureSeed);
 		return rand.nextInt(this.offset) == data.offsetX && rand.nextInt(this.offset) == data.offsetZ;
+	}
+
+	@Override
+	public CPos getInRegion(long structureSeed, int regionX, int regionZ, ChunkRand rand) {
+		rand.setRegionSeed(structureSeed, regionX, regionZ, this.getSalt(), this.getVersion());
+
+		return new CPos(
+				regionX * this.getSpacing() + rand.nextInt(this.offset),
+				regionZ * this.getSpacing() + rand.nextInt(this.offset)
+		);
 	}
 
 }
