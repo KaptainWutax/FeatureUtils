@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+
+    maven {
+        url "https://jitpack.io"
+    }
+}
+
+dependencies {
+    implementation 'com.github.KaptainWutax:SeedUtils:d552df76aac9f4451c22b21d7fb86f1abbb6e7eb'
+}
