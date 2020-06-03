@@ -1,5 +1,6 @@
 package kaptainwutax.featureutils.structure;
 
+import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
@@ -15,6 +16,11 @@ public class OceanRuins extends UniformStructure {
 
 	public OceanRuins(RegionStructure.Config config) {
 		super(config, null);
+	}
+
+	@Override
+	public boolean isValidBiome(Biome biome) {
+		return biome.getCategory() == Biome.Category.OCEAN;
 	}
 
 }

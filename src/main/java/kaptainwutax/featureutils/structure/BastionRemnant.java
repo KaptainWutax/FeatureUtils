@@ -1,5 +1,6 @@
 package kaptainwutax.featureutils.structure;
 
+import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
@@ -18,9 +19,15 @@ public class BastionRemnant extends UniformStructure {
 	}
 
 	@Override
-	public boolean test(Data<?> data, long structureSeed, ChunkRand rand) {
-		if(!super.test(data, structureSeed, rand))return false;
+	public boolean canStart(Data<?> data, long structureSeed, ChunkRand rand) {
+		if(!super.canStart(data, structureSeed, rand))return false;
 		return rand.nextInt(6) >= 2;
+	}
+
+	@Override
+	public boolean isValidBiome(Biome biome) {
+		return biome == Biome.NETHER_WASTES || biome == Biome.SOUL_SAND_VALLEY || biome == Biome.WARPED_FOREST
+				|| biome == Biome.CRIMSON_FOREST;
 	}
 
 }

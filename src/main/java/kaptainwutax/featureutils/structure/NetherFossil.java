@@ -1,5 +1,6 @@
 package kaptainwutax.featureutils.structure;
 
+import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
@@ -18,9 +19,14 @@ public class NetherFossil extends UniformStructure {
 	}
 
 	@Override
-	public boolean test(Data<?> data, long structureSeed, ChunkRand rand) {
+	public boolean canStart(Data<?> data, long structureSeed, ChunkRand rand) {
 		//Quick shortcut for fossils.
 		return (data.chunkX & 1) == 0 && (data.chunkZ & 1) == 0;
+	}
+
+	@Override
+	public boolean isValidBiome(Biome biome) {
+		return biome == Biome.SOUL_SAND_VALLEY;
 	}
 
 }

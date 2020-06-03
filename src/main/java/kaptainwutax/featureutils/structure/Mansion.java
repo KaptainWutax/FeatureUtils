@@ -1,5 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
+import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.BiomeSource;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
@@ -14,6 +16,18 @@ public class Mansion extends TriangularStructure {
 
 	public Mansion(RegionStructure.Config config) {
 		super(config, null);
+	}
+
+	@Override
+	public boolean canSpawn(Data<?> data, BiomeSource source) {
+		if(!super.canSpawn(data, source))return false;
+		//TODO: Add area check!
+		return true;
+	}
+
+	@Override
+	public boolean isValidBiome(Biome biome) {
+		return biome == Biome.DARK_FOREST || biome == Biome.DARK_FOREST_HILLS;
 	}
 
 }

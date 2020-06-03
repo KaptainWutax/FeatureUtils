@@ -1,5 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
+import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
@@ -14,6 +16,18 @@ public class EndCity extends TriangularStructure {
 
 	public EndCity(RegionStructure.Config config) {
 		super(config, null);
+	}
+
+	@Override
+	public boolean canStart(Data<?> data, long structureSeed, ChunkRand rand) {
+		if(!super.canStart(data, structureSeed, rand))return false;
+		//TODO: add terrain check!
+		return true;
+	}
+
+	@Override
+	public boolean isValidBiome(Biome biome) {
+		return biome == Biome.END_MIDLANDS || biome == Biome.END_HIGHLANDS;
 	}
 
 }

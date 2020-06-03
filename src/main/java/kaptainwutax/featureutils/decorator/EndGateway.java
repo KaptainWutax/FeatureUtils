@@ -1,5 +1,6 @@
 package kaptainwutax.featureutils.decorator;
 
+import kaptainwutax.biomeutils.BiomeSource;
 import kaptainwutax.featureutils.Feature;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
@@ -27,7 +28,7 @@ public class EndGateway extends Feature<EndGateway.Config, EndGateway.Data> {
 	}
 
 	@Override
-	public boolean test(EndGateway.Data data, long structureSeed, ChunkRand rand) {
+	public boolean canStart(EndGateway.Data data, long structureSeed, ChunkRand rand) {
 		rand.setDecoratorSeed(structureSeed, data.chunkX << 4, data.chunkZ << 4,
 				this.getIndex(), this.getStep(), this.getVersion());
 
@@ -35,6 +36,11 @@ public class EndGateway extends Feature<EndGateway.Config, EndGateway.Data> {
 		if(rand.nextInt(16) != data.offsetX)return false;
 		if(rand.nextInt(16) != data.offsetZ)return false;
 		return true;
+	}
+
+	@Override
+	public boolean canSpawn(Data data, BiomeSource source) {
+		return false;
 	}
 
 	public EndGateway.Data at(int blockX, int blockZ) {

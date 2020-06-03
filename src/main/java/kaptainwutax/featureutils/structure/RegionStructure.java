@@ -1,12 +1,14 @@
 package kaptainwutax.featureutils.structure;
 
+import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.BiomeSource;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.pos.CPos;
 import kaptainwutax.seedutils.mc.seed.ChunkSeeds;
 import kaptainwutax.featureutils.Feature;
 
-public abstract class RegionStructure<C extends RegionStructure.Config, D extends RegionStructure.Data<?>> extends Feature<C, D> {
+public abstract class RegionStructure<C extends RegionStructure.Config, D extends RegionStructure.Data<?>> extends Structure<C, D> {
 
 	public RegionStructure(C config, MCVersion version) {
 		super(config, version);

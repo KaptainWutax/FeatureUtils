@@ -1,5 +1,6 @@
 package kaptainwutax.featureutils.structure;
 
+import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
@@ -16,5 +17,11 @@ public class JunglePyramid extends OldStructure {
 	public JunglePyramid(RegionStructure.Config config) {
 		super(config, null);
 	}
-	
+
+	@Override
+	public boolean isValidBiome(Biome biome) {
+		return biome == Biome.JUNGLE || biome == Biome.JUNGLE_HILLS || biome == Biome.BAMBOO_JUNGLE
+				|| biome == Biome.BAMBOO_JUNGLE_HILLS;
+	}
+
 }

@@ -1,12 +1,12 @@
 package kaptainwutax.featureutils.structure;
 
+import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
-import kaptainwutax.seedutils.mc.seed.ChunkSeeds;
-import kaptainwutax.featureutils.Feature;
+import kaptainwutax.seedutils.mc.pos.CPos;
 
-public class BuriedTreasure extends Feature<BuriedTreasure.Config, BuriedTreasure.Data> {
+public class BuriedTreasure extends RegionStructure<BuriedTreasure.Config, RegionStructure.Data<BuriedTreasure>> {
 
 	public static final VersionMap<BuriedTreasure.Config> CONFIGS = new VersionMap<BuriedTreasure.Config>()
 			.add(MCVersion.v1_13, new BuriedTreasure.Config(0.01F, 10387320));
@@ -19,22 +19,30 @@ public class BuriedTreasure extends Feature<BuriedTreasure.Config, BuriedTreasur
 		super(config, null);
 	}
 
-	public int getSalt() {
-		return this.getConfig().salt;
-	}
-
 	public float getChance() {
 		return this.getConfig().chance;
 	}
 
 	@Override
-	public boolean test(BuriedTreasure.Data data, long structureSeed, ChunkRand rand) {
+	public boolean canStart(RegionStructure.Data<BuriedTreasure> data, long structureSeed, ChunkRand rand) {
 		rand.setSeed(data.baseRegionSeed + structureSeed);
 		return rand.nextFloat() < this.getChance();
 	}
 
-	public BuriedTreasure.Data at(int chunkX, int chunkZ) {
-		return new BuriedTreasure.Data(this, chunkX, chunkZ);
+	@Override
+	public CPos getInRegion(long structureSeed, int regionX, int regionZ, ChunkRand rand) {
+		rand.setRegionSeed(structureSeed, regionX, regionZ, this.getSalt(), this.getVersion());
+		return rand.nextFloat() < this.getChance() ? new CPos(regionX, regionZ) : null;
+	}
+
+	@Override
+	public boolean isValidBiome(Biome biome) {
+		return biome == Biome.BEACH || biome == Biome.SNOWY_BEACH;
+	}
+
+	@Override
+	public RegionStructure.Data<BuriedTreasure> at(int chunkX, int chunkZ) {
+		return new RegionStructure.Data<>(this, chunkX, chunkZ);
 	}
 
 	public static class Config extends RegionStructure.Config {
@@ -50,16 +58,6 @@ public class BuriedTreasure extends Feature<BuriedTreasure.Config, BuriedTreasur
 		public Config(float chance, int spacing, int separation, int salt) {
 			super(spacing, separation, salt);
 			this.chance = chance;
-		}
-	}
-
-	public static class Data extends Feature.Data<BuriedTreasure> {
-		private final long baseRegionSeed;
-
-		public Data(BuriedTreasure structure, int chunkX, int chunkZ) {
-			super(structure, chunkX, chunkZ);
-			this.baseRegionSeed = ChunkSeeds.getRegionSeed(0L, this.chunkX, this.chunkZ,
-					structure.getSalt(), structure.getVersion());
 		}
 	}
 

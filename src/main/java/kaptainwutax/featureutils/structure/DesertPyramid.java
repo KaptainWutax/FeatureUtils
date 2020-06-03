@@ -1,5 +1,6 @@
 package kaptainwutax.featureutils.structure;
 
+import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
@@ -14,6 +15,11 @@ public class DesertPyramid extends OldStructure {
 
 	public DesertPyramid(RegionStructure.Config config) {
 		super(config, null);
+	}
+
+	@Override
+	public boolean isValidBiome(Biome biome) {
+		return biome == Biome.DESERT || biome == Biome.DESERT_HILLS;
 	}
 
 }

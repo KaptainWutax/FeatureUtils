@@ -1,5 +1,7 @@
 package kaptainwutax.featureutils;
 
+import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.BiomeSource;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 
@@ -21,7 +23,9 @@ public abstract class Feature<C extends Feature.Config, D extends Feature.Data<?
 		return this.version;
 	}
 
-	public abstract boolean test(D data, long structureSeed, ChunkRand rand);
+	public abstract boolean canStart(D data, long structureSeed, ChunkRand rand);
+
+	public abstract boolean canSpawn(D data, BiomeSource source);
 
 	public static class Config {
 
@@ -38,8 +42,12 @@ public abstract class Feature<C extends Feature.Config, D extends Feature.Data<?
 			this.chunkZ = chunkZ;
 		}
 
-		public boolean test(long structureSeed, ChunkRand rand) {
-			return this.feature.test(this, structureSeed, rand);
+		public boolean testStart(long structureSeed, ChunkRand rand) {
+			return this.feature.canStart(this, structureSeed, rand);
+		}
+
+		public boolean testBiome(BiomeSource source) {
+			return this.feature.canSpawn(this, source);
 		}
 	}
 

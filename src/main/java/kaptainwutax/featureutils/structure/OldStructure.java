@@ -2,7 +2,7 @@ package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.seedutils.mc.MCVersion;
 
-public class OldStructure extends UniformStructure {
+public abstract class OldStructure extends UniformStructure {
 
 	public OldStructure(RegionStructure.Config config, MCVersion version) {
 		super(config, version);

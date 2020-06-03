@@ -4,7 +4,7 @@ import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.pos.CPos;
 
-public class TriangularStructure extends RegionStructure<RegionStructure.Config, RegionStructure.Data<?>> {
+public abstract class TriangularStructure extends RegionStructure<RegionStructure.Config, RegionStructure.Data<?>> {
 
 	private final int peak;
 
@@ -18,7 +18,7 @@ public class TriangularStructure extends RegionStructure<RegionStructure.Config,
 	}
 
 	@Override
-	public boolean test(Data<?> data, long structureSeed, ChunkRand rand) {
+	public boolean canStart(Data<?> data, long structureSeed, ChunkRand rand) {
 		rand.setSeed(data.baseRegionSeed + structureSeed);
 		return (rand.nextInt(this.peak) + rand.nextInt(this.peak)) / 2 == data.offsetX
 				&& (rand.nextInt(this.peak) + rand.nextInt(this.peak)) / 2 == data.offsetZ;

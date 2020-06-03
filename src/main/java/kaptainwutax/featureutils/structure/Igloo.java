@@ -1,5 +1,6 @@
 package kaptainwutax.featureutils.structure;
 
+import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
@@ -15,6 +16,11 @@ public class Igloo extends OldStructure {
 
 	public Igloo(RegionStructure.Config config) {
 		super(config, null);
+	}
+
+	@Override
+	public boolean isValidBiome(Biome biome) {
+		return biome == Biome.SNOWY_TAIGA || biome == Biome.SNOWY_TUNDRA;
 	}
 
 }
