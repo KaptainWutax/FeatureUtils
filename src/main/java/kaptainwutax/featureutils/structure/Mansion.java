@@ -19,9 +19,9 @@ public class Mansion extends TriangularStructure {
 	}
 
 	@Override
-	public boolean canSpawn(Data<?> data, BiomeSource source) {
-		if(!super.canSpawn(data, source))return false;
-		return source.iterateUniqueBiomes((data.chunkX << 4) + 9, (data.chunkZ << 4) + 9, 32, this::isValidBiome);
+	public boolean canSpawn(int chunkX, int chunkZ, BiomeSource source) {
+		if(!super.canSpawn(chunkX, chunkZ, source))return false;
+		return source.iterateUniqueBiomes((chunkX << 4) + 9, (chunkZ << 4) + 9, 32, this::isValidBiome);
 	}
 
 	@Override

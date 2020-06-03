@@ -60,9 +60,9 @@ public class Fortress extends Structure<Feature.Config, Feature.Data<?>> {
 	}
 
 	@Override
-	public boolean canSpawn(Data<?> data, BiomeSource source) {
-		int x = this.getVersion().isOlderThan(MCVersion.v1_16) ? (data.chunkX << 4) + 9 : (data.chunkX << 2) + 2;
-		int z = this.getVersion().isOlderThan(MCVersion.v1_16) ? (data.chunkZ << 4) + 9 : (data.chunkZ << 2) + 2;
+	public boolean canSpawn(int chunkX, int chunkZ, BiomeSource source) {
+		int x = this.getVersion().isOlderThan(MCVersion.v1_16) ? (chunkX << 4) + 9 : (chunkX << 2) + 2;
+		int z = this.getVersion().isOlderThan(MCVersion.v1_16) ? (chunkZ << 4) + 9 : (chunkZ << 2) + 2;
 		return this.isValidBiome(source.getBiome(x, 0, z));
 	}
 

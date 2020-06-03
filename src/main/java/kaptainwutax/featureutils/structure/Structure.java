@@ -12,7 +12,7 @@ public abstract class Structure<C extends Feature.Config, D extends Feature.Data
 	}
 
 	@Override
-	public boolean canSpawn(D data, BiomeSource source) {
+	public final boolean canSpawn(D data, BiomeSource source) {
 		return this.canSpawn(data.chunkX, data.chunkZ, source);
 	}
 

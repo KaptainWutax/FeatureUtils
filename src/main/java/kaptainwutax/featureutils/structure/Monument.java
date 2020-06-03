@@ -19,14 +19,14 @@ public class Monument extends TriangularStructure {
 	}
 
 	@Override
-	public boolean canSpawn(Data<?> data, BiomeSource source) {
-		if(!super.canSpawn(data, source))return false;
+	public boolean canSpawn(int chunkX, int chunkZ, BiomeSource source) {
+		if(!super.canSpawn(chunkX, chunkZ, source))return false;
 
-		if(!source.iterateUniqueBiomes((data.chunkX << 4) + 9, (data.chunkZ << 4) + 9, 16, this::isValidBiome)) {
+		if(!source.iterateUniqueBiomes((chunkX << 4) + 9, (chunkZ << 4) + 9, 16, this::isValidBiome)) {
 			return false;
 		}
 
-		return source.iterateUniqueBiomes((data.chunkX << 4) + 9, (data.chunkZ << 4) + 9, 29, this::isOceanOrRiver);
+		return source.iterateUniqueBiomes((chunkX << 4) + 9, (chunkZ << 4) + 9, 29, this::isOceanOrRiver);
 	}
 
 	public boolean isOceanOrRiver(Biome biome) {
