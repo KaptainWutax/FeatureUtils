@@ -1,7 +1,6 @@
 package kaptainwutax.featureutils;
 
-import kaptainwutax.biomeutils.Biome;
-import kaptainwutax.biomeutils.BiomeSource;
+import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 

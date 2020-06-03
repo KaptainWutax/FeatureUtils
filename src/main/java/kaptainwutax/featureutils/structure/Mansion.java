@@ -1,7 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.Biome;
-import kaptainwutax.biomeutils.BiomeSource;
+import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
@@ -21,8 +21,7 @@ public class Mansion extends TriangularStructure {
 	@Override
 	public boolean canSpawn(Data<?> data, BiomeSource source) {
 		if(!super.canSpawn(data, source))return false;
-		//TODO: Add area check!
-		return true;
+		return source.iterateUniqueBiomes((data.chunkX << 4) + 9, (data.chunkZ << 4) + 9, 32, this::isValidBiome);
 	}
 
 	@Override

@@ -1,12 +1,12 @@
 package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.Biome;
-import kaptainwutax.biomeutils.BiomeSource;
+import kaptainwutax.biomeutils.source.BiomeSource;
+import kaptainwutax.featureutils.Feature;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 import kaptainwutax.seedutils.util.UnsupportedVersion;
-import kaptainwutax.featureutils.Feature;
 
 public class Fortress extends Structure<Feature.Config, Feature.Data<?>> {
 
@@ -61,11 +61,9 @@ public class Fortress extends Structure<Feature.Config, Feature.Data<?>> {
 
 	@Override
 	public boolean canSpawn(Data<?> data, BiomeSource source) {
-		if(this.getVersion().isOlderThan(MCVersion.v1_16)) {
-			return this.isValidBiome(Biome.REGISTRY.get(source.voronoi.sample((data.chunkX << 4) + 9, (data.chunkX << 4) + 9)));
-		}
-
-		return this.internal.canSpawn((RegionStructure.Data<?>)data, source);
+		int x = this.getVersion().isOlderThan(MCVersion.v1_16) ? (data.chunkX << 4) + 9 : (data.chunkX << 2) + 2;
+		int z = this.getVersion().isOlderThan(MCVersion.v1_16) ? (data.chunkZ << 4) + 9 : (data.chunkZ << 2) + 2;
+		return this.isValidBiome(source.getBiome(x, 0, z));
 	}
 
 	@Override

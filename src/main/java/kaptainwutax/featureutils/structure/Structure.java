@@ -1,7 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.Biome;
-import kaptainwutax.biomeutils.BiomeSource;
+import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.Feature;
 import kaptainwutax.seedutils.mc.MCVersion;
 
@@ -18,10 +18,10 @@ public abstract class Structure<C extends Feature.Config, D extends Feature.Data
 
 	public boolean canSpawn(int chunkX, int chunkZ, BiomeSource source) {
 		if(this.getVersion().isOlderThan(MCVersion.v1_16)) {
-			return this.isValidBiome(Biome.REGISTRY.get(source.voronoi.sample((chunkX << 4) + 9, (chunkZ << 4) + 9)));
+			return this.isValidBiome(source.getBiome((chunkX << 4) + 9, 0, (chunkZ << 4) + 9));
 		}
 
-		return this.isValidBiome(Biome.REGISTRY.get(source.full.sample((chunkX << 2) + 2, (chunkZ << 2) + 2)));
+		return this.isValidBiome(source.getBiomeForNoiseGen((chunkX << 2) + 2, 0, (chunkZ << 2) + 2));
 	}
 
 	public abstract boolean isValidBiome(Biome biome);

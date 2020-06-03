@@ -1,7 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.Biome;
-import kaptainwutax.biomeutils.BiomeSource;
+import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
@@ -21,8 +21,16 @@ public class Monument extends TriangularStructure {
 	@Override
 	public boolean canSpawn(Data<?> data, BiomeSource source) {
 		if(!super.canSpawn(data, source))return false;
-		//TODO: Add area check!
-		return true;
+
+		if(!source.iterateUniqueBiomes((data.chunkX << 4) + 9, (data.chunkZ << 4) + 9, 16, this::isValidBiome)) {
+			return false;
+		}
+
+		return source.iterateUniqueBiomes((data.chunkX << 4) + 9, (data.chunkZ << 4) + 9, 29, this::isOceanOrRiver);
+	}
+
+	public boolean isOceanOrRiver(Biome biome) {
+		return biome.getCategory() == Biome.Category.OCEAN || biome.getCategory() == Biome.Category.RIVER;
 	}
 
 	@Override
