@@ -17,7 +17,7 @@ public class TreasureSeed {
 		RegionStructure.Data<?>[] data = new RegionStructure.Data<?>[] {
 				BURIED_TREASURE.at(0, 0),
 				BURIED_TREASURE.at(1, 0),
-				VILLAGE.at(0, 0)
+				VILLAGE.at(1, 1)
 		};
 
 		StructureSeed.iterator().forEachRemaining(structureSeed -> {

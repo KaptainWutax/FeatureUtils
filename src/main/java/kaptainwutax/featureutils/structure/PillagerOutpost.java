@@ -7,7 +7,7 @@ import kaptainwutax.seedutils.mc.VersionMap;
 import kaptainwutax.seedutils.mc.pos.CPos;
 import kaptainwutax.seedutils.util.math.DistanceMetric;
 
-public class PillagerOutpost extends OldStructure {
+public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 
 	public static final VersionMap<Config> CONFIGS = new VersionMap<OldStructure.Config>()
 			.add(MCVersion.v1_14, new OldStructure.Config(165745296));
@@ -21,7 +21,7 @@ public class PillagerOutpost extends OldStructure {
 	}
 
 	@Override
-	public boolean canStart(Data<?> data, long structureSeed, ChunkRand rand) {
+	public boolean canStart(Data<PillagerOutpost> data, long structureSeed, ChunkRand rand) {
 		if(!super.canStart(data, structureSeed, rand))return false;
 		rand.setWeakSeed(structureSeed, data.chunkX, data.chunkZ, this.getVersion());
 		rand.nextInt(); //Why? No one knows...

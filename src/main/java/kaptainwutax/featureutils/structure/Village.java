@@ -4,7 +4,7 @@ import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
-public class Village extends OldStructure {
+public class Village extends OldStructure<Village> {
 
 	public static final VersionMap<OldStructure.Config> CONFIGS = new VersionMap<OldStructure.Config>()
 			.add(MCVersion.v1_7, new OldStructure.Config(10387312));

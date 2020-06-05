@@ -2,50 +2,28 @@ package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.biomeutils.source.BiomeSource;
-import kaptainwutax.featureutils.Feature;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
+import kaptainwutax.seedutils.mc.pos.CPos;
 import kaptainwutax.seedutils.util.UnsupportedVersion;
 
-public class Fortress extends Structure<Feature.Config, Feature.Data<?>> {
+public class Fortress extends UniformStructure<Fortress> {
 
-	public static final VersionMap<Feature.Config> CONFIGS = new VersionMap<Feature.Config>()
-			.add(MCVersion.v1_7, new Feature.Config())
+	public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
+			.add(MCVersion.v1_7, new RegionStructure.Config(-1, -1, -1))
 			.add(MCVersion.v1_16, new RegionStructure.Config(30, 4, 30084232));
-
-	protected UniformStructure internal;
 
 	public Fortress(MCVersion version) {
 		super(CONFIGS.getAsOf(version), version);
-
-		if(!version.isOlderThan(MCVersion.v1_16)) {
-			this.internal = new UniformStructure((RegionStructure.Config)CONFIGS.getAsOf(version), version) {
-				@Override
-				public boolean isValidBiome(Biome biome) {
-					return Fortress.this.isValidBiome(biome);
-				}
-			};
-		}
 	}
 
-	public Fortress(RegionStructure.Config config, MCVersion version) {
-		super(config, version);
-
-		if(version.isOlderThan(MCVersion.v1_16)) {
-			throw new UnsupportedVersion(version, "fortress region");
-		} else {
-			this.internal = new UniformStructure((RegionStructure.Config)CONFIGS.getAsOf(version), version) {
-				@Override
-				public boolean isValidBiome(Biome biome) {
-					return Fortress.this.isValidBiome(biome);
-				}
-			};
-		}
+	public Fortress(RegionStructure.Config config) {
+		super(config, null);
 	}
 
 	@Override
-	public boolean canStart(Data<?> data, long structureSeed, ChunkRand rand) {
+	public boolean canStart(Data<Fortress> data, long structureSeed, ChunkRand rand) {
 		if(this.getVersion().isOlderThan(MCVersion.v1_16)) {
 			rand.setWeakSeed(structureSeed, data.chunkX, data.chunkZ, this.getVersion());
 			rand.nextInt();
@@ -55,8 +33,16 @@ public class Fortress extends Structure<Feature.Config, Feature.Data<?>> {
 			return true;
 		}
 
-		if(this.internal.canStart((RegionStructure.Data<?>)data, structureSeed, rand));
-		return rand.nextInt(6) < 2;
+		return super.canStart(data, structureSeed, rand) && rand.nextInt(6) < 2;
+	}
+
+	@Override
+	public CPos getInRegion(long structureSeed, int regionX, int regionZ, ChunkRand rand) {
+		if(this.getVersion().isOlderThan(MCVersion.v1_16)) {
+			throw new UnsupportedVersion(this.getVersion(), "fortress region");
+		}
+
+		return super.getInRegion(structureSeed, regionX, regionZ, rand);
 	}
 
 	@Override

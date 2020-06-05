@@ -4,7 +4,7 @@ import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
-public class Shipwreck extends UniformStructure {
+public class Shipwreck extends UniformStructure<Shipwreck> {
 
 	public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
 			.add(MCVersion.v1_13, new RegionStructure.Config(16, 8, 165745295))

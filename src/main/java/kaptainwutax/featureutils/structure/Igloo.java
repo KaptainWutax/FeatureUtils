@@ -4,7 +4,7 @@ import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
-public class Igloo extends OldStructure {
+public class Igloo extends OldStructure<Igloo> {
 
 	public static final VersionMap<OldStructure.Config> CONFIGS = new VersionMap<OldStructure.Config>()
 			.add(MCVersion.v1_9, new OldStructure.Config(14357617))

@@ -5,7 +5,7 @@ import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
-public class BastionRemnant extends UniformStructure {
+public class BastionRemnant extends UniformStructure<BastionRemnant> {
 
 	public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
 			.add(MCVersion.v1_16, new RegionStructure.Config(30, 4, 30084232));
@@ -19,7 +19,7 @@ public class BastionRemnant extends UniformStructure {
 	}
 
 	@Override
-	public boolean canStart(Data<?> data, long structureSeed, ChunkRand rand) {
+	public boolean canStart(Data<BastionRemnant> data, long structureSeed, ChunkRand rand) {
 		if(!super.canStart(data, structureSeed, rand))return false;
 		return rand.nextInt(6) >= 2;
 	}

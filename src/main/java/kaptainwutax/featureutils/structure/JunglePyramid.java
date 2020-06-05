@@ -4,7 +4,7 @@ import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
-public class JunglePyramid extends OldStructure {
+public class JunglePyramid extends OldStructure<JunglePyramid> {
 
 	public static final VersionMap<OldStructure.Config> CONFIGS = new VersionMap<OldStructure.Config>()
 			.add(MCVersion.v1_7, new OldStructure.Config(14357617))

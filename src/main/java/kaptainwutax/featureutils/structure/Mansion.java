@@ -5,7 +5,7 @@ import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
-public class Mansion extends TriangularStructure {
+public class Mansion extends TriangularStructure<Mansion> {
 
 	public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
 			.add(MCVersion.v1_11, new RegionStructure.Config(80, 20, 10387319));

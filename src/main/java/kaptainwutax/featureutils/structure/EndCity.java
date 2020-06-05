@@ -5,7 +5,7 @@ import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
-public class EndCity extends TriangularStructure {
+public class EndCity extends TriangularStructure<EndCity> {
 
 	public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
 			.add(MCVersion.v1_9, new RegionStructure.Config(20, 11, 10387313));
@@ -19,7 +19,7 @@ public class EndCity extends TriangularStructure {
 	}
 
 	@Override
-	public boolean canStart(Data<?> data, long structureSeed, ChunkRand rand) {
+	public boolean canStart(Data<EndCity> data, long structureSeed, ChunkRand rand) {
 		if(!super.canStart(data, structureSeed, rand))return false;
 		//TODO: add terrain check!
 		return true;

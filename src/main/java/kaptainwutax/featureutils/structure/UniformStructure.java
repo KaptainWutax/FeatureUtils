@@ -4,7 +4,7 @@ import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.pos.CPos;
 
-public abstract class UniformStructure extends RegionStructure<RegionStructure.Config, RegionStructure.Data<?>> {
+public abstract class UniformStructure<T extends UniformStructure<T>> extends RegionStructure<RegionStructure.Config, RegionStructure.Data<T>> {
 
 	private final int offset;
 
@@ -18,7 +18,7 @@ public abstract class UniformStructure extends RegionStructure<RegionStructure.C
 	}
 
 	@Override
-	public boolean canStart(Data<?> data, long structureSeed, ChunkRand rand) {
+	public boolean canStart(Data<T> data, long structureSeed, ChunkRand rand) {
 		rand.setSeed(data.baseRegionSeed + structureSeed);
 		return rand.nextInt(this.offset) == data.offsetX && rand.nextInt(this.offset) == data.offsetZ;
 	}
