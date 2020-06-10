@@ -21,7 +21,7 @@ public class BastionRemnant extends UniformStructure<BastionRemnant> {
 	@Override
 	public boolean canStart(Data<BastionRemnant> data, long structureSeed, ChunkRand rand) {
 		if(!super.canStart(data, structureSeed, rand))return false;
-		return rand.nextInt(6) >= 2;
+		return rand.nextInt(5) >= 2;
 	}
 
 	@Override

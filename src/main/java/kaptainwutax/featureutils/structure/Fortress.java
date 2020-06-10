@@ -28,12 +28,12 @@ public class Fortress extends UniformStructure<Fortress> {
 			rand.setWeakSeed(structureSeed, data.chunkX, data.chunkZ, this.getVersion());
 			rand.nextInt();
 			if(rand.next(3) != 0)return false;
-			if(data.chunkZ - 4 != (data.chunkZ & -16) + rand.nextInt(8))return false;
-			if(data.chunkX - 4 != (data.chunkX & -16) + rand.nextInt(8))return false;
+			if(data.chunkZ - 4 != (data.chunkZ & ~15) + rand.nextInt(8))return false;
+			if(data.chunkX - 4 != (data.chunkX & ~15) + rand.nextInt(8))return false;
 			return true;
 		}
 
-		return super.canStart(data, structureSeed, rand) && rand.nextInt(6) < 2;
+		return super.canStart(data, structureSeed, rand) && rand.nextInt(5) < 2;
 	}
 
 	@Override
@@ -49,7 +49,8 @@ public class Fortress extends UniformStructure<Fortress> {
 	public boolean canSpawn(int chunkX, int chunkZ, BiomeSource source) {
 		int x = this.getVersion().isOlderThan(MCVersion.v1_16) ? (chunkX << 4) + 9 : (chunkX << 2) + 2;
 		int z = this.getVersion().isOlderThan(MCVersion.v1_16) ? (chunkZ << 4) + 9 : (chunkZ << 2) + 2;
-		return this.isValidBiome(source.getBiome(x, 0, z));
+		return this.isValidBiome(this.getVersion().isOlderThan(MCVersion.v1_16)
+				? source.getBiome(x, 0, z) : source.getBiomeForNoiseGen(x, 0, z));
 	}
 
 	@Override
