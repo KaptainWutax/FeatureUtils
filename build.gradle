@@ -13,8 +13,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.KaptainWutax:SeedUtils:aeb99b881ac2f91ac208e10a7f967d91a079bcc8'
-    implementation ('com.github.KaptainWutax:BiomeUtils:7f3e6c60fb5951412d80d18ef85dd5ebf261b0cb') {
+    implementation 'com.github.KaptainWutax:SeedUtils:99de78092ff9a85d515315b9397b9dd389cab8d0'
+    implementation ('com.github.KaptainWutax:BiomeUtils:9f32381a8f86abf0ac52fbba53fbe0598ca319f8') {
         transitive = false
     }
 }
