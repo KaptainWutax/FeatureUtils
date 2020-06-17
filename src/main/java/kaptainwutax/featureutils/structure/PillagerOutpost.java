@@ -9,7 +9,7 @@ import kaptainwutax.seedutils.util.math.DistanceMetric;
 
 public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 
-	public static final VersionMap<OldStructure.Config> CONFIGS = new VersionMap<OldStructure.Config>()
+	public static final VersionMap<Config> CONFIGS = new VersionMap<OldStructure.Config>()
 			.add(MCVersion.v1_14, new OldStructure.Config(165745296));
 
 	private final Village village;
@@ -57,45 +57,37 @@ public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 	}
 
 	public boolean hasNearbyVillage(long structureSeed, int chunkX, int chunkZ, ChunkRand rand) {
-		CPos outpostPos = new CPos(chunkX, chunkZ);
+		CPos chunkPos = new CPos(chunkX, chunkZ);
 
-		Village.Data<?> nw = this.village.at(chunkX - 10, chunkZ - 10);
-		Village.Data<?> se = this.village.at(chunkX + 10, chunkZ + 10);
+		Data<?> nn = village.at(chunkX - 10, chunkZ - 10);
+		Data<?> pp = village.at(chunkX + 10, chunkZ + 10);
 
-		CPos villagePos = this.village.getInRegion(structureSeed, nw.regionX, nw.regionZ, rand);
-
-		if(villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
+		if(this.village.getInRegion(structureSeed, nn.regionX, nn.regionZ, rand).distanceTo(chunkPos, DistanceMetric.CHEBYSHEV) <= 10) {
 			return true;
 		}
 
-		//The area is contained within one region.
-		if(nw.regionX == se.regionX && nw.regionZ == se.regionZ) {
-			return false;
+		if(nn.regionX == pp.regionX && nn.regionZ == pp.regionZ) {
+			return false; //The area is contained within one region.
 		}
 
-		//The area intersects 4 regions.
-		if(nw.regionX != se.regionX && nw.regionZ != se.regionZ) {
-			villagePos = this.village.getInRegion(structureSeed, se.regionX, se.regionZ, rand);
-
-			if(villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
+		if(nn.regionX != pp.regionX && nn.regionZ != pp.regionZ) {
+			//The area intersects 4 regions.
+			if(this.village.getInRegion(structureSeed, pp.regionX, pp.regionZ, rand).distanceTo(chunkPos, DistanceMetric.CHEBYSHEV) <= 10) {
 				return true;
 			}
 
-			Data<?> sw = this.village.at(chunkX - 10, chunkZ + 10);
-			villagePos = this.village.getInRegion(structureSeed, sw.regionX, sw.regionZ, rand);
+			Data<?> np = this.village.at(chunkX - 10, chunkZ + 10);
 
-			if(villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
+			if(this.village.getInRegion(structureSeed, np.regionX, np.regionZ, rand).distanceTo(chunkPos, DistanceMetric.CHEBYSHEV) <= 10) {
 				return true;
 			}
 
-			Data<?> ne = this.village.at(chunkX + 10, chunkZ - 10);
-			villagePos = this.village.getInRegion(structureSeed, ne.regionX, ne.regionZ, rand);
-			return villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10;
+			Data<?> pn = this.village.at(chunkX + 10, chunkZ - 10);
+			return this.village.getInRegion(structureSeed, pn.regionX, pn.regionZ, rand).distanceTo(chunkPos, DistanceMetric.CHEBYSHEV) <= 10;
 		}
 
 		//The area intersects 2 regions.
-		villagePos = this.village.getInRegion(structureSeed, se.regionX, se.regionZ, rand);
-		return villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10;
+		return this.village.getInRegion(structureSeed, pp.regionX, pp.regionZ, rand).distanceTo(chunkPos, DistanceMetric.CHEBYSHEV) <= 10;
 	}
 
 	/* More user friendly code (also about 150 times slower than the optimized version above)
