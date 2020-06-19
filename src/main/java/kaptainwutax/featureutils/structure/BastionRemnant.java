@@ -4,6 +4,8 @@ import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
+import kaptainwutax.seedutils.mc.pos.CPos;
+import kaptainwutax.seedutils.util.UnsupportedVersion;
 
 public class BastionRemnant extends UniformStructure<BastionRemnant> {
 
@@ -22,6 +24,12 @@ public class BastionRemnant extends UniformStructure<BastionRemnant> {
 	public boolean canStart(Data<BastionRemnant> data, long structureSeed, ChunkRand rand) {
 		if(!super.canStart(data, structureSeed, rand))return false;
 		return rand.nextInt(5) >= 2;
+	}
+
+	@Override
+	public CPos getInRegion(long structureSeed, int regionX, int regionZ, ChunkRand rand) {
+		CPos bastion = super.getInRegion(structureSeed, regionX, regionZ, rand);
+		return rand.nextInt(5) >= 2 ? bastion : null;
 	}
 
 	@Override

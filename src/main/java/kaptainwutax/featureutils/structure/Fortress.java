@@ -6,12 +6,12 @@ import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 import kaptainwutax.seedutils.mc.pos.CPos;
-import kaptainwutax.seedutils.util.UnsupportedVersion;
 
 public class Fortress extends UniformStructure<Fortress> {
 
 	public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
-			.add(MCVersion.v1_7, new RegionStructure.Config(-1, -1, -1))
+			//This is there as reference, it doesn't actually use regions prior to 1.16.
+			.add(MCVersion.v1_7, new RegionStructure.Config(16, 4, -1))
 			.add(MCVersion.v1_16, new RegionStructure.Config(30, 4, 30084232));
 
 	public Fortress(MCVersion version) {
@@ -28,8 +28,8 @@ public class Fortress extends UniformStructure<Fortress> {
 			rand.setWeakSeed(structureSeed, data.chunkX, data.chunkZ, this.getVersion());
 			rand.nextInt();
 			if(rand.next(3) != 0)return false;
-			if(data.chunkZ - 4 != (data.chunkZ & ~15) + rand.nextInt(8))return false;
-			if(data.chunkX - 4 != (data.chunkX & ~15) + rand.nextInt(8))return false;
+			if(data.chunkZ != (data.chunkZ & ~15) + rand.nextInt(8) + 4)return false;
+			if(data.chunkX != (data.chunkX & ~15) + rand.nextInt(8) + 4)return false;
 			return true;
 		}
 
@@ -39,10 +39,14 @@ public class Fortress extends UniformStructure<Fortress> {
 	@Override
 	public CPos getInRegion(long structureSeed, int regionX, int regionZ, ChunkRand rand) {
 		if(this.getVersion().isOlderThan(MCVersion.v1_16)) {
-			throw new UnsupportedVersion(this.getVersion(), "fortress region");
+			rand.setWeakSeed(structureSeed, regionX << 4, regionZ << 4, this.getVersion());
+			rand.nextInt();
+			if(rand.nextInt(3) != 0)return null;
+			return new CPos((regionX << 4) + rand.nextInt(8) + 4, (regionZ << 4) + rand.nextInt(8) + 4);
 		}
 
-		return super.getInRegion(structureSeed, regionX, regionZ, rand);
+		CPos fortress = super.getInRegion(structureSeed, regionX, regionZ, rand);
+		return rand.nextInt(5) < 2 ? fortress : null;
 	}
 
 	@Override
