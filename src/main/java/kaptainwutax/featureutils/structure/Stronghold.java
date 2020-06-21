@@ -2,9 +2,8 @@ package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.biomeutils.source.BiomeSource;
-import kaptainwutax.featureutils.Feature;
-import kaptainwutax.featureutils.structure.generator.piece.StructurePiece;
 import kaptainwutax.featureutils.structure.generator.StrongholdGenerator;
+import kaptainwutax.featureutils.structure.generator.piece.StructurePiece;
 import kaptainwutax.featureutils.structure.generator.piece.stronghold.Start;
 import kaptainwutax.seedutils.lcg.rand.JRand;
 import kaptainwutax.seedutils.mc.ChunkRand;
@@ -17,7 +16,7 @@ import kaptainwutax.seedutils.util.Direction;
 
 import java.util.*;
 
-public class Stronghold extends Feature<Stronghold.Config, Stronghold.Data> {
+public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 
 	public static final VersionMap<Stronghold.Config> CONFIGS = new VersionMap<Stronghold.Config>()
 			.add(MCVersion.v1_7, new Stronghold.Config(32, 3, 128));
@@ -109,13 +108,18 @@ public class Stronghold extends Feature<Stronghold.Config, Stronghold.Data> {
 	}
 
 	@Override
-	public boolean canSpawn(Data data, BiomeSource source) {
+	public boolean canSpawn(int chunkX, int chunkZ, BiomeSource source) {
 		//TODO: Improve this (A LOT!)
 		for(CPos start: this.getAllStarts(source, new JRand(0L))) {
-			if(start.getX() == data.chunkX && start.getZ() == data.chunkZ)return true;
+			if(start.getX() == chunkX && start.getZ() == chunkZ)return true;
 		}
 
 		return false;
+	}
+
+	@Override
+	public boolean isValidBiome(Biome biome) {
+		return VALID_BIOMES.contains(biome);
 	}
 
 	public Stronghold.Data at(int chunkX, int chunkZ) {

@@ -28,6 +28,11 @@ public class EndGateway extends Feature<EndGateway.Config, EndGateway.Data> {
 	}
 
 	@Override
+	public String getName() {
+		return "end_gateway";
+	}
+
+	@Override
 	public boolean canStart(EndGateway.Data data, long structureSeed, ChunkRand rand) {
 		rand.setDecoratorSeed(structureSeed, data.chunkX << 4, data.chunkZ << 4,
 				this.getIndex(), this.getStep(), this.getVersion());

@@ -22,6 +22,8 @@ public abstract class Feature<C extends Feature.Config, D extends Feature.Data<?
 		return this.version;
 	}
 
+	public abstract String getName();
+
 	public abstract boolean canStart(D data, long structureSeed, ChunkRand rand);
 
 	public abstract boolean canSpawn(D data, BiomeSource source);
