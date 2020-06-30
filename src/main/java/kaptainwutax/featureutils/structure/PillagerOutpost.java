@@ -23,12 +23,11 @@ public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 	}
 
 	public PillagerOutpost(MCVersion version, Village village) {
-		super(CONFIGS.getAsOf(version), version);
-		this.village = village;
+		this(CONFIGS.getAsOf(version), version, village);
 	}
 
-	public PillagerOutpost(RegionStructure.Config config, Village village) {
-		super(config, null);
+	public PillagerOutpost(RegionStructure.Config config, MCVersion version, Village village) {
+		super(config, version);
 		this.village = village;
 	}
 

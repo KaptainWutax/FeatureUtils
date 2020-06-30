@@ -10,11 +10,11 @@ public class Village extends OldStructure<Village> {
 			.add(MCVersion.v1_7, new OldStructure.Config(10387312));
 
 	public Village(MCVersion version) {
-		super(CONFIGS.getAsOf(version), version);
+		this(CONFIGS.getAsOf(version), version);
 	}
 
-	public Village(RegionStructure.Config config) {
-		super(config, null);
+	public Village(RegionStructure.Config config, MCVersion version) {
+		super(config, version);
 	}
 
 	@Override

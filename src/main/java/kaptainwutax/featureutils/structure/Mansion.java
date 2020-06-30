@@ -11,11 +11,11 @@ public class Mansion extends TriangularStructure<Mansion> {
 			.add(MCVersion.v1_11, new RegionStructure.Config(80, 20, 10387319));
 
 	public Mansion(MCVersion version) {
-		super(CONFIGS.getAsOf(version), version);
+		this(CONFIGS.getAsOf(version), version);
 	}
 
-	public Mansion(RegionStructure.Config config) {
-		super(config, null);
+	public Mansion(RegionStructure.Config config, MCVersion version) {
+		super(config, version);
 	}
 
 	@Override

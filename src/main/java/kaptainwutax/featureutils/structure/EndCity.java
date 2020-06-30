@@ -11,11 +11,11 @@ public class EndCity extends TriangularStructure<EndCity> {
 			.add(MCVersion.v1_9, new RegionStructure.Config(20, 11, 10387313));
 
 	public EndCity(MCVersion version) {
-		super(CONFIGS.getAsOf(version), version);
+		this(CONFIGS.getAsOf(version), version);
 	}
 
-	public EndCity(RegionStructure.Config config) {
-		super(config, null);
+	public EndCity(RegionStructure.Config config, MCVersion version) {
+		super(config, version);
 	}
 
 	@Override

@@ -11,17 +11,11 @@ public class NetherFossil extends UniformStructure<NetherFossil> {
 			.add(MCVersion.v1_16, new RegionStructure.Config(2, 1, 14357921));
 
 	public NetherFossil(MCVersion version) {
-		super(CONFIGS.getAsOf(version), version);
+		this(CONFIGS.getAsOf(version), version);
 	}
 
-	public NetherFossil(RegionStructure.Config config) {
-		super(config, null);
-	}
-
-	@Override
-	public boolean canStart(Data<NetherFossil> data, long structureSeed, ChunkRand rand) {
-		//Quick shortcut for fossils.
-		return (data.chunkX & 1) == 0 && (data.chunkZ & 1) == 0;
+	public NetherFossil(RegionStructure.Config config, MCVersion version) {
+		super(config, version);
 	}
 
 	@Override

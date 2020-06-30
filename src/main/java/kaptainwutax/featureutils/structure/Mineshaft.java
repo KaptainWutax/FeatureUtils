@@ -17,12 +17,11 @@ public class Mineshaft extends Structure<Mineshaft.Config, Feature.Data<?>> {
 	private final Type type;
 
 	public Mineshaft(MCVersion version, Type type) {
-		super(type.configs.getAsOf(version), version);
-		this.type = type;
+		this(type.configs.getAsOf(version), version, type);
 	}
 
-	public Mineshaft(Mineshaft.Config config, Type type) {
-		super(config, null);
+	public Mineshaft(Mineshaft.Config config, MCVersion version, Type type) {
+		super(config, version);
 		this.type = type;
 	}
 
@@ -68,6 +67,10 @@ public class Mineshaft extends Structure<Mineshaft.Config, Feature.Data<?>> {
 		return biome.getCategory() == Biome.Category.MESA;
 	}
 
+	public Feature.Data<Mineshaft> at(int chunkX, int chunkZ) {
+		return new Feature.Data<>(this, chunkX, chunkZ);
+	}
+
 	public enum Type {
 		NORMAL(Mineshaft.NORMAL_CONFIGS), MESA(Mineshaft.MESA_CONFIGS), EITHER(Mineshaft.NORMAL_CONFIGS);
 
@@ -76,10 +79,6 @@ public class Mineshaft extends Structure<Mineshaft.Config, Feature.Data<?>> {
 		Type(VersionMap<Config> configs) {
 			this.configs = configs;
 		}
-	}
-
-	public Feature.Data<Mineshaft> at(int chunkX, int chunkZ) {
-		return new Feature.Data<>(this, chunkX, chunkZ);
 	}
 
 	public static class Config extends Feature.Config {

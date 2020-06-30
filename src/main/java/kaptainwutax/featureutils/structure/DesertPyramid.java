@@ -10,11 +10,11 @@ public class DesertPyramid extends OldStructure<DesertPyramid> {
 			.add(MCVersion.v1_7, new OldStructure.Config(14357617));
 
 	public DesertPyramid(MCVersion version) {
-		super(CONFIGS.getAsOf(version), version);
+		this(CONFIGS.getAsOf(version), version);
 	}
 
-	public DesertPyramid(RegionStructure.Config config) {
-		super(config, null);
+	public DesertPyramid(RegionStructure.Config config, MCVersion version) {
+		super(config, version);
 	}
 
 	@Override

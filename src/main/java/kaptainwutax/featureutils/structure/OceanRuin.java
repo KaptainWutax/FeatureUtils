@@ -11,11 +11,11 @@ public class OceanRuin extends UniformStructure<OceanRuin> {
 			.add(MCVersion.v1_16, new RegionStructure.Config(20, 8, 14357621));
 
 	public OceanRuin(MCVersion version) {
-		super(CONFIGS.getAsOf(version), version);
+		this(CONFIGS.getAsOf(version), version);
 	}
 
-	public OceanRuin(RegionStructure.Config config) {
-		super(config, null);
+	public OceanRuin(RegionStructure.Config config, MCVersion version) {
+		super(config, version);
 	}
 
 	@Override

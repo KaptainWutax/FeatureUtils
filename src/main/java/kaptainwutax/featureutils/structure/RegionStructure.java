@@ -55,20 +55,13 @@ public abstract class RegionStructure<C extends RegionStructure.Config, D extend
 			int x = this.chunkX < 0 ? this.chunkX - this.feature.getSpacing() + 1 : this.chunkX;
 			int z = this.chunkZ < 0 ? this.chunkZ - this.feature.getSpacing() + 1 : this.chunkZ;
 
-			//Pick out in which region the chunk is.
-			int regionX = (x / this.feature.getSpacing());
-			int regionZ = (z / this.feature.getSpacing());
+			this.regionX = x / this.feature.getSpacing();
+			this.regionZ = z / this.feature.getSpacing();
 
-			this.regionX = regionX;
-			this.regionZ = regionZ;
+			this.offsetX = this.chunkX - this.regionX * this.feature.getSpacing();
+			this.offsetZ = this.chunkZ - this.regionZ * this.feature.getSpacing();
 
-			regionX *= this.feature.getSpacing();
-			regionZ *= this.feature.getSpacing();
-
-			this.offsetX = this.chunkX - regionX;
-			this.offsetZ = this.chunkZ - regionZ;
-
-			this.baseRegionSeed = ChunkSeeds.getRegionSeed(0L, this.regionX, this.regionZ,
+			this.baseRegionSeed = new ChunkRand().setRegionSeed(0L, this.regionX, this.regionZ,
 					this.feature.getSalt(), this.feature.getVersion());
 		}
 	}

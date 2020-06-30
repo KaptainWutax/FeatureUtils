@@ -11,11 +11,11 @@ public class JunglePyramid extends OldStructure<JunglePyramid> {
 			.add(MCVersion.v1_13, new OldStructure.Config(14357619));
 
 	public JunglePyramid(MCVersion version) {
-		super(CONFIGS.getAsOf(version), version);
+		this(CONFIGS.getAsOf(version), version);
 	}
 
-	public JunglePyramid(RegionStructure.Config config) {
-		super(config, null);
+	public JunglePyramid(RegionStructure.Config config, MCVersion version) {
+		super(config, version);
 	}
 
 	@Override

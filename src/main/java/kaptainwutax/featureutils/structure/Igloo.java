@@ -11,11 +11,11 @@ public class Igloo extends OldStructure<Igloo> {
 			.add(MCVersion.v1_13, new OldStructure.Config(14357618));
 
 	public Igloo(MCVersion version) {
-		super(CONFIGS.getAsOf(version), version);
+		this(CONFIGS.getAsOf(version), version);
 	}
 
-	public Igloo(RegionStructure.Config config) {
-		super(config, null);
+	public Igloo(RegionStructure.Config config, MCVersion version) {
+		super(config, version);
 	}
 
 	@Override

@@ -6,20 +6,25 @@ import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 import kaptainwutax.seedutils.mc.pos.CPos;
+import kaptainwutax.seedutils.util.UnsupportedVersion;
 
 public class Fortress extends UniformStructure<Fortress> {
 
 	public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
 			//This is there as reference, it doesn't actually use regions prior to 1.16.
-			.add(MCVersion.v1_7, new RegionStructure.Config(16, 4, -1))
-			.add(MCVersion.v1_16, new RegionStructure.Config(30, 4, 30084232));
+			.add(MCVersion.v1_7, new RegionStructure.Config(16, 8, -1))
+			.add(MCVersion.v1_16, new RegionStructure.Config(27, 4, 30084232));
 
 	public Fortress(MCVersion version) {
-		super(CONFIGS.getAsOf(version), version);
+		this(CONFIGS.getAsOf(version), version);
 	}
 
-	public Fortress(RegionStructure.Config config) {
-		super(config, null);
+	public Fortress(RegionStructure.Config config, MCVersion version) {
+		super(config, version);
+
+		if(this.getVersion().isOlderThan(MCVersion.v1_16)) {
+			throw new UnsupportedVersion(this.getVersion(), "fortress regions");
+		}
 	}
 
 	@Override

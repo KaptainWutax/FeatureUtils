@@ -1,6 +1,8 @@
 package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.source.OverworldBiomeSource;
+import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
@@ -10,11 +12,11 @@ public class RuinedPortal extends UniformStructure<RuinedPortal> {
 			.add(MCVersion.v1_16, new RegionStructure.Config(40, 15, 34222645));
 
 	public RuinedPortal(MCVersion version) {
-		super(CONFIGS.getAsOf(version), version);
+		this(CONFIGS.getAsOf(version), version);
 	}
 
-	public RuinedPortal(RegionStructure.Config config) {
-		super(config, null);
+	public RuinedPortal(RegionStructure.Config config, MCVersion version) {
+		super(config, version);
 	}
 
 	@Override

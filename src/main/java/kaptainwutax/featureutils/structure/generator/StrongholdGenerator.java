@@ -22,8 +22,8 @@ public class StrongholdGenerator {
 			new PieceWeight<>(LeftTurn.class, 20, 0),
 			new PieceWeight<>(RightTurn.class, 20, 0),
 			new PieceWeight<>(SquareRoom.class, 10, 6),
-			new PieceWeight<>(SpiralStaircase.class, 5, 5),
 			new PieceWeight<>(Stairs.class, 5, 5),
+			new PieceWeight<>(SpiralStaircase.class, 5, 5),
 			new PieceWeight<>(FiveWayCrossing.class, 5, 4),
 			new PieceWeight<>(ChestCorridor.class, 5, 4),
 			new PieceWeight<Stronghold.Piece>(Library.class, 10, 2) {
@@ -58,6 +58,17 @@ public class StrongholdGenerator {
 
 	public MCVersion getVersion() {
 		return this.version;
+	}
+
+	public static void main(String[] args) {
+		StrongholdGenerator gen = new StrongholdGenerator(MCVersion.v1_15);
+		gen.generate(-7316166329940488453L, 130, -5, piece -> {
+			System.out.println(piece.getClass().getSimpleName());
+			return true;
+		});
+
+		PortalRoom portalRoom = ((Start)gen.pieceList.get(0)).portalRoom;
+		System.out.println(portalRoom.getBoundingBox().minX + ", " + portalRoom.getBoundingBox().minZ);
 	}
 
 	public boolean generate(long worldSeed, int chunkX, int chunkZ) {

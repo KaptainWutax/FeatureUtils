@@ -11,11 +11,11 @@ public class Monument extends TriangularStructure<Monument> {
 			.add(MCVersion.v1_8, new RegionStructure.Config(32, 5, 10387313));
 
 	public Monument(MCVersion version) {
-		super(CONFIGS.getAsOf(version), version);
+		this(CONFIGS.getAsOf(version), version);
 	}
 
-	public Monument(RegionStructure.Config config) {
-		super(config, null);
+	public Monument(RegionStructure.Config config, MCVersion version) {
+		super(config, version);
 	}
 
 	@Override

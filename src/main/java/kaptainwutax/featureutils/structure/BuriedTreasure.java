@@ -12,11 +12,11 @@ public class BuriedTreasure extends RegionStructure<BuriedTreasure.Config, Regio
 			.add(MCVersion.v1_13, new BuriedTreasure.Config(0.01F, 10387320));
 
 	public BuriedTreasure(MCVersion version) {
-		super(CONFIGS.getAsOf(version), version);
+		this(CONFIGS.getAsOf(version), version);
 	}
 
-	public BuriedTreasure(BuriedTreasure.Config config) {
-		super(config, null);
+	public BuriedTreasure(BuriedTreasure.Config config, MCVersion version) {
+		super(config, version);
 	}
 
 	public float getChance() {

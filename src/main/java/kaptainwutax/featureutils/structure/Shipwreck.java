@@ -11,11 +11,11 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
 			.add(MCVersion.v1_16, new RegionStructure.Config(24, 4, 165745295));
 
 	public Shipwreck(MCVersion version) {
-		super(CONFIGS.getAsOf(version), version);
+		this(CONFIGS.getAsOf(version), version);
 	}
 
-	public Shipwreck(RegionStructure.Config config) {
-		super(config, null);
+	public Shipwreck(RegionStructure.Config config, MCVersion version) {
+		super(config, version);
 	}
 
 	@Override
