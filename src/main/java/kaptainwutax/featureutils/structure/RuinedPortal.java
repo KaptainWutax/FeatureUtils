@@ -1,8 +1,6 @@
 package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.Biome;
-import kaptainwutax.biomeutils.source.OverworldBiomeSource;
-import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 

@@ -4,7 +4,6 @@ import kaptainwutax.featureutils.Feature;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.pos.CPos;
-import kaptainwutax.seedutils.mc.seed.ChunkSeeds;
 
 public abstract class RegionStructure<C extends RegionStructure.Config, D extends RegionStructure.Data<?>> extends Structure<C, D> {
 
