@@ -80,7 +80,7 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 			double e = (double)(4 * i + i * m * 6) + (rand.nextDouble() - 0.5D) * (double)i * 2.5D;
 			int o = (int)Math.round(Math.cos(d) * e);
 			int p = (int)Math.round(Math.sin(d) * e);
-			BPos pos = source.findBiomeInArea((o << 4) + 8, 0, (p << 4) + 8, 112, VALID_BIOMES, rand);
+			BPos pos = source.locateBiome((o << 4) + 8, 0, (p << 4) + 8, 112, VALID_BIOMES, rand);
 
 			if(pos != null) {
 				o = pos.getX() >> 4;
