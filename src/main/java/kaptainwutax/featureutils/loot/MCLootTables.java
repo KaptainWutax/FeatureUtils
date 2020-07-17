@@ -11,7 +11,8 @@ import static kaptainwutax.featureutils.loot.function.SetCountFunction.uniform;
 public class MCLootTables {
 
 	public static final LootTable BURIED_TREASURE_CHEST = new LootTable(
-			new LootPool(new ConstantRoll(1), new ItemEntry(Item.HEART_OF_THE_SEA)),
+			new LootPool(new ConstantRoll(1),
+					new ItemEntry(Item.HEART_OF_THE_SEA)),
 			new LootPool(new UniformRoll(5.0F, 8.0F),
 					new ItemEntry(Item.IRON_INGOT, 20).apply(uniform(1.0F, 4.0F)),
 					new ItemEntry(Item.GOLD_INGOT, 10).apply(uniform(1.0F, 4.0F)),
@@ -20,7 +21,9 @@ public class MCLootTables {
 					new ItemEntry(Item.EMERALD, 5).apply(uniform(4.0F, 8.0F)),
 					new ItemEntry(Item.DIAMOND, 5).apply(uniform(1.0F, 2.0F)),
 					new ItemEntry(Item.PRISMARINE_CRYSTALS, 5).apply(uniform(1.0F, 5.0F))),
-			new LootPool(new UniformRoll(0.0F, 1.0F), new ItemEntry(Item.LEATHER_CHESTPLATE), new ItemEntry(Item.IRON_SWORD)),
+			new LootPool(new UniformRoll(0.0F, 1.0F),
+					new ItemEntry(Item.LEATHER_CHESTPLATE),
+					new ItemEntry(Item.IRON_SWORD)),
 			new LootPool(new ConstantRoll(2),
 					new ItemEntry(Item.COOKED_COD).apply(uniform(2.0F, 4.0F)),
 					new ItemEntry(Item.COOKED_SALMON).apply(uniform(2.0F, 4.0F)))
@@ -49,6 +52,35 @@ public class MCLootTables {
 					new ItemEntry(Item.ROTTEN_FLESH, 10).apply(uniform(1.0F, 8.0F)),
 					new ItemEntry(Item.STRING, 10).apply(uniform(1.0F, 8.0F)),
 					new ItemEntry(Item.SAND, 10).apply(uniform(1.0F, 8.0F)))
+	);
+
+	public static final LootTable RUINED_PORTAL_CHEST = new LootTable(
+			new LootPool(new UniformRoll(4.0F, 8.0F),
+					new ItemEntry(Item.OBSIDIAN, 40).apply(uniform(1.0F, 2.0F)),
+					new ItemEntry(Item.FLINT, 40).apply(uniform(1.0F, 4.0F)),
+					new ItemEntry(Item.IRON_NUGGET, 40).apply(uniform(9.0F, 18.0F)),
+					new ItemEntry(Item.FLINT_AND_STEEL, 40),
+					new ItemEntry(Item.FIRE_CHARGE, 40),
+					new ItemEntry(Item.GOLDEN_APPLE, 15),
+					new ItemEntry(Item.GOLD_NUGGET, 15).apply(uniform(4.0F, 24.0F)),
+					new ItemEntry(Item.GOLDEN_SWORD, 15),
+					new ItemEntry(Item.GOLDEN_AXE, 15),
+					new ItemEntry(Item.GOLDEN_HOE, 15),
+					new ItemEntry(Item.GOLDEN_SHOVEL, 15),
+					new ItemEntry(Item.GOLDEN_PICKAXE, 15),
+					new ItemEntry(Item.GOLDEN_BOOTS, 15),
+					new ItemEntry(Item.GOLDEN_CHESTPLATE, 15),
+					new ItemEntry(Item.GOLDEN_HELMET, 15),
+					new ItemEntry(Item.GOLDEN_LEGGINGS, 15),
+					new ItemEntry(Item.GLISTERING_MELON_SLICE, 5).apply(uniform(4.0F, 12.0F)),
+					new ItemEntry(Item.GOLDEN_HORSE_ARMOR, 5),
+					new ItemEntry(Item.LIGHT_WEIGHTED_PRESSURE_PLATE, 5),
+					new ItemEntry(Item.GOLDEN_CARROT, 5).apply(uniform(4.0F, 12.0F)),
+					new ItemEntry(Item.CLOCK, 5),
+					new ItemEntry(Item.GOLD_INGOT, 5).apply(uniform(2.0F, 8.0F)),
+					new ItemEntry(Item.BELL),
+					new ItemEntry(Item.ENCHANTED_GOLDEN_APPLE),
+					new ItemEntry(Item.GOLD_BLOCK).apply(uniform(1.0F, 2.0F)))
 	);
 
 }
