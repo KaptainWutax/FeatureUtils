@@ -1,5 +1,6 @@
 package kaptainwutax.featureutils.loot;
 
+import kaptainwutax.featureutils.loot.entry.LootEntry;
 import kaptainwutax.featureutils.loot.function.LootFunction;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.featureutils.loot.roll.LootRoll;
