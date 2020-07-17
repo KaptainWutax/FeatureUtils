@@ -1,11 +1,12 @@
 package kaptainwutax.featureutils.loot;
 
 import kaptainwutax.featureutils.loot.function.LootFunction;
+import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class LootTable extends LootGenerator {
 
@@ -32,6 +33,22 @@ public class LootTable extends LootGenerator {
 		for(LootPool lootPool: this.lootPools) {
 			lootPool.generate(context, stackConsumer);
 		}
+	}
+
+	public List<ItemStack> generate(LootContext context) {
+		Map<Item, Integer> itemCounts = new HashMap<>();
+		List<ItemStack> itemStacks = new ArrayList<>();
+
+		this.generate(context, stack -> {
+			int oldCount = itemCounts.getOrDefault(stack.getItem(), 0);
+			itemCounts.put(stack.getItem(), oldCount + stack.getCount());
+		});
+
+		for(Map.Entry<Item, Integer> e: itemCounts.entrySet()) {
+			itemStacks.add(new ItemStack(e.getKey(), e.getValue()));
+		}
+
+		return itemStacks;
 	}
 
 }
