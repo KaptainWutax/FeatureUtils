@@ -9,7 +9,8 @@ import kaptainwutax.seedutils.mc.pos.CPos;
 public class BastionRemnant extends UniformStructure<BastionRemnant> {
 
 	public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
-			.add(MCVersion.v1_16, new RegionStructure.Config(27, 4, 30084232));
+			.add(MCVersion.v1_16, new RegionStructure.Config(30, 4, 30084232))
+			.add(MCVersion.v1_16_1, new RegionStructure.Config(27, 4, 30084232));
 
 	public BastionRemnant(MCVersion version) {
 		this(CONFIGS.getAsOf(version), version);

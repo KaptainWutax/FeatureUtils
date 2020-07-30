@@ -13,7 +13,7 @@ public class BinomialRoll extends LootRoll {
 	}
 
 	@Override
-	public int nextInt(LootContext context) {
+	public int getCount(LootContext context) {
 		int rolls = 0;
 
 		for(int j = 0; j < this.trials; j++) {

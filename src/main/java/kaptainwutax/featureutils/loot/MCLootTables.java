@@ -6,8 +6,8 @@ import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.featureutils.loot.roll.ConstantRoll;
 import kaptainwutax.featureutils.loot.roll.UniformRoll;
 
-import static kaptainwutax.featureutils.loot.function.SetCountFunction.uniform;
 import static kaptainwutax.featureutils.loot.function.SetCountFunction.constant;
+import static kaptainwutax.featureutils.loot.function.SetCountFunction.uniform;
 
 public class MCLootTables {
 

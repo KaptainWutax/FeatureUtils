@@ -7,7 +7,7 @@ import kaptainwutax.seedutils.mc.VersionMap;
 public class DesertPyramid extends OldStructure<DesertPyramid> {
 
 	public static final VersionMap<OldStructure.Config> CONFIGS = new VersionMap<OldStructure.Config>()
-			.add(MCVersion.v1_7, new OldStructure.Config(14357617));
+			.add(MCVersion.v1_8, new OldStructure.Config(14357617));
 
 	public DesertPyramid(MCVersion version) {
 		this(CONFIGS.getAsOf(version), version);

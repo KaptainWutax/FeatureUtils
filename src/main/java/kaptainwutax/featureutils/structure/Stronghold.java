@@ -19,7 +19,7 @@ import java.util.*;
 public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 
 	public static final VersionMap<Stronghold.Config> CONFIGS = new VersionMap<Stronghold.Config>()
-			.add(MCVersion.v1_7, new Stronghold.Config(32, 3, 128));
+			.add(MCVersion.v1_9, new Stronghold.Config(32, 3, 128));
 
 	public static final Set<Biome> VALID_BIOMES = new HashSet<>(Arrays.asList(
 			Biome.PLAINS, Biome.DESERT, Biome.MOUNTAINS, Biome.FOREST, Biome.TAIGA, Biome.SNOWY_TUNDRA,
@@ -37,7 +37,7 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 			Biome.BAMBOO_JUNGLE, Biome.BAMBOO_JUNGLE_HILLS));
 
 	public Stronghold(MCVersion version) {
-		this(CONFIGS.get(version), version);
+		this(CONFIGS.getAsOf(version), version);
 	}
 
 	public Stronghold(Config config, MCVersion version) {

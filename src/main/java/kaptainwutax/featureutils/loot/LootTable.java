@@ -6,7 +6,6 @@ import kaptainwutax.featureutils.loot.item.ItemStack;
 
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 public class LootTable extends LootGenerator {
 

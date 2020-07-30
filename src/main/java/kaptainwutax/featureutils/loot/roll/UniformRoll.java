@@ -5,23 +5,21 @@ import kaptainwutax.seedutils.util.math.Mth;
 
 public class UniformRoll extends LootRoll {
 
-	public final float min;
-	public final float max;
+	public final int min;
+	public final int max;
 
 	public UniformRoll(float value) {
 		this(value, value);
 	}
 
 	public UniformRoll(float min, float max) {
-		this.min = min;
-		this.max = max;
+		this.min = Mth.floor(min);
+		this.max = Mth.floor(max);
 	}
 
 	@Override
-	public int nextInt(LootContext context) {
-		int a = Mth.floor(this.min);
-		int b = Mth.floor(this.max);
-		return a >= b ? a : context.nextInt(b - a + 1) + a;
+	public int getCount(LootContext context) {
+		return this.min >= this.max ? this.min : context.nextInt(this.max - this.min + 1) + this.min;
 	}
 
 }

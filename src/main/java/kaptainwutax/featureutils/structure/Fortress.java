@@ -12,8 +12,9 @@ public class Fortress extends UniformStructure<Fortress> {
 
 	public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
 			//This is there as reference, it doesn't actually use regions prior to 1.16.
-			.add(MCVersion.v1_7, new RegionStructure.Config(16, 8, -1))
-			.add(MCVersion.v1_16, new RegionStructure.Config(27, 4, 30084232));
+			.add(MCVersion.v1_8, new RegionStructure.Config(16, 8, -1))
+			.add(MCVersion.v1_16, new RegionStructure.Config(30, 4, 30084232))
+			.add(MCVersion.v1_16_1, new RegionStructure.Config(27, 4, 30084232));
 
 	public Fortress(MCVersion version) {
 		this(CONFIGS.getAsOf(version), version);

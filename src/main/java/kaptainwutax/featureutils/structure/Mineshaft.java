@@ -8,25 +8,15 @@ import kaptainwutax.seedutils.mc.VersionMap;
 
 public class Mineshaft extends Structure<Mineshaft.Config, Feature.Data<?>> {
 
-	public static final VersionMap<Mineshaft.Config> NORMAL_CONFIGS = new VersionMap<Mineshaft.Config>()
-			.add(MCVersion.v1_8, new Mineshaft.Config(0.004000000189989805D));
-
-	public static final VersionMap<Mineshaft.Config> MESA_CONFIGS = new VersionMap<Mineshaft.Config>()
+	public static final VersionMap<Mineshaft.Config> CONFIGS = new VersionMap<Mineshaft.Config>()
 			.add(MCVersion.v1_8, new Mineshaft.Config(0.004D));
 
-	private final Type type;
-
-	public Mineshaft(MCVersion version, Type type) {
-		this(type.configs.getAsOf(version), version, type);
+	public Mineshaft(MCVersion version) {
+		this(CONFIGS.getAsOf(version), version);
 	}
 
-	public Mineshaft(Mineshaft.Config config, MCVersion version, Type type) {
+	public Mineshaft(Mineshaft.Config config, MCVersion version) {
 		super(config, version);
-		this.type = type;
-	}
-
-	public Mineshaft.Type getType() {
-		return this.type;
 	}
 
 	private double getChance() {
@@ -41,7 +31,7 @@ public class Mineshaft extends Structure<Mineshaft.Config, Feature.Data<?>> {
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
-		boolean isNormal = biome.getCategory() == Biome.Category.OCEAN
+		return biome.getCategory() == Biome.Category.OCEAN
 					|| biome == Biome.BAMBOO_JUNGLE || biome == Biome.BAMBOO_JUNGLE_HILLS || biome == Biome.BIRCH_FOREST
 					|| biome == Biome.BIRCH_FOREST_HILLS || biome == Biome.DARK_FOREST || biome == Biome.DARK_FOREST_HILLS
 					|| biome == Biome.DESERT || biome == Biome.DESERT_HILLS || biome == Biome.DESERT_LAKES
@@ -57,28 +47,14 @@ public class Mineshaft extends Structure<Mineshaft.Config, Feature.Data<?>> {
 					|| biome == Biome.SNOWY_TUNDRA || biome == Biome.STONE_SHORE || biome == Biome.SUNFLOWER_PLAINS
 					|| biome == Biome.TAIGA || biome == Biome.TAIGA_HILLS || biome == Biome.TAIGA_MOUNTAINS
 					|| biome == Biome.TALL_BIRCH_FOREST || biome == Biome.TALL_BIRCH_HILLS || biome == Biome.WOODED_HILLS
-					|| biome == Biome.WOODED_MOUNTAINS
+					|| biome == Biome.WOODED_MOUNTAINS || biome.getCategory() == Biome.Category.MESA
 					//hardcoded checks
 					|| biome == Biome.BEACH || biome == Biome.FROZEN_RIVER || biome == Biome.RIVER
 					|| biome == Biome.SNOWY_BEACH || biome == Biome.SWAMP || biome == Biome.SWAMP_HILLS;
-
-		if(this.getType() == Type.NORMAL)return isNormal;
-		else if(this.getType() == Type.EITHER && isNormal)return true;
-		return biome.getCategory() == Biome.Category.MESA;
 	}
 
 	public Feature.Data<Mineshaft> at(int chunkX, int chunkZ) {
 		return new Feature.Data<>(this, chunkX, chunkZ);
-	}
-
-	public enum Type {
-		NORMAL(Mineshaft.NORMAL_CONFIGS), MESA(Mineshaft.MESA_CONFIGS), EITHER(Mineshaft.NORMAL_CONFIGS);
-
-		public final VersionMap<Config> configs;
-
-		Type(VersionMap<Config> configs) {
-			this.configs = configs;
-		}
 	}
 
 	public static class Config extends Feature.Config {

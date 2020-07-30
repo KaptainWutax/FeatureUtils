@@ -11,7 +11,7 @@ public class ConstantRoll extends LootRoll {
 	}
 
 	@Override
-	public int nextInt(LootContext context) {
+	public int getCount(LootContext context) {
 		return this.value;
 	}
 

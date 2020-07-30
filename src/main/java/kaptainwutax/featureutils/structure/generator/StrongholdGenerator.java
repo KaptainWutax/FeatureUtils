@@ -60,17 +60,6 @@ public class StrongholdGenerator {
 		return this.version;
 	}
 
-	public static void main(String[] args) {
-		StrongholdGenerator gen = new StrongholdGenerator(MCVersion.v1_15);
-		gen.generate(-7316166329940488453L, 130, -5, piece -> {
-			System.out.println(piece.getClass().getSimpleName());
-			return true;
-		});
-
-		PortalRoom portalRoom = ((Start)gen.pieceList.get(0)).portalRoom;
-		System.out.println(portalRoom.getBoundingBox().minX + ", " + portalRoom.getBoundingBox().minZ);
-	}
-
 	public boolean generate(long worldSeed, int chunkX, int chunkZ) {
 		return this.generate(worldSeed, chunkX, chunkZ, piece -> true);
 	}

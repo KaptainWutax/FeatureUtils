@@ -29,7 +29,7 @@ public class SetCountFunction implements LootFunction {
 
 	@Override
 	public ItemStack process(ItemStack baseStack, LootContext context) {
-		baseStack.setCount(this.roll.nextInt(context));
+		baseStack.setCount(this.roll.getCount(context));
 		return baseStack;
 	}
 
