@@ -17,7 +17,7 @@ public class Fortress extends UniformStructure<Fortress> {
 			.add(MCVersion.v1_16_1, new RegionStructure.Config(27, 4, 30084232));
 
 	public Fortress(MCVersion version) {
-		this(CONFIGS.getAsOf(version), version);
+		super(CONFIGS.getAsOf(version), version);
 	}
 
 	public Fortress(RegionStructure.Config config, MCVersion version) {
