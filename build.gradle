@@ -7,17 +7,12 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()
 
-    maven {
-        url "https://jitpack.io"
-    }
+    maven {url "https://jitpack.io"}
 }
 
 dependencies {
-    implementation 'com.github.KaptainWutax:SeedUtils:b5bf2e23610cc0eebcb91443788228c2ed446914'
-    implementation ('com.github.KaptainWutax:BiomeUtils:b547ea791d39e00c1a35c941d3c067bf6004e62b') {
-        transitive = false
-    }
-    implementation ('com.github.mjtb49:ChunkRandomReversal:e66e286f4bcc5f652ba53f61482fc7dca8ef7d49') {
-        transitive = false
-    }
+    implementation('com.github.KaptainWutax:MathUtils:-SNAPSHOT') {transitive = false}
+    implementation('com.github.KaptainWutax:SeedUtils:-SNAPSHOT') {transitive = false}
+    implementation('com.github.KaptainWutax:BiomeUtils:-SNAPSHOT') {transitive = false}
+    implementation('com.github.mjtb49:ChunkRandomReversal:-SNAPSHOT') {transitive = false}
 }

@@ -1,7 +1,6 @@
 package kaptainwutax.featureutils.loot.roll;
 
 import kaptainwutax.featureutils.loot.LootContext;
-import kaptainwutax.seedutils.util.math.Mth;
 
 public class UniformRoll extends LootRoll {
 
@@ -13,8 +12,8 @@ public class UniformRoll extends LootRoll {
 	}
 
 	public UniformRoll(float min, float max) {
-		this.min = Mth.floor(min);
-		this.max = Mth.floor(max);
+		this.min = min < (double)(int)min ? (int)min - 1 : (int)min;
+		this.max = max < (double)(int)max ? (int)max - 1 : (int)max;
 	}
 
 	@Override
