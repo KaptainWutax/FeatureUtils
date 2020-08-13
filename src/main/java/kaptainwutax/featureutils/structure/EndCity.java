@@ -2,6 +2,7 @@ package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.seedutils.mc.ChunkRand;
+import kaptainwutax.seedutils.mc.Dimension;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
@@ -23,6 +24,11 @@ public class EndCity extends TriangularStructure<EndCity> {
 		if(!super.canStart(data, structureSeed, rand))return false;
 		//TODO: add terrain check!
 		return true;
+	}
+
+	@Override
+	public boolean isValidDimension(Dimension dimension) {
+		return dimension == Dimension.END;
 	}
 
 	@Override

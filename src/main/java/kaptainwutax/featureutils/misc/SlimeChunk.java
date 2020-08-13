@@ -3,6 +3,7 @@ package kaptainwutax.featureutils.misc;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.Feature;
 import kaptainwutax.seedutils.mc.ChunkRand;
+import kaptainwutax.seedutils.mc.Dimension;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
@@ -37,6 +38,11 @@ public class SlimeChunk extends Feature<SlimeChunk.Config, SlimeChunk.Data> {
 	@Override
 	public boolean canSpawn(SlimeChunk.Data data, BiomeSource source) {
 		return true;
+	}
+
+	@Override
+	public boolean isValidDimension(Dimension dimension) {
+		return dimension == Dimension.OVERWORLD;
 	}
 
 	public SlimeChunk.Data at(int chunkX, int chunkZ, boolean isSlime) {

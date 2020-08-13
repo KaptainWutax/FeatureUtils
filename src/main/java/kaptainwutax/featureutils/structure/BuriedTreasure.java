@@ -2,6 +2,7 @@ package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.seedutils.mc.ChunkRand;
+import kaptainwutax.seedutils.mc.Dimension;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 import kaptainwutax.seedutils.mc.pos.CPos;
@@ -33,6 +34,11 @@ public class BuriedTreasure extends RegionStructure<BuriedTreasure.Config, Regio
 	public CPos getInRegion(long structureSeed, int regionX, int regionZ, ChunkRand rand) {
 		rand.setRegionSeed(structureSeed, regionX, regionZ, this.getSalt(), this.getVersion());
 		return rand.nextFloat() < this.getChance() ? new CPos(regionX, regionZ) : null;
+	}
+
+	@Override
+	public boolean isValidDimension(Dimension dimension) {
+		return dimension == Dimension.OVERWORLD;
 	}
 
 	@Override

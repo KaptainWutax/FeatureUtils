@@ -3,6 +3,7 @@ package kaptainwutax.featureutils.structure;
 import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.seedutils.mc.ChunkRand;
+import kaptainwutax.seedutils.mc.Dimension;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 import kaptainwutax.seedutils.mc.pos.CPos;
@@ -61,6 +62,11 @@ public class Fortress extends UniformStructure<Fortress> {
 		int z = this.getVersion().isOlderThan(MCVersion.v1_16) ? (chunkZ << 4) + 9 : (chunkZ << 2) + 2;
 		return this.isValidBiome(this.getVersion().isOlderThan(MCVersion.v1_16)
 				? source.getBiome(x, 0, z) : source.getBiomeForNoiseGen(x, 0, z));
+	}
+
+	@Override
+	public boolean isValidDimension(Dimension dimension) {
+		return dimension == Dimension.NETHER;
 	}
 
 	@Override

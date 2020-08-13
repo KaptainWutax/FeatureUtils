@@ -3,6 +3,7 @@ package kaptainwutax.featureutils.structure;
 import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.seedutils.mc.ChunkRand;
+import kaptainwutax.seedutils.mc.Dimension;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 import kaptainwutax.seedutils.mc.pos.CPos;
@@ -79,6 +80,11 @@ public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 		}
 
 		return true;
+	}
+
+	@Override
+	public boolean isValidDimension(Dimension dimension) {
+		return dimension == Dimension.OVERWORLD;
 	}
 
 	@Override

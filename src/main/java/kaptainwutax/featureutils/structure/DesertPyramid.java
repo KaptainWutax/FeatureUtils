@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.seedutils.mc.Dimension;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
@@ -15,6 +16,11 @@ public class DesertPyramid extends OldStructure<DesertPyramid> {
 
 	public DesertPyramid(RegionStructure.Config config, MCVersion version) {
 		super(config, version);
+	}
+
+	@Override
+	public boolean isValidDimension(Dimension dimension) {
+		return dimension == Dimension.OVERWORLD;
 	}
 
 	@Override

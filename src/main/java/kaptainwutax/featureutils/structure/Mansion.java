@@ -2,6 +2,7 @@ package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.biomeutils.source.BiomeSource;
+import kaptainwutax.seedutils.mc.Dimension;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 
@@ -22,6 +23,11 @@ public class Mansion extends TriangularStructure<Mansion> {
 	public boolean canSpawn(int chunkX, int chunkZ, BiomeSource source) {
 		if(!super.canSpawn(chunkX, chunkZ, source))return false;
 		return source.iterateUniqueBiomes((chunkX << 4) + 9, (chunkZ << 4) + 9, 32, this::isValidBiome);
+	}
+
+	@Override
+	public boolean isValidDimension(Dimension dimension) {
+		return dimension == Dimension.OVERWORLD;
 	}
 
 	@Override

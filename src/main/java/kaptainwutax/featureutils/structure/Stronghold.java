@@ -7,6 +7,7 @@ import kaptainwutax.featureutils.structure.generator.piece.StructurePiece;
 import kaptainwutax.featureutils.structure.generator.piece.stronghold.Start;
 import kaptainwutax.seedutils.lcg.rand.JRand;
 import kaptainwutax.seedutils.mc.ChunkRand;
+import kaptainwutax.seedutils.mc.Dimension;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 import kaptainwutax.seedutils.mc.pos.BPos;
@@ -115,6 +116,11 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 		}
 
 		return false;
+	}
+
+	@Override
+	public boolean isValidDimension(Dimension dimension) {
+		return dimension == Dimension.OVERWORLD;
 	}
 
 	@Override
