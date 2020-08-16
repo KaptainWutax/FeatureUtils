@@ -90,7 +90,7 @@ public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 	@Override
 	public boolean isValidBiome(Biome biome) {
 		return biome == Biome.PLAINS || biome == Biome.DESERT || biome == Biome.SAVANNA
-				|| biome == Biome.TAIGA || biome == Biome.SNOWY_TAIGA;
+				|| biome == Biome.TAIGA || biome == Biome.SNOWY_TUNDRA;
 	}
 
 	public boolean hasNearbyVillage(long structureSeed, int chunkX, int chunkZ, ChunkRand rand) {
@@ -114,7 +114,7 @@ public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 		if(nw.regionX != se.regionX && nw.regionZ != se.regionZ) {
 			villagePos = this.village.getInRegion(structureSeed, se.regionX, se.regionZ, rand);
 
-			if(villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
+			if(villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
 				return true;
 			}
 
@@ -157,7 +157,7 @@ public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 		if(nw.regionX != se.regionX && nw.regionZ != se.regionZ) {
 			villagePos = this.village.getInRegion(structureSeed, se.regionX, se.regionZ, rand);
 
-			if(villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
+			if(villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
 				villages.add(villagePos);
 			}
 
