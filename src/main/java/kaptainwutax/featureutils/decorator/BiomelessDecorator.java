@@ -29,7 +29,7 @@ public abstract class BiomelessDecorator<C extends BiomelessDecorator.Config, D 
         return this.getData(structureSeed, chunkX, chunkZ, rand);
     }
 
-    protected abstract D getData(long structureSeed, int chunkX, int chunkZ, ChunkRand rand);
+    public abstract D getData(long structureSeed, int chunkX, int chunkZ, ChunkRand rand);
 
     public static class Config extends Decorator.Config {
         public Config(int index, int step) {

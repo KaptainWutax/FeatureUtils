@@ -49,7 +49,7 @@ public class DesertWell extends BiomelessDecorator<DesertWell.Config, DesertWell
     }
 
     @Override
-    protected Data getData(long structureSeed, int chunkX, int chunkZ, ChunkRand rand) {
+    public Data getData(long structureSeed, int chunkX, int chunkZ, ChunkRand rand) {
         this.setDecoratorSeed(structureSeed, chunkX, chunkZ, rand);
         if(rand.nextFloat() >= this.getChance())return null;
         int blockX = (chunkX << 4) + rand.nextInt(16);
