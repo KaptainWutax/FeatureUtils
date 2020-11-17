@@ -99,7 +99,7 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 				d += rand.nextDouble() * Math.PI * 2.0D;
 			}
 		}
-
+		
 		return starts;
 	}
 

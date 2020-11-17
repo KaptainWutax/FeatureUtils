@@ -3,8 +3,8 @@ package kaptainwutax.featureutils.structure.generator;
 import kaptainwutax.featureutils.structure.Stronghold;
 import kaptainwutax.featureutils.structure.generator.piece.stronghold.*;
 import kaptainwutax.seedutils.lcg.rand.JRand;
+import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
-import kaptainwutax.seedutils.mc.seed.ChunkSeeds;
 import kaptainwutax.seedutils.util.BlockBox;
 import kaptainwutax.seedutils.util.Direction;
 
@@ -13,32 +13,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class StrongholdGenerator {
-
-	private final List<PieceWeight<Stronghold.Piece>> PIECE_WEIGHTS = Arrays.asList(
-			new PieceWeight<>(Corridor.class, 40, 0),
-			new PieceWeight<>(PrisonHall.class, 5, 5),
-			new PieceWeight<>(LeftTurn.class, 20, 0),
-			new PieceWeight<>(RightTurn.class, 20, 0),
-			new PieceWeight<>(SquareRoom.class, 10, 6),
-			new PieceWeight<>(Stairs.class, 5, 5),
-			new PieceWeight<>(SpiralStaircase.class, 5, 5),
-			new PieceWeight<>(FiveWayCrossing.class, 5, 4),
-			new PieceWeight<>(ChestCorridor.class, 5, 4),
-			new PieceWeight<Stronghold.Piece>(Library.class, 10, 2) {
-				@Override
-				public boolean canSpawnMoreStructuresOfType(int placedPieces) {
-					return super.canSpawnMoreStructuresOfType(placedPieces) && placedPieces > 4;
-				}
-			},
-			new PieceWeight<Stronghold.Piece>(PortalRoom.class, 20, 1) {
-				@Override
-				public boolean canSpawnMoreStructuresOfType(int placedPieces) {
-					return super.canSpawnMoreStructuresOfType(placedPieces) && placedPieces > 5;
-				}
-			}
-	);
 
 	private final MCVersion version;
 
@@ -49,8 +26,8 @@ public class StrongholdGenerator {
 	public List<Stronghold.Piece> pieceList = null;
 	public BlockBox strongholdBox = null;
 
-	private Predicate<Stronghold.Piece> loopPredicate;
-	private boolean halted;
+	protected Predicate<Stronghold.Piece> loopPredicate;
+	protected boolean halted;
 
 	public StrongholdGenerator(MCVersion version) {
 		this.version = version;
@@ -60,14 +37,11 @@ public class StrongholdGenerator {
 		return this.version;
 	}
 
-	public boolean generate(long worldSeed, int chunkX, int chunkZ) {
-		return this.generate(worldSeed, chunkX, chunkZ, piece -> true);
+	public boolean generate(long worldSeed, int chunkX, int chunkZ, ChunkRand rand) {
+		return this.generate(worldSeed, chunkX, chunkZ, rand, piece -> true);
 	}
 
-	public boolean generate(long worldSeed, int chunkX, int chunkZ, Predicate<Stronghold.Piece> shouldContinue) {
-		this.pieceList = new ArrayList<>();
-		this.currentPiece = null;
-		this.totalWeight = 0;
+	public boolean generate(long worldSeed, int chunkX, int chunkZ, ChunkRand rand, Predicate<Stronghold.Piece> shouldContinue) {
 		this.halted = false;
 		this.loopPredicate = shouldContinue;
 
@@ -75,12 +49,19 @@ public class StrongholdGenerator {
 		int attemptCount = 0;
 
 		do {
-			this.pieceList.clear();
-			this.pieceWeights = new ArrayList<>(PIECE_WEIGHTS);
+			System.out.println("=====================================");
 
-			long layoutSeed = ChunkSeeds.getCarverSeed(worldSeed + (long) (attemptCount++), chunkX, chunkZ, MCVersion.v1_15);
-			JRand rand = new JRand(layoutSeed);
+			this.totalWeight = 0;
+			this.currentPiece = null;
+
+			this.pieceList = new ArrayList<>();
+			this.pieceWeights = this.getPieceWeights();
+
+			rand.setCarverSeed(worldSeed + (long)(attemptCount++), chunkX, chunkZ, this.getVersion());
+			if(this.getVersion().isOlderThan(MCVersion.v1_14))rand.nextInt();
+
 			startPiece = new Start(rand, (chunkX << 4) + 2, (chunkZ << 4) + 2);
+			if(!shouldContinue.test(startPiece))return true;
 			this.pieceList.add(startPiece);
 
 			startPiece.populatePieces(this, startPiece,this.pieceList, rand);
@@ -90,7 +71,6 @@ public class StrongholdGenerator {
 				int i = rand.nextInt(pieces.size());
 				Stronghold.Piece piece = pieces.remove(i);
 				piece.populatePieces(this, startPiece, this.pieceList, rand);
-				if(!shouldContinue.test(piece))return true;
 			}
 		} while((this.pieceList.isEmpty() || startPiece.portalRoom == null) && !this.halted);
 
@@ -100,6 +80,32 @@ public class StrongholdGenerator {
 		}
 
 		return this.halted;
+	}
+
+	private List<PieceWeight<Stronghold.Piece>> getPieceWeights() {
+		return new ArrayList<>(Arrays.asList(
+				new PieceWeight<>(Corridor.class, 40, 0),
+				new PieceWeight<>(PrisonHall.class, 5, 5),
+				new PieceWeight<>(LeftTurn.class, 20, 0),
+				new PieceWeight<>(RightTurn.class, 20, 0),
+				new PieceWeight<>(SquareRoom.class, 10, 6),
+				new PieceWeight<>(Stairs.class, 5, 5),
+				new PieceWeight<>(SpiralStaircase.class, 5, 5),
+				new PieceWeight<>(FiveWayCrossing.class, 5, 4),
+				new PieceWeight<>(ChestCorridor.class, 5, 4),
+				new PieceWeight<Stronghold.Piece>(Library.class, 10, 2) {
+					@Override
+					public boolean canSpawnMoreStructuresOfType(int placedPieces) {
+						return super.canSpawnMoreStructuresOfType(placedPieces) && placedPieces > 4;
+					}
+				},
+				new PieceWeight<Stronghold.Piece>(PortalRoom.class, 20, 1) {
+					@Override
+					public boolean canSpawnMoreStructuresOfType(int placedPieces) {
+						return super.canSpawnMoreStructuresOfType(placedPieces) && placedPieces > 5;
+					}
+				}
+		));
 	}
 
 	public Stronghold.Piece generateAndAddPiece(Start startPiece, List<Stronghold.Piece> pieces, JRand rand,

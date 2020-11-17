@@ -23,4 +23,8 @@ public class PieceWeight<T extends StructurePiece<T>> {
 		return this.instancesLimit == 0 || this.instancesSpawned < this.instancesLimit;
 	}
 
+	public PieceWeight<T> copy() {
+		return new PieceWeight<>(this.pieceClass, this.pieceWeight, this.instancesLimit);
+	}
+
 }
