@@ -49,8 +49,6 @@ public class StrongholdGenerator {
 		int attemptCount = 0;
 
 		do {
-			System.out.println("=====================================");
-
 			this.totalWeight = 0;
 			this.currentPiece = null;
 
