@@ -65,38 +65,38 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 		return this.getStarts(source, this.getCount(), rand);
 	}
 
-	public CPos[] getStarts(BiomeSource source, int count, JRand rand) {
-		int i = this.getDistance();
-		int j = Math.min(count, this.getCount());
-		int k = this.getSpread();
+	public CPos[] getStarts(BiomeSource source, int numberOfStronghold, JRand rand) {
+		int distance = this.getDistance();
+		int count = Math.min(numberOfStronghold, this.getCount());
+		int numberPerRing = this.getSpread();
 
-		CPos[] starts = new CPos[j];
+		CPos[] starts = new CPos[count];
 		rand.setSeed(source.getWorldSeed());
 
-		double d = rand.nextDouble() * Math.PI * 2.0D;
-		int l = 0;
-		int m = 0;
+		double angle = rand.nextDouble() * Math.PI * 2.0D;
+		int numberInRing = 0;
+		int ringId = 0;
 
-		for(int n = 0; n < j; ++n) {
-			double e = (double)(4 * i + i * m * 6) + (rand.nextDouble() - 0.5D) * (double)i * 2.5D;
-			int o = (int)Math.round(Math.cos(d) * e);
-			int p = (int)Math.round(Math.sin(d) * e);
-			BPos pos = source.locateBiome((o << 4) + 8, 0, (p << 4) + 8, 112, VALID_BIOMES, rand);
+		for(int idx = 0; idx < count; ++idx) {
+			double distanceRing = (double)(4 * distance + distance * ringId * 6) + (rand.nextDouble() - 0.5D) * (double)distance * 2.5D;
+			int chunkX = (int)Math.round(Math.cos(angle) * distanceRing);
+			int chunkZ = (int)Math.round(Math.sin(angle) * distanceRing);
+			BPos pos = source.locateBiome((chunkX << 4) + 8, 0, (chunkZ << 4) + 8, 112, VALID_BIOMES, rand);
 
 			if(pos != null) {
-				o = pos.getX() >> 4;
-				p = pos.getZ() >> 4;
+				chunkX = pos.getX() >> 4;
+				chunkZ = pos.getZ() >> 4;
 			}
 
-			starts[n] = new CPos(o, p);
-			d += Math.PI * 2.0D / (double)k;
-			++l;
-			if (l == k) {
-				++m;
-				l = 0;
-				k += 2 * k / (m + 1);
-				k = Math.min(k, j - n);
-				d += rand.nextDouble() * Math.PI * 2.0D;
+			starts[idx] = new CPos(chunkX, chunkZ);
+			angle += Math.PI * 2.0D / (double)numberPerRing;
+			++numberInRing;
+			if (numberInRing == numberPerRing) {
+				++ringId;
+				numberInRing = 0;
+				numberPerRing += 2 * numberPerRing / (ringId + 1);
+				numberPerRing = Math.min(numberPerRing, count - idx);
+				angle += rand.nextDouble() * Math.PI * 2.0D;
 			}
 		}
 		
