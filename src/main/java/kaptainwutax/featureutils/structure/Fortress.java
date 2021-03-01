@@ -35,8 +35,8 @@ public class Fortress extends UniformStructure<Fortress> {
 			rand.setWeakSeed(structureSeed, data.chunkX, data.chunkZ, this.getVersion());
 			rand.nextInt();
 			if(rand.nextInt(3) != 0)return false;
-			if(data.chunkZ != (data.chunkZ & ~15) + rand.nextInt(8) + 4)return false;
 			if(data.chunkX != (data.chunkX & ~15) + rand.nextInt(8) + 4)return false;
+			if(data.chunkZ != (data.chunkZ & ~15) + rand.nextInt(8) + 4)return false;
 			return true;
 		}
 
