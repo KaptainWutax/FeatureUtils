@@ -68,11 +68,11 @@ public class StrongholdGenerator {
                     Stronghold.Piece piece = iterator.next();
                     if (piece.getBoundingBox().intersects(mainBox) && !piece.process(rand, pos)) {
                         iterator.remove();
-                        if (piece instanceof PortalRoom){
-                            eyes=((PortalRoom)piece).getEyes();
-                            if (portalOnly){
-                                break;
-                            }
+                    }
+                    if (piece instanceof PortalRoom){
+                        eyes=((PortalRoom)piece).getEyes();
+                        if (portalOnly){
+                            break;
                         }
                     }
                 }
@@ -80,6 +80,10 @@ public class StrongholdGenerator {
 
         }
         return false;
+    }
+
+    public boolean[] getEyes() {
+        return eyes;
     }
 
     public static long getStrongholdSalt(MCVersion version) {
