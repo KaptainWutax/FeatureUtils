@@ -12,6 +12,6 @@ repositories {
 
 dependencies {
     implementation('com.github.KaptainWutax:MathUtils:5531c4a87b0f1bb85d1dab2bdd18ce375400626a') {transitive = false}
-    implementation('com.github.KaptainWutax:SeedUtils:42cbf8558f981862a0926a09f84da24bdc4f897d') {transitive = false}
+    implementation('com.github.hube12:SeedUtils:7745030decf4df8a5af6dd218f83188cd3072688') {transitive = false}
     implementation('com.github.KaptainWutax:BiomeUtils:f68c4af293edce364cc03e1499c137d0d93896d8') {transitive = false}
 }

@@ -3,6 +3,7 @@ package kaptainwutax.featureutils.structure.generator.piece.stronghold;
 import kaptainwutax.featureutils.structure.Stronghold;
 import kaptainwutax.featureutils.structure.generator.StrongholdGenerator;
 import kaptainwutax.seedutils.lcg.rand.JRand;
+import kaptainwutax.seedutils.mc.pos.BPos;
 import kaptainwutax.seedutils.util.BlockBox;
 import kaptainwutax.seedutils.util.Direction;
 
@@ -24,14 +25,14 @@ public class Corridor extends Stronghold.Piece {
 
 	@Override
 	public void populatePieces(StrongholdGenerator gen, Start start, List<Stronghold.Piece> pieces, JRand rand) {
-		this.method_14874(gen, start, pieces, rand, 1, 1);
+		this.generateSmallDoorChildrenForward(gen, start, pieces, rand, 1, 1);
 
 		if(this.leftExitExists) {
-			this.method_14870(gen, start, pieces, rand, 1, 2);
+			this.generateSmallDoorChildrenLeft(gen, start, pieces, rand, 1, 2);
 		}
 
 		if(this.rightExitExists) {
-			this.method_14873(gen, start, pieces, rand, 1, 2);
+			this.generateSmallDoorChildRight(gen, start, pieces, rand, 1, 2);
 		}
 	}
 
@@ -40,4 +41,14 @@ public class Corridor extends Stronghold.Piece {
 		return Stronghold.Piece.isHighEnough(box) && Stronghold.Piece.getNextIntersectingPiece(pieces, box) == null ? new Corridor(pieceId, rand, box, facing) : null;
 	}
 
+	public boolean process(JRand rand, BPos pos) {
+		skipWithRandomized(rand,0, 0, 0, 4, 4, 6, true);
+		// 2 door not random
+		skipWithChance(rand,0.1f);
+		skipWithChance(rand,0.1f);
+		skipWithChance(rand,0.1f);
+		skipWithChance(rand,0.1f);
+		// 1 call not random (direction dependant)
+		return true;
+	}
 }

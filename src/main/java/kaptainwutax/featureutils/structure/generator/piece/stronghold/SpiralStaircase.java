@@ -3,6 +3,7 @@ package kaptainwutax.featureutils.structure.generator.piece.stronghold;
 import kaptainwutax.featureutils.structure.Stronghold;
 import kaptainwutax.featureutils.structure.generator.StrongholdGenerator;
 import kaptainwutax.seedutils.lcg.rand.JRand;
+import kaptainwutax.seedutils.mc.pos.BPos;
 import kaptainwutax.seedutils.util.BlockBox;
 import kaptainwutax.seedutils.util.Direction;
 
@@ -33,7 +34,7 @@ public class SpiralStaircase extends Stronghold.Piece {
 			gen.currentPiece = FiveWayCrossing.class;
 		}
 
-		this.method_14874(gen, start, pieces, rand, 1, 1);
+		this.generateSmallDoorChildrenForward(gen, start, pieces, rand, 1, 1);
 	}
 
 	public static SpiralStaircase createPiece(List<Stronghold.Piece> pieces, JRand rand, int x, int y, int z, Direction facing, int pieceId) {
@@ -41,4 +42,10 @@ public class SpiralStaircase extends Stronghold.Piece {
 		return Stronghold.Piece.isHighEnough(box) && Stronghold.Piece.getNextIntersectingPiece(pieces, box) == null ? new SpiralStaircase(pieceId, rand, box, facing) : null;
 	}
 
+	public boolean process(JRand rand, BPos pos) {
+		skipWithRandomized(rand,0, 0, 0, 4, 10, 4, true);
+		// 2 door not random
+		// 17 not random
+		return true;
+	}
 }

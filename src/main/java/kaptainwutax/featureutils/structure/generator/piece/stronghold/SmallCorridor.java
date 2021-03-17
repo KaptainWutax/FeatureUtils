@@ -2,6 +2,7 @@ package kaptainwutax.featureutils.structure.generator.piece.stronghold;
 
 import kaptainwutax.featureutils.structure.Stronghold;
 import kaptainwutax.seedutils.lcg.rand.JRand;
+import kaptainwutax.seedutils.mc.pos.BPos;
 import kaptainwutax.seedutils.util.BlockBox;
 import kaptainwutax.seedutils.util.Direction;
 
@@ -24,15 +25,20 @@ public class SmallCorridor extends Stronghold.Piece {
 		Stronghold.Piece piece = Stronghold.Piece.getNextIntersectingPiece(pieces, box);
 
 		if(piece != null && piece.getBoundingBox().minY == box.minY) {
-			for(int int_5 = 3; int_5 >= 1; --int_5) {
-				box = BlockBox.rotated(x, y, z, -1, -1, 0, 5, 5, int_5 - 1, facing);
+			for(int zz = 3; zz >= 1; --zz) {
+				box = BlockBox.rotated(x, y, z, -1, -1, 0, 5, 5, zz - 1, facing);
 				if(!piece.getBoundingBox().intersects(box)) {
-					return BlockBox.rotated(x, y, z, -1, -1, 0, 5, 5, int_5, facing);
+					return BlockBox.rotated(x, y, z, -1, -1, 0, 5, 5, zz, facing);
 				}
 			}
 		}
 
 		return null;
+	}
+
+	public boolean process(JRand rand, BPos pos) {
+		// not random
+		return true;
 	}
 
 }

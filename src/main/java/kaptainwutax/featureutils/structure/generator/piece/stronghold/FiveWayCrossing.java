@@ -3,6 +3,7 @@ package kaptainwutax.featureutils.structure.generator.piece.stronghold;
 import kaptainwutax.featureutils.structure.Stronghold;
 import kaptainwutax.featureutils.structure.generator.StrongholdGenerator;
 import kaptainwutax.seedutils.lcg.rand.JRand;
+import kaptainwutax.seedutils.mc.pos.BPos;
 import kaptainwutax.seedutils.util.BlockBox;
 import kaptainwutax.seedutils.util.Direction;
 
@@ -37,22 +38,22 @@ public class FiveWayCrossing extends Stronghold.Piece {
 			int_2 = 8 - int_2;
 		}
 
-		this.method_14874(gen, start, pieces, rand, 5, 1);
+		this.generateSmallDoorChildrenForward(gen, start, pieces, rand, 5, 1);
 		
 		if(this.lowerLeftExists) {
-			this.method_14870(gen, start, pieces, rand, int_1, 1);
+			this.generateSmallDoorChildrenLeft(gen, start, pieces, rand, int_1, 1);
 		}
 
 		if(this.upperLeftExists) {
-			this.method_14870(gen, start, pieces, rand, int_2, 7);
+			this.generateSmallDoorChildrenLeft(gen, start, pieces, rand, int_2, 7);
 		}
 
 		if(this.lowerRightExists) {
-			this.method_14873(gen, start, pieces, rand, int_1, 1);
+			this.generateSmallDoorChildRight(gen, start, pieces, rand, int_1, 1);
 		}
 
 		if(this.upperRightExists) {
-			this.method_14873(gen, start, pieces, rand, int_2, 7);
+			this.generateSmallDoorChildRight(gen, start, pieces, rand, int_2, 7);
 		}
 	}
 
@@ -61,4 +62,23 @@ public class FiveWayCrossing extends Stronghold.Piece {
 		return Stronghold.Piece.isHighEnough(box) && Stronghold.Piece.getNextIntersectingPiece(pieces, box) == null ? new FiveWayCrossing(pieceId, rand, box, facing) : null;
 	}
 
+	public boolean process(JRand rand, BPos pos) {
+		skipWithRandomized(rand,0, 0, 0, 9, 8, 10, true);
+		// door not random
+		// 4 conditionned not random
+		// 1 not random
+		skipWithRandomized(rand,1, 2, 1, 8, 2, 6, false);
+		skipWithRandomized(rand,4, 1, 5, 4, 4, 9, false);
+		skipWithRandomized(rand,8, 1, 5, 8, 4, 9, false);
+		skipWithRandomized(rand,1, 4, 7, 3, 4, 9, false);
+		skipWithRandomized(rand,1, 3, 5, 3, 3, 6, false);
+		// 2 not random
+		skipWithRandomized(rand,5, 1, 7, 7, 1, 8, false);
+		// 5 not random
+		// 1 not random
+
+		// this is off by 205 usually
+		//rand.combine(-205);
+		return true;
+	}
 }
