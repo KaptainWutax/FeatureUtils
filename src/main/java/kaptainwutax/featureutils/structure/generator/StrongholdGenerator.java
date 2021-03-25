@@ -9,7 +9,6 @@ import kaptainwutax.seedutils.mc.pos.BPos;
 import kaptainwutax.seedutils.util.BlockBox;
 import kaptainwutax.seedutils.util.Direction;
 import kaptainwutax.seedutils.util.math.Vec3i;
-import sun.jvm.hotspot.opto.Block;
 
 import java.util.ArrayList;
 import java.util.Arrays;
