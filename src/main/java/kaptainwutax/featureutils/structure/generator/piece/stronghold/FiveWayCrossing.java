@@ -3,6 +3,7 @@ package kaptainwutax.featureutils.structure.generator.piece.stronghold;
 import kaptainwutax.featureutils.structure.Stronghold;
 import kaptainwutax.featureutils.structure.generator.StrongholdGenerator;
 import kaptainwutax.seedutils.lcg.rand.JRand;
+import kaptainwutax.seedutils.lcg.rand.Rand;
 import kaptainwutax.seedutils.mc.pos.BPos;
 import kaptainwutax.seedutils.util.BlockBox;
 import kaptainwutax.seedutils.util.Direction;
@@ -77,8 +78,6 @@ public class FiveWayCrossing extends Stronghold.Piece {
 		// 5 not random
 		// 1 not random
 
-		// this is off by 205 usually
-		//rand.combine(-205);
 		return true;
 	}
 }

@@ -2,16 +2,43 @@ plugins {
     id 'java'
 }
 
-sourceCompatibility = 1.8
+defaultTasks 'clean', 'test'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
 
 repositories {
     mavenCentral()
-
     maven {url "https://jitpack.io"}
 }
 
 dependencies {
     implementation('com.github.KaptainWutax:MathUtils:5531c4a87b0f1bb85d1dab2bdd18ce375400626a') {transitive = false}
-    implementation('com.github.hube12:SeedUtils:7745030decf4df8a5af6dd218f83188cd3072688') {transitive = false}
+    implementation('com.github.hube12:SeedUtils:b14febeeceda70df394dc2dc123aab1c4eb7fb3e') {transitive = false}
     implementation('com.github.KaptainWutax:BiomeUtils:f68c4af293edce364cc03e1499c137d0d93896d8') {transitive = false}
+
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
+    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.4.2')
+}
+
+compileJava {
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+
+test {
+    useJUnitPlatform {
+        includeEngines("junit-jupiter")
+        maxHeapSize = "1G"
+    }
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+        outputs.upToDateWhen { false }
+        showStandardStreams = true
+        showExceptions true
+        showCauses true
+        showStackTraces true
+    }
 }
