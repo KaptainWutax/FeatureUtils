@@ -1,3 +1,5 @@
+package kaptainwutax.featureutils;
+
 import kaptainwutax.featureutils.structure.generator.StrongholdGenerator;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;

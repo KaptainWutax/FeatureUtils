@@ -1,3 +1,5 @@
+package kaptainwutax.featureutils;
+
 import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.biomeutils.source.OverworldBiomeSource;
 import kaptainwutax.featureutils.loot.LootChest;

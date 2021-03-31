@@ -1,3 +1,5 @@
+package kaptainwutax.featureutils;
+
 import kaptainwutax.featureutils.loot.LootContext;
 import kaptainwutax.featureutils.loot.MCLootTables;
 
