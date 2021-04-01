@@ -8,77 +8,76 @@ import java.util.function.BiPredicate;
 
 public class LootChest {
 
-	public final Map<Item, List<Stack>> stacksMap = new HashMap<>();
+    public static BiPredicate<Integer, Integer> EQUAL_TO = Integer::equals;
+    public static BiPredicate<Integer, Integer> NOT_EQUAL_TO = (a, b) -> !a.equals(b);
+    public static BiPredicate<Integer, Integer> LESS_THAN = (a, b) -> a < b;
+    public static BiPredicate<Integer, Integer> MORE_THAN = (a, b) -> a > b;
+    public static BiPredicate<Integer, Integer> LESS_OR_EQUAL_TO = (a, b) -> a <= b;
+    public static BiPredicate<Integer, Integer> MORE_OR_EQUAL_TO = (a, b) -> a >= b;
+    public final Map<Item, List<Stack>> stacksMap = new HashMap<>();
 
-	public LootChest(LootChest.Stack... stacks) {
-		for(Stack stack: stacks) {
-			Item item = stack.item;
+    public LootChest(LootChest.Stack... stacks) {
+        for (Stack stack : stacks) {
+            Item item = stack.item;
 
-			if(!this.stacksMap.containsKey(item)) {
-				this.stacksMap.put(item, new ArrayList<>());
-			}
+            if (!this.stacksMap.containsKey(item)) {
+                this.stacksMap.put(item, new ArrayList<>());
+            }
 
-			this.stacksMap.get(item).add(stack);
-		}
-	}
+            this.stacksMap.get(item).add(stack);
+        }
+    }
 
-	public boolean testLoot(long lootTableSeed, LootTable lootTable) {
-		LootContext context = new LootContext(lootTableSeed);
+    public static LootChest.Stack stack(Item item, BiPredicate<Integer, Integer> predicate, int amount) {
+        return new LootChest.Stack(item, predicate, amount);
+    }
 
-		List<ItemStack> itemStacks = lootTable.generate(context);
-		Set<Item> foundItems = new HashSet<>();
+    public boolean testLoot(long lootTableSeed, LootTable lootTable) {
+        LootContext context = new LootContext(lootTableSeed);
 
-		for(ItemStack itemStack: itemStacks) {
-			List<Stack> stacks = this.stacksMap.get(itemStack.getItem());
-			if(stacks == null)continue;
+        List<ItemStack> itemStacks = lootTable.generate(context);
+        Set<Item> foundItems = new HashSet<>();
 
-			boolean matches = true;
+        for (ItemStack itemStack : itemStacks) {
+            List<Stack> stacks = this.stacksMap.get(itemStack.getItem());
+            if (stacks == null) continue;
 
-			for(Stack stack: stacks) {
-				if(!stack.test(itemStack.getCount())) {
-					matches = false;
-					break;
-				}
-			}
+            boolean matches = true;
 
-			if(matches) {
-				foundItems.add(itemStack.getItem());
-			}
-		}
+            for (Stack stack : stacks) {
+                if (!stack.test(itemStack.getCount())) {
+                    matches = false;
+                    break;
+                }
+            }
 
-		return foundItems.size() == this.stacksMap.size();
-	}
+            if (matches) {
+                foundItems.add(itemStack.getItem());
+            }
+        }
 
-	public static LootChest.Stack stack(Item item, BiPredicate<Integer, Integer> predicate, int amount) {
-		return new LootChest.Stack(item, predicate, amount);
-	}
+        return foundItems.size() == this.stacksMap.size();
+    }
 
-	public static class Stack {
-		private Item item;
-		private BiPredicate<Integer, Integer> predicate;
-		private int amount;
+    public static class Stack {
+        private Item item;
+        private BiPredicate<Integer, Integer> predicate;
+        private int amount;
 
-		public Stack(Item item, BiPredicate<Integer, Integer> predicate, int amount) {
-			this.item = item;
-			this.predicate = predicate;
-			this.amount = amount;
-		}
+        public Stack(Item item, BiPredicate<Integer, Integer> predicate, int amount) {
+            this.item = item;
+            this.predicate = predicate;
+            this.amount = amount;
+        }
 
-		public boolean test(int count) {
-			return this.predicate.test(count, this.amount);
-		}
+        public boolean test(int count) {
+            return this.predicate.test(count, this.amount);
+        }
 
-		@Override
-		public int hashCode() {
-			return item.hashCode() * 31 + this.amount;
-		}
-	}
-
-	public static BiPredicate<Integer, Integer> EQUAL_TO = Integer::equals;
-	public static BiPredicate<Integer, Integer> NOT_EQUAL_TO = (a, b) -> !a.equals(b);
-	public static BiPredicate<Integer, Integer> LESS_THAN = (a, b) -> a < b;
-	public static BiPredicate<Integer, Integer> MORE_THAN = (a, b) -> a > b;
-	public static BiPredicate<Integer, Integer> LESS_OR_EQUAL_TO = (a, b) -> a <= b;
-	public static BiPredicate<Integer, Integer> MORE_OR_EQUAL_TO = (a, b) -> a >= b;
+        @Override
+        public int hashCode() {
+            return item.hashCode() * 31 + this.amount;
+        }
+    }
 
 }
