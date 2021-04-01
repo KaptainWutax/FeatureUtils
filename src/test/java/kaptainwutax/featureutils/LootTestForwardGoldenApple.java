@@ -1,35 +1,20 @@
 package kaptainwutax.featureutils;
 
-import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.biomeutils.source.OverworldBiomeSource;
-import kaptainwutax.featureutils.loot.LootChest;
 import kaptainwutax.featureutils.loot.LootContext;
 import kaptainwutax.featureutils.loot.MCLootTables;
 import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.featureutils.loot.item.ItemStack;
-import kaptainwutax.featureutils.structure.BuriedTreasure;
 import kaptainwutax.featureutils.structure.DesertPyramid;
 import kaptainwutax.featureutils.structure.RegionStructure;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
-import kaptainwutax.seedutils.mc.pos.BPos;
-import kaptainwutax.seedutils.mc.pos.CPos;
 import kaptainwutax.seedutils.mc.seed.WorldSeed;
 
-import java.util.Arrays;
 import java.util.List;
 
-import static kaptainwutax.featureutils.loot.LootChest.EQUAL_TO;
-import static kaptainwutax.featureutils.loot.LootChest.MORE_OR_EQUAL_TO;
-
-public class LootTestForward {
-
-    public static final BuriedTreasure BURIED_TREASURE = new BuriedTreasure(MCVersion.v1_16);
+public class LootTestForwardGoldenApple {
     public static final DesertPyramid DESERT_TEMPLE = new DesertPyramid(MCVersion.v1_16);
-
-    public static LootChest DESERT_TEMPLE_CHEST = new LootChest(
-            LootChest.stack(Item.ENCHANTED_GOLDEN_APPLE, MORE_OR_EQUAL_TO, 1)
-    );
 
     public static void main(String[] args) {
         ChunkRand rand = new ChunkRand();
