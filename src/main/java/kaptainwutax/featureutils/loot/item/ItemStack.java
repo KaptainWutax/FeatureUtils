@@ -1,5 +1,7 @@
 package kaptainwutax.featureutils.loot.item;
 
+import java.util.Objects;
+
 public class ItemStack {
 
     private final Item item;
@@ -26,4 +28,24 @@ public class ItemStack {
         this.count = count;
     }
 
+    @Override
+    public String toString() {
+        return "ItemStack{" +
+                "item=" + item +
+                ", count=" + count +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ItemStack)) return false;
+        ItemStack itemStack = (ItemStack) o;
+        return count == itemStack.count && Objects.equals(item, itemStack.item);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(item, count);
+    }
 }

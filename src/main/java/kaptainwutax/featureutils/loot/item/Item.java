@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.loot.item;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Item {
 
@@ -1014,4 +1015,25 @@ public class Item {
         return this.name;
     }
 
+    @Override
+    public String toString() {
+        return "Item{" +
+                "name='" + name + '\'' +
+                ", enchantment=" + enchantment +
+                ", level=" + level +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Item)) return false;
+        Item item = (Item) o;
+        return Objects.equals(name, item.name) && Objects.equals(enchantment, item.enchantment) && Objects.equals(level, item.level);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, enchantment, level);
+    }
 }
