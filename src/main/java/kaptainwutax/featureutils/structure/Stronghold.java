@@ -36,6 +36,10 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
             Biome.MODIFIED_GRAVELLY_MOUNTAINS, Biome.SHATTERED_SAVANNA, Biome.SHATTERED_SAVANNA_PLATEAU,
             Biome.ERODED_BADLANDS, Biome.MODIFIED_WOODED_BADLANDS_PLATEAU, Biome.MODIFIED_BADLANDS_PLATEAU));
     public static final Set<Biome> VALID_BIOMES_15 = new HashSet<>(Arrays.asList(Biome.BAMBOO_JUNGLE, Biome.BAMBOO_JUNGLE_HILLS));
+    public static final Set<Biome> INVALID_BIOMES = new HashSet<>(Arrays.asList(Biome.OCEAN, Biome.SWAMP, Biome.RIVER, Biome.FROZEN_OCEAN,
+            Biome.FROZEN_RIVER, Biome.BEACH, Biome.DEEP_OCEAN, Biome.SNOWY_BEACH, Biome.WARM_OCEAN, Biome.LUKEWARM_OCEAN, Biome.COLD_OCEAN,
+            Biome.DEEP_WARM_OCEAN, Biome.DEEP_LUKEWARM_OCEAN, Biome.DEEP_COLD_OCEAN, Biome.DEEP_FROZEN_OCEAN,Biome.SWAMP_HILLS));
+
     static {
         VALID_BIOMES_15.addAll(VALID_BIOMES_16);
     }
@@ -84,7 +88,7 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
             double distanceRing = (double) (4 * distance + distance * ringId * 6) + (rand.nextDouble() - 0.5D) * (double) distance * 2.5D;
             int chunkX = (int) Math.round(Math.cos(angle) * distanceRing);
             int chunkZ = (int) Math.round(Math.sin(angle) * distanceRing);
-            BPos pos = source.locateBiome((chunkX << 4) + 8, 0, (chunkZ << 4) + 8, 112, this.getVersion().isOlderThan(MCVersion.v1_16)?VALID_BIOMES_15:VALID_BIOMES_16, rand);
+            BPos pos = source.locateBiome((chunkX << 4) + 8, 0, (chunkZ << 4) + 8, 112, getValidBiomes(), rand);
 
             if (pos != null) {
                 chunkX = pos.getX() >> 4;
@@ -126,9 +130,17 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
         return dimension == Dimension.OVERWORLD;
     }
 
+    private Set<Biome> getValidBiomes() {
+        if (this.getVersion().isNewerOrEqualTo(MCVersion.v1_16)) {
+            return VALID_BIOMES_16;
+        } else {
+            return VALID_BIOMES_15;
+        }
+    }
+
     @Override
     public boolean isValidBiome(Biome biome) {
-        return (this.getVersion().isOlderThan(MCVersion.v1_16)?VALID_BIOMES_15:VALID_BIOMES_16).contains(biome);
+        return getValidBiomes().contains(biome);
     }
 
     public Stronghold.Data at(int chunkX, int chunkZ) {
