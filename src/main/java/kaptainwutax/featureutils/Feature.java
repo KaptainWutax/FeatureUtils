@@ -46,10 +46,12 @@ public abstract class Feature<C extends Feature.Config, D extends Feature.Data<?
 			this.chunkZ = chunkZ;
 		}
 
+		@SuppressWarnings("unchecked")
 		public boolean testStart(long structureSeed, ChunkRand rand) {
 			return this.feature.canStart(this, structureSeed, rand);
 		}
 
+		@SuppressWarnings("unchecked")
 		public boolean testBiome(BiomeSource source) {
 			return this.feature.canSpawn(this, source);
 		}

@@ -1,7 +1,5 @@
 package kaptainwutax.featureutils.loot.item;
 
-import kaptainwutax.featureutils.loot.enchantment.Enchantment;
-
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -1032,23 +1030,23 @@ public class Item {
         if (!(o instanceof Item)) return false;
         Item item = (Item) o;
 
-        boolean sameEnchantment=item.enchantment.size()==this.enchantment.size();
-        for (String enchantment:this.enchantment){
+        boolean sameEnchantment = item.enchantment.size() == this.enchantment.size();
+        for (String enchantment : this.enchantment) {
             if (!item.enchantment.contains(enchantment)) {
                 sameEnchantment = false;
                 break;
             }
         }
 
-        boolean sameLevel=item.level.size()==this.level.size();
-        for (Integer level:this.level){
+        boolean sameLevel = item.level.size() == this.level.size();
+        for (Integer level : this.level) {
             if (!item.level.contains(level)) {
                 sameLevel = false;
                 break;
             }
         }
 
-        return Objects.equals(name, item.name) &&  sameEnchantment && sameLevel;
+        return Objects.equals(name, item.name) && sameEnchantment && sameLevel;
     }
 
     @Override

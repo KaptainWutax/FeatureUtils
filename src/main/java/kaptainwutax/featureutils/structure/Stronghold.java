@@ -34,8 +34,9 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
             Biome.MODIFIED_JUNGLE_EDGE, Biome.TALL_BIRCH_FOREST, Biome.TALL_BIRCH_HILLS, Biome.DARK_FOREST_HILLS,
             Biome.SNOWY_TAIGA_MOUNTAINS, Biome.GIANT_SPRUCE_TAIGA, Biome.GIANT_SPRUCE_TAIGA_HILLS,
             Biome.MODIFIED_GRAVELLY_MOUNTAINS, Biome.SHATTERED_SAVANNA, Biome.SHATTERED_SAVANNA_PLATEAU,
-            Biome.ERODED_BADLANDS, Biome.MODIFIED_WOODED_BADLANDS_PLATEAU, Biome.MODIFIED_BADLANDS_PLATEAU,
-            Biome.BAMBOO_JUNGLE, Biome.BAMBOO_JUNGLE_HILLS));
+            Biome.ERODED_BADLANDS, Biome.MODIFIED_WOODED_BADLANDS_PLATEAU, Biome.MODIFIED_BADLANDS_PLATEAU
+//            ,Biome.BAMBOO_JUNGLE, Biome.BAMBOO_JUNGLE_HILLS
+            ));
 
     public Stronghold(MCVersion version) {
         this(CONFIGS.getAsOf(version), version);
