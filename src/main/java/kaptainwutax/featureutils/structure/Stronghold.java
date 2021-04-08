@@ -22,7 +22,7 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
     public static final VersionMap<Stronghold.Config> CONFIGS = new VersionMap<Stronghold.Config>()
             .add(MCVersion.v1_9, new Stronghold.Config(32, 3, 128));
 
-    public static final Set<Biome> VALID_BIOMES = new HashSet<>(Arrays.asList(
+    public static final Set<Biome> VALID_BIOMES_16 = new HashSet<>(Arrays.asList(
             Biome.PLAINS, Biome.DESERT, Biome.MOUNTAINS, Biome.FOREST, Biome.TAIGA, Biome.SNOWY_TUNDRA,
             Biome.SNOWY_MOUNTAINS, Biome.MUSHROOM_FIELDS, Biome.MUSHROOM_FIELD_SHORE, Biome.DESERT_HILLS,
             Biome.WOODED_HILLS, Biome.TAIGA_HILLS, Biome.MOUNTAIN_EDGE, Biome.JUNGLE, Biome.JUNGLE_HILLS,
@@ -34,9 +34,11 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
             Biome.MODIFIED_JUNGLE_EDGE, Biome.TALL_BIRCH_FOREST, Biome.TALL_BIRCH_HILLS, Biome.DARK_FOREST_HILLS,
             Biome.SNOWY_TAIGA_MOUNTAINS, Biome.GIANT_SPRUCE_TAIGA, Biome.GIANT_SPRUCE_TAIGA_HILLS,
             Biome.MODIFIED_GRAVELLY_MOUNTAINS, Biome.SHATTERED_SAVANNA, Biome.SHATTERED_SAVANNA_PLATEAU,
-            Biome.ERODED_BADLANDS, Biome.MODIFIED_WOODED_BADLANDS_PLATEAU, Biome.MODIFIED_BADLANDS_PLATEAU
-//            ,Biome.BAMBOO_JUNGLE, Biome.BAMBOO_JUNGLE_HILLS
-            ));
+            Biome.ERODED_BADLANDS, Biome.MODIFIED_WOODED_BADLANDS_PLATEAU, Biome.MODIFIED_BADLANDS_PLATEAU));
+    public static final Set<Biome> VALID_BIOMES_15 = new HashSet<>(Arrays.asList(Biome.BAMBOO_JUNGLE, Biome.BAMBOO_JUNGLE_HILLS));
+    static {
+        VALID_BIOMES_15.addAll(VALID_BIOMES_16);
+    }
 
     public Stronghold(MCVersion version) {
         this(CONFIGS.getAsOf(version), version);
@@ -82,7 +84,7 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
             double distanceRing = (double) (4 * distance + distance * ringId * 6) + (rand.nextDouble() - 0.5D) * (double) distance * 2.5D;
             int chunkX = (int) Math.round(Math.cos(angle) * distanceRing);
             int chunkZ = (int) Math.round(Math.sin(angle) * distanceRing);
-            BPos pos = source.locateBiome((chunkX << 4) + 8, 0, (chunkZ << 4) + 8, 112, VALID_BIOMES, rand);
+            BPos pos = source.locateBiome((chunkX << 4) + 8, 0, (chunkZ << 4) + 8, 112, this.getVersion().isOlderThan(MCVersion.v1_16)?VALID_BIOMES_15:VALID_BIOMES_16, rand);
 
             if (pos != null) {
                 chunkX = pos.getX() >> 4;
@@ -126,7 +128,7 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 
     @Override
     public boolean isValidBiome(Biome biome) {
-        return VALID_BIOMES.contains(biome);
+        return (this.getVersion().isOlderThan(MCVersion.v1_16)?VALID_BIOMES_15:VALID_BIOMES_16).contains(biome);
     }
 
     public Stronghold.Data at(int chunkX, int chunkZ) {
@@ -169,7 +171,7 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
                     for (int k = minZ; k <= maxZ; ++k) {
                         // Warning we assume air check (that can not be checked decently)
                         // this makes everything off by a lot FIXME
-                        if (!replaceAir || true){
+                        if (!replaceAir || true) {
                             if (i == minY || i == maxY || j == minX || j == maxX || k == minZ || k == maxZ) {
                                 rand.nextFloat();
                             }
@@ -180,7 +182,7 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
             }
         }
 
-        public void skipForChest(JRand rand,int x,int y,int z){
+        public void skipForChest(JRand rand, int x, int y, int z) {
             // not doing the getWorld crap to get the blockpos
             // not checking if inside a block not if chest
             // not checking if blockstate already exists
