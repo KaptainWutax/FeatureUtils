@@ -13,23 +13,24 @@ import kaptainwutax.seedutils.mc.pos.RPos;
 import java.util.Arrays;
 import java.util.List;
 
-public class LootTestShipwreck {
+public class LootTestShipwreck2 {
     public static void main(String[] args) {
         ChunkRand rand=new ChunkRand();
         long worldSeed=1L;
-        CPos cPos=new CPos(4,8);
+        CPos cPos=new CPos(-13,-20);
         System.out.println(cPos.toBlockPos());
         MCVersion version=MCVersion.v1_16;
         Shipwreck shipwreck=new Shipwreck(version);
         RPos rPos=cPos.toRegionPos(shipwreck.getSpacing());
         CPos start=shipwreck.getInRegion(worldSeed,rPos.getX(),rPos.getZ(),rand);
-        assert shipwreck.isBeached()==null;
         OverworldBiomeSource biomeSource=new OverworldBiomeSource(version,worldSeed);
         // should always be called
         if (shipwreck.canSpawn(start.getX(),start.getZ(),biomeSource)) System.out.println("OK");
         System.out.println(start);
         assert cPos==start;
         System.out.println(shipwreck.isBeached());
+        Shipwreck.Rotation rotation=shipwreck.getRotation(worldSeed,cPos,version);
+        System.out.println(rotation);
         int salt=40006;
         rand.setDecoratorSeed(worldSeed, cPos.getX() * 16, cPos.getZ() * 16, salt, version);
         if (shipwreck.isBeached()){
