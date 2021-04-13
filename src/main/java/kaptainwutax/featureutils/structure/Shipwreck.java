@@ -1,6 +1,5 @@
 package kaptainwutax.featureutils.structure;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.Dimension;
@@ -14,6 +13,7 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
     private Rotation rotation = null;
     private static final String[] STRUCTURE_LOCATION_BEACHED = new String[] {"shipwreck/with_mast", "shipwreck/sideways_full", "shipwreck/sideways_fronthalf", "shipwreck/sideways_backhalf", "shipwreck/rightsideup_full", "shipwreck/rightsideup_fronthalf", "shipwreck/rightsideup_backhalf", "shipwreck/with_mast_degraded", "shipwreck/rightsideup_full_degraded", "shipwreck/rightsideup_fronthalf_degraded", "shipwreck/rightsideup_backhalf_degraded"};
     private static final String[] STRUCTURE_LOCATION_OCEAN = new String[] {"shipwreck/with_mast", "shipwreck/upsidedown_full", "shipwreck/upsidedown_fronthalf", "shipwreck/upsidedown_backhalf", "shipwreck/sideways_full", "shipwreck/sideways_fronthalf", "shipwreck/sideways_backhalf", "shipwreck/rightsideup_full", "shipwreck/rightsideup_fronthalf", "shipwreck/rightsideup_backhalf", "shipwreck/with_mast_degraded", "shipwreck/upsidedown_full_degraded", "shipwreck/upsidedown_fronthalf_degraded", "shipwreck/upsidedown_backhalf_degraded", "shipwreck/sideways_full_degraded", "shipwreck/sideways_fronthalf_degraded", "shipwreck/sideways_backhalf_degraded", "shipwreck/rightsideup_full_degraded", "shipwreck/rightsideup_fronthalf_degraded", "shipwreck/rightsideup_backhalf_degraded"};
+    private String type=null;
 
     public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
             .add(MCVersion.v1_13, new RegionStructure.Config(15, 8, 165745295))
@@ -37,11 +37,22 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
         return random;
     }
 
+    public void setBeached(Boolean beached) {
+        isBeached = beached;
+    }
+
+    /**
+     * Should be called after canspawn and getRotation
+     * @return the type of shipwreck (useful to determine loot order)
+     */
     public String getType(){
         if (isBeached==null) return null;
         if (rotation==null) return null;
-        String[] arr=isBeached ? STRUCTURE_LOCATION_BEACHED : STRUCTURE_LOCATION_OCEAN;
-        return arr[random.nextInt(arr.length)];
+        if (type==null){
+            String[] arr=isBeached ? STRUCTURE_LOCATION_BEACHED : STRUCTURE_LOCATION_OCEAN;
+            type=arr[random.nextInt(arr.length)];
+        }
+       return type;
 	}
 
     /**
@@ -94,6 +105,16 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
 
         public static Rotation getRandom(ChunkRand rand) {
             return values()[rand.nextInt(values().length)];
+        }
+
+        public CPos getRotatedPos(CPos cPos){
+            switch (this){
+                case NONE: return new CPos(cPos.getX(),cPos.getZ()+1);
+                case CLOCKWISE_90:return new CPos(cPos.getX()-1,cPos.getZ());
+                case CLOCKWISE_180:return new CPos(cPos.getX(),cPos.getZ()-1);
+                case COUNTERCLOCKWISE_90:return new CPos(cPos.getX()+1,cPos.getZ());
+            }
+            return null;
         }
     }
 
