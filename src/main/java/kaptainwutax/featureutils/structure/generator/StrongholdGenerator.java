@@ -6,8 +6,8 @@ import kaptainwutax.seedutils.lcg.rand.JRand;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.pos.BPos;
-import kaptainwutax.seedutils.util.BlockBox;
-import kaptainwutax.seedutils.util.Direction;
+import kaptainwutax.seedutils.mc.util.BlockBox;
+import kaptainwutax.seedutils.mc.util.Direction;
 import kaptainwutax.seedutils.util.math.Vec3i;
 
 import java.util.ArrayList;

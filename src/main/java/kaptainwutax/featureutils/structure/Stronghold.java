@@ -12,8 +12,8 @@ import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.VersionMap;
 import kaptainwutax.seedutils.mc.pos.BPos;
 import kaptainwutax.seedutils.mc.pos.CPos;
-import kaptainwutax.seedutils.util.BlockBox;
-import kaptainwutax.seedutils.util.Direction;
+import kaptainwutax.seedutils.mc.util.BlockBox;
+import kaptainwutax.seedutils.mc.util.Direction;
 
 import java.util.*;
 

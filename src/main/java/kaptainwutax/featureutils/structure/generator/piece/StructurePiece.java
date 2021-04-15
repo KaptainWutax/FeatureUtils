@@ -1,7 +1,7 @@
 package kaptainwutax.featureutils.structure.generator.piece;
 
-import kaptainwutax.seedutils.util.BlockBox;
-import kaptainwutax.seedutils.util.Direction;
+import kaptainwutax.seedutils.mc.util.BlockBox;
+import kaptainwutax.seedutils.mc.util.Direction;
 
 import java.util.ArrayList;
 import java.util.List;

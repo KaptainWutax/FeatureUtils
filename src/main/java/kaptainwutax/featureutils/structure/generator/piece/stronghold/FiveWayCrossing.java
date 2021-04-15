@@ -5,8 +5,8 @@ import kaptainwutax.featureutils.structure.generator.StrongholdGenerator;
 import kaptainwutax.seedutils.lcg.rand.JRand;
 import kaptainwutax.seedutils.lcg.rand.Rand;
 import kaptainwutax.seedutils.mc.pos.BPos;
-import kaptainwutax.seedutils.util.BlockBox;
-import kaptainwutax.seedutils.util.Direction;
+import kaptainwutax.seedutils.mc.util.BlockBox;
+import kaptainwutax.seedutils.mc.util.Direction;
 
 import java.util.List;
 
@@ -59,7 +59,7 @@ public class FiveWayCrossing extends Stronghold.Piece {
 	}
 
 	public static FiveWayCrossing createPiece(List<Stronghold.Piece> pieces, JRand rand, int x, int y, int z, Direction facing, int pieceId) {
-		BlockBox box = BlockBox.rotated(x, y, z, -4, -3, 0, 10, 9, 11, facing);
+		BlockBox box = BlockBox.rotated(x, y, z, -4, -3, 0, 10, 9, 11, facing.getRotation());
 		return Stronghold.Piece.isHighEnough(box) && Stronghold.Piece.getNextIntersectingPiece(pieces, box) == null ? new FiveWayCrossing(pieceId, rand, box, facing) : null;
 	}
 

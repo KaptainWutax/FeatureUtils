@@ -4,8 +4,8 @@ import kaptainwutax.featureutils.structure.Stronghold;
 import kaptainwutax.featureutils.structure.generator.StrongholdGenerator;
 import kaptainwutax.seedutils.lcg.rand.JRand;
 import kaptainwutax.seedutils.mc.pos.BPos;
-import kaptainwutax.seedutils.util.BlockBox;
-import kaptainwutax.seedutils.util.Direction;
+import kaptainwutax.seedutils.mc.util.BlockBox;
+import kaptainwutax.seedutils.mc.util.Direction;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class SquareRoom extends Stronghold.Piece {
 	}
 
 	public static SquareRoom createPiece(List<Stronghold.Piece> pieces, JRand rand, int x, int y, int z, Direction facing, int pieceId) {
-		BlockBox blockBox_1 = BlockBox.rotated(x, y, z, -4, -1, 0, 11, 7, 11, facing);
+		BlockBox blockBox_1 = BlockBox.rotated(x, y, z, -4, -1, 0, 11, 7, 11, facing.getRotation());
 		return Stronghold.Piece.isHighEnough(blockBox_1) && Stronghold.Piece.getNextIntersectingPiece(pieces, blockBox_1) == null ? new SquareRoom(pieceId, rand, blockBox_1, facing) : null;
 	}
 
