@@ -133,7 +133,6 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
             return null;
         }
         int salt = 40006; //TODO make me version dependant
-//        System.out.println(rotation.name()+" "+isBeached+" "+type);
         BPos size = STRUCTURE_SIZE.get(type);
         HashMap<LootType, BPos> lootPos = STRUCTURE_TO_LOOT.get(type);
         BPos anchor = start.toBlockPos(90);
@@ -141,28 +140,54 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
         Mirror mirror = Mirror.NONE; // FIXED for shipwreck
         BlockBox blockBox = BlockBox.getBoundingBox(anchor, rotation, pivot, mirror, size);
         BlockBox rotated = blockBox.getRotated(rotation);
-//        System.out.println(blockBox+" "+rotated);
-        HashMap<LootType, List<ItemStack>> result = new HashMap<>();
-        HashMap<CPos, Integer> seen = new HashMap<>();
+        HashMap<CPos, LinkedList<LootType>> cPosLootTypeHashMap = new HashMap<>();
         for (LootType lootType : lootPos.keySet()) {
             BPos offset = lootPos.get(lootType);
             BPos chestPos = rotated.getInside(offset, rotation);
             CPos chunkChestPos = chestPos.toChunkPos();
+            if (cPosLootTypeHashMap.containsKey(chunkChestPos)){
+                cPosLootTypeHashMap.get(chunkChestPos).add(lootType);
+            }else{
+                cPosLootTypeHashMap.put(chunkChestPos, new LinkedList<>(Collections.singletonList(lootType)) );
+            }
+        }
+        HashMap<LootType,ChestData> chestDataHashMap=new HashMap<>();
+        for (CPos cPos: cPosLootTypeHashMap.keySet()){
+            List<LootType> lootTypes=cPosLootTypeHashMap.get(cPos);
+            int index=0;
+            for (LootType lootType:lootTypes){
+                chestDataHashMap.put(lootType,new ChestData(index,cPos,lootTypes.size()));
+                index+=1;
+            }
+        }
+        HashMap<LootType, List<ItemStack>> result = new HashMap<>();
+        for (LootType lootType : chestDataHashMap.keySet()) {
+            ChestData chestData = chestDataHashMap.get(lootType);
+            CPos chunkChestPos = chestData.cPos;
             rand.setDecoratorSeed(structureSeed, chunkChestPos.getX() * 16, chunkChestPos.getZ() * 16, salt, this.getVersion());
             if (this.isBeached()) {
                 rand.nextInt(3);
             }
-            rand.advance(lootType == LootType.SUPPLY_CHEST ? 2 : 4);
-            int previousCount = seen.getOrDefault(chunkChestPos, 0);
-            rand.advance(lootType == LootType.SUPPLY_CHEST ? previousCount : previousCount * 2L);
-            seen.put(chunkChestPos, previousCount + 1);
+            rand.advance(chestData.numberInChunk* 2L);
+            rand.advance(chestData.index*2L); // TODO check me
 //            System.out.println(lootType.name()+" pre seed: " + rand.getSeed());
             LootContext context = new LootContext(rand.nextLong());
             List<ItemStack> loot = lootType.lootTable.generate(context);
-
             result.put(lootType, loot);
         }
         return result;
+    }
+
+    public static class ChestData{
+        int index;
+        CPos cPos;
+        int numberInChunk;
+
+        public ChestData(int index, CPos cPos, int numberInChunk) {
+            this.index = index;
+            this.cPos = cPos;
+            this.numberInChunk = numberInChunk;
+        }
     }
 
     public enum LootType {
