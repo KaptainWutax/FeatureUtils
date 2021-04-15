@@ -16,10 +16,7 @@ import kaptainwutax.seedutils.mc.util.BlockBox;
 import kaptainwutax.seedutils.mc.util.Mirror;
 import kaptainwutax.seedutils.mc.util.Rotation;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
@@ -134,7 +131,7 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
             return null;
         }
         int salt = 40006; //TODO make me version dependant
-
+//        System.out.println(rotation.name()+" "+isBeached+" "+type);
         BPos size=STRUCTURE_SIZE.get(type);
         HashMap<LootType,BPos> lootPos=STRUCTURE_TO_LOOT.get(type);
         BPos anchor = start.toBlockPos(90);
@@ -142,7 +139,9 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
         Mirror mirror = Mirror.NONE; // FIXED for shipwreck
         BlockBox blockBox = BlockBox.getBoundingBox(anchor, rotation, pivot, mirror, size);
         BlockBox rotated=blockBox.getRotated(rotation);
+//        System.out.println(blockBox+" "+rotated);
         HashMap<LootType,List<ItemStack>> result=new HashMap<>();
+        HashMap<CPos,Integer> seen=new HashMap<>();
         for (LootType lootType:lootPos.keySet()){
             BPos offset=lootPos.get(lootType);
             BPos chestPos=rotated.getInside(offset,rotation);
@@ -152,6 +151,9 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
                 rand.nextInt(3);
             }
             rand.advance(lootType==LootType.SUPPLY_CHEST?2:4);
+            int previousCount=seen.getOrDefault(chunkChestPos,0);
+            rand.advance(lootType==LootType.SUPPLY_CHEST?previousCount :previousCount* 2L);
+            seen.put(chunkChestPos,previousCount+1);
 //            System.out.println(lootType.name()+" pre seed: " + rand.getSeed());
             LootContext context = new LootContext(rand.nextLong());
             List<ItemStack> loot = MCLootTables.SHIPWRECK_TREASURE_CHEST.generate(context);
@@ -203,110 +205,110 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
     };
 
 
-    private static final HashMap<String, HashMap<LootType, BPos>> STRUCTURE_TO_LOOT = new HashMap<>();
+    private static final HashMap<String, LinkedHashMap<LootType, BPos>> STRUCTURE_TO_LOOT = new HashMap<>();
     private static final HashMap<String, BPos> STRUCTURE_SIZE = new HashMap<>();
 
     static {
         // we are y+1
-        STRUCTURE_TO_LOOT.put("rightsideup_backhalf", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("rightsideup_backhalf", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.MAP_CHEST, new BPos(5, 3, 6));
             put(LootType.TREASURE_CHEST, new BPos(6, 5, 12));
         }});
         STRUCTURE_SIZE.put("rightsideup_backhalf", new BPos(9, 9, 16));
-        STRUCTURE_TO_LOOT.put("rightsideup_backhalf_degraded", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("rightsideup_backhalf_degraded", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.MAP_CHEST, new BPos(5, 3, 6));
             put(LootType.TREASURE_CHEST, new BPos(6, 5, 12));
         }});
         STRUCTURE_SIZE.put("rightsideup_backhalf_degraded", new BPos(9, 9, 16));
-        STRUCTURE_TO_LOOT.put("rightsideup_fronthalf", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("rightsideup_fronthalf", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.SUPPLY_CHEST, new BPos(4, 3, 8));
         }});
         STRUCTURE_SIZE.put("rightsideup_fronthalf", new BPos(9, 9, 24));
-        STRUCTURE_TO_LOOT.put("rightsideup_fronthalf_degraded", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("rightsideup_fronthalf_degraded", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.SUPPLY_CHEST, new BPos(4, 3, 8));
         }});
         STRUCTURE_SIZE.put("rightsideup_fronthalf_degraded", new BPos(9, 9, 24));
-        STRUCTURE_TO_LOOT.put("rightsideup_full", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("rightsideup_full", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.SUPPLY_CHEST, new BPos(4, 3, 8));
             put(LootType.MAP_CHEST, new BPos(5, 3, 18));
             put(LootType.TREASURE_CHEST, new BPos(6, 5, 24));
         }});
         STRUCTURE_SIZE.put("rightsideup_full", new BPos(9, 9, 28));
-        STRUCTURE_TO_LOOT.put("rightsideup_full_degraded", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("rightsideup_full_degraded", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.SUPPLY_CHEST, new BPos(4, 3, 8));
             put(LootType.MAP_CHEST, new BPos(5, 3, 18));
             put(LootType.TREASURE_CHEST, new BPos(6, 5, 24));
         }});
         STRUCTURE_SIZE.put("rightsideup_full_degraded", new BPos(9, 9, 28));
-        STRUCTURE_TO_LOOT.put("sideways_backhalf", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("sideways_backhalf", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.TREASURE_CHEST, new BPos(3, 3, 13));
             put(LootType.MAP_CHEST, new BPos(6, 4, 8));
         }});
         STRUCTURE_SIZE.put("sideways_backhalf", new BPos(9, 9, 17));
-        STRUCTURE_TO_LOOT.put("sideways_backhalf_degraded", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("sideways_backhalf_degraded", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.TREASURE_CHEST, new BPos(3, 3, 13));
             put(LootType.MAP_CHEST, new BPos(6, 4, 8));
         }});
         STRUCTURE_SIZE.put("sideways_backhalf_degraded", new BPos(9, 9, 17));
-        STRUCTURE_TO_LOOT.put("sideways_fronthalf", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("sideways_fronthalf", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.SUPPLY_CHEST, new BPos(5, 4, 8));
         }});
         STRUCTURE_SIZE.put("sideways_fronthalf", new BPos(9, 9, 24));
-        STRUCTURE_TO_LOOT.put("sideways_fronthalf_degraded", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("sideways_fronthalf_degraded", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.SUPPLY_CHEST, new BPos(5, 4, 8));
         }});
         STRUCTURE_SIZE.put("sideways_fronthalf_degraded", new BPos(9, 9, 24));
-        STRUCTURE_TO_LOOT.put("sideways_full", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("sideways_full", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.TREASURE_CHEST, new BPos(3, 3, 24));
             put(LootType.SUPPLY_CHEST, new BPos(5, 4, 8));
             put(LootType.MAP_CHEST, new BPos(6, 4, 19));
         }});
         STRUCTURE_SIZE.put("sideways_full", new BPos(9, 9, 28));
-        STRUCTURE_TO_LOOT.put("sideways_full_degraded", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("sideways_full_degraded", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.TREASURE_CHEST, new BPos(3, 3, 24));
             put(LootType.SUPPLY_CHEST, new BPos(5, 4, 8));
             put(LootType.MAP_CHEST, new BPos(6, 4, 19));
         }});
         STRUCTURE_SIZE.put("sideways_full_degraded", new BPos(9, 9, 28));
-        STRUCTURE_TO_LOOT.put("upsidedown_backhalf", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("upsidedown_backhalf", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.TREASURE_CHEST, new BPos(2, 3, 12));
             put(LootType.MAP_CHEST, new BPos(3, 6, 5));
         }});
         STRUCTURE_SIZE.put("upsidedown_backhalf", new BPos(9, 9, 16));
-        STRUCTURE_TO_LOOT.put("upsidedown_backhalf_degraded", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("upsidedown_backhalf_degraded", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.TREASURE_CHEST, new BPos(2, 3, 12));
             put(LootType.MAP_CHEST, new BPos(3, 6, 5));
         }});
         STRUCTURE_SIZE.put("upsidedown_backhalf_degraded", new BPos(9, 9, 16));
-        STRUCTURE_TO_LOOT.put("upsidedown_fronthalf", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("upsidedown_fronthalf", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.MAP_CHEST, new BPos(3, 6, 17));
             put(LootType.SUPPLY_CHEST, new BPos(4, 6, 8));
         }});
         STRUCTURE_SIZE.put("upsidedown_fronthalf", new BPos(9, 9, 22));
-        STRUCTURE_TO_LOOT.put("upsidedown_fronthalf_degraded", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("upsidedown_fronthalf_degraded", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.MAP_CHEST, new BPos(3, 6, 17));
             put(LootType.SUPPLY_CHEST, new BPos(4, 6, 8));
         }});
         STRUCTURE_SIZE.put("upsidedown_fronthalf_degraded", new BPos(9, 9, 22));
-        STRUCTURE_TO_LOOT.put("upsidedown_full", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("upsidedown_full", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.TREASURE_CHEST, new BPos(2, 3, 24));
             put(LootType.MAP_CHEST, new BPos(3, 6, 17));
             put(LootType.SUPPLY_CHEST, new BPos(4, 6, 8));
         }});
         STRUCTURE_SIZE.put("upsidedown_full", new BPos(9, 9, 28));
-        STRUCTURE_TO_LOOT.put("upsidedown_full_degraded", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("upsidedown_full_degraded", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.TREASURE_CHEST, new BPos(2, 3, 24));
             put(LootType.MAP_CHEST, new BPos(3, 6, 17));
             put(LootType.SUPPLY_CHEST, new BPos(4, 6, 8));
         }});
         STRUCTURE_SIZE.put("upsidedown_full_degraded", new BPos(9, 9, 28));
-        STRUCTURE_TO_LOOT.put("with_mast", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("with_mast", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.SUPPLY_CHEST, new BPos(4, 3, 9));
             put(LootType.MAP_CHEST, new BPos(5, 3, 18));
             put(LootType.TREASURE_CHEST, new BPos(6, 5, 24));
         }});
         STRUCTURE_SIZE.put("with_mast", new BPos(9, 21, 28));
-        STRUCTURE_TO_LOOT.put("with_mast_degraded", new HashMap<LootType, BPos>() {{
+        STRUCTURE_TO_LOOT.put("with_mast_degraded", new LinkedHashMap<LootType, BPos>() {{
             put(LootType.SUPPLY_CHEST, new BPos(4, 3, 9));
             put(LootType.MAP_CHEST, new BPos(5, 3, 18));
             put(LootType.TREASURE_CHEST, new BPos(6, 5, 24));
@@ -320,7 +322,7 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
 //p = Path(r'.').glob('**/*')
 //files = [x for x in p if x.is_file()]
 //for file in files:
-//    print(f'STRUCTURE_TO_LOOT.put("{file.rstrip(".nbt")}", new HashMap<LootType, BPos>() {{{{')
+//    print(f'STRUCTURE_TO_LOOT.put("{file.rstrip(".nbt")}", new LinkedHashMap<LootType, BPos>() {{{{')
 //    nbt_file=nbtlib.load(file)
 //    root=nbt_file.root
 //    if "blocks" not in root.keys():
