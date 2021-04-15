@@ -3,6 +3,7 @@ package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.featureutils.loot.LootContext;
+import kaptainwutax.featureutils.loot.LootTable;
 import kaptainwutax.featureutils.loot.MCLootTables;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.seedutils.mc.ChunkRand;
@@ -108,64 +109,71 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
 
     /**
      * WARNING You need to call canSpawn before hand, else you will get a null
-     * @param start the chunkposition of the shipwreck start (obtained with getInRegion
+     *
+     * @param start         the chunkposition of the shipwreck start (obtained with getInRegion
      * @param structureSeed the structure seed (lower 48 bits of the world seed)
-     * @param rand a chunkrand instance (for speed purpose)
+     * @param rand          a chunkrand instance (for speed purpose)
      * @return
      */
     public HashMap<LootType, List<ItemStack>> getLoot(CPos start, long structureSeed, ChunkRand rand) {
-        if (isBeached==null){
+        if (isBeached == null) {
             System.err.println("Please call canspawn before");
             return null;
         }
         RPos rPos = start.toRegionPos(this.getSpacing());
         CPos validation = this.getInRegion(structureSeed, rPos.getX(), rPos.getZ(), rand);
-        if (!start.equals(validation)){
-            System.err.println("Provided chunkpos "+start+" was wrong, correct was "+validation);
+        if (!start.equals(validation)) {
+            System.err.println("Provided chunkpos " + start + " was wrong, correct was " + validation);
             return null;
         }
         Rotation rotation = this.getRotation(structureSeed, start, this.getVersion());
-        String type=this.getType();
-        if (!STRUCTURE_SIZE.containsKey(type) || !STRUCTURE_TO_LOOT.containsKey(type)){
-            System.err.println("We don't support this type yet "+type);
+        String type = this.getType();
+        if (!STRUCTURE_SIZE.containsKey(type) || !STRUCTURE_TO_LOOT.containsKey(type)) {
+            System.err.println("We don't support this type yet " + type);
             return null;
         }
         int salt = 40006; //TODO make me version dependant
 //        System.out.println(rotation.name()+" "+isBeached+" "+type);
-        BPos size=STRUCTURE_SIZE.get(type);
-        HashMap<LootType,BPos> lootPos=STRUCTURE_TO_LOOT.get(type);
+        BPos size = STRUCTURE_SIZE.get(type);
+        HashMap<LootType, BPos> lootPos = STRUCTURE_TO_LOOT.get(type);
         BPos anchor = start.toBlockPos(90);
         BPos pivot = new BPos(4, 0, 15); // FIXED for shipwreck
         Mirror mirror = Mirror.NONE; // FIXED for shipwreck
         BlockBox blockBox = BlockBox.getBoundingBox(anchor, rotation, pivot, mirror, size);
-        BlockBox rotated=blockBox.getRotated(rotation);
+        BlockBox rotated = blockBox.getRotated(rotation);
 //        System.out.println(blockBox+" "+rotated);
-        HashMap<LootType,List<ItemStack>> result=new HashMap<>();
-        HashMap<CPos,Integer> seen=new HashMap<>();
-        for (LootType lootType:lootPos.keySet()){
-            BPos offset=lootPos.get(lootType);
-            BPos chestPos=rotated.getInside(offset,rotation);
-            CPos chunkChestPos=chestPos.toChunkPos();
+        HashMap<LootType, List<ItemStack>> result = new HashMap<>();
+        HashMap<CPos, Integer> seen = new HashMap<>();
+        for (LootType lootType : lootPos.keySet()) {
+            BPos offset = lootPos.get(lootType);
+            BPos chestPos = rotated.getInside(offset, rotation);
+            CPos chunkChestPos = chestPos.toChunkPos();
             rand.setDecoratorSeed(structureSeed, chunkChestPos.getX() * 16, chunkChestPos.getZ() * 16, salt, this.getVersion());
             if (this.isBeached()) {
                 rand.nextInt(3);
             }
-            rand.advance(lootType==LootType.SUPPLY_CHEST?2:4);
-            int previousCount=seen.getOrDefault(chunkChestPos,0);
-            rand.advance(lootType==LootType.SUPPLY_CHEST?previousCount :previousCount* 2L);
-            seen.put(chunkChestPos,previousCount+1);
+            rand.advance(lootType == LootType.SUPPLY_CHEST ? 2 : 4);
+            int previousCount = seen.getOrDefault(chunkChestPos, 0);
+            rand.advance(lootType == LootType.SUPPLY_CHEST ? previousCount : previousCount * 2L);
+            seen.put(chunkChestPos, previousCount + 1);
 //            System.out.println(lootType.name()+" pre seed: " + rand.getSeed());
             LootContext context = new LootContext(rand.nextLong());
-            List<ItemStack> loot = MCLootTables.SHIPWRECK_TREASURE_CHEST.generate(context);
-            result.put(lootType,loot);
+            List<ItemStack> loot = lootType.lootTable.generate(context);
+
+            result.put(lootType, loot);
         }
         return result;
     }
 
     public enum LootType {
-        SUPPLY_CHEST,
-        TREASURE_CHEST,
-        MAP_CHEST;
+        SUPPLY_CHEST(MCLootTables.SHIPWRECK_SUPPLY_CHEST),
+        TREASURE_CHEST(MCLootTables.SHIPWRECK_TREASURE_CHEST),
+        MAP_CHEST(MCLootTables.SHIPWRECK_MAP_CHEST);
+        private final LootTable lootTable;
+
+        LootType(LootTable lootTable) {
+            this.lootTable = lootTable;
+        }
     }
 
     private static final String[] STRUCTURE_LOCATION_BEACHED = new String[] {
