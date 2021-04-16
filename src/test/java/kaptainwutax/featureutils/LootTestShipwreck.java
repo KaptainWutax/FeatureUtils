@@ -4,6 +4,7 @@ import kaptainwutax.biomeutils.source.OverworldBiomeSource;
 import kaptainwutax.featureutils.structure.Shipwreck;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
+import kaptainwutax.seedutils.mc.pos.BPos;
 import kaptainwutax.seedutils.mc.pos.CPos;
 import kaptainwutax.seedutils.mc.pos.RPos;
 
@@ -16,8 +17,8 @@ public class LootTestShipwreck {
 
     public static void test3() {
         ChunkRand rand = new ChunkRand();
-        long worldSeed = -3713447489682223303L;
-        CPos cPos = new CPos(-7, -15);
+        long worldSeed = -7452078565189757274L;
+        CPos cPos = new BPos( -279,0, -487).toChunkPos();
         System.out.println("Target: " + cPos.toBlockPos());
         MCVersion version = MCVersion.v1_16;
         Shipwreck shipwreck = new Shipwreck(version);

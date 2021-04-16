@@ -6,22 +6,117 @@ import kaptainwutax.seedutils.mc.MCVersion;
 import java.util.*;
 
 public class Enchantments {
-    public final static HashSet<String> ARMOR_HEAD = new HashSet<>(Arrays.asList("GOLDEN_HELMET", "DIAMOND_HELMET", "ENCHANTED_BOOK", "BOOK"));
-    public final static HashSet<String> ARMOR_CHEST = new HashSet<>(Arrays.asList("GOLDEN_CHESTPLATE", "DIAMOND_CHESTPLATE", "ENCHANTED_BOOK", "BOOK"));
-    public final static HashSet<String> ARMOR_FEET = new HashSet<>(Arrays.asList("GOLDEN_BOOTS", "DIAMOND_BOOTS", "ENCHANTED_BOOK", "BOOK"));
-    public final static HashSet<String> ARMOR = new HashSet<>(Arrays.asList("GOLDEN_HELMET", "DIAMOND_HELMET", "GOLDEN_CHESTPLATE", "DIAMOND_CHESTPLATE", "GOLDEN_LEGGINGS", "DIAMOND_LEGGINGS", "GOLDEN_BOOTS", "DIAMOND_BOOTS", "ENCHANTED_BOOK", "BOOK"));
-    public final static HashSet<String> BOW = new HashSet<>(Arrays.asList("BOW", "ENCHANTED_BOOK", "BOOK"));
-    public final static HashSet<String> BREAKABLE = new HashSet<>(Arrays.asList("ENCHANTED_BOOK", "BOOK", "BOW", "CROSSBOW", "GOLDEN_HELMET", "DIAMOND_HELMET", "GOLDEN_CHESTPLATE", "DIAMOND_CHESTPLATE", "GOLDEN_BOOTS", "DIAMOND_BOOTS", "GOLDEN_LEGGINGS", "DIAMOND_LEGGINGS", "GOLDEN_SWORD", "DIAMOND_SWORD", "GOLDEN_AXE", "DIAMOND_AXE", "GOLDEN_HOE", "DIAMOND_HOE", "GOLDEN_PICKAXE", "DIAMOND_PICKAXE", "GOLDEN_SHOVEL", "DIAMOND_SHOVEL"));
-    public final static HashSet<String> CROSSBOW = new HashSet<>(Arrays.asList("CROSSBOW", "ENCHANTED_BOOK", "BOOK"));
-    public final static HashSet<String> FISHING_ROD = new HashSet<>(Arrays.asList("FISHING_ROD", "ENCHANTED_BOOK", "BOOK"));
-    public final static HashSet<String> DIGGER = new HashSet<>(Arrays.asList("GOLDEN_PICKAXE", "DIAMOND_PICKAXE", "GOLDEN_SHOVEL", "DIAMOND_SHOVEL", "GOLDEN_AXE", "DIAMOND_AXE", "GOLDEN_HOE", "DIAMOND_HOE", "ENCHANTED_BOOK", "BOOK"));
-    public final static HashSet<String> TRIDENT = new HashSet<>(Arrays.asList("TRIDENT", "ENCHANTED_BOOK", "BOOK"));
-    public final static HashSet<String> WEARABLE = new HashSet<>(Arrays.asList("GOLDEN_CHESTPLATE", "DIAMOND_CHESTPLATE", "GOLDEN_LEGGINGS", "DIAMOND_LEGGINGS", "GOLDEN_BOOTS", "DIAMOND_BOOTS", "GOLDEN_HELMET", "DIAMOND_HELMET", "ENCHANTED_BOOK", "BOOK"));
-    public final static HashSet<String> WEAPON = new HashSet<>(Arrays.asList("GOLDEN_SWORD", "DIAMOND_SWORD", "ENCHANTED_BOOK", "BOOK"));
-    public final static HashSet<String> DAMAGE = new HashSet<>(Arrays.asList("GOLDEN_SWORD", "DIAMOND_SWORD", "GOLDEN_AXE", "DIAMOND_AXE", "ENCHANTED_BOOK", "BOOK"));
-    public final static HashSet<String> VANISHABLE = new HashSet<>(Arrays.asList("CROSSBOW", "GOLDEN_HELMET", "DIAMOND_HELMET", "GOLDEN_CHESTPLATE", "DIAMOND_CHESTPLATE", "FISHING_ROD", "GOLDEN_SHOVEL", "DIAMOND_SHOVEL", "GOLDEN_HOE", "DIAMOND_HOE", "TRIDENT", "GOLDEN_SWORD", "DIAMOND_SWORD", "GOLDEN_PICKAXE", "DIAMOND_PICKAXE", "GOLDEN_LEGGINGS", "DIAMOND_LEGGINGS", "GOLDEN_BOOTS", "DIAMOND_BOOTS", "BOW", "GOLDEN_AXE", "DIAMOND_AXE", "ENCHANTED_BOOK", "BOOK"));
+    private final static HashSet<String> ARMOR_TYPES = new HashSet<>(Arrays.asList("NETHERITE", "DIAMOND", "GOLDEN", "IRON", "LEATHER", "CHAINMAIL"));
+    private final static HashSet<String> TOOL_TYPES = new HashSet<>(Arrays.asList("NETHERITE", "DIAMOND", "GOLDEN", "IRON", "STONE","WOODEN"));
+    private final static HashSet<String> BOOKS = new HashSet<>(Arrays.asList("ENCHANTED_BOOK", "BOOK"));
+    public final static HashSet<String> ARMOR_HEAD = new HashSet<String>() {{
+        for (String type : ARMOR_TYPES) {
+            add(type + "_HELMET");
+        }
+        addAll(BOOKS);
+        add("TURTLE_HELMET");
+    }};
+    public final static HashSet<String> ARMOR_CHEST = new HashSet<String>() {{
+        for (String type : ARMOR_TYPES) {
+            add(type + "_CHESTPLATE");
+        }
+        addAll(BOOKS);
+        add("ELYTRA");
+    }};
+    public final static HashSet<String> ARMOR_LEGGINGS =new HashSet<String>() {{
+        for (String type : ARMOR_TYPES) {
+            add(type + "_LEGGINGS");
+        }
+        addAll(BOOKS);
+    }};
+    public final static HashSet<String> ARMOR_FEET = new HashSet<String>() {{
+        for (String type : ARMOR_TYPES) {
+            add(type + "_BOOTS");
+        }
+        addAll(BOOKS);
+    }};
+    public final static HashSet<String> ARMOR = new HashSet<String>() {{
+        addAll(ARMOR_HEAD);
+        addAll(ARMOR_CHEST);
+        addAll(ARMOR_LEGGINGS);
+        addAll(ARMOR_FEET);
+    }};
+
+    public final static HashSet<String> SWORDS = new HashSet<String>() {{
+        for (String type : TOOL_TYPES) {
+            add(type + "_SWORD");
+        }
+    }};
+    public final static HashSet<String> AXES = new HashSet<String>() {{
+        for (String type : TOOL_TYPES) {
+            add(type + "_AXE");
+        }
+    }};
+    public final static HashSet<String> HOES = new HashSet<String>() {{
+        for (String type : TOOL_TYPES) {
+            add(type + "_HOE");
+        }
+    }};
+    public final static HashSet<String> PICKAXES =new HashSet<String>() {{
+        for (String type : TOOL_TYPES) {
+            add(type + "_PICKAXE");
+        }
+    }};
+    public final static HashSet<String> SHOVELS = new HashSet<String>() {{
+        for (String type : TOOL_TYPES) {
+            add(type + "_SHOVEL");
+        }
+    }};
+    public final static HashSet<String> BOW = new HashSet<String>() {{
+        add("BOW");
+        addAll(BOOKS);
+    }};
+    public final static HashSet<String> CROSSBOW =  new HashSet<String>() {{
+        add("CROSSBOW");
+        addAll(BOOKS);
+    }};
+    public final static HashSet<String> FISHING_ROD =  new HashSet<String>() {{
+        add("FISHING_ROD");
+        addAll(BOOKS);
+    }};
+    public final static HashSet<String> TRIDENT =  new HashSet<String>() {{
+        add("TRIDENT");
+        addAll(BOOKS);
+    }};
+    public final static HashSet<String> BREAKABLE = new HashSet<String>() {{
+        addAll(CROSSBOW);
+        addAll(BOW);
+        addAll(TRIDENT);
+        addAll(FISHING_ROD);
+        addAll(ARMOR);
+        addAll(SWORDS);
+        addAll(AXES);
+        addAll(HOES);
+        addAll(PICKAXES);
+        addAll(SHOVELS);
+    }};
+
+    public final static HashSet<String> DIGGER = new HashSet<String>() {{
+        addAll(HOES);
+        addAll(PICKAXES);
+        addAll(SHOVELS);
+        addAll(BOOKS);
+    }};
+
+    public final static HashSet<String> WEAPON = new HashSet<String>() {{
+        addAll(SWORDS);
+        addAll(BOOKS);
+    }};
+    public final static HashSet<String> DAMAGE =new HashSet<String>() {{
+        addAll(SWORDS);
+        addAll(AXES);
+        addAll(BOOKS);
+    }};
+    public final static HashSet<String> VANISHABLE = new HashSet<String>() {{
+        addAll(BREAKABLE);
+    }};
     public final static HashSet<String> SingleEnchants = new HashSet<>(Arrays.asList("aqua_affinity", "binding_curse", "channeling", "silk_touch", "flame", "infinity", "multishot", "quick_charge", "mending", "vanishing_curse"));
-    public final static List<HashSet<String>> allCategories = new ArrayList<>(Arrays.asList(ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_FEET, BOW, BREAKABLE, CROSSBOW, DIGGER, DAMAGE, FISHING_ROD, TRIDENT, WEARABLE, WEAPON, VANISHABLE));
+    public final static List<HashSet<String>> allCategories = new ArrayList<>(Arrays.asList(ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_FEET, BOW, BREAKABLE, CROSSBOW, DIGGER, DAMAGE, FISHING_ROD, TRIDENT, WEAPON, VANISHABLE));
     private final static Integer COMMON = 10;
     private final static Integer UNCOMMON = 5;
     private final static Integer RARE = 2;
@@ -41,7 +136,7 @@ public class Enchantments {
                 new Enchantment("thorns", VERY_RARE, ARMOR, 1, 3, (i, n) -> (n < 10 + (20 * (i - 1))), (i, n) -> (n > 10 + (20 * (i - 1)) + 50), new HashSet<>(Arrays.asList("thorns"))),
                 (Version.isNewerOrEqualTo(MCVersion.v1_8) ? new Enchantment("depth_strider", RARE, ARMOR_FEET, 1, 3, (i, n) -> (n < i * 10), (i, n) -> (n > i * 10 + 15), new HashSet<>(Arrays.asList("frost_walker", "depth_strider"))) : null),
                 (Version.isNewerOrEqualTo(MCVersion.v1_9) ? new Enchantment("frost_walker", RARE, ARMOR_FEET, 1, 2, (i, n) -> (n < i * 10), (i, n) -> (n > i * 10 + 15), new HashSet<>(Arrays.asList("frost_walker", "depth_strider")), true) : null),
-                (Version.isNewerOrEqualTo(MCVersion.v1_11) ? new Enchantment("binding_curse", VERY_RARE, WEARABLE, 1, 1, (i, n) -> (n < 25), (i, n) -> (n > 50), new HashSet<>(Arrays.asList("binding_curse")), true) : null),
+                (Version.isNewerOrEqualTo(MCVersion.v1_11) ? new Enchantment("binding_curse", VERY_RARE, ARMOR, 1, 1, (i, n) -> (n < 25), (i, n) -> (n > 50), new HashSet<>(Arrays.asList("binding_curse")), true) : null),
                 (Version.isNewerOrEqualTo(MCVersion.v1_16) ? new Enchantment("soul_speed", VERY_RARE, ARMOR_FEET, 1, 3, (i, n) -> (n < i * 10), (i, n) -> (n > i * 10 + 15), new HashSet<>(Arrays.asList("soul_speed")), true, false) : null),
                 new Enchantment("sharpness", COMMON, DAMAGE, 1, 5, (i, n) -> (n < 1 + (i - 1) * 11), (i, n) -> (n > 1 + (i - 1) * 11 + 20), new HashSet<>(Arrays.asList("sharpness", "smite", "bane_of_arthropods"))),
                 new Enchantment("smite", UNCOMMON, DAMAGE, 1, 5, (i, n) -> (n < 5 + (i - 1) * 8), (i, n) -> (n > 5 + (i - 1) * 8 + 20), new HashSet<>(Arrays.asList("sharpness", "smite", "bane_of_arthropods"))),
