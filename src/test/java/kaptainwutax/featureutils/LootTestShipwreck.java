@@ -29,7 +29,7 @@ public class LootTestShipwreck {
     public static void test3(){
         ChunkRand rand = new ChunkRand();
         long worldSeed = -3713447489682223303L;
-        CPos cPos=new CPos(-45,-21);
+        CPos cPos=new CPos(-7,-15);
         System.out.println("Target: " + cPos.toBlockPos());
         MCVersion version = MCVersion.v1_16;
         Shipwreck shipwreck = new Shipwreck(version);
@@ -45,7 +45,8 @@ public class LootTestShipwreck {
         assert shipwreck.isBeached()!=null;
         System.out.println("Is beached " + shipwreck.isBeached());
 
-        System.out.println(shipwreck.getLoot(start,worldSeed,rand));
+        System.out.println(shipwreck.getLoot(start,worldSeed,rand,true));
+
     }
 
     public static void test2(){
@@ -67,7 +68,7 @@ public class LootTestShipwreck {
         assert shipwreck.isBeached()!=null;
         System.out.println("Is beached " + shipwreck.isBeached());
 
-        System.out.println(shipwreck.getLoot(start,worldSeed,rand));
+        System.out.println(shipwreck.getLoot(start,worldSeed,rand,false));
     }
     public static void test1(){
         ChunkRand rand = new ChunkRand();
@@ -88,6 +89,6 @@ public class LootTestShipwreck {
         assert shipwreck.isBeached()!=null;
         System.out.println("Is beached " + shipwreck.isBeached());
 
-        System.out.println(shipwreck.getLoot(start,worldSeed,rand));
+        System.out.println(shipwreck.getLoot(start,worldSeed,rand,false));
     }
 }

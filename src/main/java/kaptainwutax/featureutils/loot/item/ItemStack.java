@@ -3,7 +3,7 @@ package kaptainwutax.featureutils.loot.item;
 import java.util.Objects;
 
 public class ItemStack {
-
+    public static final ItemStack EMPTY = new ItemStack(null);
     private final Item item;
     private int count;
 
@@ -16,6 +16,16 @@ public class ItemStack {
         this.count = count;
     }
 
+    public boolean isEmpty(){
+        if (this == EMPTY) {
+            return true;
+        } else if (this.getItem() != null && this.getItem() != Item.AIR) {
+            return this.count <= 0;
+        } else {
+            return true;
+        }
+    }
+
     public Item getItem() {
         return this.item;
     }
@@ -26,6 +36,14 @@ public class ItemStack {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public ItemStack split(int count) {
+        int splitCount = Math.min(count, this.count);
+        ItemStack itemstack = new ItemStack(this.item,this.count);
+        itemstack.setCount(splitCount);
+        this.setCount(this.count - splitCount);
+        return itemstack;
     }
 
     @Override

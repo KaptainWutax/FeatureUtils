@@ -27,7 +27,7 @@ public class LootPool extends LootGenerator {
     public void generate(LootContext context, Consumer<ItemStack> stackConsumer) {
         stackConsumer = LootFunction.stack(stackConsumer, this.combinedLootFunction, context);
 
-        int rolls = this.rolls.getCount(context);
+        int rolls = this.rolls.getCount(context); // ADD LUCK HERE
 
         for (int i = 0; i < rolls; i++) {
             this.generatePool(context, stackConsumer);
