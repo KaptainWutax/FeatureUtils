@@ -5,6 +5,7 @@ import kaptainwutax.featureutils.loot.LootContext;
 import kaptainwutax.featureutils.loot.effect.Effect;
 import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.featureutils.loot.item.ItemStack;
+import kaptainwutax.featureutils.loot.item.Items;
 import kaptainwutax.featureutils.loot.roll.UniformRoll;
 import kaptainwutax.seedutils.util.Pair;
 
@@ -66,7 +67,7 @@ public class EffectFunction implements LootFunction {
     @Override
     public ItemStack process(ItemStack baseStack, LootContext context) {
         Item newItem = new Item(baseStack.getItem().getName());
-        if (newItem.getName().equals(Item.SUSPICIOUS_STEW.getName()) && !this.getEffects().isEmpty()) {
+        if (newItem.getName().equals(Items.SUSPICIOUS_STEW.getName()) && !this.getEffects().isEmpty()) {
             int i = context.nextInt(this.getEffects().size());
             Map.Entry<Effect, UniformRoll> entry = nthElement(this.getEffects().entrySet(), i); // mojang why? (this is not ordered so we hardcoded the order...
             assert entry != null;

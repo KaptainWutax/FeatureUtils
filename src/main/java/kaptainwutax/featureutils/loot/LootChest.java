@@ -60,9 +60,9 @@ public class LootChest {
     }
 
     public static class Stack {
-        private Item item;
-        private BiPredicate<Integer, Integer> predicate;
-        private int amount;
+        private final Item item;
+        private final BiPredicate<Integer, Integer> predicate;
+        private final int amount;
 
         public Stack(Item item, BiPredicate<Integer, Integer> predicate, int amount) {
             this.item = item;

@@ -6,6 +6,7 @@ import kaptainwutax.featureutils.loot.enchantment.EnchantmentInstance;
 import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.mathutils.util.Mth;
+import kaptainwutax.seedutils.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,8 +106,7 @@ public class EnchantWithLevelsFunction implements LootFunction {
     public ItemStack enchantItem(LootContext random, ItemStack itemStack, int n, boolean bl, boolean b2) {
         List<EnchantmentInstance> list = selectEnchantment(random, itemStack, n, bl, b2);
         for (EnchantmentInstance enchantmentInstance : list) {
-            itemStack.getItem().getEnchantment().add(enchantmentInstance.getName());
-            itemStack.getItem().getLevel().add(enchantmentInstance.getLevel());
+            itemStack.getItem().addEnchantment(new Pair<>(enchantmentInstance.getName(),enchantmentInstance.getLevel()));
         }
         return itemStack;
     }

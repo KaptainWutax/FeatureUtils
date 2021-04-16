@@ -5,6 +5,7 @@ import kaptainwutax.featureutils.loot.enchantment.Enchantment;
 import kaptainwutax.featureutils.loot.enchantment.Enchantments;
 import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.featureutils.loot.item.ItemStack;
+import kaptainwutax.seedutils.util.Pair;
 
 import java.util.HashSet;
 import java.util.List;
@@ -57,8 +58,7 @@ public class EnchantRandomlyFunction implements LootFunction {
         if (!(Enchantments.SingleEnchants.contains(enchantment.getName()))) {
             level = context.nextInt(enchantment.getMaxLevel()) + 1;
         }
-        newItem.getEnchantment().add(enchantment.getName());
-        newItem.getLevel().add(level);
+        newItem.addEnchantment(new Pair<>(enchantment.getName(),level));
         return new ItemStack(newItem, baseStack.getCount());
     }
 }

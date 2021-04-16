@@ -19,7 +19,7 @@ public class ItemStack {
     public boolean isEmpty(){
         if (this == EMPTY) {
             return true;
-        } else if (this.getItem() != null && this.getItem() != Item.AIR) {
+        } else if (this.getItem() != null && this.getItem() != Items.AIR) {
             return this.count <= 0;
         } else {
             return true;

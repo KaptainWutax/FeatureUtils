@@ -1,16 +1,13 @@
 package kaptainwutax.featureutils;
 
-import kaptainwutax.biomeutils.Biome;
 import kaptainwutax.biomeutils.source.OverworldBiomeSource;
 import kaptainwutax.featureutils.loot.LootChest;
 import kaptainwutax.featureutils.loot.MCLootTables;
-import kaptainwutax.featureutils.loot.item.Item;
+import kaptainwutax.featureutils.loot.item.Items;
 import kaptainwutax.featureutils.structure.BuriedTreasure;
 import kaptainwutax.featureutils.structure.RegionStructure;
 import kaptainwutax.seedutils.mc.ChunkRand;
 import kaptainwutax.seedutils.mc.MCVersion;
-import kaptainwutax.seedutils.mc.pos.BPos;
-import kaptainwutax.seedutils.mc.pos.CPos;
 import kaptainwutax.seedutils.mc.seed.WorldSeed;
 
 import static kaptainwutax.featureutils.loot.LootChest.EQUAL_TO;
@@ -20,14 +17,14 @@ public class LootTestForward {
     public static final BuriedTreasure BURIED_TREASURE = new BuriedTreasure(MCVersion.v1_16);
 
     public static LootChest TREASURE_CHEST = new LootChest(
-            LootChest.stack(Item.DIAMOND, EQUAL_TO, 2),
-            LootChest.stack(Item.COOKED_SALMON, EQUAL_TO, 2),
-            LootChest.stack(Item.HEART_OF_THE_SEA, EQUAL_TO, 1),
-            LootChest.stack(Item.EMERALD, EQUAL_TO, 8),
-            LootChest.stack(Item.TNT, EQUAL_TO, 2),
-            LootChest.stack(Item.IRON_INGOT, EQUAL_TO, 8),
-            LootChest.stack(Item.GOLD_INGOT, EQUAL_TO, 8),
-            LootChest.stack(Item.COOKED_COD, EQUAL_TO, 3)
+            LootChest.stack(Items.DIAMOND, EQUAL_TO, 2),
+            LootChest.stack(Items.COOKED_SALMON, EQUAL_TO, 2),
+            LootChest.stack(Items.HEART_OF_THE_SEA, EQUAL_TO, 1),
+            LootChest.stack(Items.EMERALD, EQUAL_TO, 8),
+            LootChest.stack(Items.TNT, EQUAL_TO, 2),
+            LootChest.stack(Items.IRON_INGOT, EQUAL_TO, 8),
+            LootChest.stack(Items.GOLD_INGOT, EQUAL_TO, 8),
+            LootChest.stack(Items.COOKED_COD, EQUAL_TO, 3)
     );
 
     public static void main(String[] args) {
