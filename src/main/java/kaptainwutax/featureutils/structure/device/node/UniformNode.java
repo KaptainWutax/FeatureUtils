@@ -50,7 +50,7 @@ public class UniformNode extends Node<RegionStructure.Config> {
     @Override
     public Set<Integer> getLiftingPoints() {
         Set<Integer> points = super.getLiftingPoints();
-        if(this.analyser.canLift())points.add(17 + this.analyser.getBits());
+        if (this.analyser.canLift()) points.add(17 + this.analyser.getBits());
         return points;
     }
 
@@ -59,16 +59,16 @@ public class UniformNode extends Node<RegionStructure.Config> {
         long regionSeed = structureSeed + RegionSeed.A * this.regionX + RegionSeed.B * this.regionZ + this.config.salt;
 
         regionSeed = LCG.JAVA.nextSeed(regionSeed ^ LCG.JAVA.multiplier);
-        int x = (int)(regionSeed >>> 17) % this.getOffset();
+        int x = (int) (regionSeed >>> 17) % this.getOffset();
         regionSeed = LCG.JAVA.nextSeed(regionSeed);
-        int z = (int)(regionSeed >>> 17) % this.getOffset();
+        int z = (int) (regionSeed >>> 17) % this.getOffset();
 
-        if(bits != 48) {
+        if (bits != 48) {
             x &= this.analyser.getMask();
             z &= this.analyser.getMask();
         }
 
-        if(!this.checker.test(x, z, bits == 48 ? Mth.MASK_48 : this.analyser.getMask(), parent))return false;
+        if (!this.checker.test(x, z, bits == 48 ? Mth.MASK_48 : this.analyser.getMask(), parent)) return false;
         return super.test(structureSeed, bits, new ParentInfo(parent, x, z, true));
     }
 
@@ -80,9 +80,9 @@ public class UniformNode extends Node<RegionStructure.Config> {
 
         public Analyser(UniformNode node) {
             super(node);
-            if(Mth.isPowerOf2(this.node.getOffset()))return;
+            if (Mth.isPowerOf2(this.node.getOffset())) return;
             this.bits = Long.numberOfTrailingZeros(this.node.getOffset());
-            if(this.bits == 0)return;
+            if (this.bits == 0) return;
             this.mask = (1 << this.bits) - 1;
             this.canLift = true;
         }

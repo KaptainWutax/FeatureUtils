@@ -50,34 +50,34 @@ public class TriangularNode extends Node<RegionStructure.Config> {
     @Override
     public Set<Integer> getLiftingPoints() {
         Set<Integer> points = super.getLiftingPoints();
-        if(this.analyser.canLift())points.add(17 + this.analyser.getBits());
+        if (this.analyser.canLift()) points.add(17 + this.analyser.getBits());
         return points;
     }
 
     @Override
     public boolean test(long structureSeed, int bits, ParentInfo parent) {
         long regionSeed = structureSeed + RegionSeed.A * this.regionX + RegionSeed.B * this.regionZ + this.config.salt;
-        int mask = bits == 48 ? (int)Mth.MASK_32 : this.analyser.getMask();
+        int mask = bits == 48 ? (int) Mth.MASK_32 : this.analyser.getMask();
 
         regionSeed = LCG.JAVA.nextSeed(regionSeed ^ LCG.JAVA.multiplier);
-        int x = (int)(regionSeed >>> 17) % this.getPeak() & mask;
+        int x = (int) (regionSeed >>> 17) % this.getPeak() & mask;
         regionSeed = LCG.JAVA.nextSeed(regionSeed);
-        x += (int)(regionSeed >>> 17) % this.getPeak() & mask;
+        x += (int) (regionSeed >>> 17) % this.getPeak() & mask;
         x /= 2;
 
         regionSeed = LCG.JAVA.nextSeed(regionSeed);
-        int z = (int)(regionSeed >>> 17) % this.getPeak() & mask;
+        int z = (int) (regionSeed >>> 17) % this.getPeak() & mask;
         regionSeed = LCG.JAVA.nextSeed(regionSeed);
-        z += (int)(regionSeed >>> 17) % this.getPeak() & mask;
+        z += (int) (regionSeed >>> 17) % this.getPeak() & mask;
         z /= 2;
 
-        if(bits != 48) {
+        if (bits != 48) {
             x &= this.analyser.getMask();
             z &= this.analyser.getMask();
         }
 
         //if(bits < 48)System.out.println("[" + structureSeed + "] " + x + ", " + z + " " + this.getPeak());
-        if(!this.checker.test(x, z, mask, parent))return false;
+        if (!this.checker.test(x, z, mask, parent)) return false;
         return super.test(structureSeed, bits, new ParentInfo(parent, x, z, true));
     }
 
@@ -89,9 +89,9 @@ public class TriangularNode extends Node<RegionStructure.Config> {
 
         public Analyser(TriangularNode node) {
             super(node);
-            if(Mth.isPowerOf2(this.node.getPeak()))return;
+            if (Mth.isPowerOf2(this.node.getPeak())) return;
             this.bits = Long.numberOfTrailingZeros(this.node.getPeak());
-            if(this.bits == 0)return;
+            if (this.bits == 0) return;
             this.mask = (1 << this.bits) - 1;
             this.canLift = true;
         }

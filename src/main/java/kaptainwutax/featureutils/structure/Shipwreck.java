@@ -18,8 +18,6 @@ import kaptainwutax.seedutils.mc.util.Mirror;
 import kaptainwutax.seedutils.mc.util.Rotation;
 
 import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.function.Function;
 
 public class Shipwreck extends UniformStructure<Shipwreck> {
     private ChunkRand random = null; // this is an internal one as it will be updated on a need to know basis
@@ -38,6 +36,10 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
 
     public Shipwreck(RegionStructure.Config config, MCVersion version) {
         super(config, version);
+    }
+
+    public static String name() {
+        return "shipwreck";
     }
 
     /**

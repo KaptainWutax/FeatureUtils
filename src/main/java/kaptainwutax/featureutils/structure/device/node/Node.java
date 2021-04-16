@@ -11,12 +11,11 @@ import java.util.Set;
 
 public abstract class Node<C extends Feature.Config> {
 
-    protected Node<?> parent;
-    protected Node<?> child;
-
     protected final C config;
     protected final int regionX;
     protected final int regionZ;
+    protected Node<?> parent;
+    protected Node<?> child;
     protected CoordChecker checker;
 
     public Node(Structure<? extends C, ?> structure, int regionX, int regionZ, CoordChecker checker) {

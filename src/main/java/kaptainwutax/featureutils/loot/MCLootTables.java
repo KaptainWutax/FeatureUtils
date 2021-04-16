@@ -1,8 +1,10 @@
 package kaptainwutax.featureutils.loot;
 
+import kaptainwutax.featureutils.loot.effect.Effects;
 import kaptainwutax.featureutils.loot.entry.EmptyEntry;
 import kaptainwutax.featureutils.loot.entry.ItemEntry;
 import kaptainwutax.featureutils.loot.function.ApplyDamageFunction;
+import kaptainwutax.featureutils.loot.function.EffectFunction;
 import kaptainwutax.featureutils.loot.function.EnchantRandomlyFunction;
 import kaptainwutax.featureutils.loot.function.EnchantWithLevelsFunction;
 import kaptainwutax.featureutils.loot.item.Item;
@@ -340,7 +342,14 @@ public class MCLootTables {
                     new ItemEntry(Item.POISONOUS_POTATO, 7).apply(uniform(2.0F, 6.0F)),
                     new ItemEntry(Item.CARROT, 7).apply(uniform(4.0F, 8.0F)),
                     new ItemEntry(Item.WHEAT, 7).apply(uniform(8.0F, 21.0F)),
-                    new ItemEntry(Item.SUSPICIOUS_STEW, 10) /* set_stew_effect */,
+                    new ItemEntry(Item.SUSPICIOUS_STEW, 10).apply(
+                            EffectFunction.builder()
+                                    .apply(Effects.NIGHT_VISION, 7.0F, 10.0F)
+                                    .apply(Effects.JUMP, 7.0F, 10.0F)
+                                    .apply(Effects.WEAKNESS, 6.0F, 8.0F)
+                                    .apply(Effects.BLINDNESS, 5.0F, 7.0F)
+                                    .apply(Effects.POISON, 10.0F, 20.0F)
+                                    .apply(Effects.SATURATION, 7.0F, 10.0F)),
                     new ItemEntry(Item.COAL, 6).apply(uniform(2.0F, 8.0F)),
                     new ItemEntry(Item.ROTTEN_FLESH, 5).apply(uniform(5.0F, 24.0F)),
                     new ItemEntry(Item.PUMPKIN, 2).apply(uniform(1.0F, 3.0F)),

@@ -38,7 +38,7 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
     public static final Set<Biome> VALID_BIOMES_15 = new HashSet<>(Arrays.asList(Biome.BAMBOO_JUNGLE, Biome.BAMBOO_JUNGLE_HILLS));
     public static final Set<Biome> INVALID_BIOMES = new HashSet<>(Arrays.asList(Biome.OCEAN, Biome.SWAMP, Biome.RIVER, Biome.FROZEN_OCEAN,
             Biome.FROZEN_RIVER, Biome.BEACH, Biome.DEEP_OCEAN, Biome.SNOWY_BEACH, Biome.WARM_OCEAN, Biome.LUKEWARM_OCEAN, Biome.COLD_OCEAN,
-            Biome.DEEP_WARM_OCEAN, Biome.DEEP_LUKEWARM_OCEAN, Biome.DEEP_COLD_OCEAN, Biome.DEEP_FROZEN_OCEAN,Biome.SWAMP_HILLS));
+            Biome.DEEP_WARM_OCEAN, Biome.DEEP_LUKEWARM_OCEAN, Biome.DEEP_COLD_OCEAN, Biome.DEEP_FROZEN_OCEAN, Biome.SWAMP_HILLS));
 
     static {
         VALID_BIOMES_15.addAll(VALID_BIOMES_16);
@@ -50,6 +50,10 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 
     public Stronghold(Config config, MCVersion version) {
         super(config, version);
+    }
+
+    public static String name() {
+        return "stronghold";
     }
 
     public int getDistance() {
@@ -170,6 +174,26 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
             super(pieceId);
         }
 
+        protected static Piece getNextIntersectingPiece(List<Piece> pieces, BlockBox box) {
+            Iterator<Piece> var2 = pieces.iterator();
+
+            Piece piece;
+
+            do {
+                if (!var2.hasNext()) {
+                    return null;
+                }
+
+                piece = var2.next();
+            } while (piece.getBoundingBox() == null || !piece.getBoundingBox().intersects(box));
+
+            return piece;
+        }
+
+        protected static boolean isHighEnough(BlockBox box) {
+            return box != null && box.minY > 10;
+        }
+
         public void populatePieces(StrongholdGenerator gen, Start start, List<Piece> pieces, JRand rand) {
         }
 
@@ -219,26 +243,6 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
             if (rand.nextFloat() < chance) {
                 // do nothing yet
             }
-        }
-
-        protected static Piece getNextIntersectingPiece(List<Piece> pieces, BlockBox box) {
-            Iterator<Piece> var2 = pieces.iterator();
-
-            Piece piece;
-
-            do {
-                if (!var2.hasNext()) {
-                    return null;
-                }
-
-                piece = var2.next();
-            } while (piece.getBoundingBox() == null || !piece.getBoundingBox().intersects(box));
-
-            return piece;
-        }
-
-        protected static boolean isHighEnough(BlockBox box) {
-            return box != null && box.minY > 10;
         }
 
         protected Piece generateSmallDoorChildrenForward(StrongholdGenerator gen, Start start, List<Piece> pieces, JRand rand, int int_1, int int_2) {

@@ -8,7 +8,6 @@ import kaptainwutax.seedutils.mc.MCVersion;
 import kaptainwutax.seedutils.mc.pos.BPos;
 import kaptainwutax.seedutils.mc.util.BlockBox;
 import kaptainwutax.seedutils.mc.util.Direction;
-import kaptainwutax.seedutils.util.math.Vec3i;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,21 +17,54 @@ import java.util.function.Predicate;
 
 public class StrongholdGenerator {
 
-    private final MCVersion version;
-    private boolean[] eyes=null;
-
-    protected List<PieceWeight<Stronghold.Piece>> pieceWeights = null;
-    public Class<? extends Stronghold.Piece> currentPiece = null;
-    protected int totalWeight;
-
     public final List<Stronghold.Piece> pieceList = new ArrayList<>();
+    private final MCVersion version;
+    public Class<? extends Stronghold.Piece> currentPiece = null;
     public BlockBox strongholdBox = null;
-
+    protected List<PieceWeight<Stronghold.Piece>> pieceWeights = null;
+    protected int totalWeight;
     protected Predicate<Stronghold.Piece> loopPredicate;
     protected boolean halted;
+    private boolean[] eyes = null;
 
     public StrongholdGenerator(MCVersion version) {
         this.version = version;
+    }
+
+    public static long getStrongholdSalt(MCVersion version) {
+        return version.isOlderThan(MCVersion.v1_16) ? 20003L : 50000L;
+    }
+
+    private static Stronghold.Piece classToPiece(Class<? extends Stronghold.Piece> pieceClass,
+                                                 List<Stronghold.Piece> pieceList, JRand rand,
+                                                 int x, int y, int z, Direction facing, int pieceId) {
+        Stronghold.Piece piece = null;
+
+        if (pieceClass == Corridor.class) {
+            piece = Corridor.createPiece(pieceList, rand, x, y, z, facing, pieceId);
+        } else if (pieceClass == PrisonHall.class) {
+            piece = PrisonHall.createPiece(pieceList, rand, x, y, z, facing, pieceId);
+        } else if (pieceClass == LeftTurn.class) {
+            piece = LeftTurn.createPiece(pieceList, rand, x, y, z, facing, pieceId);
+        } else if (pieceClass == RightTurn.class) {
+            piece = RightTurn.createPiece(pieceList, rand, x, y, z, facing, pieceId);
+        } else if (pieceClass == SquareRoom.class) {
+            piece = SquareRoom.createPiece(pieceList, rand, x, y, z, facing, pieceId);
+        } else if (pieceClass == Stairs.class) {
+            piece = Stairs.createPiece(pieceList, rand, x, y, z, facing, pieceId);
+        } else if (pieceClass == SpiralStaircase.class) {
+            piece = SpiralStaircase.createPiece(pieceList, rand, x, y, z, facing, pieceId);
+        } else if (pieceClass == FiveWayCrossing.class) {
+            piece = FiveWayCrossing.createPiece(pieceList, rand, x, y, z, facing, pieceId);
+        } else if (pieceClass == ChestCorridor.class) {
+            piece = ChestCorridor.createPiece(pieceList, rand, x, y, z, facing, pieceId);
+        } else if (pieceClass == Library.class) {
+            piece = Library.createPiece(pieceList, rand, x, y, z, facing, pieceId);
+        } else if (pieceClass == PortalRoom.class) {
+            piece = PortalRoom.createPiece(pieceList, x, y, z, facing, pieceId);
+        }
+
+        return piece;
     }
 
     public MCVersion getVersion() {
@@ -68,9 +100,9 @@ public class StrongholdGenerator {
                     if (piece.getBoundingBox().intersects(mainBox) && !piece.process(rand, pos)) {
                         iterator.remove();
                     }
-                    if (piece instanceof PortalRoom){
-                        eyes=((PortalRoom)piece).getEyes();
-                        if (portalOnly){
+                    if (piece instanceof PortalRoom) {
+                        eyes = ((PortalRoom) piece).getEyes();
+                        if (portalOnly) {
                             break;
                         }
                     }
@@ -83,10 +115,6 @@ public class StrongholdGenerator {
 
     public boolean[] getEyes() {
         return eyes;
-    }
-
-    public static long getStrongholdSalt(MCVersion version) {
-        return version.isOlderThan(MCVersion.v1_16) ? 20003L : 50000L;
     }
 
     public boolean generate(long worldSeed, int chunkX, int chunkZ, ChunkRand rand, Predicate<Stronghold.Piece> shouldContinue) {
@@ -230,38 +258,6 @@ public class StrongholdGenerator {
                 return null;
             }
         }
-    }
-
-    private static Stronghold.Piece classToPiece(Class<? extends Stronghold.Piece> pieceClass,
-                                                 List<Stronghold.Piece> pieceList, JRand rand,
-                                                 int x, int y, int z, Direction facing, int pieceId) {
-        Stronghold.Piece piece = null;
-
-        if (pieceClass == Corridor.class) {
-            piece = Corridor.createPiece(pieceList, rand, x, y, z, facing, pieceId);
-        } else if (pieceClass == PrisonHall.class) {
-            piece = PrisonHall.createPiece(pieceList, rand, x, y, z, facing, pieceId);
-        } else if (pieceClass == LeftTurn.class) {
-            piece = LeftTurn.createPiece(pieceList, rand, x, y, z, facing, pieceId);
-        } else if (pieceClass == RightTurn.class) {
-            piece = RightTurn.createPiece(pieceList, rand, x, y, z, facing, pieceId);
-        } else if (pieceClass == SquareRoom.class) {
-            piece = SquareRoom.createPiece(pieceList, rand, x, y, z, facing, pieceId);
-        } else if (pieceClass == Stairs.class) {
-            piece = Stairs.createPiece(pieceList, rand, x, y, z, facing, pieceId);
-        } else if (pieceClass == SpiralStaircase.class) {
-            piece = SpiralStaircase.createPiece(pieceList, rand, x, y, z, facing, pieceId);
-        } else if (pieceClass == FiveWayCrossing.class) {
-            piece = FiveWayCrossing.createPiece(pieceList, rand, x, y, z, facing, pieceId);
-        } else if (pieceClass == ChestCorridor.class) {
-            piece = ChestCorridor.createPiece(pieceList, rand, x, y, z, facing, pieceId);
-        } else if (pieceClass == Library.class) {
-            piece = Library.createPiece(pieceList, rand, x, y, z, facing, pieceId);
-        } else if (pieceClass == PortalRoom.class) {
-            piece = PortalRoom.createPiece(pieceList, x, y, z, facing, pieceId);
-        }
-
-        return piece;
     }
 
     private boolean canAddStructurePieces() {

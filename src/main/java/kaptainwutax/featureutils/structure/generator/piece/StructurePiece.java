@@ -8,26 +8,25 @@ import java.util.List;
 
 public class StructurePiece<T extends StructurePiece<T>> {
 
-	protected int pieceId;
-	public List<T> children = new ArrayList<>();
+    public List<T> children = new ArrayList<>();
+    protected int pieceId;
+    protected BlockBox boundingBox;
+    protected Direction facing;
 
-	protected BlockBox boundingBox;
-	protected Direction facing;
+    public StructurePiece(int pieceId) {
+        this.pieceId = pieceId;
+    }
 
-	public StructurePiece(int pieceId) {
-		this.pieceId = pieceId;
-	}
+    public Direction getFacing() {
+        return this.facing;
+    }
 
-	public Direction getFacing() {
-		return this.facing;
-	}
+    public BlockBox getBoundingBox() {
+        return this.boundingBox;
+    }
 
-	public BlockBox getBoundingBox() {
-		return this.boundingBox;
-	}
-
-	public void setOrientation(Direction facing) {
-		this.facing = facing;
-	}
+    public void setOrientation(Direction facing) {
+        this.facing = facing;
+    }
 
 }
