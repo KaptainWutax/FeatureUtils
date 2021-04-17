@@ -2,7 +2,7 @@ package kaptainwutax.featureutils.loot.effect;
 
 import kaptainwutax.featureutils.loot.effect.attribute.AttributeModifier;
 import kaptainwutax.featureutils.loot.effect.attribute.Attributes;
-import kaptainwutax.seedutils.util.Pair;
+import kaptainwutax.mcutils.util.data.Pair;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

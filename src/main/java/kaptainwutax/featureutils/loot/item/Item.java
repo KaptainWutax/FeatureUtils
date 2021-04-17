@@ -1,7 +1,7 @@
 package kaptainwutax.featureutils.loot.item;
 
 import kaptainwutax.featureutils.loot.effect.Effect;
-import kaptainwutax.seedutils.util.Pair;
+import kaptainwutax.mcutils.util.data.Pair;
 
 import java.util.ArrayList;
 import java.util.Objects;

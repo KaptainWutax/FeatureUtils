@@ -3,7 +3,8 @@ package kaptainwutax.featureutils.structure.device;
 import kaptainwutax.featureutils.Feature;
 import kaptainwutax.featureutils.structure.device.node.Node;
 import kaptainwutax.mathutils.util.Mth;
-import kaptainwutax.seedutils.util.ThreadPool;
+import kaptainwutax.mcutils.util.data.ThreadPool;
+
 
 import java.util.ArrayList;
 import java.util.List;

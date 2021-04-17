@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.loot;
 
-import kaptainwutax.seedutils.mc.ChunkRand;
+
+import kaptainwutax.mcutils.rand.ChunkRand;
 
 public class LootContext extends ChunkRand {
 

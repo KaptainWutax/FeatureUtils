@@ -7,16 +7,15 @@ import kaptainwutax.featureutils.loot.LootTable;
 import kaptainwutax.featureutils.loot.MCLootTables;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.featureutils.loot.roll.UniformRoll;
-import kaptainwutax.seedutils.mc.ChunkRand;
-import kaptainwutax.seedutils.mc.Dimension;
-import kaptainwutax.seedutils.mc.MCVersion;
-import kaptainwutax.seedutils.mc.VersionMap;
-import kaptainwutax.seedutils.mc.pos.BPos;
-import kaptainwutax.seedutils.mc.pos.CPos;
-import kaptainwutax.seedutils.mc.pos.RPos;
-import kaptainwutax.seedutils.mc.util.BlockBox;
-import kaptainwutax.seedutils.mc.util.Mirror;
-import kaptainwutax.seedutils.mc.util.Rotation;
+import kaptainwutax.mcutils.rand.ChunkRand; import kaptainwutax.mcutils.state.Dimension;
+import kaptainwutax.mcutils.version.MCVersion;
+import kaptainwutax.mcutils.version.VersionMap;
+import kaptainwutax.mcutils.util.pos.BPos;
+import kaptainwutax.mcutils.util.pos.CPos;
+import kaptainwutax.mcutils.util.pos.RPos;
+import kaptainwutax.mcutils.util.block.BlockBox;
+import kaptainwutax.mcutils.util.block.BlockMirror;
+import kaptainwutax.mcutils.util.block.BlockRotation;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,7 +24,7 @@ import java.util.stream.IntStream;
 public class Shipwreck extends UniformStructure<Shipwreck> {
     private ChunkRand random = null; // this is an internal one as it will be updated on a need to know basis
     private Boolean isBeached = null;
-    private Rotation rotation = null;
+    private BlockRotation rotation = null;
     private String type = null;
 
     public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
@@ -77,12 +76,12 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
      * @param version
      * @return
      */
-    public Rotation getRotation(long structureSeed, CPos chunkPos, MCVersion version) {
+    public BlockRotation getRotation(long structureSeed, CPos chunkPos, MCVersion version) {
         // first call does the seeding the rest doesn't
         if (rotation == null) {
             random = new ChunkRand();
             random.setCarverSeed(structureSeed, chunkPos.getX(), chunkPos.getZ(), version);
-            rotation = Rotation.getRandom(random);
+            rotation = BlockRotation.getRandom(random);
         }
         return rotation;
     }
@@ -132,7 +131,7 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
             System.err.println("Provided chunkpos " + start + " was wrong, correct was " + validation);
             return null;
         }
-        Rotation rotation = this.getRotation(structureSeed, start, this.getVersion());
+        BlockRotation rotation = this.getRotation(structureSeed, start, this.getVersion());
         String type = this.getType();
         if (!STRUCTURE_SIZE.containsKey(type) || !STRUCTURE_TO_LOOT.containsKey(type)) {
             System.err.println("We don't support this type yet " + type);
@@ -143,7 +142,7 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
         HashMap<LootType, BPos> lootPos = STRUCTURE_TO_LOOT.get(type);
         BPos anchor = start.toBlockPos(90);
         BPos pivot = new BPos(4, 0, 15); // this is fixed for shipwreck
-        Mirror mirror = Mirror.NONE; // this is fixed for shipwreck
+        BlockMirror mirror = BlockMirror.NONE; // this is fixed for shipwreck
         BlockBox blockBox = BlockBox.getBoundingBox(anchor, rotation, pivot, mirror, size);
         BlockBox rotated = blockBox.getRotated(rotation);
         HashMap<CPos, LinkedList<LootType>> cPosLootTypeHashMap = new HashMap<>();
@@ -176,6 +175,7 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
             }
             rand.advance(chestData.numberInChunk * 2L);
             rand.advance(chestData.index * 2L);
+            System.out.println(rand.getSeed());
             LootContext context = new LootContext(rand.nextLong());
             result.put(lootType, indexed?lootType.lootTable.generateIndexed(context):lootType.lootTable.generate(context));
         }

@@ -6,7 +6,7 @@ import kaptainwutax.featureutils.structure.device.CoordChecker;
 import kaptainwutax.featureutils.structure.device.ParentInfo;
 import kaptainwutax.mathutils.util.Mth;
 import kaptainwutax.seedutils.lcg.LCG;
-import kaptainwutax.seedutils.mc.seed.RegionSeed;
+import kaptainwutax.mcutils.rand.seed.RegionSeed;
 
 import java.util.Set;
 

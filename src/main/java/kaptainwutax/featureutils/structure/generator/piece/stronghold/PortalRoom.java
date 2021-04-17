@@ -2,23 +2,23 @@ package kaptainwutax.featureutils.structure.generator.piece.stronghold;
 
 import kaptainwutax.featureutils.structure.Stronghold;
 import kaptainwutax.featureutils.structure.generator.StrongholdGenerator;
-import kaptainwutax.seedutils.lcg.rand.JRand;
-import kaptainwutax.seedutils.mc.pos.BPos;
-import kaptainwutax.seedutils.mc.util.BlockBox;
-import kaptainwutax.seedutils.mc.util.Direction;
+import kaptainwutax.seedutils.rand.JRand;
+import kaptainwutax.mcutils.util.pos.BPos;
+import kaptainwutax.mcutils.util.block.BlockBox;
+import kaptainwutax.mcutils.util.block.BlockDirection;
 
 import java.util.List;
 
 public class PortalRoom extends Stronghold.Piece {
     private final boolean[] eyes = new boolean[12];
 
-    public PortalRoom(int pieceId, BlockBox boundingBox, Direction facing) {
+    public PortalRoom(int pieceId, BlockBox boundingBox, BlockDirection facing) {
         super(pieceId);
         this.setOrientation(facing);
         this.boundingBox = boundingBox;
     }
 
-    public static PortalRoom createPiece(List<Stronghold.Piece> pieces, int x, int y, int z, Direction facing, int pieceId) {
+    public static PortalRoom createPiece(List<Stronghold.Piece> pieces, int x, int y, int z, BlockDirection facing, int pieceId) {
         BlockBox box = BlockBox.rotated(x, y, z, -4, -1, 0, 11, 8, 16, facing.getRotation());
         return Stronghold.Piece.isHighEnough(box) && Stronghold.Piece.getNextIntersectingPiece(pieces, box) == null ? new PortalRoom(pieceId, box, facing) : null;
     }

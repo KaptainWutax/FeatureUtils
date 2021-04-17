@@ -1,7 +1,8 @@
 package kaptainwutax.featureutils.loot.enchantment;
 
 import kaptainwutax.featureutils.loot.item.ItemStack;
-import kaptainwutax.seedutils.mc.MCVersion;
+import kaptainwutax.mcutils.version.MCVersion;
+
 
 import java.util.*;
 

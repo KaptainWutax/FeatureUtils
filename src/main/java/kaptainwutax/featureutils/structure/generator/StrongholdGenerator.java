@@ -2,12 +2,12 @@ package kaptainwutax.featureutils.structure.generator;
 
 import kaptainwutax.featureutils.structure.Stronghold;
 import kaptainwutax.featureutils.structure.generator.piece.stronghold.*;
-import kaptainwutax.seedutils.lcg.rand.JRand;
-import kaptainwutax.seedutils.mc.ChunkRand;
-import kaptainwutax.seedutils.mc.MCVersion;
-import kaptainwutax.seedutils.mc.pos.BPos;
-import kaptainwutax.seedutils.mc.util.BlockBox;
-import kaptainwutax.seedutils.mc.util.Direction;
+import kaptainwutax.seedutils.rand.JRand;
+import kaptainwutax.mcutils.rand.ChunkRand;
+import kaptainwutax.mcutils.version.MCVersion;
+import kaptainwutax.mcutils.util.pos.BPos;
+import kaptainwutax.mcutils.util.block.BlockBox;
+import kaptainwutax.mcutils.util.block.BlockDirection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +37,7 @@ public class StrongholdGenerator {
 
     private static Stronghold.Piece classToPiece(Class<? extends Stronghold.Piece> pieceClass,
                                                  List<Stronghold.Piece> pieceList, JRand rand,
-                                                 int x, int y, int z, Direction facing, int pieceId) {
+                                                 int x, int y, int z, BlockDirection facing, int pieceId) {
         Stronghold.Piece piece = null;
 
         if (pieceClass == Corridor.class) {
@@ -182,7 +182,7 @@ public class StrongholdGenerator {
     }
 
     public Stronghold.Piece generateAndAddPiece(Start startPiece, List<Stronghold.Piece> pieces, JRand rand,
-                                                int x, int y, int z, Direction facing, int pieceId) {
+                                                int x, int y, int z, BlockDirection facing, int pieceId) {
         if (pieceId > 50) {
             return null;
         } else if (Math.abs(x - startPiece.getBoundingBox().minX) <= 112 && Math.abs(z - startPiece.getBoundingBox().minZ) <= 112) {
@@ -205,7 +205,7 @@ public class StrongholdGenerator {
     }
 
     private Stronghold.Piece getNextStructurePiece(Start startPiece, List<Stronghold.Piece> pieceList, JRand rand,
-                                                   int x, int y, int z, Direction facing, int pieceId) {
+                                                   int x, int y, int z, BlockDirection facing, int pieceId) {
         if (!this.canAddStructurePieces()) {
             return null;
         } else {

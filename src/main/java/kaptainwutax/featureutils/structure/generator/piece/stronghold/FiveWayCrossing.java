@@ -2,10 +2,10 @@ package kaptainwutax.featureutils.structure.generator.piece.stronghold;
 
 import kaptainwutax.featureutils.structure.Stronghold;
 import kaptainwutax.featureutils.structure.generator.StrongholdGenerator;
-import kaptainwutax.seedutils.lcg.rand.JRand;
-import kaptainwutax.seedutils.mc.pos.BPos;
-import kaptainwutax.seedutils.mc.util.BlockBox;
-import kaptainwutax.seedutils.mc.util.Direction;
+import kaptainwutax.seedutils.rand.JRand;
+import kaptainwutax.mcutils.util.pos.BPos;
+import kaptainwutax.mcutils.util.block.BlockBox;
+import kaptainwutax.mcutils.util.block.BlockDirection;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class FiveWayCrossing extends Stronghold.Piece {
     private final boolean lowerRightExists;
     private final boolean upperRightExists;
 
-    public FiveWayCrossing(int pieceId, JRand rand, BlockBox boundingBox, Direction facing) {
+    public FiveWayCrossing(int pieceId, JRand rand, BlockBox boundingBox, BlockDirection facing) {
         super(pieceId);
         this.setOrientation(facing);
         rand.nextInt(5); //Random entrance.
@@ -27,7 +27,7 @@ public class FiveWayCrossing extends Stronghold.Piece {
         this.upperRightExists = rand.nextInt(3) > 0;
     }
 
-    public static FiveWayCrossing createPiece(List<Stronghold.Piece> pieces, JRand rand, int x, int y, int z, Direction facing, int pieceId) {
+    public static FiveWayCrossing createPiece(List<Stronghold.Piece> pieces, JRand rand, int x, int y, int z, BlockDirection facing, int pieceId) {
         BlockBox box = BlockBox.rotated(x, y, z, -4, -3, 0, 10, 9, 11, facing.getRotation());
         return Stronghold.Piece.isHighEnough(box) && Stronghold.Piece.getNextIntersectingPiece(pieces, box) == null ? new FiveWayCrossing(pieceId, rand, box, facing) : null;
     }
@@ -36,9 +36,9 @@ public class FiveWayCrossing extends Stronghold.Piece {
     public void populatePieces(StrongholdGenerator gen, Start start, List<Stronghold.Piece> pieces, JRand rand) {
         int int_1 = 3;
         int int_2 = 5;
-        Direction facing = this.getFacing();
+        BlockDirection facing = this.getFacing();
 
-        if (facing == Direction.WEST || facing == Direction.NORTH) {
+        if (facing == BlockDirection.WEST || facing == BlockDirection.NORTH) {
             int_1 = 8 - int_1;
             int_2 = 8 - int_2;
         }

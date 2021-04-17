@@ -5,15 +5,14 @@ import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.structure.generator.StrongholdGenerator;
 import kaptainwutax.featureutils.structure.generator.piece.StructurePiece;
 import kaptainwutax.featureutils.structure.generator.piece.stronghold.Start;
-import kaptainwutax.seedutils.lcg.rand.JRand;
-import kaptainwutax.seedutils.mc.ChunkRand;
-import kaptainwutax.seedutils.mc.Dimension;
-import kaptainwutax.seedutils.mc.MCVersion;
-import kaptainwutax.seedutils.mc.VersionMap;
-import kaptainwutax.seedutils.mc.pos.BPos;
-import kaptainwutax.seedutils.mc.pos.CPos;
-import kaptainwutax.seedutils.mc.util.BlockBox;
-import kaptainwutax.seedutils.mc.util.Direction;
+import kaptainwutax.seedutils.rand.JRand;
+import kaptainwutax.mcutils.rand.ChunkRand; import kaptainwutax.mcutils.state.Dimension;
+import kaptainwutax.mcutils.version.MCVersion;
+import kaptainwutax.mcutils.version.VersionMap;
+import kaptainwutax.mcutils.util.pos.BPos;
+import kaptainwutax.mcutils.util.pos.CPos;
+import kaptainwutax.mcutils.util.block.BlockBox;
+import kaptainwutax.mcutils.util.block.BlockDirection;
 
 import java.util.*;
 
@@ -246,17 +245,17 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
         }
 
         protected Piece generateSmallDoorChildrenForward(StrongholdGenerator gen, Start start, List<Piece> pieces, JRand rand, int int_1, int int_2) {
-            Direction facing = this.getFacing();
+            BlockDirection facing = this.getFacing();
 
             if (facing == null) {
                 return null;
-            } else if (facing == Direction.NORTH) {
+            } else if (facing == BlockDirection.NORTH) {
                 return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.minX + int_1, this.boundingBox.minY + int_2, this.boundingBox.minZ - 1, facing, this.pieceId);
-            } else if (facing == Direction.SOUTH) {
+            } else if (facing == BlockDirection.SOUTH) {
                 return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.minX + int_1, this.boundingBox.minY + int_2, this.boundingBox.maxZ + 1, facing, this.pieceId);
-            } else if (facing == Direction.WEST) {
+            } else if (facing == BlockDirection.WEST) {
                 return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.minX - 1, this.boundingBox.minY + int_2, this.boundingBox.minZ + int_1, facing, this.pieceId);
-            } else if (facing == Direction.EAST) {
+            } else if (facing == BlockDirection.EAST) {
                 return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.maxX + 1, this.boundingBox.minY + int_2, this.boundingBox.minZ + int_1, facing, this.pieceId);
             }
 
@@ -264,36 +263,36 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
         }
 
         protected Piece generateSmallDoorChildrenLeft(StrongholdGenerator gen, Start start, List<Piece> pieces, JRand rand, int int_1, int int_2) {
-            Direction facing = this.getFacing();
+            BlockDirection facing = this.getFacing();
 
             if (facing == null) {
                 return null;
-            } else if (facing == Direction.NORTH) {
-                return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.minX - 1, this.boundingBox.minY + int_1, this.boundingBox.minZ + int_2, Direction.WEST, this.pieceId);
-            } else if (facing == Direction.SOUTH) {
-                return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.minX - 1, this.boundingBox.minY + int_1, this.boundingBox.minZ + int_2, Direction.WEST, this.pieceId);
-            } else if (facing == Direction.WEST) {
-                return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.minX + int_2, this.boundingBox.minY + int_1, this.boundingBox.minZ - 1, Direction.NORTH, this.pieceId);
-            } else if (facing == Direction.EAST) {
-                return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.minX + int_2, this.boundingBox.minY + int_1, this.boundingBox.minZ - 1, Direction.NORTH, this.pieceId);
+            } else if (facing == BlockDirection.NORTH) {
+                return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.minX - 1, this.boundingBox.minY + int_1, this.boundingBox.minZ + int_2, BlockDirection.WEST, this.pieceId);
+            } else if (facing == BlockDirection.SOUTH) {
+                return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.minX - 1, this.boundingBox.minY + int_1, this.boundingBox.minZ + int_2, BlockDirection.WEST, this.pieceId);
+            } else if (facing == BlockDirection.WEST) {
+                return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.minX + int_2, this.boundingBox.minY + int_1, this.boundingBox.minZ - 1, BlockDirection.NORTH, this.pieceId);
+            } else if (facing == BlockDirection.EAST) {
+                return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.minX + int_2, this.boundingBox.minY + int_1, this.boundingBox.minZ - 1, BlockDirection.NORTH, this.pieceId);
             }
 
             return null;
         }
 
         protected Piece generateSmallDoorChildRight(StrongholdGenerator gen, Start start, List<Piece> pieces, JRand rand, int int_1, int int_2) {
-            Direction facing = this.getFacing();
+            BlockDirection facing = this.getFacing();
 
             if (facing == null) {
                 return null;
-            } else if (facing == Direction.NORTH) {
-                return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.maxX + 1, this.boundingBox.minY + int_1, this.boundingBox.minZ + int_2, Direction.EAST, this.pieceId);
-            } else if (facing == Direction.SOUTH) {
-                return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.maxX + 1, this.boundingBox.minY + int_1, this.boundingBox.minZ + int_2, Direction.EAST, this.pieceId);
-            } else if (facing == Direction.WEST) {
-                return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.minX + int_2, this.boundingBox.minY + int_1, this.boundingBox.maxZ + 1, Direction.SOUTH, this.pieceId);
-            } else if (facing == Direction.EAST) {
-                return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.minX + int_2, this.boundingBox.minY + int_1, this.boundingBox.maxZ + 1, Direction.SOUTH, this.pieceId);
+            } else if (facing == BlockDirection.NORTH) {
+                return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.maxX + 1, this.boundingBox.minY + int_1, this.boundingBox.minZ + int_2, BlockDirection.EAST, this.pieceId);
+            } else if (facing == BlockDirection.SOUTH) {
+                return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.maxX + 1, this.boundingBox.minY + int_1, this.boundingBox.minZ + int_2, BlockDirection.EAST, this.pieceId);
+            } else if (facing == BlockDirection.WEST) {
+                return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.minX + int_2, this.boundingBox.minY + int_1, this.boundingBox.maxZ + 1, BlockDirection.SOUTH, this.pieceId);
+            } else if (facing == BlockDirection.EAST) {
+                return gen.generateAndAddPiece(start, pieces, rand, this.boundingBox.minX + int_2, this.boundingBox.minY + int_1, this.boundingBox.maxZ + 1, BlockDirection.SOUTH, this.pieceId);
             }
 
             return null;

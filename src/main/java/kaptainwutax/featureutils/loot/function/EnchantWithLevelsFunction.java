@@ -6,7 +6,7 @@ import kaptainwutax.featureutils.loot.enchantment.EnchantmentInstance;
 import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.mathutils.util.Mth;
-import kaptainwutax.seedutils.util.Pair;
+import kaptainwutax.mcutils.util.data.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;

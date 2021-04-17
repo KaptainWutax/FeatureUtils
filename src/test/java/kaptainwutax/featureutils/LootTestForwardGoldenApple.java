@@ -7,9 +7,9 @@ import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.featureutils.loot.item.Items;
 import kaptainwutax.featureutils.structure.DesertPyramid;
 import kaptainwutax.featureutils.structure.RegionStructure;
-import kaptainwutax.seedutils.mc.ChunkRand;
-import kaptainwutax.seedutils.mc.MCVersion;
-import kaptainwutax.seedutils.mc.seed.WorldSeed;
+import kaptainwutax.mcutils.rand.ChunkRand;
+import kaptainwutax.mcutils.rand.seed.WorldSeed;
+import kaptainwutax.mcutils.version.MCVersion;
 
 import java.util.List;
 

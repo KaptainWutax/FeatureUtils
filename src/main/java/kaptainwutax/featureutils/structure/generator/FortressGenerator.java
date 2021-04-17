@@ -1,8 +1,8 @@
 package kaptainwutax.featureutils.structure.generator;
 
 
-import kaptainwutax.seedutils.mc.MCVersion;
-import kaptainwutax.seedutils.util.UnsupportedVersion;
+import kaptainwutax.mcutils.version.MCVersion;
+import kaptainwutax.mcutils.version.UnsupportedVersion;
 
 import java.util.ArrayList;
 import java.util.Arrays;

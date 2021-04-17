@@ -7,8 +7,8 @@ import kaptainwutax.featureutils.loot.item.Items;
 import kaptainwutax.featureutils.structure.BuriedTreasure;
 import kaptainwutax.featureutils.structure.RegionStructure;
 import kaptainwutax.seedutils.lcg.LCG;
-import kaptainwutax.seedutils.mc.ChunkRand;
-import kaptainwutax.seedutils.mc.MCVersion;
+import kaptainwutax.mcutils.rand.ChunkRand;
+import kaptainwutax.mcutils.version.MCVersion;
 import mjtb49.hashreversals.ChunkRandomReverser;
 
 import static kaptainwutax.featureutils.loot.LootChest.EQUAL_TO;

@@ -2,23 +2,23 @@ package kaptainwutax.featureutils.structure.generator.piece.stronghold;
 
 import kaptainwutax.featureutils.structure.Stronghold;
 import kaptainwutax.featureutils.structure.generator.StrongholdGenerator;
-import kaptainwutax.seedutils.lcg.rand.JRand;
-import kaptainwutax.seedutils.mc.pos.BPos;
-import kaptainwutax.seedutils.mc.util.BlockBox;
-import kaptainwutax.seedutils.mc.util.Direction;
+import kaptainwutax.seedutils.rand.JRand;
+import kaptainwutax.mcutils.util.pos.BPos;
+import kaptainwutax.mcutils.util.block.BlockBox;
+import kaptainwutax.mcutils.util.block.BlockDirection;
 
 import java.util.List;
 
 public class PrisonHall extends Stronghold.Piece {
 
-    public PrisonHall(int pieceId, JRand rand, BlockBox boundingBox, Direction facing) {
+    public PrisonHall(int pieceId, JRand rand, BlockBox boundingBox, BlockDirection facing) {
         super(pieceId);
         this.setOrientation(facing);
         rand.nextInt(5); //Random entrance.
         this.boundingBox = boundingBox;
     }
 
-    public static PrisonHall createPiece(List<Stronghold.Piece> pieces, JRand rand, int x, int y, int z, Direction facing, int pieceId) {
+    public static PrisonHall createPiece(List<Stronghold.Piece> pieces, JRand rand, int x, int y, int z, BlockDirection facing, int pieceId) {
         BlockBox box = BlockBox.rotated(x, y, z, -1, -1, 0, 9, 5, 11, facing.getRotation());
         return Stronghold.Piece.isHighEnough(box) && Stronghold.Piece.getNextIntersectingPiece(pieces, box) == null ? new PrisonHall(pieceId, rand, box, facing) : null;
     }

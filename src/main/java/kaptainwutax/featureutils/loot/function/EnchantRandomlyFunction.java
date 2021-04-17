@@ -5,7 +5,7 @@ import kaptainwutax.featureutils.loot.enchantment.Enchantment;
 import kaptainwutax.featureutils.loot.enchantment.Enchantments;
 import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.featureutils.loot.item.ItemStack;
-import kaptainwutax.seedutils.util.Pair;
+import kaptainwutax.mcutils.util.data.Pair;
 
 import java.util.HashSet;
 import java.util.List;

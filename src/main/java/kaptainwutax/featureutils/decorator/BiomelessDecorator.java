@@ -1,8 +1,8 @@
 package kaptainwutax.featureutils.decorator;
 
 import kaptainwutax.biomeutils.Biome;
-import kaptainwutax.seedutils.mc.ChunkRand;
-import kaptainwutax.seedutils.mc.MCVersion;
+import kaptainwutax.mcutils.rand.ChunkRand;
+import kaptainwutax.mcutils.version.MCVersion;
 
 public abstract class BiomelessDecorator<C extends BiomelessDecorator.Config, D extends BiomelessDecorator.Data<?>> extends Decorator<C, D> {
 

@@ -1,6 +1,6 @@
 package kaptainwutax.featureutils.structure;
 
-import kaptainwutax.seedutils.mc.MCVersion;
+import kaptainwutax.mcutils.version.MCVersion;
 
 public abstract class OldStructure<T extends OldStructure<T>> extends UniformStructure<T> {
 

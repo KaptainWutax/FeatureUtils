@@ -2,11 +2,11 @@ package kaptainwutax.featureutils;
 
 import kaptainwutax.biomeutils.source.OverworldBiomeSource;
 import kaptainwutax.featureutils.structure.Shipwreck;
-import kaptainwutax.seedutils.mc.ChunkRand;
-import kaptainwutax.seedutils.mc.MCVersion;
-import kaptainwutax.seedutils.mc.pos.BPos;
-import kaptainwutax.seedutils.mc.pos.CPos;
-import kaptainwutax.seedutils.mc.pos.RPos;
+import kaptainwutax.mcutils.rand.ChunkRand;
+import kaptainwutax.mcutils.version.MCVersion;
+import kaptainwutax.mcutils.util.pos.BPos;
+import kaptainwutax.mcutils.util.pos.CPos;
+import kaptainwutax.mcutils.util.pos.RPos;
 
 public class LootTestShipwreck {
     public static void main(String[] args) {
@@ -17,8 +17,8 @@ public class LootTestShipwreck {
 
     public static void test3() {
         ChunkRand rand = new ChunkRand();
-        long worldSeed = -7452078565189757274L;
-        CPos cPos = new BPos( -279,0, -487).toChunkPos();
+        long worldSeed = 2276366175191987160L;
+        CPos cPos = new BPos( -1399,0,-2999).toChunkPos();
         System.out.println("Target: " + cPos.toBlockPos());
         MCVersion version = MCVersion.v1_16;
         Shipwreck shipwreck = new Shipwreck(version);
@@ -34,7 +34,7 @@ public class LootTestShipwreck {
         assert shipwreck.isBeached() != null;
         System.out.println("Is beached " + shipwreck.isBeached());
 
-        System.out.println(shipwreck.getLoot(start, worldSeed, rand, true));
+        System.out.println(shipwreck.getLoot(start, worldSeed, rand, false));
 
     }
 

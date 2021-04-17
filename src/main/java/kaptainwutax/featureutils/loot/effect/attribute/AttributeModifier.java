@@ -1,6 +1,6 @@
 package kaptainwutax.featureutils.loot.effect.attribute;
 
-import kaptainwutax.seedutils.lcg.rand.JRand;
+import kaptainwutax.seedutils.rand.JRand;
 
 import java.util.Objects;
 import java.util.UUID;
