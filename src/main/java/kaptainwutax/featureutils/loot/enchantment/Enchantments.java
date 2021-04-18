@@ -6,55 +6,9 @@ import kaptainwutax.mcutils.version.MCVersion;
 import java.util.*;
 
 public class Enchantments {
-	public final static HashSet<String> ARMOR = new HashSet<String>() {{
-		addAll(ARMOR_HEAD);
-		addAll(ARMOR_CHEST);
-		addAll(ARMOR_LEGGINGS);
-		addAll(ARMOR_FEET);
-	}};
-	public final static HashSet<String> BREAKABLE = new HashSet<String>() {{
-		addAll(CROSSBOW);
-		addAll(BOW);
-		addAll(TRIDENT);
-		addAll(FISHING_ROD);
-		addAll(ARMOR);
-		addAll(SWORDS);
-		addAll(AXES);
-		addAll(HOES);
-		addAll(PICKAXES);
-		addAll(SHOVELS);
-	}};
-	public final static HashSet<String> VANISHABLE = new HashSet<String>() {{
-		addAll(BREAKABLE);
-	}};
-	public final static HashSet<String> SingleEnchants = new HashSet<>(Arrays.asList("aqua_affinity", "binding_curse", "channeling", "silk_touch", "flame", "infinity", "multishot", "quick_charge", "mending", "vanishing_curse"));
+	// @formatter:off
 	private final static HashSet<String> ARMOR_TYPES = new HashSet<>(Arrays.asList("NETHERITE", "DIAMOND", "GOLDEN", "IRON", "LEATHER", "CHAINMAIL"));
-	private final static HashSet<String> TOOL_TYPES = new HashSet<>(Arrays.asList("NETHERITE", "DIAMOND", "GOLDEN", "IRON", "STONE", "WOODEN"));
-	public final static HashSet<String> SWORDS = new HashSet<String>() {{
-		for (String type : TOOL_TYPES) {
-			add(type + "_SWORD");
-		}
-	}};
-	public final static HashSet<String> AXES = new HashSet<String>() {{
-		for (String type : TOOL_TYPES) {
-			add(type + "_AXE");
-		}
-	}};
-	public final static HashSet<String> HOES = new HashSet<String>() {{
-		for (String type : TOOL_TYPES) {
-			add(type + "_HOE");
-		}
-	}};
-	public final static HashSet<String> PICKAXES = new HashSet<String>() {{
-		for (String type : TOOL_TYPES) {
-			add(type + "_PICKAXE");
-		}
-	}};
-	public final static HashSet<String> SHOVELS = new HashSet<String>() {{
-		for (String type : TOOL_TYPES) {
-			add(type + "_SHOVEL");
-		}
-	}};
+	private final static HashSet<String> TOOL_TYPES = new HashSet<>(Arrays.asList("NETHERITE", "DIAMOND", "GOLDEN", "IRON", "STONE","WOODEN"));
 	private final static HashSet<String> BOOKS = new HashSet<>(Arrays.asList("ENCHANTED_BOOK", "BOOK"));
 	public final static HashSet<String> ARMOR_HEAD = new HashSet<String>() {{
 		for (String type : ARMOR_TYPES) {
@@ -70,7 +24,7 @@ public class Enchantments {
 		addAll(BOOKS);
 		add("ELYTRA");
 	}};
-	public final static HashSet<String> ARMOR_LEGGINGS = new HashSet<String>() {{
+	public final static HashSet<String> ARMOR_LEGGINGS =new HashSet<String>() {{
 		for (String type : ARMOR_TYPES) {
 			add(type + "_LEGGINGS");
 		}
@@ -82,39 +36,89 @@ public class Enchantments {
 		}
 		addAll(BOOKS);
 	}};
+	public final static HashSet<String> ARMOR = new HashSet<String>() {{
+		addAll(ARMOR_HEAD);
+		addAll(ARMOR_CHEST);
+		addAll(ARMOR_LEGGINGS);
+		addAll(ARMOR_FEET);
+	}};
+
+	public final static HashSet<String> SWORDS = new HashSet<String>() {{
+		for (String type : TOOL_TYPES) {
+			add(type + "_SWORD");
+		}
+	}};
+	public final static HashSet<String> AXES = new HashSet<String>() {{
+		for (String type : TOOL_TYPES) {
+			add(type + "_AXE");
+		}
+	}};
+	public final static HashSet<String> HOES = new HashSet<String>() {{
+		for (String type : TOOL_TYPES) {
+			add(type + "_HOE");
+		}
+	}};
+	public final static HashSet<String> PICKAXES =new HashSet<String>() {{
+		for (String type : TOOL_TYPES) {
+			add(type + "_PICKAXE");
+		}
+	}};
+	public final static HashSet<String> SHOVELS = new HashSet<String>() {{
+		for (String type : TOOL_TYPES) {
+			add(type + "_SHOVEL");
+		}
+	}};
 	public final static HashSet<String> BOW = new HashSet<String>() {{
 		add("BOW");
 		addAll(BOOKS);
 	}};
-	public final static HashSet<String> CROSSBOW = new HashSet<String>() {{
+	public final static HashSet<String> CROSSBOW =  new HashSet<String>() {{
 		add("CROSSBOW");
 		addAll(BOOKS);
 	}};
-	public final static HashSet<String> FISHING_ROD = new HashSet<String>() {{
+	public final static HashSet<String> FISHING_ROD =  new HashSet<String>() {{
 		add("FISHING_ROD");
 		addAll(BOOKS);
 	}};
-	public final static HashSet<String> TRIDENT = new HashSet<String>() {{
+	public final static HashSet<String> TRIDENT =  new HashSet<String>() {{
 		add("TRIDENT");
 		addAll(BOOKS);
 	}};
+	public final static HashSet<String> BREAKABLE = new HashSet<String>() {{
+		addAll(CROSSBOW);
+		addAll(BOW);
+		addAll(TRIDENT);
+		addAll(FISHING_ROD);
+		addAll(ARMOR);
+		addAll(SWORDS);
+		addAll(AXES);
+		addAll(HOES);
+		addAll(PICKAXES);
+		addAll(SHOVELS);
+	}};
+
 	public final static HashSet<String> DIGGER = new HashSet<String>() {{
 		addAll(HOES);
 		addAll(PICKAXES);
 		addAll(SHOVELS);
 		addAll(BOOKS);
 	}};
+
 	public final static HashSet<String> WEAPON = new HashSet<String>() {{
 		addAll(SWORDS);
 		addAll(BOOKS);
 	}};
-	public final static HashSet<String> DAMAGE = new HashSet<String>() {{
+	public final static HashSet<String> DAMAGE =new HashSet<String>() {{
 		addAll(SWORDS);
 		addAll(AXES);
 		addAll(BOOKS);
 	}};
-	public final static List<HashSet<String>> ALL_CATEGORIES = new ArrayList<>(Arrays.asList(ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_FEET, BOW, BREAKABLE, CROSSBOW, DIGGER, DAMAGE, FISHING_ROD, TRIDENT, WEAPON, VANISHABLE));
-
+	public final static HashSet<String> VANISHABLE = new HashSet<String>() {{
+		addAll(BREAKABLE);
+	}};
+	public final static HashSet<String> SingleEnchants = new HashSet<>(Arrays.asList("aqua_affinity", "binding_curse", "channeling", "silk_touch", "flame", "infinity", "multishot", "quick_charge", "mending", "vanishing_curse"));
+	public final static List<HashSet<String>> allCategories = new ArrayList<>(Arrays.asList(ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_FEET, BOW, BREAKABLE, CROSSBOW, DIGGER, DAMAGE, FISHING_ROD, TRIDENT, WEAPON, VANISHABLE));
+	// @formatter:on
 	private final static Integer COMMON = 10;
 	private final static Integer UNCOMMON = 5;
 	private final static Integer RARE = 2;
@@ -181,7 +185,7 @@ public class Enchantments {
 
 	public static HashSet<HashSet<String>> getCategories(ItemStack baseStack) {
 		HashSet<HashSet<String>> applicableCategories = new HashSet<>();
-		for (HashSet<String> category : ALL_CATEGORIES) {
+		for (HashSet<String> category : allCategories) {
 			if (category.contains(baseStack.getItem().getName().toUpperCase())) {
 				applicableCategories.add(category);
 			}
