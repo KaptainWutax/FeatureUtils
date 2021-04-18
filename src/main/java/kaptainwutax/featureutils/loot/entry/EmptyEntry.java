@@ -7,12 +7,12 @@ import java.util.function.Consumer;
 
 public class EmptyEntry extends LootEntry {
 
-    public EmptyEntry(int weight) {
-        super(weight);
-    }
+	public EmptyEntry(int weight) {
+		super(weight);
+	}
 
-    @Override
-    public void generate(LootContext context, Consumer<ItemStack> stackConsumer) {
+	@Override
+	public void generate(LootContext context, Consumer<ItemStack> stackConsumer) {
 
-    }
+	}
 }

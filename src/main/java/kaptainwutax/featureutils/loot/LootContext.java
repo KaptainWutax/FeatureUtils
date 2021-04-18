@@ -5,7 +5,7 @@ import kaptainwutax.mcutils.rand.ChunkRand;
 
 public class LootContext extends ChunkRand {
 
-    public LootContext(long lootTableSeed) {
-        super(lootTableSeed);
-    }
+	public LootContext(long lootTableSeed) {
+		super(lootTableSeed);
+	}
 }

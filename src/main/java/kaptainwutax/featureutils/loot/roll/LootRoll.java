@@ -4,6 +4,6 @@ import kaptainwutax.featureutils.loot.LootContext;
 
 public abstract class LootRoll {
 
-    public abstract int getCount(LootContext context);
+	public abstract int getCount(LootContext context);
 
 }

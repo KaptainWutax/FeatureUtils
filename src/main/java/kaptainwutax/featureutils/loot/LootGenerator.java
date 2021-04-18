@@ -8,25 +8,25 @@ import java.util.function.Consumer;
 
 public abstract class LootGenerator {
 
-    public LootFunction[] lootFunctions;
-    public LootFunction combinedLootFunction;
+	public LootFunction[] lootFunctions;
+	public LootFunction combinedLootFunction;
 
-    public LootGenerator() {
-        this.apply(null);
-    }
+	public LootGenerator() {
+		this.apply(null);
+	}
 
-    public LootGenerator apply(Collection<LootFunction> lootFunctions) {
-        if (lootFunctions != null) {
-            this.lootFunctions = lootFunctions.toArray(new LootFunction[0]);
-            this.combinedLootFunction = LootFunction.combine(this.lootFunctions);
-        } else {
-            this.lootFunctions = new LootFunction[0];
-            this.combinedLootFunction = (baseStack, context) -> baseStack;
-        }
+	public LootGenerator apply(Collection<LootFunction> lootFunctions) {
+		if (lootFunctions != null) {
+			this.lootFunctions = lootFunctions.toArray(new LootFunction[0]);
+			this.combinedLootFunction = LootFunction.combine(this.lootFunctions);
+		} else {
+			this.lootFunctions = new LootFunction[0];
+			this.combinedLootFunction = (baseStack, context) -> baseStack;
+		}
 
-        return this;
-    }
+		return this;
+	}
 
-    public abstract void generate(LootContext context, Consumer<ItemStack> stackConsumer);
+	public abstract void generate(LootContext context, Consumer<ItemStack> stackConsumer);
 
 }

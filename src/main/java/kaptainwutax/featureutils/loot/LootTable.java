@@ -12,108 +12,108 @@ import java.util.stream.IntStream;
 
 public class LootTable extends LootGenerator {
 
-    public final LootPool[] lootPools;
+	public final LootPool[] lootPools;
 
-    public LootTable(LootPool... lootPools) {
-        this(Arrays.asList(lootPools), null);
-    }
+	public LootTable(LootPool... lootPools) {
+		this(Arrays.asList(lootPools), null);
+	}
 
-    public LootTable(Collection<LootPool> lootPools, Collection<LootFunction> lootFunctions) {
-        this.lootPools = lootPools.toArray(new LootPool[0]);
-        this.apply(lootFunctions);
-    }
+	public LootTable(Collection<LootPool> lootPools, Collection<LootFunction> lootFunctions) {
+		this.lootPools = lootPools.toArray(new LootPool[0]);
+		this.apply(lootFunctions);
+	}
 
-    public LootTable apply(LootFunction... lootFunctions) {
-        this.apply(Arrays.asList(lootFunctions));
-        return this;
-    }
+	public static LinkedList<ItemStack> shuffleItems(LootContext context, LinkedList<ItemStack> items) {
+		List<Integer> container = IntStream.range(0, 27).boxed().collect(Collectors.toList());
+		context.shuffle(container);
+		List<ItemStack> list = new ArrayList<>();
+		Iterator<ItemStack> iterator = items.iterator();
+		int size = container.size();
+		while (iterator.hasNext()) {
+			ItemStack itemstack = iterator.next();
+			if (itemstack.isEmpty()) {
+				iterator.remove();
+			} else if (itemstack.getCount() > 1) {
+				list.add(itemstack);
+				iterator.remove();
+			}
+		}
 
-    @Override
-    public void generate(LootContext context, Consumer<ItemStack> stackConsumer) {
-        stackConsumer = LootFunction.stack(stackConsumer, this.combinedLootFunction, context);
+		while (size - items.size() - list.size() > 0 && !list.isEmpty()) {
+			ItemStack itemstack2 = list.remove(new UniformRoll(0, list.size() - 1).getCount(context));
+			int half = (itemstack2.getCount() / 2);
+			int i = new UniformRoll(1, half).getCount(context);
+			ItemStack itemstack1 = itemstack2.split(i);
+			if (itemstack2.getCount() > 1 && context.nextBoolean()) {
+				list.add(itemstack2);
+			} else {
+				items.add(itemstack2);
+			}
 
-        for (LootPool lootPool : this.lootPools) {
-            lootPool.generate(context, stackConsumer);
-        }
-    }
+			if (itemstack1.getCount() > 1 && context.nextBoolean()) {
+				list.add(itemstack1);
+			} else {
+				items.add(itemstack1);
+			}
+		}
 
-    public LinkedList<ItemStack> generateIndexed(LootContext context){
-        LinkedList<ItemStack> itemStacks = new LinkedList<>();
-        this.generate(context, itemStacks::add);
-        return shuffleItems(context,itemStacks);
-    }
+		items.addAll(list);
+		context.shuffle(items);
+		HashMap<Integer, ItemStack> positions = new HashMap<>();
+		int len = container.size();
+		for (ItemStack itemstack : items) {
+			if (container.isEmpty()) {
+				return items; // that's an exception but better return something than nothing
+			}
 
-    public List<ItemStack> generate(LootContext context) {
-        Map<Item, Integer> itemCounts = new HashMap<>();
-        List<ItemStack> itemStacks = new ArrayList<>();
+			if (itemstack.isEmpty()) {
+				positions.put(container.remove(container.size() - 1), ItemStack.EMPTY);
+			} else {
+				positions.put(container.remove(container.size() - 1), itemstack);
+			}
+		}
 
-        this.generate(context, stack -> {
-            int oldCount = itemCounts.getOrDefault(stack.getItem(), 0);
-            itemCounts.put(stack.getItem(), oldCount + stack.getCount());
-        });
+		LinkedList<ItemStack> result = new LinkedList<>();
+		for (int i = 0; i < len; i++) {
+			result.add(positions.getOrDefault(i, ItemStack.EMPTY));
+		}
+		return result;
+	}
 
-        for (Map.Entry<Item, Integer> e : itemCounts.entrySet()) {
-            itemStacks.add(new ItemStack(e.getKey(), e.getValue()));
-        }
+	public LootTable apply(LootFunction... lootFunctions) {
+		this.apply(Arrays.asList(lootFunctions));
+		return this;
+	}
 
-        return itemStacks;
-    }
+	@Override
+	public void generate(LootContext context, Consumer<ItemStack> stackConsumer) {
+		stackConsumer = LootFunction.stack(stackConsumer, this.combinedLootFunction, context);
 
-    public static LinkedList<ItemStack> shuffleItems(LootContext context, LinkedList<ItemStack> items) {
-        List<Integer> container = IntStream.range(0,27).boxed().collect(Collectors.toList());
-        context.shuffle(container);
-        List<ItemStack> list = new ArrayList<>();
-        Iterator<ItemStack> iterator = items.iterator();
-        int size = container.size();
-        while (iterator.hasNext()) {
-            ItemStack itemstack = iterator.next();
-            if (itemstack.isEmpty()) {
-                iterator.remove();
-            } else if (itemstack.getCount() > 1) {
-                list.add(itemstack);
-                iterator.remove();
-            }
-        }
+		for (LootPool lootPool : this.lootPools) {
+			lootPool.generate(context, stackConsumer);
+		}
+	}
 
-        while (size - items.size() - list.size() > 0 && !list.isEmpty()) {
-            ItemStack itemstack2 = list.remove(new UniformRoll(0, list.size() - 1).getCount(context));
-            int half = (itemstack2.getCount() / 2);
-            int i = new UniformRoll(1, half).getCount(context);
-            ItemStack itemstack1 = itemstack2.split(i);
-            if (itemstack2.getCount() > 1 && context.nextBoolean()) {
-                list.add(itemstack2);
-            } else {
-                items.add(itemstack2);
-            }
+	public LinkedList<ItemStack> generateIndexed(LootContext context) {
+		LinkedList<ItemStack> itemStacks = new LinkedList<>();
+		this.generate(context, itemStacks::add);
+		return shuffleItems(context, itemStacks);
+	}
 
-            if (itemstack1.getCount() > 1 && context.nextBoolean()) {
-                list.add(itemstack1);
-            } else {
-                items.add(itemstack1);
-            }
-        }
+	public List<ItemStack> generate(LootContext context) {
+		Map<Item, Integer> itemCounts = new HashMap<>();
+		List<ItemStack> itemStacks = new ArrayList<>();
 
-        items.addAll(list);
-        context.shuffle(items);
-        HashMap<Integer,ItemStack> positions=new HashMap<>();
-        int len=container.size();
-        for(ItemStack itemstack : items) {
-            if (container.isEmpty()) {
-                return items; // that's an exception but better return something than nothing
-            }
+		this.generate(context, stack -> {
+			int oldCount = itemCounts.getOrDefault(stack.getItem(), 0);
+			itemCounts.put(stack.getItem(), oldCount + stack.getCount());
+		});
 
-            if (itemstack.isEmpty()) {
-                positions.put(container.remove(container.size()-1),ItemStack.EMPTY);
-            } else {
-                positions.put(container.remove(container.size()-1),itemstack);
-            }
-        }
+		for (Map.Entry<Item, Integer> e : itemCounts.entrySet()) {
+			itemStacks.add(new ItemStack(e.getKey(), e.getValue()));
+		}
 
-        LinkedList<ItemStack> result=new LinkedList<>();
-        for (int i = 0; i < len; i++) {
-            result.add(positions.getOrDefault(i,ItemStack.EMPTY));
-        }
-        return result;
-    }
+		return itemStacks;
+	}
 
 }
