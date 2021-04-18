@@ -51,6 +51,12 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
 		return random;
 	}
 
+	public void reset(){
+		this.isBeached=null;
+		this.rotation=null;
+		this.random=null;
+	}
+
 	/**
 	 * Should be called after canspawn and getRotation
 	 *
