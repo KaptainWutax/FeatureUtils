@@ -318,7 +318,7 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
 			}
 			rand.advance(chestData.numberInChunk * 2L);
 			rand.advance(chestData.index * 2L);
-			System.out.println(rand.getSeed());
+			System.out.println(rand.getSeed()+chunkChestPos.toString());
 			LootContext context = new LootContext(rand.nextLong());
 			result.put(lootType, indexed ? lootType.lootTable.generateIndexed(context) : lootType.lootTable.generate(context));
 		}

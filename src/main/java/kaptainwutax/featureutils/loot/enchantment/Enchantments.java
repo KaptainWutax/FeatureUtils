@@ -28,7 +28,6 @@ public class Enchantments {
 		addAll(BREAKABLE);
 	}};
 	public final static HashSet<String> SingleEnchants = new HashSet<>(Arrays.asList("aqua_affinity", "binding_curse", "channeling", "silk_touch", "flame", "infinity", "multishot", "quick_charge", "mending", "vanishing_curse"));
-	public final static List<HashSet<String>> allCategories = new ArrayList<>(Arrays.asList(ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_FEET, BOW, BREAKABLE, CROSSBOW, DIGGER, DAMAGE, FISHING_ROD, TRIDENT, WEAPON, VANISHABLE));
 	private final static HashSet<String> ARMOR_TYPES = new HashSet<>(Arrays.asList("NETHERITE", "DIAMOND", "GOLDEN", "IRON", "LEATHER", "CHAINMAIL"));
 	private final static HashSet<String> TOOL_TYPES = new HashSet<>(Arrays.asList("NETHERITE", "DIAMOND", "GOLDEN", "IRON", "STONE", "WOODEN"));
 	public final static HashSet<String> SWORDS = new HashSet<String>() {{
@@ -114,6 +113,8 @@ public class Enchantments {
 		addAll(AXES);
 		addAll(BOOKS);
 	}};
+	public final static List<HashSet<String>> ALL_CATEGORIES = new ArrayList<>(Arrays.asList(ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_FEET, BOW, BREAKABLE, CROSSBOW, DIGGER, DAMAGE, FISHING_ROD, TRIDENT, WEAPON, VANISHABLE));
+
 	private final static Integer COMMON = 10;
 	private final static Integer UNCOMMON = 5;
 	private final static Integer RARE = 2;
@@ -180,7 +181,7 @@ public class Enchantments {
 
 	public static HashSet<HashSet<String>> getCategories(ItemStack baseStack) {
 		HashSet<HashSet<String>> applicableCategories = new HashSet<>();
-		for (HashSet<String> category : allCategories) {
+		for (HashSet<String> category : ALL_CATEGORIES) {
 			if (category.contains(baseStack.getItem().getName().toUpperCase())) {
 				applicableCategories.add(category);
 			}
