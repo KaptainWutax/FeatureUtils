@@ -51,10 +51,14 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
 		return random;
 	}
 
+	/**
+	 * Reset the internal state, should be called if you reuse that same structure
+	 */
 	public void reset(){
 		this.isBeached=null;
 		this.rotation=null;
 		this.random=null;
+		this.type=null;
 	}
 
 	/**
@@ -75,10 +79,10 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
 	/**
 	 * This should be called before any operation related to nbt
 	 *
-	 * @param structureSeed
-	 * @param chunkPos
-	 * @param version
-	 * @return
+	 * @param structureSeed the 48 lower bits at least
+	 * @param chunkPos the chunk position of that shipwreck spawn
+	 * @param version the version to run on
+	 * @return the rotation of the shipwreck
 	 */
 	public BlockRotation getRotation(long structureSeed, CPos chunkPos, MCVersion version) {
 		// first call does the seeding the rest doesn't
@@ -116,12 +120,13 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
 	}
 
 	/**
+	 * Should be called after can Spawn (and reset if reusing the same
 	 *
 	 * @param start         the chunkposition of the shipwreck start (obtained with getInRegion
 	 * @param structureSeed the structure seed (lower 48 bits of the world seed)
 	 * @param rand          a chunkrand instance (for speed purpose)
 	 * @param indexed       Should be indexed or not (default false)
-	 * @return
+	 * @return a hashmap with the loottype chest and the list of item in that chest
 	 */
 	public HashMap<LootType, List<ItemStack>> getLoot(CPos start, long structureSeed, ChunkRand rand, boolean indexed) {
 		if (isBeached == null) {
