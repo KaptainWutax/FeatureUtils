@@ -18,9 +18,9 @@ public class LootTestShipwreck {
     public static void test3() {
         ChunkRand rand = new ChunkRand();
         long worldSeed = 2276366175191987160L;
-        CPos cPos = new BPos( -1399,0,-2999).toChunkPos();
+        CPos cPos = new BPos( -2535 ,10 ,-3015).toChunkPos();
         System.out.println("Target: " + cPos.toBlockPos());
-        MCVersion version = MCVersion.v1_16;
+        MCVersion version = MCVersion.v1_16_5;
         Shipwreck shipwreck = new Shipwreck(version);
         RPos rPos = cPos.toRegionPos(shipwreck.getSpacing());
         CPos start = shipwreck.getInRegion(worldSeed, rPos.getX(), rPos.getZ(), rand);

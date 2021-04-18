@@ -9,12 +9,13 @@ import kaptainwutax.featureutils.loot.item.Items;
 import kaptainwutax.featureutils.loot.roll.UniformRoll;
 import kaptainwutax.mcutils.util.data.Pair;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class EffectFunction implements LootFunction {
-	public static String[] INSTANTANEOUS_EFFECTS = new String[] {"HEAL", "HARM", "SATURATION"};
 	private final LinkedHashMap<Effect, UniformRoll> effects = new LinkedHashMap<>();
+	private final HashMap<Effect, UniformRoll> random_effect = new HashMap<>(); // this is in case minecraft change it
 
 	public EffectFunction() {
 
@@ -48,15 +49,8 @@ public class EffectFunction implements LootFunction {
 
 	@SuppressWarnings("unchecked")
 	public EffectFunction apply(Pair<Effect, UniformRoll> effect) {
-		if (effect.getFirst() instanceof Effect.InstantEffect) { // I hate to hardcode those
-			LinkedHashMap<Effect, UniformRoll> temp = (LinkedHashMap<Effect, UniformRoll>) effects.clone();
-			effects.clear();
-			effects.put(effect.getFirst(), effect.getSecond());
-			effects.putAll(temp);
-		} else {
-			this.effects.put(effect.getFirst(), effect.getSecond());
-		}
-
+		this.random_effect.put(effect.getFirst(),effect.getSecond());
+		this.effects.put(effect.getFirst(), effect.getSecond());
 		return this;
 	}
 
