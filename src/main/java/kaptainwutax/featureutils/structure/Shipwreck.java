@@ -54,11 +54,11 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
 	/**
 	 * Reset the internal state, should be called if you reuse that same structure
 	 */
-	public void reset(){
-		this.isBeached=null;
-		this.rotation=null;
-		this.random=null;
-		this.type=null;
+	public void reset() {
+		this.isBeached = null;
+		this.rotation = null;
+		this.random = null;
+		this.type = null;
 	}
 
 	/**
@@ -80,8 +80,8 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
 	 * This should be called before any operation related to nbt
 	 *
 	 * @param structureSeed the 48 lower bits at least
-	 * @param chunkPos the chunk position of that shipwreck spawn
-	 * @param version the version to run on
+	 * @param chunkPos      the chunk position of that shipwreck spawn
+	 * @param version       the version to run on
 	 * @return the rotation of the shipwreck
 	 */
 	public BlockRotation getRotation(long structureSeed, CPos chunkPos, MCVersion version) {

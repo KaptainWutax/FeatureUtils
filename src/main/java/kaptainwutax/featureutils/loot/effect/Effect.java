@@ -47,9 +47,9 @@ public class Effect {
 		return false;
 	}
 
-	public Effect addAttributeModifier(Attribute p_220304_1_, String p_220304_2_, double p_220304_3_, AttributeModifier.Operation p_220304_5_) {
-		AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(p_220304_2_), this::getDescription, p_220304_3_, p_220304_5_);
-		this.attributeModifiers.put(p_220304_1_, attributemodifier);
+	public Effect addAttributeModifier(Attribute attribute, String name, double amount, AttributeModifier.Operation operation) {
+		AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(name), this::getDescription, amount, operation);
+		this.attributeModifiers.put(attribute, attributemodifier);
 		return this;
 	}
 
@@ -76,9 +76,6 @@ public class Effect {
 			return true;
 		}
 
-		public boolean isDurationEffectTick(int p_76397_1_, int p_76397_2_) {
-			return p_76397_1_ >= 1;
-		}
 	}
 
 	public static class HealthBoostEffect extends Effect {

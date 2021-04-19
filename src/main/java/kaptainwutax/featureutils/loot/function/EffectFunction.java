@@ -49,7 +49,7 @@ public class EffectFunction implements LootFunction {
 
 	@SuppressWarnings("unchecked")
 	public EffectFunction apply(Pair<Effect, UniformRoll> effect) {
-		this.random_effect.put(effect.getFirst(),effect.getSecond());
+		this.random_effect.put(effect.getFirst(), effect.getSecond());
 		this.effects.put(effect.getFirst(), effect.getSecond());
 		return this;
 	}
