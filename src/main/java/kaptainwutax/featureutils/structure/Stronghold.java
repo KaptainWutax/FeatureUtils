@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.structure.generator.StrongholdGenerator;
 import kaptainwutax.featureutils.structure.generator.piece.StructurePiece;
@@ -23,22 +24,22 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 			.add(MCVersion.v1_9, new Stronghold.Config(32, 3, 128));
 
 	public static final Set<Biome> VALID_BIOMES_16 = new HashSet<>(Arrays.asList(
-			Biome.PLAINS, Biome.DESERT, Biome.MOUNTAINS, Biome.FOREST, Biome.TAIGA, Biome.SNOWY_TUNDRA,
-			Biome.SNOWY_MOUNTAINS, Biome.MUSHROOM_FIELDS, Biome.MUSHROOM_FIELD_SHORE, Biome.DESERT_HILLS,
-			Biome.WOODED_HILLS, Biome.TAIGA_HILLS, Biome.MOUNTAIN_EDGE, Biome.JUNGLE, Biome.JUNGLE_HILLS,
-			Biome.JUNGLE_EDGE, Biome.STONE_SHORE, Biome.BIRCH_FOREST, Biome.BIRCH_FOREST_HILLS, Biome.DARK_FOREST,
-			Biome.SNOWY_TAIGA, Biome.SNOWY_TAIGA_HILLS, Biome.GIANT_TREE_TAIGA, Biome.GIANT_TREE_TAIGA_HILLS,
-			Biome.WOODED_MOUNTAINS, Biome.SAVANNA, Biome.SAVANNA_PLATEAU, Biome.BADLANDS, Biome.WOODED_BADLANDS_PLATEAU,
-			Biome.BADLANDS_PLATEAU, Biome.SUNFLOWER_PLAINS, Biome.DESERT_LAKES, Biome.GRAVELLY_MOUNTAINS,
-			Biome.FLOWER_FOREST, Biome.TAIGA_MOUNTAINS, Biome.ICE_SPIKES, Biome.MODIFIED_JUNGLE,
-			Biome.MODIFIED_JUNGLE_EDGE, Biome.TALL_BIRCH_FOREST, Biome.TALL_BIRCH_HILLS, Biome.DARK_FOREST_HILLS,
-			Biome.SNOWY_TAIGA_MOUNTAINS, Biome.GIANT_SPRUCE_TAIGA, Biome.GIANT_SPRUCE_TAIGA_HILLS,
-			Biome.MODIFIED_GRAVELLY_MOUNTAINS, Biome.SHATTERED_SAVANNA, Biome.SHATTERED_SAVANNA_PLATEAU,
-			Biome.ERODED_BADLANDS, Biome.MODIFIED_WOODED_BADLANDS_PLATEAU, Biome.MODIFIED_BADLANDS_PLATEAU));
-	public static final Set<Biome> VALID_BIOMES_15 = new HashSet<>(Arrays.asList(Biome.BAMBOO_JUNGLE, Biome.BAMBOO_JUNGLE_HILLS));
-	public static final Set<Biome> INVALID_BIOMES = new HashSet<>(Arrays.asList(Biome.OCEAN, Biome.SWAMP, Biome.RIVER, Biome.FROZEN_OCEAN,
-			Biome.FROZEN_RIVER, Biome.BEACH, Biome.DEEP_OCEAN, Biome.SNOWY_BEACH, Biome.WARM_OCEAN, Biome.LUKEWARM_OCEAN, Biome.COLD_OCEAN,
-			Biome.DEEP_WARM_OCEAN, Biome.DEEP_LUKEWARM_OCEAN, Biome.DEEP_COLD_OCEAN, Biome.DEEP_FROZEN_OCEAN, Biome.SWAMP_HILLS));
+			Biomes.PLAINS, Biomes.DESERT, Biomes.MOUNTAINS, Biomes.FOREST, Biomes.TAIGA, Biomes.SNOWY_TUNDRA,
+			Biomes.SNOWY_MOUNTAINS, Biomes.MUSHROOM_FIELDS, Biomes.MUSHROOM_FIELD_SHORE, Biomes.DESERT_HILLS,
+			Biomes.WOODED_HILLS, Biomes.TAIGA_HILLS, Biomes.MOUNTAIN_EDGE, Biomes.JUNGLE, Biomes.JUNGLE_HILLS,
+			Biomes.JUNGLE_EDGE, Biomes.STONE_SHORE, Biomes.BIRCH_FOREST, Biomes.BIRCH_FOREST_HILLS, Biomes.DARK_FOREST,
+			Biomes.SNOWY_TAIGA, Biomes.SNOWY_TAIGA_HILLS, Biomes.GIANT_TREE_TAIGA, Biomes.GIANT_TREE_TAIGA_HILLS,
+			Biomes.WOODED_MOUNTAINS, Biomes.SAVANNA, Biomes.SAVANNA_PLATEAU, Biomes.BADLANDS, Biomes.WOODED_BADLANDS_PLATEAU,
+			Biomes.BADLANDS_PLATEAU, Biomes.SUNFLOWER_PLAINS, Biomes.DESERT_LAKES, Biomes.GRAVELLY_MOUNTAINS,
+			Biomes.FLOWER_FOREST, Biomes.TAIGA_MOUNTAINS, Biomes.ICE_SPIKES, Biomes.MODIFIED_JUNGLE,
+			Biomes.MODIFIED_JUNGLE_EDGE, Biomes.TALL_BIRCH_FOREST, Biomes.TALL_BIRCH_HILLS, Biomes.DARK_FOREST_HILLS,
+			Biomes.SNOWY_TAIGA_MOUNTAINS, Biomes.GIANT_SPRUCE_TAIGA, Biomes.GIANT_SPRUCE_TAIGA_HILLS,
+			Biomes.MODIFIED_GRAVELLY_MOUNTAINS, Biomes.SHATTERED_SAVANNA, Biomes.SHATTERED_SAVANNA_PLATEAU,
+			Biomes.ERODED_BADLANDS, Biomes.MODIFIED_WOODED_BADLANDS_PLATEAU, Biomes.MODIFIED_BADLANDS_PLATEAU));
+	public static final Set<Biome> VALID_BIOMES_15 = new HashSet<>(Arrays.asList(Biomes.BAMBOO_JUNGLE, Biomes.BAMBOO_JUNGLE_HILLS));
+	public static final Set<Biome> INVALID_BIOMES = new HashSet<>(Arrays.asList(Biomes.OCEAN, Biomes.SWAMP, Biomes.RIVER, Biomes.FROZEN_OCEAN,
+			Biomes.FROZEN_RIVER, Biomes.BEACH, Biomes.DEEP_OCEAN, Biomes.SNOWY_BEACH, Biomes.WARM_OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.COLD_OCEAN,
+			Biomes.DEEP_WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_COLD_OCEAN, Biomes.DEEP_FROZEN_OCEAN, Biomes.SWAMP_HILLS));
 
 	static {
 		VALID_BIOMES_15.addAll(VALID_BIOMES_16);

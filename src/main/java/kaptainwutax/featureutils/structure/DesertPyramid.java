@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
@@ -29,7 +30,7 @@ public class DesertPyramid extends OldStructure<DesertPyramid> {
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
-		return biome == Biome.DESERT || biome == Biome.DESERT_HILLS;
+		return biome == Biomes.DESERT || biome == Biomes.DESERT_HILLS;
 	}
 
 }

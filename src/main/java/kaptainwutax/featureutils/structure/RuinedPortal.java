@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
@@ -50,7 +51,7 @@ public class RuinedPortal extends UniformStructure<RuinedPortal> {
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
-		return biome != Biome.THE_VOID && biome.getCategory() != Biome.Category.THE_END;
+		return biome != Biomes.THE_VOID && biome.getCategory() != Biome.Category.THE_END;
 	}
 
 }

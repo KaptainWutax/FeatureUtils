@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
@@ -45,8 +46,8 @@ public class Monument extends TriangularStructure<Monument> {
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
-		return biome == Biome.DEEP_COLD_OCEAN || biome == Biome.DEEP_FROZEN_OCEAN || biome == Biome.DEEP_LUKEWARM_OCEAN
-				|| biome == Biome.DEEP_OCEAN || biome == Biome.DEEP_WARM_OCEAN;
+		return biome == Biomes.DEEP_COLD_OCEAN || biome == Biomes.DEEP_FROZEN_OCEAN || biome == Biomes.DEEP_LUKEWARM_OCEAN
+				|| biome == Biomes.DEEP_OCEAN || biome == Biomes.DEEP_WARM_OCEAN;
 	}
 
 }

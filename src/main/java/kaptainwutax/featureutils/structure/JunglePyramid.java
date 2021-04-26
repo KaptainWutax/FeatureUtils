@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
@@ -30,8 +31,8 @@ public class JunglePyramid extends OldStructure<JunglePyramid> {
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
-		return biome == Biome.JUNGLE || biome == Biome.JUNGLE_HILLS || biome == Biome.BAMBOO_JUNGLE
-				|| biome == Biome.BAMBOO_JUNGLE_HILLS;
+		return biome == Biomes.JUNGLE || biome == Biomes.JUNGLE_HILLS || biome == Biomes.BAMBOO_JUNGLE
+				|| biome == Biomes.BAMBOO_JUNGLE_HILLS;
 	}
 
 }

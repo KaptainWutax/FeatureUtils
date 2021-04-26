@@ -17,6 +17,10 @@ import static kaptainwutax.featureutils.loot.enchantment.Enchantments.*;
 
 public class EnchantWithLevelsFunction implements LootFunction {
 	private static final HashMap<String, Integer> enchantments;
+	private final int minLevel;
+	private final int maxLevel;
+	private final boolean treasure;
+	private final boolean discoverable;
 
 	static {
 		enchantments = new HashMap<>();
@@ -78,11 +82,6 @@ public class EnchantWithLevelsFunction implements LootFunction {
 		enchantments.put("netherite_shovel", 15);
 		enchantments.put("netherite_sword", 15);
 	}
-
-	private final int minLevel;
-	private final int maxLevel;
-	private final boolean treasure;
-	private final boolean discoverable;
 
 	public EnchantWithLevelsFunction(int minLevel, int maxLevel) {
 		this(minLevel, maxLevel, true, true);

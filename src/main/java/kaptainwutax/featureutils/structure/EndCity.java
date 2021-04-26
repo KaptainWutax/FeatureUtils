@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
@@ -37,7 +38,7 @@ public class EndCity extends TriangularStructure<EndCity> {
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
-		return biome == Biome.END_MIDLANDS || biome == Biome.END_HIGHLANDS;
+		return biome == Biomes.END_MIDLANDS || biome == Biomes.END_HIGHLANDS;
 	}
 
 }

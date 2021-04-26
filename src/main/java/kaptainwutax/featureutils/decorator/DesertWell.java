@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.decorator;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
@@ -45,7 +46,7 @@ public class DesertWell extends BiomelessDecorator<DesertWell.Config, DesertWell
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
-		return biome == Biome.DESERT || biome == Biome.DESERT_HILLS || biome == Biome.DESERT_LAKES;
+		return biome == Biomes.DESERT || biome == Biomes.DESERT_HILLS || biome == Biomes.DESERT_LAKES;
 	}
 
 	@Override

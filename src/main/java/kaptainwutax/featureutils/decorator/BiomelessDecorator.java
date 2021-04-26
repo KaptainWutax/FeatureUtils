@@ -1,6 +1,6 @@
 package kaptainwutax.featureutils.decorator;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.version.MCVersion;
 

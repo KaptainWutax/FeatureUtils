@@ -1,7 +1,8 @@
 package kaptainwutax.featureutils.structure;
 
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.featureutils.loot.LootContext;
 import kaptainwutax.featureutils.loot.LootTable;
 import kaptainwutax.featureutils.loot.MCLootTables;
@@ -115,7 +116,7 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
-		isBeached = biome == Biome.BEACH || biome == Biome.SNOWY_BEACH;
+		isBeached = biome == Biomes.BEACH || biome == Biomes.SNOWY_BEACH;
 		return biome.getCategory() == Biome.Category.OCEAN || isBeached;
 	}
 

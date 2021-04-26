@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.util.pos.CPos;
@@ -44,8 +45,8 @@ public class BastionRemnant extends UniformStructure<BastionRemnant> {
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
-		return biome == Biome.NETHER_WASTES || biome == Biome.SOUL_SAND_VALLEY || biome == Biome.WARPED_FOREST
-				|| biome == Biome.CRIMSON_FOREST;
+		return biome == Biomes.NETHER_WASTES || biome == Biomes.SOUL_SAND_VALLEY || biome == Biomes.WARPED_FOREST
+				|| biome == Biomes.CRIMSON_FOREST;
 	}
 
 }

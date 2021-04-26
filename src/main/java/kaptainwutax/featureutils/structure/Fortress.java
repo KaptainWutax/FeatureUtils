@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
@@ -75,8 +76,8 @@ public class Fortress extends UniformStructure<Fortress> {
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
-		return biome == Biome.BASALT_DELTAS || biome == Biome.CRIMSON_FOREST || biome == Biome.NETHER_WASTES
-				|| biome == Biome.SOUL_SAND_VALLEY || biome == Biome.WARPED_FOREST;
+		return biome == Biomes.BASALT_DELTAS || biome == Biomes.CRIMSON_FOREST || biome == Biomes.NETHER_WASTES
+				|| biome == Biomes.SOUL_SAND_VALLEY || biome == Biomes.WARPED_FOREST;
 	}
 
 }

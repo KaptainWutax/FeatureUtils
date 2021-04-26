@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
@@ -29,7 +30,7 @@ public class NetherFossil extends UniformStructure<NetherFossil> {
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
-		return biome == Biome.SOUL_SAND_VALLEY;
+		return biome == Biomes.SOUL_SAND_VALLEY;
 	}
 
 }

@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.decorator;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
@@ -46,7 +47,7 @@ public class EndGateway extends BiomelessDecorator<EndGateway.Config, EndGateway
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
-		return biome == Biome.END_HIGHLANDS;
+		return biome == Biomes.END_HIGHLANDS;
 	}
 
 	@Override

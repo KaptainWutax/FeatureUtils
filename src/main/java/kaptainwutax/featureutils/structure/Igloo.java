@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
@@ -30,7 +31,7 @@ public class Igloo extends OldStructure<Igloo> {
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
-		return biome == Biome.SNOWY_TAIGA || biome == Biome.SNOWY_TUNDRA;
+		return biome == Biomes.SNOWY_TAIGA || biome == Biomes.SNOWY_TUNDRA;
 	}
 
 }

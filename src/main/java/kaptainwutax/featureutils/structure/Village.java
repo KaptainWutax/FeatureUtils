@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
@@ -29,9 +30,9 @@ public class Village extends OldStructure<Village> {
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
-		if (biome == Biome.PLAINS || biome == Biome.DESERT || biome == Biome.SAVANNA) return true;
-		if (biome == Biome.TAIGA && this.getVersion().isNewerOrEqualTo(MCVersion.v1_10)) return true;
-		if (biome == Biome.SNOWY_TUNDRA && this.getVersion().isNewerOrEqualTo(MCVersion.v1_14)) return true;
+		if (biome == Biomes.PLAINS || biome == Biomes.DESERT || biome == Biomes.SAVANNA) return true;
+		if (biome == Biomes.TAIGA && this.getVersion().isNewerOrEqualTo(MCVersion.v1_10)) return true;
+		if (biome == Biomes.SNOWY_TUNDRA && this.getVersion().isNewerOrEqualTo(MCVersion.v1_14)) return true;
 		return false;
 	}
 

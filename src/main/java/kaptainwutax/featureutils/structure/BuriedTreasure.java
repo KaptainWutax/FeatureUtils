@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.util.pos.CPos;
@@ -47,7 +48,7 @@ public class BuriedTreasure extends RegionStructure<BuriedTreasure.Config, Regio
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
-		return biome == Biome.BEACH || biome == Biome.SNOWY_BEACH;
+		return biome == Biomes.BEACH || biome == Biomes.SNOWY_BEACH;
 	}
 
 	@Override

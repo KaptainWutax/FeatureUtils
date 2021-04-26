@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
@@ -36,7 +37,7 @@ public class Mansion extends TriangularStructure<Mansion> {
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
-		return biome == Biome.DARK_FOREST || biome == Biome.DARK_FOREST_HILLS;
+		return biome == Biomes.DARK_FOREST || biome == Biomes.DARK_FOREST_HILLS;
 	}
 
 }

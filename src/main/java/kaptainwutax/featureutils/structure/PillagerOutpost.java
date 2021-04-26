@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.structure;
 
-import kaptainwutax.biomeutils.Biome;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
@@ -93,8 +94,8 @@ public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
-		return biome == Biome.PLAINS || biome == Biome.DESERT || biome == Biome.SAVANNA
-				|| biome == Biome.TAIGA || biome == Biome.SNOWY_TUNDRA;
+		return biome == Biomes.PLAINS || biome == Biomes.DESERT || biome == Biomes.SAVANNA
+				|| biome == Biomes.TAIGA || biome == Biomes.SNOWY_TUNDRA;
 	}
 
 	public boolean hasNearbyVillage(long structureSeed, int chunkX, int chunkZ, ChunkRand rand) {
