@@ -21,6 +21,7 @@ import java.util.*;
 public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 
 	public static final VersionMap<Stronghold.Config> CONFIGS = new VersionMap<Stronghold.Config>()
+			.add(MCVersion.v1_0, new Stronghold.Config(32, 3, 3))
 			.add(MCVersion.v1_9, new Stronghold.Config(32, 3, 128));
 
 	public static final Set<Biome> VALID_BIOMES_16 = new HashSet<>(Arrays.asList(
@@ -86,7 +87,8 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 		rand.setSeed(source.getWorldSeed());
 
 		double angle = rand.nextDouble() * Math.PI * 2.0D;
-		int numberInRing = 0;
+
+		int numberInRing = getVersion().isOlderThan(MCVersion.v1_9) ? 3 : 0;
 		int ringId = 0;
 
 		for (int idx = 0; idx < count; ++idx) {
@@ -111,7 +113,7 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 				angle += Math.PI * 2.0D / (double) numberPerRing;
 				++numberInRing;
 			} else {
-				angle += (Math.PI * 2.0D) * (double) (ringId+1) / (double) numberPerRing;
+				angle += (Math.PI * 2.0D) * (double) (ringId + 1) / (double) numberPerRing;
 			}
 			if (numberInRing == numberPerRing) {
 				if (getVersion().isNewerOrEqualTo(MCVersion.v1_9)) {
