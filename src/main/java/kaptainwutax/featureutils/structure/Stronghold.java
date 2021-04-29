@@ -90,7 +90,13 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 		int ringId = 0;
 
 		for (int idx = 0; idx < count; ++idx) {
-			double distanceRing = (double) (4 * distance + distance * ringId * 6) + (rand.nextDouble() - 0.5D) * (double) distance * 2.5D;
+			double distanceRing;
+			if (getVersion().isNewerOrEqualTo(MCVersion.v1_9)) {
+				distanceRing = (double) (4 * distance + distance * ringId * 6) + (rand.nextDouble() - 0.5D) * (double) distance * 2.5D;
+			} else {
+				distanceRing = (1.25D * (double) (ringId + 1) + rand.nextDouble()) * distance * (double) (ringId + 1);
+			}
+
 			int chunkX = (int) Math.round(Math.cos(angle) * distanceRing);
 			int chunkZ = (int) Math.round(Math.sin(angle) * distanceRing);
 			BPos pos = source.locateBiome((chunkX << 4) + 8, 0, (chunkZ << 4) + 8, 112, getValidBiomes(), rand);
@@ -101,14 +107,23 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 			}
 
 			starts[idx] = new CPos(chunkX, chunkZ);
-			angle += Math.PI * 2.0D / (double) numberPerRing;
-			++numberInRing;
+			if (getVersion().isNewerOrEqualTo(MCVersion.v1_9)) {
+				angle += Math.PI * 2.0D / (double) numberPerRing;
+				++numberInRing;
+			} else {
+				angle += (Math.PI * 2.0D) * (double) ringId / (double) numberPerRing;
+			}
 			if (numberInRing == numberPerRing) {
-				++ringId;
-				numberInRing = 0;
-				numberPerRing += 2 * numberPerRing / (ringId + 1);
-				numberPerRing = Math.min(numberPerRing, count - idx);
-				angle += rand.nextDouble() * Math.PI * 2.0D;
+				if (getVersion().isNewerOrEqualTo(MCVersion.v1_9)) {
+					++ringId;
+					numberInRing = 0;
+					numberPerRing += 2 * numberPerRing / (ringId + 1);
+					numberPerRing = Math.min(numberPerRing, count - idx);
+					angle += rand.nextDouble() * Math.PI * 2.0D;
+				} else {
+					ringId += 2 + rand.nextInt(5);
+					numberPerRing += 1 + rand.nextInt(2);
+				}
 			}
 		}
 
