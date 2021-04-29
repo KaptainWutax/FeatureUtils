@@ -33,24 +33,16 @@ public class LootTest {
 		if (!treasure.testBiome(source)) System.err.println("Incorrect biome");
 		// we get the decoration Seed (used to place all the decorators)
 		long decoratorSeed = rand.setPopulationSeed(worldSeed, chunkX * 16, chunkZ * 16, version);
-		System.out.println(decoratorSeed);
-////                CPos cPos=new CPos(chunkX,chunkZ);
-////                BPos bPos=cPos.toBlockPos().add(9,0,9);
-////                Biome biome=source.getBiome(bPos.getX(),bPos.getY(),bPos.getZ()); // useful only to get the index and step
-//		// set the feature seed based on the ordinals
 		// this is 1.13 !!! offset
 		rand.setDecoratorSeed(decoratorSeed, 2, 2, version); //specific ordinals and index for burried treasures
-
 		// we get the loot table seed
-		System.out.println(rand.getSeed()& Mth.MASK_48);
 		long lootTableSeed = rand.nextLong();
-		System.out.println(lootTableSeed);
+
 		LootContext context = new LootContext(lootTableSeed,MCVersion.v1_13_2);
-		System.out.println(context.getSeed()& Mth.MASK_48);
 		List<ItemStack> loot = MCLootTables.BURIED_TREASURE_CHEST.generate(context);
 		System.out.println(Arrays.toString(loot.toArray()));
+
 		context = new LootContext(lootTableSeed,MCVersion.v1_16);
-		System.out.println(context.getSeed()& Mth.MASK_48);
 		loot = MCLootTables.BURIED_TREASURE_CHEST.generate(context);
 		System.out.println(Arrays.toString(loot.toArray()));
 
