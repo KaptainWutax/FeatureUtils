@@ -34,7 +34,7 @@ public class LootTest {
 		// we get the decoration Seed (used to place all the decorators)
 		long decoratorSeed = rand.setPopulationSeed(worldSeed, chunkX * 16, chunkZ * 16, version);
 		// this is 1.13 !!! offset
-		rand.setDecoratorSeed(decoratorSeed, 2, 2, version); //specific ordinals and index for burried treasures
+		rand.setDecoratorSeed(decoratorSeed, 2, 2, version); //specific ordinals and index for buried treasures
 		// we get the loot table seed
 		long lootTableSeed = rand.nextLong();
 
