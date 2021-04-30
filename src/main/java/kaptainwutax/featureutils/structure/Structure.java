@@ -4,6 +4,7 @@ import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.Feature;
 import kaptainwutax.mcutils.version.MCVersion;
+import kaptainwutax.terrainutils.ChunkGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,5 +65,19 @@ public abstract class Structure<C extends Feature.Config, D extends Feature.Data
 	}
 
 	public abstract boolean isValidBiome(Biome biome);
+
+
+	@Override
+	public final boolean canGenerate(D data, ChunkGenerator generator) {
+		return this.canGenerate(data.chunkX, data.chunkZ, generator);
+	}
+
+	public boolean canGenerate(int chunkX, int chunkZ, ChunkGenerator generator) {
+		return this.isValidTerrain(generator,chunkX,chunkZ);
+	}
+
+	public boolean isValidTerrain(ChunkGenerator generator, int chunkX, int chunkZ){
+		return true;
+	}
 
 }

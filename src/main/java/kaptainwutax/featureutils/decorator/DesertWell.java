@@ -6,6 +6,7 @@ import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
+import kaptainwutax.terrainutils.ChunkGenerator;
 
 public class DesertWell extends BiomelessDecorator<DesertWell.Config, DesertWell.Data> {
 
@@ -36,6 +37,11 @@ public class DesertWell extends BiomelessDecorator<DesertWell.Config, DesertWell
 		if (rand.nextFloat() >= this.getChance()) return false;
 		if (rand.nextInt(16) != data.offsetX) return false;
 		if (rand.nextInt(16) != data.offsetZ) return false;
+		return true;
+	}
+
+	@Override
+	public boolean canGenerate(Data data, ChunkGenerator generator) {
 		return true;
 	}
 

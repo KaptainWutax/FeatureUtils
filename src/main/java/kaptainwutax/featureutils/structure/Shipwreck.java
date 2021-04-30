@@ -365,7 +365,7 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
 //p = Path(r'.').glob('**/*')
 //files = [x for x in p if x.is_file()]
 //for file in files:
-//    print(f'STRUCTURE_TO_LOOT.put("{file.rstrip(".nbt")}", new LinkedHashMap<LootType, BPos>() {{{{')
+//    print(f'STRUCTURE_TO_LOOT.put("{file.name.rstrip(".nbt")}", new LinkedHashMap<LootType, BPos>() {{{{')
 //    nbt_file=nbtlib.load(file)
 //    root=nbt_file.root
 //    if "blocks" not in root.keys():
@@ -379,8 +379,8 @@ public class Shipwreck extends UniformStructure<Shipwreck> {
 //                print(f'    put(LootType.{nbt["metadata"].upper()},new BPos({",".join(map(str,map(int,pos)))}));')
 //    print('}});')
 //    if "size" in root.keys():
-//        print(f'STRUCTURE_SIZE.put("{file}",new BPos({",".join(map(str,map(int,root["size"])))}));')
+//        print(f'STRUCTURE_SIZE.put("{file.name.rstrip(".nbt")}",new BPos({",".join(map(str,map(int,root["size"])))}));')
 //    else:
-//        print(f"Missing size key for {file.rstrip(".nbt")}")
+//        print(f"Missing size key for {file.name.rstrip(".nbt")}")
 //        sys.exit(1)
 }

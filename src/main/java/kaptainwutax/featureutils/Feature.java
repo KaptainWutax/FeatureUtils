@@ -4,6 +4,7 @@ import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
+import kaptainwutax.terrainutils.ChunkGenerator;
 
 public abstract class Feature<C extends Feature.Config, D extends Feature.Data<?>> {
 
@@ -28,6 +29,8 @@ public abstract class Feature<C extends Feature.Config, D extends Feature.Data<?
 	public abstract boolean canStart(D data, long structureSeed, ChunkRand rand);
 
 	public abstract boolean canSpawn(D data, BiomeSource source);
+
+	public abstract boolean canGenerate(D data, ChunkGenerator generator);
 
 	public abstract boolean isValidDimension(Dimension dimension);
 
@@ -54,6 +57,11 @@ public abstract class Feature<C extends Feature.Config, D extends Feature.Data<?
 		@SuppressWarnings("unchecked")
 		public boolean testBiome(BiomeSource source) {
 			return this.feature.canSpawn(this, source);
+		}
+
+		@SuppressWarnings("unchecked")
+		public boolean testGenerate(ChunkGenerator generator) {
+			return this.feature.canGenerate(this, generator);
 		}
 	}
 

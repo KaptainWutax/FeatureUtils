@@ -17,12 +17,11 @@ repositories {
 dependencies {
     implementation('com.github.KaptainWutax:MathUtils:5531c4a87b0f1bb85d1dab2bdd18ce375400626a') { transitive = false }
     implementation('com.github.KaptainWutax:SeedUtils:b6a383113ce5d8d09a59e91b28ff064fb97c0709') { transitive = false }
-    implementation('com.github.KaptainWutax:NoiseUtils:bb71e46efe0f8d930bac8af94fecf250b70e0c23') { transitive = false }
+    implementation('com.github.KaptainWutax:MCUtils:dd9eaf04cb14dd89ed72fe874aa2049457d83904') { transitive = false }
+    implementation('com.github.KaptainWutax:NoiseUtils:a3954932b15a889aa51c82176942d62f291c3b12') { transitive = false }
 
-    implementation('com.github.KaptainWutax:MCUtils:cb9c78e4e37e12dca0ddaefc3a7f3053dfbd237b') { transitive = false }
-
-    implementation('com.github.KaptainWutax:BiomeUtils:94f23a7d62dc450f15821e05de6a89661396f8c2') {transitive = false}
-    implementation('com.github.KaptainWutax:TerrainUtils:4c449a2d688d9673e0b78728e00cfbf0a57d47a6') {transitive = false}
+    implementation('com.github.KaptainWutax:BiomeUtils:4c16b06fb7dc8d8877c0214a66b0ab261f44104a') {transitive = false}
+    implementation('com.github.KaptainWutax:TerrainUtils:dbba2ba61a2c8920b48b1fb9a32fa8e9fe353d61') {transitive = false}
 
     testImplementation('com.github.KaptainWutax:ChunkRandomReversal:6b76fb5cf2cd438de56e6a46cea2a83985831834') {transitive = false}
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')

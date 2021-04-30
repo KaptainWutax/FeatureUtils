@@ -16,6 +16,7 @@ import static kaptainwutax.featureutils.loot.function.SetCountFunction.uniform;
 
 @SuppressWarnings("unused")
 public class MCLootTables {
+	public static  final LootTable NULL=new LootTable();
 
 	public static final LootTable ABANDONED_MINESHAFT_CHEST = new LootTable(
 			new LootPool(new ConstantRoll(1),

@@ -4,8 +4,10 @@ import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
+import kaptainwutax.mcutils.util.block.BlockRotation;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
+import kaptainwutax.terrainutils.ChunkGenerator;
 
 public class EndCity extends TriangularStructure<EndCity> {
 
@@ -26,9 +28,7 @@ public class EndCity extends TriangularStructure<EndCity> {
 
 	@Override
 	public boolean canStart(Data<EndCity> data, long structureSeed, ChunkRand rand) {
-		if (!super.canStart(data, structureSeed, rand)) return false;
-		//TODO: add terrain check!
-		return true;
+		return super.canStart(data, structureSeed, rand);
 	}
 
 	@Override
@@ -39,6 +39,35 @@ public class EndCity extends TriangularStructure<EndCity> {
 	@Override
 	public boolean isValidBiome(Biome biome) {
 		return biome == Biomes.END_MIDLANDS || biome == Biomes.END_HIGHLANDS;
+	}
+
+	@Override
+	public boolean isValidTerrain(ChunkGenerator generator,int chunkX, int chunkZ){
+		return getAverageYPosition(generator,chunkX,chunkZ)>=60;
+	}
+
+	public static int getAverageYPosition(ChunkGenerator generator,int chunkX, int chunkZ){
+		@SuppressWarnings("IntegerMultiplicationImplicitCastToLong")
+		ChunkRand random = new ChunkRand(chunkX + chunkZ * 10387313);
+		BlockRotation rotation = BlockRotation.getRandom(random);
+		int xOffset = 5;
+		int zOffset = 5;
+		if (rotation == BlockRotation.CLOCKWISE_90) {
+			xOffset = -5;
+		} else if (rotation == BlockRotation.CLOCKWISE_180) {
+			xOffset = -5;
+			zOffset = -5;
+		} else if (rotation == BlockRotation.COUNTERCLOCKWISE_90) {
+			zOffset = -5;
+		}
+
+		int posX = (chunkX << 4) + 7;
+		int posZ = (chunkZ << 4) + 7;
+		int center = generator.getHeightOnGround(posX, posZ);
+		int s = generator.getHeightOnGround(posX, posZ + zOffset); // SOUTH
+		int e =generator.getHeightOnGround(posX + xOffset, posZ); //  EAST
+		int se = generator.getHeightOnGround(posX + xOffset, posZ + zOffset); // SOUTH EAST
+		return Math.min(Math.min(center, s), Math.min(e, se));
 	}
 
 }

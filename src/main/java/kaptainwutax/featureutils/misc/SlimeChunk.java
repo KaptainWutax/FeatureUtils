@@ -6,6 +6,7 @@ import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
+import kaptainwutax.terrainutils.ChunkGenerator;
 
 public class SlimeChunk extends Feature<SlimeChunk.Config, SlimeChunk.Data> {
 
@@ -37,6 +38,11 @@ public class SlimeChunk extends Feature<SlimeChunk.Config, SlimeChunk.Data> {
 
 	@Override
 	public boolean canSpawn(SlimeChunk.Data data, BiomeSource source) {
+		return true;
+	}
+
+	@Override
+	public boolean canGenerate(Data data, ChunkGenerator generator) {
 		return true;
 	}
 
