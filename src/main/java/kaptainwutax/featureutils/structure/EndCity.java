@@ -63,10 +63,10 @@ public class EndCity extends TriangularStructure<EndCity> {
 
 		int posX = (chunkX << 4) + 7;
 		int posZ = (chunkZ << 4) + 7;
-		int center = generator.getHeightOnGround(posX, posZ);
-		int s = generator.getHeightOnGround(posX, posZ + zOffset); // SOUTH
-		int e =generator.getHeightOnGround(posX + xOffset, posZ); //  EAST
-		int se = generator.getHeightOnGround(posX + xOffset, posZ + zOffset); // SOUTH EAST
+		int center = generator.getHeightInGround(posX, posZ);
+		int s = generator.getHeightInGround(posX, posZ + zOffset); // SOUTH
+		int e =generator.getHeightInGround(posX + xOffset, posZ); //  EAST
+		int se = generator.getHeightInGround(posX + xOffset, posZ + zOffset); // SOUTH EAST
 		return Math.min(Math.min(center, s), Math.min(e, se));
 	}
 
