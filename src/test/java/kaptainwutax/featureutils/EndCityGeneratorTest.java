@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import static kaptainwutax.featureutils.structure.generator.EndCityGenerator.LootType.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EndCityGeneratorTest {
@@ -86,36 +87,36 @@ public class EndCityGeneratorTest {
 		setup(1L, new BPos(-127280, 0, -30944).toChunkPos(), MCVersion.v1_16_5);
 		EndCity endCity = new EndCity(MCVersion.v1_16_5);
 		HashMap<EndCityGenerator.LootType, List<List<ItemStack>>> lootTypes = endCity.getLoot(1L, endCityGenerator, new ChunkRand(), false);
+		long hash=0;
 		for (Map.Entry<EndCityGenerator.LootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
 			for (List<ItemStack> loot : loots.getValue()) {
-				System.out.println(loot);
+				for (ItemStack stack:loot) hash+=stack.hashCode();
 			}
 		}
+		assertEquals(-2289062442L,hash,"Items changed maybe?");
 	}
 
 	@Test
-	public void testWrong() {
+	public void testLargeEndcity() {
 		// /tp @p 1952 150 -1840
-		setup(-4425006226675986357L, new BPos(-2880,0, -320).toChunkPos() , MCVersion.v1_16_5);
-		for (Pair<EndCityGenerator.LootType, BPos> check : endCityGenerator.getChestsPos()) {
-			if (check.getFirst().lootTable != null) System.out.println(check);
-		}
+		long worldSeed = -4425006226675986357L;
+		setup(worldSeed, new BPos(-2880, 0, -320).toChunkPos(), MCVersion.v1_16_5);
+		assertEquals(155, endCityGenerator.getGlobalPieces().size(), "The end city doesn't have the proper size");
+		assertTrue(endCityGenerator.hasShip());
 		EndCity endCity = new EndCity(MCVersion.v1_16_5);
-		HashMap<EndCityGenerator.LootType, List<List<ItemStack>>> lootTypes = endCity.getLoot(-4425006226675986357L, endCityGenerator, new ChunkRand(), false);
+		HashMap<EndCityGenerator.LootType, List<List<ItemStack>>> lootTypes = endCity.getLoot(worldSeed, endCityGenerator, new ChunkRand(), false);
+		long diamondCount = 0;
 		for (Map.Entry<EndCityGenerator.LootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
-
-			for (List<ItemStack> loot : loots.getValue()) {
-				System.out.println(loots.getKey());
-				for (ItemStack l:loot) System.out.println("\t\t\t"+l);
-			}
+			diamondCount += loots.getValue().stream().mapToLong(e -> e.stream().filter(f -> f.getItem().getName().contains("diamond")).mapToLong(ItemStack::getCount).sum()).sum();
 		}
+		assertEquals(68, diamondCount, "Diamond count doesn't match");
 	}
 
 	public static void main(String[] args) {
 		new ThreadPool(Runtime.getRuntime().availableProcessors()).run(EndCityGeneratorTest::tryFindDiamond);
 	}
 
-	public static void tryFindDiamond(){
+	public static void tryFindDiamond() {
 		MCVersion version = MCVersion.v1_16_5;
 		EndCity endCity = new EndCity(version);
 		ChunkRand rand = new ChunkRand();

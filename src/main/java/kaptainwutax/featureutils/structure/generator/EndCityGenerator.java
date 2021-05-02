@@ -46,6 +46,10 @@ public class EndCityGenerator {
 		return this.generate(generator, cPos.getX(), cPos.getZ(), rand);
 	}
 
+	public List<Template> getGlobalPieces() {
+		return globalPieces;
+	}
+
 	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
 		rand.setCarverSeed(generator.getWorldSeed(), chunkX, chunkZ, this.getVersion());
 		int y = EndCity.getAverageYPosition(generator, chunkX, chunkZ);
