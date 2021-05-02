@@ -102,51 +102,53 @@ public class EnchantWithLevelsFunction implements LootFunction {
 		return this.enchantItem(lootContext, itemStack, getRandomValueFromBounds(lootContext), this.treasure, this.discoverable);
 	}
 
-	public ItemStack enchantItem(LootContext random, ItemStack itemStack, int n, boolean bl, boolean b2) {
-		List<EnchantmentInstance> list = selectEnchantment(random, itemStack, n, bl, b2);
+	public ItemStack enchantItem(LootContext random, ItemStack itemStack, int level, boolean isTreasure, boolean isDiscoverable) {
+		List<EnchantmentInstance> list = selectEnchantment(random, itemStack, level, isTreasure, isDiscoverable);
 		for (EnchantmentInstance enchantmentInstance : list) {
 			itemStack.getItem().addEnchantment(new Pair<>(enchantmentInstance.getName(), enchantmentInstance.getLevel()));
 		}
 		return itemStack;
 	}
 
-	public List<EnchantmentInstance> selectEnchantment(LootContext lootContext, ItemStack itemStack, int n, boolean bl, boolean b2) {
-		ArrayList<EnchantmentInstance> arrayList = new ArrayList<>();
+	public List<EnchantmentInstance> selectEnchantment(LootContext lootContext, ItemStack itemStack, int level, boolean isTreasure, boolean isDiscoverable) {
+		ArrayList<EnchantmentInstance> res = new ArrayList<>();
 		Item item = itemStack.getItem();
-		int n2;
+		int enchantmentValue;
 		if (enchantments.containsKey(item.getName())) {
-			n2 = enchantments.get(item.getName());
+			enchantmentValue = enchantments.get(item.getName());
 		} else {
-			return arrayList;
+			return res;
 		}
-		n += 1 + lootContext.nextInt(n2 / 4 + 1) + lootContext.nextInt(n2 / 4 + 1);
-		float f = (lootContext.nextFloat() + lootContext.nextFloat() - 1.0f) * 0.15f;
-		List<EnchantmentInstance> list = getAvailableEnchantmentResults(n = Mth.clamp(Math.round((float) n + (float) n * f), 1, Integer.MAX_VALUE), itemStack, bl, b2);
-		if (!list.isEmpty()) {
-			arrayList.add(getRandomItem(lootContext, list));
-			while (lootContext.nextInt(50) <= n) {
-				filterCompatibleEnchantments(list, arrayList.get(arrayList.size() - 1));
-				if (list.isEmpty()) break;
-				arrayList.add(getRandomItem(lootContext, list));
-				n /= 2;
+		level += 1 + lootContext.nextInt(enchantmentValue / 4 + 1) + lootContext.nextInt(enchantmentValue / 4 + 1);
+		float amplifier = (lootContext.nextFloat() + lootContext.nextFloat() - 1.0f) * 0.15f;
+		level = Mth.clamp(Math.round((float) level + (float) level * amplifier), 1, Integer.MAX_VALUE);
+		List<EnchantmentInstance> availableEnchantments = getAvailableEnchantmentResults(level, itemStack, isTreasure, isDiscoverable);
+		if (!availableEnchantments.isEmpty()) {
+			res.add(getRandomItem(lootContext, availableEnchantments));
+			while (lootContext.nextInt(50) <= level) {
+				filterCompatibleEnchantments(availableEnchantments, res.get(res.size() - 1));
+				if (availableEnchantments.isEmpty()) break;
+				res.add(getRandomItem(lootContext, availableEnchantments));
+				level /= 2;
 			}
 		}
-		return arrayList;
+		return res;
 	}
 
-	public List<EnchantmentInstance> getAvailableEnchantmentResults(int n, ItemStack itemStack, boolean bl, boolean b2) {
-		ArrayList<EnchantmentInstance> arrayList = new ArrayList<>();
+	public List<EnchantmentInstance> getAvailableEnchantmentResults(int level, ItemStack itemStack, boolean isTreasure, boolean isDiscoverable) {
+		ArrayList<EnchantmentInstance> res = new ArrayList<>();
 		List<Enchantment> list = getApplicableEnchantments(getCategories(itemStack), this.treasure, this.discoverable);
-		block0:
 		for (Enchantment enchantment : list) {
-			if ((enchantment.isTreasure() && !bl) || !(enchantment.isDiscoverable() == this.discoverable)) continue;
-			for (int i = enchantment.getMaxLevel(); i > enchantment.getMinLevel() - 1; --i) {
-				if (enchantment.getIsLowerThanMinCost().test(i, n) || enchantment.getIsHigherThanMaxCost().test(i, n)) continue;
-				arrayList.add(new EnchantmentInstance(enchantment, i));
-				continue block0;
+			if ((!enchantment.isTreasure() || isTreasure) && enchantment.isDiscoverable() == isDiscoverable) {
+				for (int i = enchantment.getMaxLevel(); i > enchantment.getMinLevel() - 1; --i) {
+					if (!enchantment.getIsLowerThanMinCost().test(i, level) && !enchantment.getIsHigherThanMaxCost().test(i, level)) {
+						res.add(new EnchantmentInstance(enchantment, i));
+						break;
+					}
+				}
 			}
 		}
-		return arrayList;
+		return res;
 	}
 
 	public int getRandomValueFromBounds(LootContext lootContext) {

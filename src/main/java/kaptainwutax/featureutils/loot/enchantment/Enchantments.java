@@ -135,7 +135,7 @@ public class Enchantments {
 				new Enchantment("projectile_protection", UNCOMMON, ARMOR, 1, 4, (i, n) -> (n < 3 + (i - 1) * 6), (i, n) -> (n > 3 + (i - 1) * 6 + 6), new HashSet<>(Arrays.asList("protection", "fire_protection", "projectile_protection", "blast_protection"))),
 				new Enchantment("respiration", RARE, ARMOR_HEAD, 1, 3, (i, n) -> (n < 10 * i), (i, n) -> (n > 10 * i + 30), new HashSet<>(Collections.singletonList("respiration"))),
 				new Enchantment("aqua_affinity", RARE, ARMOR_HEAD, 1, 1, (i, n) -> (n < 1), (i, n) -> (n > 41), new HashSet<>(Collections.singletonList("aqua_affinity"))),
-				new Enchantment("thorns", VERY_RARE, ARMOR, 1, 3, (i, n) -> (n < 10 + (20 * (i - 1))), (i, n) -> (n > 10 + (20 * (i - 1)) + 50), new HashSet<>(Arrays.asList("thorns"))),
+				new Enchantment("thorns", VERY_RARE, ARMOR_CHEST, 1, 3, (i, n) -> (n < 10 + (20 * (i - 1))), (i, n) -> (n > 10 + (20 * (i - 1)) + 50), new HashSet<>(Arrays.asList("thorns"))),
 				(Version.isNewerOrEqualTo(MCVersion.v1_8) ? new Enchantment("depth_strider", RARE, ARMOR_FEET, 1, 3, (i, n) -> (n < i * 10), (i, n) -> (n > i * 10 + 15), new HashSet<>(Arrays.asList("frost_walker", "depth_strider"))) : null),
 				(Version.isNewerOrEqualTo(MCVersion.v1_9) ? new Enchantment("frost_walker", RARE, ARMOR_FEET, 1, 2, (i, n) -> (n < i * 10), (i, n) -> (n > i * 10 + 15), new HashSet<>(Arrays.asList("frost_walker", "depth_strider")), true) : null),
 				(Version.isNewerOrEqualTo(MCVersion.v1_11) ? new Enchantment("binding_curse", VERY_RARE, ARMOR, 1, 1, (i, n) -> (n < 25), (i, n) -> (n > 50), new HashSet<>(Arrays.asList("binding_curse")), true) : null),
@@ -205,7 +205,7 @@ public class Enchantments {
 		List<Enchantment> applicableEnchantments = new ArrayList<>();
 		List<String> applicableEnchantmentNames = new ArrayList<>();
 		for (Enchantment currentEnchantment : new Enchantments().EnchantmentRegistry) {
-			if (!(currentEnchantment.isTreasure() && !isTreasure) && (currentEnchantment.isDiscoverable() == isDiscoverable)) {
+			if ((!currentEnchantment.isTreasure() || isTreasure) && (currentEnchantment.isDiscoverable() == isDiscoverable)) {
 				if (applicableCategories.contains(currentEnchantment.getCategory())) {
 					if (!(applicableEnchantmentNames.contains(currentEnchantment.getName()))) {
 						applicableEnchantments.add(currentEnchantment);

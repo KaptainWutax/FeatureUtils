@@ -15,7 +15,10 @@ import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
 import kaptainwutax.terrainutils.ChunkGenerator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class EndCity extends TriangularStructure<EndCity> {
 
@@ -93,10 +96,10 @@ public class EndCity extends TriangularStructure<EndCity> {
 
 		HashMap<CPos, LinkedList<Pair<EndCityGenerator.LootType, BPos>>> posLinkedListHashMap = new HashMap<>();
 		for (Pair<EndCityGenerator.LootType, BPos> lootPos : lootPositions) {
-			if (lootPos.getFirst().lootTable!=null) {
+			if (lootPos.getFirst().lootTable != null) {
 				BPos pos = lootPos.getSecond();
 				CPos cPos = pos.toChunkPos();
-				posLinkedListHashMap.computeIfAbsent(cPos,k->new LinkedList<>()).add(lootPos);
+				posLinkedListHashMap.computeIfAbsent(cPos, k -> new LinkedList<>()).add(lootPos);
 			}
 		}
 		HashMap<EndCityGenerator.LootType, List<ChestData>> chestDataHashMap = new HashMap<>();
@@ -105,20 +108,22 @@ public class EndCity extends TriangularStructure<EndCity> {
 			// FIXME index will be wrong I need to use the bpos this is for now a hacky fix
 			int index = 0;
 			for (Pair<EndCityGenerator.LootType, BPos> lootType : lootTypes) {
-				chestDataHashMap.computeIfAbsent(lootType.getFirst(),k->new ArrayList<>()).add(new ChestData(index, cPos, lootTypes.size()));
+				chestDataHashMap.computeIfAbsent(lootType.getFirst(), k -> new ArrayList<>()).add(new ChestData(index, cPos, lootType.getSecond(), lootTypes.size()));
 				index += 1;
 			}
 		}
 		HashMap<EndCityGenerator.LootType, List<List<ItemStack>>> result = new HashMap<>();
 		for (EndCityGenerator.LootType lootType : chestDataHashMap.keySet()) {
 			List<ChestData> chests = chestDataHashMap.get(lootType);
-			for (ChestData chestData:chests){
+			for (ChestData chestData : chests) {
 				CPos chunkChestPos = chestData.cPos;
-				rand.setDecoratorSeed(structureSeed, chunkChestPos.getX() * 16, chunkChestPos.getZ() * 16, salt, this.getVersion());
+				long populationSeed = rand.setPopulationSeed(structureSeed, chunkChestPos.getX() * 16, chunkChestPos.getZ() * 16, this.getVersion());
+				rand.setDecoratorSeed(populationSeed, salt, this.getVersion());
 				rand.advance(chestData.numberInChunk * 2L);
 				rand.advance(chestData.index * 2L);
 				LootContext context = new LootContext(rand.nextLong(), this.getVersion());
-				result.computeIfAbsent(lootType,k->new ArrayList<>()).add(indexed ? lootType.lootTable.generateIndexed(context) : lootType.lootTable.generate(context));
+				List<ItemStack> loot = indexed ? lootType.lootTable.generateIndexed(context) : lootType.lootTable.generate(context);
+				result.computeIfAbsent(lootType, k -> new ArrayList<>()).add(loot);
 			}
 		}
 		return result;
@@ -127,12 +132,24 @@ public class EndCity extends TriangularStructure<EndCity> {
 	public static class ChestData {
 		int index;
 		CPos cPos;
+		BPos bpos;
 		int numberInChunk;
 
-		public ChestData(int index, CPos cPos, int numberInChunk) {
+		public ChestData(int index, CPos cPos, BPos bPos, int numberInChunk) {
 			this.index = index;
 			this.cPos = cPos;
+			this.bpos = bPos;
 			this.numberInChunk = numberInChunk;
+		}
+
+		@Override
+		public String toString() {
+			return "ChestData{" +
+					"index=" + index +
+					", cPos=" + cPos +
+					", bpos=" + bpos +
+					", numberInChunk=" + numberInChunk +
+					'}';
 		}
 	}
 
