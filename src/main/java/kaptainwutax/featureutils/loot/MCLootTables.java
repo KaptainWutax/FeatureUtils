@@ -16,7 +16,7 @@ import static kaptainwutax.featureutils.loot.function.SetCountFunction.uniform;
 
 @SuppressWarnings("unused")
 public class MCLootTables {
-	public static  final LootTable NULL=new LootTable();
+	public static final LootTable NULL = new LootTable();
 
 	public static final LootTable ABANDONED_MINESHAFT_CHEST = new LootTable(
 			new LootPool(new ConstantRoll(1),
@@ -212,20 +212,20 @@ public class MCLootTables {
 					new ItemEntry(Items.IRON_HORSE_ARMOR),
 					new ItemEntry(Items.GOLDEN_HORSE_ARMOR),
 					new ItemEntry(Items.DIAMOND_HORSE_ARMOR),
-					new ItemEntry(Items.DIAMOND_SWORD, 3) /* enchant_with_levels */,
-					new ItemEntry(Items.DIAMOND_BOOTS, 3) /* enchant_with_levels */,
-					new ItemEntry(Items.DIAMOND_CHESTPLATE, 3) /* enchant_with_levels */,
-					new ItemEntry(Items.DIAMOND_LEGGINGS, 3) /* enchant_with_levels */,
-					new ItemEntry(Items.DIAMOND_HELMET, 3) /* enchant_with_levels */,
-					new ItemEntry(Items.DIAMOND_PICKAXE, 3) /* enchant_with_levels */,
-					new ItemEntry(Items.DIAMOND_SHOVEL, 3) /* enchant_with_levels */,
-					new ItemEntry(Items.IRON_SWORD, 3) /* enchant_with_levels */,
-					new ItemEntry(Items.IRON_BOOTS, 3) /* enchant_with_levels */,
-					new ItemEntry(Items.IRON_CHESTPLATE, 3) /* enchant_with_levels */,
-					new ItemEntry(Items.IRON_LEGGINGS, 3) /* enchant_with_levels */,
-					new ItemEntry(Items.IRON_HELMET, 3) /* enchant_with_levels */,
-					new ItemEntry(Items.IRON_PICKAXE, 3) /* enchant_with_levels */,
-					new ItemEntry(Items.IRON_SHOVEL, 3) /* enchant_with_levels */)
+					new ItemEntry(Items.DIAMOND_SWORD, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
+					new ItemEntry(Items.DIAMOND_BOOTS, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
+					new ItemEntry(Items.DIAMOND_CHESTPLATE, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
+					new ItemEntry(Items.DIAMOND_LEGGINGS, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
+					new ItemEntry(Items.DIAMOND_HELMET, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
+					new ItemEntry(Items.DIAMOND_PICKAXE, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
+					new ItemEntry(Items.DIAMOND_SHOVEL, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
+					new ItemEntry(Items.IRON_SWORD, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
+					new ItemEntry(Items.IRON_BOOTS, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),  // FIXME wrong
+					new ItemEntry(Items.IRON_CHESTPLATE, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),  // FIXME wrong
+					new ItemEntry(Items.IRON_LEGGINGS, 3).apply(new EnchantWithLevelsFunction(20, 39, true)), // FIXME wrong
+					new ItemEntry(Items.IRON_HELMET, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),  // FIXME wrong
+					new ItemEntry(Items.IRON_PICKAXE, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
+					new ItemEntry(Items.IRON_SHOVEL, 3).apply(new EnchantWithLevelsFunction(20, 39, true)))
 	);
 
 	public static final LootTable IGLOO_CHEST_CHEST = new LootTable(

@@ -68,7 +68,7 @@ public class EndCityGenerator {
 				LootType lootType=entry.getKey();
 				for (BPos offset:entry.getValue()){
 					// we know for a fact that the pos is below the box size so we don't do the check
-					BPos lootPos = template.box.getRotated(template.getRotation()).getInside(offset, BlockRotation.NONE);
+					BPos lootPos = template.box.getRotated(template.getRotation()).getInside(offset, template.getRotation());
 					res.add(new Pair<>(lootType,lootPos));
 				}
 			}
@@ -80,6 +80,9 @@ public class EndCityGenerator {
 		return this.getChestsPos().stream().map(e-> new Pair<>(e.getFirst(), e.getSecond().toChunkPos())).collect(Collectors.toList());
 	}
 
+	public boolean hasShip(){
+		return globalPieces.stream().anyMatch(e-> e.getName().equals("ship"));
+	}
 
 	private static Template calculateTemplate(Template previous, BPos pos, String name, BlockRotation rotation, boolean overwrite) {
 		Template template = new Template(name, previous.pos, rotation, overwrite);
@@ -351,35 +354,35 @@ public class EndCityGenerator {
 
 
 	public enum LootType {
-		SENTRY(MCLootTables.NULL, Items.SHULKER_SHELL),
-		ELYTRA(MCLootTables.NULL, Items.ELYTRA),
-		CHEST(MCLootTables.END_CITY_TREASURE_CHEST, Items.CHEST);
-		private final LootTable lootTable;
-		private final Item item;
+		BASE_FLOOR_SENTRY_1(null, Items.SHULKER_SHELL),
+		BASE_FLOOR_SENTRY_2(null, Items.SHULKER_SHELL),
+		FAT_TOWER_MIDDLE_SENTRY_1(null, Items.SHULKER_SHELL),
+		FAT_TOWER_MIDDLE_SENTRY_2(null, Items.SHULKER_SHELL),
+		FAT_TOWER_MIDDLE_SENTRY_3(null, Items.SHULKER_SHELL),
+		FAT_TOWER_MIDDLE_SENTRY_4(null, Items.SHULKER_SHELL),
+		SECOND_FLOOR_SENTRY(null, Items.SHULKER_SHELL),
+		SHIP_SENTRY_1(null, Items.SHULKER_SHELL),
+		SHIP_SENTRY_2(null, Items.SHULKER_SHELL),
+		SHIP_SENTRY_3(null, Items.SHULKER_SHELL),
+		THIRD_FLOOR_SENTRY_1(null, Items.SHULKER_SHELL),
+		THIRD_FLOOR_SENTRY_2(null, Items.SHULKER_SHELL),
+		TOWER_TOP_SENTRY(null, Items.SHULKER_SHELL),
+
+		FAT_TOWER_TOP_CHEST_1(MCLootTables.END_CITY_TREASURE_CHEST, Items.SHULKER_SHELL),
+		FAT_TOWER_TOP_CHEST_2(MCLootTables.END_CITY_TREASURE_CHEST, Items.SHULKER_SHELL),
+		THIRD_FLOOR_CHEST(MCLootTables.END_CITY_TREASURE_CHEST, Items.SHULKER_SHELL),
+		SHIP_CHEST_1(MCLootTables.END_CITY_TREASURE_CHEST, Items.SHULKER_SHELL),
+		SHIP_CHEST_2(MCLootTables.END_CITY_TREASURE_CHEST, Items.SHULKER_SHELL),
+
+		SHIP_ELYTRA(null, Items.ELYTRA)
+		;
+		
+		public final LootTable lootTable;
+		public final Item item;
 
 		LootType(LootTable lootTable, Item item) {
 			this.lootTable = lootTable;
 			this.item = item;
-		}
-	}
-
-	private static class PieceInfo {
-		private final int type;
-		private final int depth;
-		private final int xMin, yMin, zMin;
-		private final int xMax, yMax, zMax;
-		private final int facing;
-
-		public PieceInfo(int type, int depth, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, int facing) {
-			this.type = type;
-			this.depth = depth;
-			this.xMin = xMin;
-			this.yMin = yMin;
-			this.zMin = zMin;
-			this.xMax = xMax;
-			this.yMax = yMax;
-			this.zMax = zMax;
-			this.facing = facing;
 		}
 	}
 
@@ -411,8 +414,8 @@ public class EndCityGenerator {
 
 	static {
 		STRUCTURE_TO_LOOT.put("base_floor", new LinkedHashMap<LootType, List<BPos>>() {{
-			computeIfAbsent(LootType.SENTRY, k -> new ArrayList<>()).add(new BPos(3, 2, 9));
-			computeIfAbsent(LootType.SENTRY, k -> new ArrayList<>()).add(new BPos(6, 2, 9));
+			computeIfAbsent(LootType.BASE_FLOOR_SENTRY_1, k -> new ArrayList<>()).add(new BPos(3, 2, 9));
+			computeIfAbsent(LootType.BASE_FLOOR_SENTRY_2, k -> new ArrayList<>()).add(new BPos(6, 2, 9));
 		}});
 		STRUCTURE_SIZE.put("base_floor", new BPos(10, 4, 10));
 		STRUCTURE_TO_LOOT.put("base_roof", new LinkedHashMap<LootType, List<BPos>>() {{
@@ -434,43 +437,43 @@ public class EndCityGenerator {
 		}});
 		STRUCTURE_SIZE.put("fat_tower_base", new BPos(13, 4, 13));
 		STRUCTURE_TO_LOOT.put("fat_tower_middle", new LinkedHashMap<LootType, List<BPos>>() {{
-			computeIfAbsent(LootType.SENTRY, k -> new ArrayList<>()).add(new BPos(2, 2, 6));
-			computeIfAbsent(LootType.SENTRY, k -> new ArrayList<>()).add(new BPos(10, 2, 6));
-			computeIfAbsent(LootType.SENTRY, k -> new ArrayList<>()).add(new BPos(6, 6, 2));
-			computeIfAbsent(LootType.SENTRY, k -> new ArrayList<>()).add(new BPos(6, 6, 10));
+			computeIfAbsent(LootType.FAT_TOWER_MIDDLE_SENTRY_1, k -> new ArrayList<>()).add(new BPos(2, 2, 6));
+			computeIfAbsent(LootType.FAT_TOWER_MIDDLE_SENTRY_2, k -> new ArrayList<>()).add(new BPos(10, 2, 6));
+			computeIfAbsent(LootType.FAT_TOWER_MIDDLE_SENTRY_3, k -> new ArrayList<>()).add(new BPos(6, 6, 2));
+			computeIfAbsent(LootType.FAT_TOWER_MIDDLE_SENTRY_4, k -> new ArrayList<>()).add(new BPos(6, 6, 10));
 		}});
 		STRUCTURE_SIZE.put("fat_tower_middle", new BPos(13, 8, 13));
 		STRUCTURE_TO_LOOT.put("fat_tower_top", new LinkedHashMap<LootType, List<BPos>>() {{
-			computeIfAbsent(LootType.CHEST, k -> new ArrayList<>()).add(new BPos(3, 2, 11));
-			computeIfAbsent(LootType.CHEST, k -> new ArrayList<>()).add(new BPos(5, 2, 13));
+			computeIfAbsent(LootType.FAT_TOWER_TOP_CHEST_1, k -> new ArrayList<>()).add(new BPos(3, 2, 11));
+			computeIfAbsent(LootType.FAT_TOWER_TOP_CHEST_2, k -> new ArrayList<>()).add(new BPos(5, 2, 13));
 		}});
 		STRUCTURE_SIZE.put("fat_tower_top", new BPos(17, 6, 17));
 		STRUCTURE_TO_LOOT.put("second_floor_1", new LinkedHashMap<LootType, List<BPos>>() {{
 		}});
 		STRUCTURE_SIZE.put("second_floor_1", new BPos(12, 8, 12));
 		STRUCTURE_TO_LOOT.put("second_floor_2", new LinkedHashMap<LootType, List<BPos>>() {{
-			computeIfAbsent(LootType.SENTRY, k -> new ArrayList<>()).add(new BPos(8, 5, 6));
+			computeIfAbsent(LootType.SECOND_FLOOR_SENTRY, k -> new ArrayList<>()).add(new BPos(8, 5, 6));
 		}});
 		STRUCTURE_SIZE.put("second_floor_2", new BPos(12, 8, 12));
 		STRUCTURE_TO_LOOT.put("second_roof", new LinkedHashMap<LootType, List<BPos>>() {{
 		}});
 		STRUCTURE_SIZE.put("second_roof", new BPos(14, 2, 14));
 		STRUCTURE_TO_LOOT.put("ship", new LinkedHashMap<LootType, List<BPos>>() {{
-			computeIfAbsent(LootType.SENTRY, k -> new ArrayList<>()).add(new BPos(6, 4, 8));
-			computeIfAbsent(LootType.SENTRY, k -> new ArrayList<>()).add(new BPos(8, 6, 27));
-			computeIfAbsent(LootType.SENTRY, k -> new ArrayList<>()).add(new BPos(4, 11, 27));
-			computeIfAbsent(LootType.CHEST, k -> new ArrayList<>()).add(new BPos(5, 5, 7));
-			computeIfAbsent(LootType.CHEST, k -> new ArrayList<>()).add(new BPos(7, 5, 7));
-			computeIfAbsent(LootType.ELYTRA, k -> new ArrayList<>()).add(new BPos(6, 5, 7));
+			computeIfAbsent(LootType.SHIP_SENTRY_1, k -> new ArrayList<>()).add(new BPos(6, 4, 8));
+			computeIfAbsent(LootType.SHIP_SENTRY_2, k -> new ArrayList<>()).add(new BPos(8, 6, 27));
+			computeIfAbsent(LootType.SHIP_SENTRY_3, k -> new ArrayList<>()).add(new BPos(4, 11, 27));
+			computeIfAbsent(LootType.SHIP_CHEST_1, k -> new ArrayList<>()).add(new BPos(5, 5, 7));
+			computeIfAbsent(LootType.SHIP_CHEST_2, k -> new ArrayList<>()).add(new BPos(7, 5, 7));
+			computeIfAbsent(LootType.SHIP_ELYTRA, k -> new ArrayList<>()).add(new BPos(6, 5, 7));
 		}});
 		STRUCTURE_SIZE.put("ship", new BPos(13, 24, 29));
 		STRUCTURE_TO_LOOT.put("third_floor_1", new LinkedHashMap<LootType, List<BPos>>() {{
 		}});
 		STRUCTURE_SIZE.put("third_floor_1", new BPos(14, 8, 14));
 		STRUCTURE_TO_LOOT.put("third_floor_2", new LinkedHashMap<LootType, List<BPos>>() {{
-			computeIfAbsent(LootType.SENTRY, k -> new ArrayList<>()).add(new BPos(2, 5, 2));
-			computeIfAbsent(LootType.SENTRY, k -> new ArrayList<>()).add(new BPos(11, 5, 2));
-			computeIfAbsent(LootType.CHEST, k -> new ArrayList<>()).add(new BPos(6, 6, 2));
+			computeIfAbsent(LootType.THIRD_FLOOR_SENTRY_1, k -> new ArrayList<>()).add(new BPos(2, 5, 2));
+			computeIfAbsent(LootType.THIRD_FLOOR_SENTRY_2, k -> new ArrayList<>()).add(new BPos(11, 5, 2));
+			computeIfAbsent(LootType.THIRD_FLOOR_CHEST, k -> new ArrayList<>()).add(new BPos(6, 6, 2));
 		}});
 		STRUCTURE_SIZE.put("third_floor_2", new BPos(14, 8, 14));
 		STRUCTURE_TO_LOOT.put("third_roof", new LinkedHashMap<LootType, List<BPos>>() {{
@@ -486,7 +489,7 @@ public class EndCityGenerator {
 		}});
 		STRUCTURE_SIZE.put("tower_piece", new BPos(7, 4, 7));
 		STRUCTURE_TO_LOOT.put("tower_top", new LinkedHashMap<LootType, List<BPos>>() {{
-			computeIfAbsent(LootType.SENTRY, k -> new ArrayList<>()).add(new BPos(4, 3, 4));
+			computeIfAbsent(LootType.TOWER_TOP_SENTRY, k -> new ArrayList<>()).add(new BPos(4, 3, 4));
 		}});
 		STRUCTURE_SIZE.put("tower_top", new BPos(9, 5, 9));
 	}

@@ -2,12 +2,23 @@ package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
+import kaptainwutax.featureutils.loot.LootContext;
+import kaptainwutax.featureutils.loot.item.ItemStack;
+import kaptainwutax.featureutils.structure.generator.EndCityGenerator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.util.block.BlockRotation;
+import kaptainwutax.mcutils.util.data.Pair;
+import kaptainwutax.mcutils.util.pos.BPos;
+import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
 import kaptainwutax.terrainutils.ChunkGenerator;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class EndCity extends TriangularStructure<EndCity> {
 
@@ -42,11 +53,11 @@ public class EndCity extends TriangularStructure<EndCity> {
 	}
 
 	@Override
-	public boolean isValidTerrain(ChunkGenerator generator,int chunkX, int chunkZ){
-		return getAverageYPosition(generator,chunkX,chunkZ)>=60;
+	public boolean isValidTerrain(ChunkGenerator generator, int chunkX, int chunkZ) {
+		return getAverageYPosition(generator, chunkX, chunkZ) >= 60;
 	}
 
-	public static int getAverageYPosition(ChunkGenerator generator,int chunkX, int chunkZ){
+	public static int getAverageYPosition(ChunkGenerator generator, int chunkX, int chunkZ) {
 		@SuppressWarnings("IntegerMultiplicationImplicitCastToLong")
 		ChunkRand random = new ChunkRand(chunkX + chunkZ * 10387313);
 		BlockRotation rotation = BlockRotation.getRandom(random);
@@ -65,9 +76,69 @@ public class EndCity extends TriangularStructure<EndCity> {
 		int posZ = (chunkZ << 4) + 7;
 		int center = generator.getHeightInGround(posX, posZ);
 		int s = generator.getHeightInGround(posX, posZ + zOffset); // SOUTH
-		int e =generator.getHeightInGround(posX + xOffset, posZ); //  EAST
+		int e = generator.getHeightInGround(posX + xOffset, posZ); //  EAST
 		int se = generator.getHeightInGround(posX + xOffset, posZ + zOffset); // SOUTH EAST
 		return Math.min(Math.min(center, s), Math.min(e, se));
+	}
+
+	/**
+	 * This will only return the chest loot, you would have to check with hasShip
+	 *
+	 * @param structureSeed
+	 * @param endCityGenerator
+	 * @param rand
+	 * @param indexed
+	 * @return
+	 */
+	public HashMap<EndCityGenerator.LootType, List<ItemStack>> getLoot(long structureSeed, EndCityGenerator endCityGenerator, ChunkRand rand, boolean indexed) {
+		int salt = 40010; // TODO make me version dependant
+		List<Pair<EndCityGenerator.LootType, BPos>> lootPositions = endCityGenerator.getChestsPos();
+
+		HashMap<CPos, LinkedList<Pair<EndCityGenerator.LootType, BPos>>> posLinkedListHashMap = new HashMap<>();
+		for (Pair<EndCityGenerator.LootType, BPos> lootPos : lootPositions) {
+			if (lootPos.getFirst().lootTable!=null) {
+				BPos pos = lootPos.getSecond();
+				CPos cPos = pos.toChunkPos();
+				if (posLinkedListHashMap.containsKey(cPos)) {
+					posLinkedListHashMap.get(cPos).add(lootPos);
+				} else {
+					posLinkedListHashMap.put(cPos, new LinkedList<>(Collections.singletonList(lootPos)));
+				}
+			}
+		}
+		HashMap<EndCityGenerator.LootType, ChestData> chestDataHashMap = new HashMap<>();
+		for (CPos cPos : posLinkedListHashMap.keySet()) {
+			LinkedList<Pair<EndCityGenerator.LootType, BPos>> lootTypes = posLinkedListHashMap.get(cPos);
+			// FIXME index will be wrong I need to use the bpos this is for now a hacky fix
+			int index = 0;
+			for (Pair<EndCityGenerator.LootType, BPos> lootType : lootTypes) {
+				chestDataHashMap.put(lootType.getFirst(), new ChestData(index, cPos, lootTypes.size()));
+				index += 1;
+			}
+		}
+		HashMap<EndCityGenerator.LootType, List<ItemStack>> result = new HashMap<>();
+		for (EndCityGenerator.LootType lootType : chestDataHashMap.keySet()) {
+			ChestData chestData = chestDataHashMap.get(lootType);
+			CPos chunkChestPos = chestData.cPos;
+			rand.setDecoratorSeed(structureSeed, chunkChestPos.getX() * 16, chunkChestPos.getZ() * 16, salt, this.getVersion());
+			rand.advance(chestData.numberInChunk * 2L);
+			rand.advance(chestData.index * 2L);
+			LootContext context = new LootContext(rand.nextLong(), this.getVersion());
+			result.put(lootType, indexed ? lootType.lootTable.generateIndexed(context) : lootType.lootTable.generate(context));
+		}
+		return result;
+	}
+
+	public static class ChestData {
+		int index;
+		CPos cPos;
+		int numberInChunk;
+
+		public ChestData(int index, CPos cPos, int numberInChunk) {
+			this.index = index;
+			this.cPos = cPos;
+			this.numberInChunk = numberInChunk;
+		}
 	}
 
 }
