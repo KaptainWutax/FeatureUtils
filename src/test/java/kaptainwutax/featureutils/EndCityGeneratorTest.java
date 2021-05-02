@@ -3,6 +3,7 @@ package kaptainwutax.featureutils;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.featureutils.structure.EndCity;
+import kaptainwutax.featureutils.structure.RegionStructure;
 import kaptainwutax.featureutils.structure.generator.EndCityGenerator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
@@ -86,29 +87,50 @@ public class EndCityGeneratorTest {
 	public void testChestLoot() {
 		setup(1L,new BPos(-127280 ,0, -30944).toChunkPos(),MCVersion.v1_16_5);
 		EndCity endCity=new EndCity(MCVersion.v1_16_5);
-		HashMap<EndCityGenerator.LootType, List<ItemStack>> loots= endCity.getLoot(1L,endCityGenerator,new ChunkRand(),false);
-		for (Map.Entry<EndCityGenerator.LootType, List<ItemStack>> loot:loots.entrySet()){
-			System.out.println(loot);
+		HashMap<EndCityGenerator.LootType, List<List<ItemStack>>> lootTypes= endCity.getLoot(1L,endCityGenerator,new ChunkRand(),false);
+		for (Map.Entry<EndCityGenerator.LootType, List<List<ItemStack>>> loots:lootTypes.entrySet()){
+			for (List<ItemStack> loot:loots.getValue()){
+				System.out.println(loot);
+			}
 		}
 	}
 
 	public static void main(String[] args) {
-		// config, thos can be changed, no impact (chunkrand is just for optimization can be modified in any way)
 		MCVersion version= MCVersion.v1_16_5;
-		CPos cPos=new BPos(-127280 ,0, -30944).toChunkPos();
-		ChunkRand rand = new ChunkRand();
-		long worldseed=1L;
-
-		BiomeSource biomeSource = BiomeSource.of(Dimension.END, version, worldseed);
-		ChunkGenerator generator = ChunkGenerator.of(Dimension.END, biomeSource);
-		EndCityGenerator endCityGenerator = new EndCityGenerator(version);
-		endCityGenerator.generate(generator, cPos, rand);
-		// loots = endCityGenerator.getChestsPos(); // useful for knowing the pos if you don't want to use our loot tables
 		EndCity endCity=new EndCity(version);
-		HashMap<EndCityGenerator.LootType, List<ItemStack>> loots= endCity.getLoot(worldseed,endCityGenerator,rand,false);
-		for (Map.Entry<EndCityGenerator.LootType, List<ItemStack>> loot:loots.entrySet()){
-			System.out.println(loot);
+		ChunkRand rand = new ChunkRand();
+
+		EndCityGenerator endCityGenerator = new EndCityGenerator(version);
+
+		for (int i = 0; i < 1000000000; i++) {
+			long worldseed=rand.nextLong();
+			BiomeSource biomeSource = BiomeSource.of(Dimension.END, version, worldseed);
+			ChunkGenerator generator = ChunkGenerator.of(Dimension.END, biomeSource);
+			for (int x =  -3000 / 16 /endCity.getSpacing(); x < 3000 / 16 /endCity.getSpacing(); x++) {
+				for (int z =  -3000 / 16 /endCity.getSpacing(); z < 3000 / 16 / endCity.getSpacing(); z++) {
+					Feature.Data<?> pos=endCity.at(x*endCity.getSpacing(),z*endCity.getSpacing());
+					if (endCity.canStart((RegionStructure.Data<EndCity>) pos,worldseed,rand)){
+						if (endCity.canSpawn((RegionStructure.Data<EndCity>) pos,biomeSource)){
+							if (endCity.canGenerate((RegionStructure.Data<EndCity>) pos,generator)){
+								endCityGenerator.generate(generator,pos.chunkX,pos.chunkZ,rand);
+								HashMap<EndCityGenerator.LootType, List<List<ItemStack>>> loots=endCity.getLoot(worldseed,endCityGenerator,rand,false);
+								int diamond=0;
+								for (Map.Entry<EndCityGenerator.LootType, List<List<ItemStack>>> loot:loots.entrySet()){
+									for (List<ItemStack> l:loot.getValue()){
+										diamond += l.stream().filter(e -> e.getItem().getName().contains("diamond")).mapToInt(ItemStack::getCount).sum();
+									}
+								}
+								if (diamond>70){
+									System.out.println(worldseed+" "+pos.chunkX+" "+pos.chunkZ);
+								}
+								endCityGenerator.reset();
+							}
+						}
+					}
+				}
+			}
 		}
+
 	}
 
 }
