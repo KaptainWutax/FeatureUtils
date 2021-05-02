@@ -96,11 +96,7 @@ public class EndCity extends TriangularStructure<EndCity> {
 			if (lootPos.getFirst().lootTable!=null) {
 				BPos pos = lootPos.getSecond();
 				CPos cPos = pos.toChunkPos();
-				if (posLinkedListHashMap.containsKey(cPos)) {
-					posLinkedListHashMap.get(cPos).add(lootPos);
-				} else {
-					posLinkedListHashMap.put(cPos, new LinkedList<>(Collections.singletonList(lootPos)));
-				}
+				posLinkedListHashMap.computeIfAbsent(cPos,k->new LinkedList<>()).add(lootPos);
 			}
 		}
 		HashMap<EndCityGenerator.LootType, List<ChestData>> chestDataHashMap = new HashMap<>();

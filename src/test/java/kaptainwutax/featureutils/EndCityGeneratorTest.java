@@ -120,8 +120,8 @@ public class EndCityGeneratorTest {
 										diamond += l.stream().filter(e -> e.getItem().getName().contains("diamond")).mapToInt(ItemStack::getCount).sum();
 									}
 								}
-								if (diamond>70){
-									System.out.println(worldseed+" "+pos.chunkX+" "+pos.chunkZ);
+								if (diamond>30){
+									System.out.printf("Diamond: %d, seed: %d, tp: /tp @p %d ~ %d%n",diamond,worldseed,pos.chunkX*16, pos.chunkZ*16);
 								}
 								endCityGenerator.reset();
 							}
