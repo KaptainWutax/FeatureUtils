@@ -68,8 +68,8 @@ public class EndCityGenerator {
 				LootType lootType=entry.getKey();
 				for (BPos offset:entry.getValue()){
 					// we know for a fact that the pos is below the box size so we don't do the check
-					BPos chestPos = template.box.getInside(offset, template.getRotation());
-					res.add(new Pair<>(lootType,chestPos));
+					BPos lootPos = template.box.getRotated(template.getRotation()).getInside(offset, BlockRotation.NONE);
+					res.add(new Pair<>(lootType,lootPos));
 				}
 			}
 		}
