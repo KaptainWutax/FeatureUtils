@@ -92,4 +92,23 @@ public class EndCityGeneratorTest {
 		}
 	}
 
+	public static void main(String[] args) {
+		// config, thos can be changed, no impact (chunkrand is just for optimization can be modified in any way)
+		MCVersion version= MCVersion.v1_16_5;
+		CPos cPos=new BPos(-127280 ,0, -30944).toChunkPos();
+		ChunkRand rand = new ChunkRand();
+		long worldseed=1L;
+
+		BiomeSource biomeSource = BiomeSource.of(Dimension.END, version, worldseed);
+		ChunkGenerator generator = ChunkGenerator.of(Dimension.END, biomeSource);
+		EndCityGenerator endCityGenerator = new EndCityGenerator(version);
+		endCityGenerator.generate(generator, cPos, rand);
+		// loots = endCityGenerator.getChestsPos(); // useful for knowing the pos if you don't want to use our loot tables
+		EndCity endCity=new EndCity(version);
+		HashMap<EndCityGenerator.LootType, List<ItemStack>> loots= endCity.getLoot(worldseed,endCityGenerator,rand,false);
+		for (Map.Entry<EndCityGenerator.LootType, List<ItemStack>> loot:loots.entrySet()){
+			System.out.println(loot);
+		}
+	}
+
 }
