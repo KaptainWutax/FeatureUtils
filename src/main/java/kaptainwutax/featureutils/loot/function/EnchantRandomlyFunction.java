@@ -51,7 +51,7 @@ public class EnchantRandomlyFunction implements LootFunction {
 		Item newItem = new Item(baseStack.getItem().getName());
 		HashSet<HashSet<String>> applicableCategories = getCategories(baseStack);
 		List<Enchantment> applicableEnchantments = getApplicableEnchantments(applicableCategories, this.isTreasure, this.isDiscoverable);
-		if (applicableEnchantments.isEmpty()) return baseStack; //TODO fix me this is wrong for size 1 and 0 (LEATHER)
+		if (applicableEnchantments.isEmpty()) return baseStack;
 		int enchantNr = context.nextInt(applicableEnchantments.size());
 		Enchantment enchantment = applicableEnchantments.get(enchantNr);
 		int level = 1;

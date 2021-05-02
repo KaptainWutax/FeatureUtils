@@ -220,10 +220,10 @@ public class MCLootTables {
 					new ItemEntry(Items.DIAMOND_PICKAXE, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
 					new ItemEntry(Items.DIAMOND_SHOVEL, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
 					new ItemEntry(Items.IRON_SWORD, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
-					new ItemEntry(Items.IRON_BOOTS, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),  // FIXME wrong
-					new ItemEntry(Items.IRON_CHESTPLATE, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),  // FIXME wrong
-					new ItemEntry(Items.IRON_LEGGINGS, 3).apply(new EnchantWithLevelsFunction(20, 39, true)), // FIXME wrong
-					new ItemEntry(Items.IRON_HELMET, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),  // FIXME wrong
+					new ItemEntry(Items.IRON_BOOTS, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
+					new ItemEntry(Items.IRON_CHESTPLATE, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
+					new ItemEntry(Items.IRON_LEGGINGS, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
+					new ItemEntry(Items.IRON_HELMET, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
 					new ItemEntry(Items.IRON_PICKAXE, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
 					new ItemEntry(Items.IRON_SHOVEL, 3).apply(new EnchantWithLevelsFunction(20, 39, true)))
 	);
