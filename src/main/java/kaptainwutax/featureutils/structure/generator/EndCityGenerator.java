@@ -253,7 +253,7 @@ public class EndCityGenerator {
 					Template roof = generateAndAdd(pieces, base, new BPos(-1, 4, -1), "base_roof", rotation, true);
 				} else if (size == 1) {
 					Template secondFloor = generateAndAdd(pieces, base, new BPos(-1, 0, -1), "second_floor_2", rotation, false);
-					Template secondRoof = generateAndAdd(pieces, secondFloor, new BPos(-1, 0, -1), "second_floor_2", rotation, false);
+					Template secondRoof = generateAndAdd(pieces, secondFloor, new BPos(-1, 8, -1), "second_roof", rotation, false);
 					generateRecursively(TOWER_GENERATOR, depth + 1, secondRoof, null, pieces, rand);
 				} else {
 					Template secondFloor = generateAndAdd(pieces, base, new BPos(-1, 0, -1), "second_floor_2", rotation, false);

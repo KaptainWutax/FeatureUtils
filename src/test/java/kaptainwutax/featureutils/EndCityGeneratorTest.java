@@ -8,6 +8,7 @@ import kaptainwutax.featureutils.structure.generator.EndCityGenerator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.util.data.Pair;
+import kaptainwutax.mcutils.util.data.ThreadPool;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
@@ -95,15 +96,26 @@ public class EndCityGeneratorTest {
 	@Test
 	public void testWrong() {
 		// /tp @p 1952 150 -1840
-		setup(12132233L, new BPos(1952, 0, -1840).toChunkPos() , MCVersion.v1_16_5);
+		setup(-4425006226675986357L, new BPos(-2880,0, -320).toChunkPos() , MCVersion.v1_16_5);
 		for (Pair<EndCityGenerator.LootType, BPos> check : endCityGenerator.getChestsPos()) {
 			if (check.getFirst().lootTable != null) System.out.println(check);
 		}
 		EndCity endCity = new EndCity(MCVersion.v1_16_5);
-		HashMap<EndCityGenerator.LootType, List<List<ItemStack>>> lootTypes = endCity.getLoot(12132233L, endCityGenerator, new ChunkRand(), false);
+		HashMap<EndCityGenerator.LootType, List<List<ItemStack>>> lootTypes = endCity.getLoot(-4425006226675986357L, endCityGenerator, new ChunkRand(), false);
+		for (Map.Entry<EndCityGenerator.LootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
+
+			for (List<ItemStack> loot : loots.getValue()) {
+				System.out.println(loots.getKey());
+				for (ItemStack l:loot) System.out.println("\t\t\t"+l);
+			}
+		}
 	}
 
 	public static void main(String[] args) {
+		new ThreadPool(Runtime.getRuntime().availableProcessors()).run(EndCityGeneratorTest::tryFindDiamond);
+	}
+
+	public static void tryFindDiamond(){
 		MCVersion version = MCVersion.v1_16_5;
 		EndCity endCity = new EndCity(version);
 		ChunkRand rand = new ChunkRand();
@@ -138,7 +150,6 @@ public class EndCityGeneratorTest {
 				}
 			}
 		}
-
 	}
 
 }
