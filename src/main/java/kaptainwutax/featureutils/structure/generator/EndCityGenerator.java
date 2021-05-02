@@ -26,6 +26,10 @@ public class EndCityGenerator {
 		this.version = version;
 	}
 
+	public void reset(){
+		this.globalPieces.clear();
+	}
+
 	public MCVersion getVersion() {
 		return version;
 	}

@@ -67,6 +67,17 @@ public abstract class RegionStructure<C extends RegionStructure.Config, D extend
 			this.baseRegionSeed = new ChunkRand().setRegionSeed(0L, this.regionX, this.regionZ,
 					this.feature.getSalt(), this.feature.getVersion());
 		}
+
+		@Override
+		public String toString() {
+			return "Data{" +
+					"regionX=" + regionX +
+					", regionZ=" + regionZ +
+					", offsetX=" + offsetX +
+					", offsetZ=" + offsetZ +
+					", baseRegionSeed=" + baseRegionSeed +
+					'}';
+		}
 	}
 
 }

@@ -15,10 +15,7 @@ import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
 import kaptainwutax.terrainutils.ChunkGenerator;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class EndCity extends TriangularStructure<EndCity> {
 
@@ -90,7 +87,7 @@ public class EndCity extends TriangularStructure<EndCity> {
 	 * @param indexed
 	 * @return
 	 */
-	public HashMap<EndCityGenerator.LootType, List<ItemStack>> getLoot(long structureSeed, EndCityGenerator endCityGenerator, ChunkRand rand, boolean indexed) {
+	public HashMap<EndCityGenerator.LootType, List<List<ItemStack>>> getLoot(long structureSeed, EndCityGenerator endCityGenerator, ChunkRand rand, boolean indexed) {
 		int salt = 40010; // TODO make me version dependant
 		List<Pair<EndCityGenerator.LootType, BPos>> lootPositions = endCityGenerator.getChestsPos();
 
@@ -106,25 +103,27 @@ public class EndCity extends TriangularStructure<EndCity> {
 				}
 			}
 		}
-		HashMap<EndCityGenerator.LootType, ChestData> chestDataHashMap = new HashMap<>();
+		HashMap<EndCityGenerator.LootType, List<ChestData>> chestDataHashMap = new HashMap<>();
 		for (CPos cPos : posLinkedListHashMap.keySet()) {
 			LinkedList<Pair<EndCityGenerator.LootType, BPos>> lootTypes = posLinkedListHashMap.get(cPos);
 			// FIXME index will be wrong I need to use the bpos this is for now a hacky fix
 			int index = 0;
 			for (Pair<EndCityGenerator.LootType, BPos> lootType : lootTypes) {
-				chestDataHashMap.put(lootType.getFirst(), new ChestData(index, cPos, lootTypes.size()));
+				chestDataHashMap.computeIfAbsent(lootType.getFirst(),k->new ArrayList<>()).add(new ChestData(index, cPos, lootTypes.size()));
 				index += 1;
 			}
 		}
-		HashMap<EndCityGenerator.LootType, List<ItemStack>> result = new HashMap<>();
+		HashMap<EndCityGenerator.LootType, List<List<ItemStack>>> result = new HashMap<>();
 		for (EndCityGenerator.LootType lootType : chestDataHashMap.keySet()) {
-			ChestData chestData = chestDataHashMap.get(lootType);
-			CPos chunkChestPos = chestData.cPos;
-			rand.setDecoratorSeed(structureSeed, chunkChestPos.getX() * 16, chunkChestPos.getZ() * 16, salt, this.getVersion());
-			rand.advance(chestData.numberInChunk * 2L);
-			rand.advance(chestData.index * 2L);
-			LootContext context = new LootContext(rand.nextLong(), this.getVersion());
-			result.put(lootType, indexed ? lootType.lootTable.generateIndexed(context) : lootType.lootTable.generate(context));
+			List<ChestData> chests = chestDataHashMap.get(lootType);
+			for (ChestData chestData:chests){
+				CPos chunkChestPos = chestData.cPos;
+				rand.setDecoratorSeed(structureSeed, chunkChestPos.getX() * 16, chunkChestPos.getZ() * 16, salt, this.getVersion());
+				rand.advance(chestData.numberInChunk * 2L);
+				rand.advance(chestData.index * 2L);
+				LootContext context = new LootContext(rand.nextLong(), this.getVersion());
+				result.computeIfAbsent(lootType,k->new ArrayList<>()).add(indexed ? lootType.lootTable.generateIndexed(context) : lootType.lootTable.generate(context));
+			}
 		}
 		return result;
 	}
