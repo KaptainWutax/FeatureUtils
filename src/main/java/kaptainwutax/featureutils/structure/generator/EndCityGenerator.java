@@ -16,6 +16,7 @@ import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.terrainutils.ChunkGenerator;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EndCityGenerator {
 	private final MCVersion version;
@@ -51,13 +52,41 @@ public class EndCityGenerator {
 		return true;
 	}
 
+	/**
+	 * Get the chest block pos, should always be called after generate else will return an empty list
+	 * @return list of lootype (warning some might not be loot, like Sentry) and bpos
+	 */
+	public List<Pair<LootType, BPos>> getChestsPos() {
+		List<Pair<LootType, BPos>> res = new ArrayList<>();
+		for (Template template:globalPieces){
+			LinkedHashMap<LootType, List<BPos>> loot=STRUCTURE_TO_LOOT.get(template.getName());
+			if (loot==null){
+				System.err.println("Missing loot for "+template.getName());
+				continue;
+			}
+			for (Map.Entry<LootType,List<BPos>> entry:loot.entrySet()){
+				LootType lootType=entry.getKey();
+				for (BPos offset:entry.getValue()){
+					// we know for a fact that the pos is below the box size so we don't do the check
+					BPos chestPos = template.box.getInside(offset, template.getRotation());
+					res.add(new Pair<>(lootType,chestPos));
+				}
+			}
+		}
+		return res;
+	}
+
+	public List<Pair<LootType, CPos>> getChestsChunkPos() {
+		return this.getChestsPos().stream().map(e-> new Pair<>(e.getFirst(), e.getSecond().toChunkPos())).collect(Collectors.toList());
+	}
+
 
 	private static Template calculateTemplate(Template previous, BPos pos, String name, BlockRotation rotation, boolean overwrite) {
-		Template template=new Template(name, previous.pos, rotation, overwrite);
+		Template template = new Template(name, previous.pos, rotation, overwrite);
 
-		BPos transform1 = pos.transform(BlockMirror.NONE, previous.getRotation(),BPos.ORIGIN);
-		BPos transform2 = BPos.ORIGIN.transform(BlockMirror.NONE, template.getRotation(),BPos.ORIGIN);
-		BPos transform=transform1.subtract(transform2);
+		BPos transform1 = pos.transform(BlockMirror.NONE, previous.getRotation(), BPos.ORIGIN);
+		BPos transform2 = BPos.ORIGIN.transform(BlockMirror.NONE, template.getRotation(), BPos.ORIGIN);
+		BPos transform = transform1.subtract(transform2);
 		template.move(transform);
 		return template;
 	}
@@ -101,6 +130,7 @@ public class EndCityGenerator {
 		}
 		return false;
 	}
+
 	static class Template {
 		private final String name;
 		private BPos pos;
@@ -114,7 +144,7 @@ public class EndCityGenerator {
 			this.pos = pos;
 			this.rotation = rotation;
 			this.overwrite = overwrite;
-			this.box= BlockBox.getBoundingBox(pos,rotation,BPos.ORIGIN,BlockMirror.NONE,Objects.requireNonNull(STRUCTURE_SIZE.get(name)));
+			this.box = BlockBox.getBoundingBox(pos, rotation, BPos.ORIGIN, BlockMirror.NONE, Objects.requireNonNull(STRUCTURE_SIZE.get(name)));
 		}
 
 		public void setGenDepth(int genDepth) {
@@ -126,17 +156,17 @@ public class EndCityGenerator {
 		}
 
 		public Template findCollisionPiece(List<Template> templates) {
-			for (Template template:templates){
-				if (template.getBox().intersects(this.box)){
+			for (Template template : templates) {
+				if (template.getBox().intersects(this.box)) {
 					return template;
 				}
 			}
 			return null;
 		}
 
-		public void move(BPos by){
-			this.pos=this.pos.add(by);
-			this.box.move(by.getX(),by.getY(),by.getZ());
+		public void move(BPos by) {
+			this.pos = this.pos.add(by);
+			this.box.move(by.getX(), by.getY(), by.getZ());
 		}
 
 		public BlockBox getBox() {
