@@ -3,6 +3,7 @@ package kaptainwutax.featureutils.structure;
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.Feature;
+import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.terrainutils.ChunkGenerator;
 
@@ -56,6 +57,10 @@ public abstract class Structure<C extends Feature.Config, D extends Feature.Data
 		return this.canSpawn(data.chunkX, data.chunkZ, source);
 	}
 
+	public boolean canSpawn(CPos cPos, BiomeSource source) {
+		return this.canSpawn(cPos.getX(), cPos.getZ(), source);
+	}
+
 	public boolean canSpawn(int chunkX, int chunkZ, BiomeSource source) {
 		if (this.getVersion().isOlderThan(MCVersion.v1_16)) {
 			return this.isValidBiome(source.getBiome((chunkX << 4) + 9, 0, (chunkZ << 4) + 9));
@@ -72,11 +77,15 @@ public abstract class Structure<C extends Feature.Config, D extends Feature.Data
 		return this.canGenerate(data.chunkX, data.chunkZ, generator);
 	}
 
-	public boolean canGenerate(int chunkX, int chunkZ, ChunkGenerator generator) {
-		return this.isValidTerrain(generator,chunkX,chunkZ);
+	public boolean canGenerate(CPos cPos, ChunkGenerator generator) {
+		return this.canGenerate(cPos.getX(), cPos.getZ(), generator);
 	}
 
-	public boolean isValidTerrain(ChunkGenerator generator, int chunkX, int chunkZ){
+	public boolean canGenerate(int chunkX, int chunkZ, ChunkGenerator generator) {
+		return this.isValidTerrain(generator, chunkX, chunkZ);
+	}
+
+	public boolean isValidTerrain(ChunkGenerator generator, int chunkX, int chunkZ) {
 		return true;
 	}
 
