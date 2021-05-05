@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
 
 public interface ILoot {
 
@@ -43,9 +45,10 @@ public interface ILoot {
 			List<ChestData> chests = chestDataHashMap.get(lootType);
 			for (ChestData chestData : chests) {
 				CPos chunkChestPos = chestData.getcPos();
-				long populationSeed = rand.setPopulationSeed(structureSeed, chunkChestPos.getX() * 16, chunkChestPos.getZ() * 16, this.getVersion());
-				rand.setDecoratorSeed(populationSeed, this.getDecorationSalt(), this.getVersion());
-				rand.advance(chestData.getNumberInChunk() * 2L);
+				rand.setDecoratorSeed(structureSeed,chunkChestPos.getX() * 16, chunkChestPos.getZ() * 16, this.getDecorationSalt(), this.getVersion());
+				SpecificCalls calls=this.getSpecificCalls();
+				if (calls!=null) calls.run(generator,rand);
+				if (shouldAdvanceInChunks()) rand.advance(chestData.getNumberInChunk() * 2L);
 				rand.advance(chestData.getIndex() * 2L);
 				LootContext context = new LootContext(rand.nextLong(), this.getVersion());
 				List<ItemStack> loot = indexed ? lootType.getLootTable().generateIndexed(context) : lootType.getLootTable().generate(context);
@@ -55,12 +58,23 @@ public interface ILoot {
 		return result;
 	}
 
+	/**
+	 * Sets the mode to advance for the number of feature in that chunk, this account for template doing twice the loot table seed,
+	 * normal structure don't, be sure to override
+	 * @return if should advance in that chunk twice
+	 */
+	default boolean shouldAdvanceInChunks(){
+		return true;
+	}
+
 	int getDecorationSalt();
 
 	boolean isCorrectGenerator(Generator generator);
 
 	// this actually abuse inheritance for features
 	MCVersion getVersion();
+
+	SpecificCalls getSpecificCalls();
 
 	class ChestData {
 		int index;
@@ -100,5 +114,10 @@ public interface ILoot {
 					", numberInChunk=" + numberInChunk +
 					'}';
 		}
+	}
+
+	@FunctionalInterface
+	interface SpecificCalls{
+		void run(Generator generator, ChunkRand rand);
 	}
 }

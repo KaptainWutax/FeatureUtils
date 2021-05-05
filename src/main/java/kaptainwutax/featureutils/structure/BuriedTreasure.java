@@ -2,13 +2,16 @@ package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
+import kaptainwutax.featureutils.loot.ILoot;
+import kaptainwutax.featureutils.structure.generator.BuriedTreasureGenerator;
+import kaptainwutax.featureutils.structure.generator.Generator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
 
-public class BuriedTreasure extends RegionStructure<BuriedTreasure.Config, RegionStructure.Data<BuriedTreasure>> {
+public class BuriedTreasure extends RegionStructure<BuriedTreasure.Config, RegionStructure.Data<BuriedTreasure>> implements ILoot {
 
 	public static final VersionMap<BuriedTreasure.Config> CONFIGS = new VersionMap<BuriedTreasure.Config>()
 			.add(MCVersion.v1_13, new BuriedTreasure.Config(0.01F, 10387320));
@@ -54,6 +57,26 @@ public class BuriedTreasure extends RegionStructure<BuriedTreasure.Config, Regio
 	@Override
 	public RegionStructure.Data<BuriedTreasure> at(int chunkX, int chunkZ) {
 		return new RegionStructure.Data<>(this, chunkX, chunkZ);
+	}
+
+	@Override
+	public int getDecorationSalt() {
+		return 30001;
+	}
+
+	@Override
+	public boolean isCorrectGenerator(Generator generator) {
+		return generator instanceof BuriedTreasureGenerator;
+	}
+
+	@Override
+	public SpecificCalls getSpecificCalls() {
+		return null;
+	}
+
+	@Override
+	public boolean shouldAdvanceInChunks() {
+		return false;
 	}
 
 	public static class Config extends RegionStructure.Config {

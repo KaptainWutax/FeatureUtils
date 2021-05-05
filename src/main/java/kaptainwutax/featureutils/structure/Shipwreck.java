@@ -24,6 +24,7 @@ import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
 
 import java.util.*;
+import java.util.concurrent.Callable;
 
 public class Shipwreck extends UniformStructure<Shipwreck> implements ILoot {
 	public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
@@ -68,5 +69,16 @@ public class Shipwreck extends UniformStructure<Shipwreck> implements ILoot {
 	@Override
 	public boolean isCorrectGenerator(Generator generator) {
 		return generator instanceof ShipwreckGenerator;
+	}
+
+	@Override
+	public SpecificCalls getSpecificCalls() {
+		return (generator, rand) -> {
+			if (isCorrectGenerator(generator)){
+				if (((ShipwreckGenerator) generator).isBeached()){
+					rand.nextInt(3);
+				}
+			}
+		};
 	}
 }

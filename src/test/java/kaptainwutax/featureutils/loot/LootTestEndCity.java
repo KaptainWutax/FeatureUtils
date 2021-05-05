@@ -1,4 +1,4 @@
-package kaptainwutax.featureutils;
+package kaptainwutax.featureutils.loot;
 
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.loot.item.ItemStack;
@@ -24,8 +24,8 @@ import static kaptainwutax.featureutils.structure.generator.EndCityGenerator.Loo
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class EndCityGeneratorTest {
-	private List<Pair<Generator.ILootType, BPos>> loots;
+public class LootTestEndCity {
+	private List<Pair<Generator.ILootType, BPos>> chestPos;
 	private EndCityGenerator structureGenerator;
 
 	public void setup(long worldseed, CPos cPos, MCVersion version) {
@@ -34,7 +34,7 @@ public class EndCityGeneratorTest {
 		structureGenerator = new EndCityGenerator(version);
 		ChunkRand rand = new ChunkRand().asChunkRandDebugger();
 		structureGenerator.generate(generator, cPos, rand);
-		loots = structureGenerator.getChestsPos();
+		chestPos = structureGenerator.getChestsPos();
 	}
 
 	@Test
@@ -47,7 +47,7 @@ public class EndCityGeneratorTest {
 			add(new Pair<>(SHIP_ELYTRA, new BPos(-1223, 100, -25202)));
 		}};
 		for (Pair<EndCityGenerator.LootType, BPos> check : checks) {
-			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s", check.getFirst(), check.getSecond()));
+			assertTrue(chestPos.contains(check), String.format("Missing loot %s at pos %s", check.getFirst(), check.getSecond()));
 		}
 	}
 
@@ -59,7 +59,7 @@ public class EndCityGeneratorTest {
 			add(new Pair<>(THIRD_FLOOR_CHEST, new BPos(-12711, 103, -30973)));
 		}};
 		for (Pair<EndCityGenerator.LootType, BPos> check : checks) {
-			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s", check.getFirst(), check.getSecond()));
+			assertTrue(chestPos.contains(check), String.format("Missing loot %s at pos %s", check.getFirst(), check.getSecond()));
 		}
 	}
 
@@ -77,7 +77,7 @@ public class EndCityGeneratorTest {
 			add(new Pair<>(THIRD_FLOOR_CHEST, new BPos(-127276, 127, -30989)));
 		}};
 		for (Pair<EndCityGenerator.LootType, BPos> check : checks) {
-			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s", check.getFirst(), check.getSecond()));
+			assertTrue(chestPos.contains(check), String.format("Missing loot %s at pos %s", check.getFirst(), check.getSecond()));
 		}
 	}
 
@@ -112,7 +112,7 @@ public class EndCityGeneratorTest {
 	}
 
 	public static void main(String[] args) {
-		new ThreadPool(Runtime.getRuntime().availableProcessors()).run(EndCityGeneratorTest::tryFindDiamond);
+		new ThreadPool(Runtime.getRuntime().availableProcessors()).run(LootTestEndCity::tryFindDiamond);
 	}
 
 	public static void tryFindDiamond() {

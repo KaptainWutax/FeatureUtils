@@ -64,6 +64,11 @@ public class EndCity extends TriangularStructure<EndCity> implements ILoot {
 		return generator instanceof EndCityGenerator;
 	}
 
+	@Override
+	public SpecificCalls getSpecificCalls() {
+		return null;
+	}
+
 	public static int getAverageYPosition(ChunkGenerator generator, int chunkX, int chunkZ) {
 		@SuppressWarnings("IntegerMultiplicationImplicitCastToLong")
 		ChunkRand random = new ChunkRand(chunkX + chunkZ * 10387313);
