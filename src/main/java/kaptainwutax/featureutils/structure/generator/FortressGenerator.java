@@ -1,16 +1,20 @@
 package kaptainwutax.featureutils.structure.generator;
 
 
+import kaptainwutax.mcutils.rand.ChunkRand;
+import kaptainwutax.mcutils.util.data.Pair;
+import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.UnsupportedVersion;
+import kaptainwutax.terrainutils.ChunkGenerator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class FortressGenerator {
-
+public class FortressGenerator extends Generator{
+// TODO FIXME use the generator
 	private static final Random rand = new Random();
 
 	private static final int NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3;
@@ -104,6 +108,10 @@ public class FortressGenerator {
 
 	static {
 		Arrays.setAll(placements, i -> new ArrayList<>());
+	}
+
+	public FortressGenerator(MCVersion version) {
+		super(version);
 	}
 
 	private static void genFortress(int chunkX, int chunkZ, MCVersion version) {
@@ -434,6 +442,16 @@ public class FortressGenerator {
 		setSeed(5896870166552931055L, -21, -5);
 
 		genFortress(-21, -5, MCVersion.v1_12);
+	}
+
+	@Override
+	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
+		return false;
+	}
+
+	@Override
+	public List<Pair<ILootType, BPos>> getChestsPos() {
+		return null;
 	}
 
 	@FunctionalInterface

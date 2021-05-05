@@ -18,32 +18,16 @@ import kaptainwutax.terrainutils.ChunkGenerator;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class EndCityGenerator {
-	private final MCVersion version;
+@SuppressWarnings({"EmptyClassInitializer","unused"})
+public class EndCityGenerator extends Generator {
 	private final List<Template> globalPieces = new ArrayList<>();
 
 	public EndCityGenerator(MCVersion version) {
-		this.version = version;
+		super(version);
 	}
 
 	public void reset(){
 		this.globalPieces.clear();
-	}
-
-	public MCVersion getVersion() {
-		return version;
-	}
-
-	public boolean generate(ChunkGenerator generator, CPos cPos) {
-		return this.generate(generator, cPos, new ChunkRand());
-	}
-
-	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ) {
-		return this.generate(generator, chunkX, chunkZ, new ChunkRand());
-	}
-
-	public boolean generate(ChunkGenerator generator, CPos cPos, ChunkRand rand) {
-		return this.generate(generator, cPos.getX(), cPos.getZ(), rand);
 	}
 
 	public List<Template> getGlobalPieces() {
@@ -64,8 +48,8 @@ public class EndCityGenerator {
 	 * Get the chest block pos, should always be called after generate else will return an empty list
 	 * @return list of lootype (warning some might not be loot, like Sentry) and bpos
 	 */
-	public List<Pair<LootType, BPos>> getChestsPos() {
-		List<Pair<LootType, BPos>> res = new ArrayList<>();
+	public List<Pair<ILootType, BPos>> getChestsPos() {
+		List<Pair<ILootType, BPos>> res = new ArrayList<>();
 		for (Template template:globalPieces){
 			LinkedHashMap<LootType, List<BPos>> loot=STRUCTURE_TO_LOOT.get(template.getName());
 			if (loot==null){
@@ -82,10 +66,6 @@ public class EndCityGenerator {
 			}
 		}
 		return res;
-	}
-
-	public List<Pair<LootType, CPos>> getChestsChunkPos() {
-		return this.getChestsPos().stream().map(e-> new Pair<>(e.getFirst(), e.getSecond().toChunkPos())).collect(Collectors.toList());
 	}
 
 	public boolean hasShip(){
@@ -361,7 +341,7 @@ public class EndCityGenerator {
 	}
 
 
-	public enum LootType {
+	public enum LootType implements ILootType {
 		BASE_FLOOR_SENTRY_1(null, Items.SHULKER_SHELL),
 		BASE_FLOOR_SENTRY_2(null, Items.SHULKER_SHELL),
 		FAT_TOWER_MIDDLE_SENTRY_1(null, Items.SHULKER_SHELL),
@@ -391,6 +371,10 @@ public class EndCityGenerator {
 		LootType(LootTable lootTable, Item item) {
 			this.lootTable = lootTable;
 			this.item = item;
+		}
+
+		public LootTable getLootTable() {
+			return lootTable;
 		}
 	}
 
@@ -426,6 +410,7 @@ public class EndCityGenerator {
 			computeIfAbsent(LootType.BASE_FLOOR_SENTRY_2, k -> new ArrayList<>()).add(new BPos(6, 2, 9));
 		}});
 		STRUCTURE_SIZE.put("base_floor", new BPos(10, 4, 10));
+
 		STRUCTURE_TO_LOOT.put("base_roof", new LinkedHashMap<LootType, List<BPos>>() {{
 		}});
 		STRUCTURE_SIZE.put("base_roof", new BPos(12, 2, 12));

@@ -4,6 +4,7 @@ import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.featureutils.structure.EndCity;
 import kaptainwutax.featureutils.structure.generator.EndCityGenerator;
+import kaptainwutax.featureutils.structure.generator.Generator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.util.data.Pair;
@@ -24,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EndCityGeneratorTest {
-	private List<Pair<EndCityGenerator.LootType, BPos>> loots;
+	private List<Pair<Generator.ILootType, BPos>> loots;
 	private EndCityGenerator endCityGenerator;
 
 	public void setup(long worldseed, CPos cPos, MCVersion version) {
@@ -84,9 +85,9 @@ public class EndCityGeneratorTest {
 	public void testChestLoot() {
 		setup(1L, new BPos(-127280, 0, -30944).toChunkPos(), MCVersion.v1_16_5);
 		EndCity endCity = new EndCity(MCVersion.v1_16_5);
-		HashMap<EndCityGenerator.LootType, List<List<ItemStack>>> lootTypes = endCity.getLoot(1L, endCityGenerator, new ChunkRand(), false);
+		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = endCity.getLoot(1L, endCityGenerator, new ChunkRand(), false);
 		long hash = 0;
-		for (Map.Entry<EndCityGenerator.LootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
+		for (Map.Entry<Generator.ILootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
 			for (List<ItemStack> loot : loots.getValue()) {
 				for (ItemStack stack : loot) hash += stack.hashCode();
 			}
@@ -102,9 +103,9 @@ public class EndCityGeneratorTest {
 		assertEquals(155, endCityGenerator.getGlobalPieces().size(), "The end city doesn't have the proper size");
 		assertTrue(endCityGenerator.hasShip());
 		EndCity endCity = new EndCity(MCVersion.v1_16_5);
-		HashMap<EndCityGenerator.LootType, List<List<ItemStack>>> lootTypes = endCity.getLoot(worldSeed, endCityGenerator, new ChunkRand(), false);
+		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = endCity.getLoot(worldSeed, endCityGenerator, new ChunkRand(), false);
 		long diamondCount = 0;
-		for (Map.Entry<EndCityGenerator.LootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
+		for (Map.Entry<Generator.ILootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
 			diamondCount += loots.getValue().stream().mapToLong(e -> e.stream().filter(f -> f.getItem().getName().contains("diamond")).mapToLong(ItemStack::getCount).sum()).sum();
 		}
 		assertEquals(68, diamondCount, "Diamond count doesn't match");
@@ -131,9 +132,9 @@ public class EndCityGeneratorTest {
 					if (endCity.canSpawn(pos, biomeSource)) {
 						if (endCity.canGenerate(pos, generator)) {
 							endCityGenerator.generate(generator, pos.getX(), pos.getZ(), rand);
-							HashMap<EndCityGenerator.LootType, List<List<ItemStack>>> loots = endCity.getLoot(worldseed, endCityGenerator, rand, false);
+							HashMap<Generator.ILootType, List<List<ItemStack>>> loots = endCity.getLoot(worldseed, endCityGenerator, rand, false);
 							int diamond = 0;
-							for (Map.Entry<EndCityGenerator.LootType, List<List<ItemStack>>> loot : loots.entrySet()) {
+							for (Map.Entry<Generator.ILootType, List<List<ItemStack>>> loot : loots.entrySet()) {
 								for (List<ItemStack> l : loot.getValue()) {
 									diamond += l.stream().filter(e -> e.getItem().getName().contains("diamond")).mapToInt(ItemStack::getCount).sum();
 								}

@@ -5,9 +5,12 @@ import kaptainwutax.featureutils.structure.generator.piece.stronghold.*;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.util.block.BlockBox;
 import kaptainwutax.mcutils.util.block.BlockDirection;
+import kaptainwutax.mcutils.util.data.Pair;
 import kaptainwutax.mcutils.util.pos.BPos;
+import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.seedutils.rand.JRand;
+import kaptainwutax.terrainutils.ChunkGenerator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,10 +18,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class StrongholdGenerator {
+public class StrongholdGenerator extends Generator {
 
 	public final List<Stronghold.Piece> pieceList = new ArrayList<>();
-	private final MCVersion version;
 	public Class<? extends Stronghold.Piece> currentPiece = null;
 	public BlockBox strongholdBox = null;
 	protected List<PieceWeight<Stronghold.Piece>> pieceWeights = null;
@@ -28,7 +30,7 @@ public class StrongholdGenerator {
 	private boolean[] eyes = null;
 
 	public StrongholdGenerator(MCVersion version) {
-		this.version = version;
+		super(version);
 	}
 
 	public static long getStrongholdSalt(MCVersion version) {
@@ -67,12 +69,13 @@ public class StrongholdGenerator {
 		return piece;
 	}
 
-	public MCVersion getVersion() {
-		return this.version;
+	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
+		return this.generateRecursively(generator.getWorldSeed(), chunkX, chunkZ, rand, piece -> true);
 	}
 
-	public boolean generate(long worldSeed, int chunkX, int chunkZ, ChunkRand rand) {
-		return this.generate(worldSeed, chunkX, chunkZ, rand, piece -> true);
+	@Override
+	public List<Pair<ILootType, BPos>> getChestsPos() {
+		return null;
 	}
 
 	public boolean populateStructure(long worldSeed, int chunkX, int chunkZ, ChunkRand rand) {
@@ -80,13 +83,13 @@ public class StrongholdGenerator {
 	}
 
 	public boolean populateStructure(long worldSeed, int chunkX, int chunkZ, ChunkRand rand, Predicate<Stronghold.Piece> shouldContinue, boolean portalOnly) {
-		boolean halted = this.generate(worldSeed, chunkX, chunkZ, rand, shouldContinue);
+		boolean halted = this.generateRecursively(worldSeed, chunkX, chunkZ, rand, shouldContinue);
 		if (halted) return true;
 		int posX = chunkX << 4; // max 25bits
 		int posZ = chunkZ << 4;
 
-		long decoratorSeed = rand.setPopulationSeed(worldSeed, posX, posZ, version);
-		decoratorSeed = version.isOlderThan(MCVersion.v1_13) ? decoratorSeed : decoratorSeed + getStrongholdSalt(version);
+		long decoratorSeed = rand.setPopulationSeed(worldSeed, posX, posZ, this.getVersion());
+		decoratorSeed = this.getVersion().isOlderThan(MCVersion.v1_13) ? decoratorSeed : decoratorSeed + getStrongholdSalt(this.getVersion());
 		rand.setSeed(decoratorSeed);
 
 		BlockBox mainBox = new BlockBox(posX, posZ, posX + 15, posZ + 15);
@@ -117,7 +120,8 @@ public class StrongholdGenerator {
 		return eyes;
 	}
 
-	public boolean generate(long worldSeed, int chunkX, int chunkZ, ChunkRand rand, Predicate<Stronghold.Piece> shouldContinue) {
+
+	private boolean generateRecursively(long worldSeed, int chunkX, int chunkZ, ChunkRand rand, Predicate<Stronghold.Piece> shouldContinue) {
 		this.halted = false;
 		this.loopPredicate = shouldContinue;
 
