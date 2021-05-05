@@ -28,18 +28,18 @@ public interface ILoot {
 				posLinkedListHashMap.computeIfAbsent(cPos, k -> new LinkedList<>()).add(lootPos);
 			}
 		}
-		HashMap<EndCityGenerator.LootType, List<ChestData>> chestDataHashMap = new HashMap<>();
+		HashMap<Generator.ILootType, List<ChestData>> chestDataHashMap = new HashMap<>();
 		for (CPos cPos : posLinkedListHashMap.keySet()) {
 			LinkedList<Pair<Generator.ILootType, BPos>> lootTypes = posLinkedListHashMap.get(cPos);
 			// FIXME index will be wrong I need to use the bpos this is for now a hacky fix
 			int index = 0;
 			for (Pair<Generator.ILootType, BPos> lootType : lootTypes) {
-				chestDataHashMap.computeIfAbsent((EndCityGenerator.LootType) lootType.getFirst(), k -> new ArrayList<>()).add(new ChestData(index, cPos, lootType.getSecond(), lootTypes.size()));
+				chestDataHashMap.computeIfAbsent( lootType.getFirst(), k -> new ArrayList<>()).add(new ChestData(index, cPos, lootType.getSecond(), lootTypes.size()));
 				index += 1;
 			}
 		}
 		HashMap<Generator.ILootType, List<List<ItemStack>>> result = new HashMap<>();
-		for (EndCityGenerator.LootType lootType : chestDataHashMap.keySet()) {
+		for (Generator.ILootType lootType : chestDataHashMap.keySet()) {
 			List<ChestData> chests = chestDataHashMap.get(lootType);
 			for (ChestData chestData : chests) {
 				CPos chunkChestPos = chestData.getcPos();
@@ -48,7 +48,7 @@ public interface ILoot {
 				rand.advance(chestData.getNumberInChunk() * 2L);
 				rand.advance(chestData.getIndex() * 2L);
 				LootContext context = new LootContext(rand.nextLong(), this.getVersion());
-				List<ItemStack> loot = indexed ? lootType.lootTable.generateIndexed(context) : lootType.lootTable.generate(context);
+				List<ItemStack> loot = indexed ? lootType.getLootTable().generateIndexed(context) : lootType.getLootTable().generate(context);
 				result.computeIfAbsent(lootType, k -> new ArrayList<>()).add(loot);
 			}
 		}

@@ -26,21 +26,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EndCityGeneratorTest {
 	private List<Pair<Generator.ILootType, BPos>> loots;
-	private EndCityGenerator endCityGenerator;
+	private EndCityGenerator structureGenerator;
 
 	public void setup(long worldseed, CPos cPos, MCVersion version) {
 		BiomeSource biomeSource = BiomeSource.of(Dimension.END, version, worldseed);
 		ChunkGenerator generator = ChunkGenerator.of(Dimension.END, biomeSource);
-		endCityGenerator = new EndCityGenerator(version);
+		structureGenerator = new EndCityGenerator(version);
 		ChunkRand rand = new ChunkRand().asChunkRandDebugger();
-		endCityGenerator.generate(generator, cPos, rand);
-		loots = endCityGenerator.getChestsPos();
+		structureGenerator.generate(generator, cPos, rand);
+		loots = structureGenerator.getChestsPos();
 	}
 
 	@Test
 	public void testCorrectChest1() {
 		setup(1L, new BPos(-1232, 0, -25280).toChunkPos(), MCVersion.v1_16_5);
-		assertTrue(endCityGenerator.hasShip());
+		assertTrue(structureGenerator.hasShip());
 		List<Pair<EndCityGenerator.LootType, BPos>> checks = new ArrayList<Pair<EndCityGenerator.LootType, BPos>>() {{
 			add(new Pair<>(SHIP_CHEST_1, new BPos(-1222, 100, -25202)));
 			add(new Pair<>(SHIP_CHEST_2, new BPos(-1224, 100, -25202)));
@@ -66,7 +66,7 @@ public class EndCityGeneratorTest {
 	@Test
 	public void testCorrectChest3() {
 		setup(1L, new BPos(-127280, 0, -30944).toChunkPos(), MCVersion.v1_16_5);
-		assertTrue(endCityGenerator.hasShip());
+		assertTrue(structureGenerator.hasShip());
 		List<Pair<EndCityGenerator.LootType, BPos>> checks = new ArrayList<Pair<EndCityGenerator.LootType, BPos>>() {{
 			add(new Pair<>(FAT_TOWER_TOP_CHEST_1, new BPos(-127270, 123, -30943)));
 			add(new Pair<>(FAT_TOWER_TOP_CHEST_2, new BPos(-127272, 123, -30945)));
@@ -85,7 +85,7 @@ public class EndCityGeneratorTest {
 	public void testChestLoot() {
 		setup(1L, new BPos(-127280, 0, -30944).toChunkPos(), MCVersion.v1_16_5);
 		EndCity endCity = new EndCity(MCVersion.v1_16_5);
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = endCity.getLoot(1L, endCityGenerator, new ChunkRand(), false);
+		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = endCity.getLoot(1L, structureGenerator, new ChunkRand(), false);
 		long hash = 0;
 		for (Map.Entry<Generator.ILootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
 			for (List<ItemStack> loot : loots.getValue()) {
@@ -100,10 +100,10 @@ public class EndCityGeneratorTest {
 		// /tp @p 1952 150 -1840
 		long worldSeed = -4425006226675986357L;
 		setup(worldSeed, new BPos(-2880, 0, -320).toChunkPos(), MCVersion.v1_16_5);
-		assertEquals(155, endCityGenerator.getGlobalPieces().size(), "The end city doesn't have the proper size");
-		assertTrue(endCityGenerator.hasShip());
+		assertEquals(155, structureGenerator.getGlobalPieces().size(), "The end city doesn't have the proper size");
+		assertTrue(structureGenerator.hasShip());
 		EndCity endCity = new EndCity(MCVersion.v1_16_5);
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = endCity.getLoot(worldSeed, endCityGenerator, new ChunkRand(), false);
+		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = endCity.getLoot(worldSeed, structureGenerator, new ChunkRand(), false);
 		long diamondCount = 0;
 		for (Map.Entry<Generator.ILootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
 			diamondCount += loots.getValue().stream().mapToLong(e -> e.stream().filter(f -> f.getItem().getName().contains("diamond")).mapToLong(ItemStack::getCount).sum()).sum();
