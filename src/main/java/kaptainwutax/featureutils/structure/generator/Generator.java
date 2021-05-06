@@ -1,6 +1,9 @@
 package kaptainwutax.featureutils.structure.generator;
 
 import kaptainwutax.featureutils.loot.LootTable;
+import kaptainwutax.featureutils.loot.MCLootTables;
+import kaptainwutax.featureutils.loot.entry.ItemEntry;
+import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.util.data.Pair;
 import kaptainwutax.mcutils.util.pos.BPos;
@@ -8,8 +11,9 @@ import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.terrainutils.ChunkGenerator;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public abstract class Generator {
 	protected final MCVersion version;
@@ -50,6 +54,24 @@ public abstract class Generator {
 	@FunctionalInterface
 	public interface GeneratorFactory<T extends Generator> {
 		T create(MCVersion version);
+	}
+
+	public abstract ILootType[] getLootTypes();
+
+	public Set<Item> getPossibleLootItems() {
+		Set<Item> items = new HashSet<>();
+		ILootType[] lootTypes = getLootTypes();
+		for (ILootType lootType : lootTypes) {
+			LootTable lootTable=lootType.getLootTable();
+			if (lootTable!=null){
+				items.addAll(Arrays.stream(lootTable.lootPools)
+						.map(e -> e.lootEntries).flatMap(Stream::of)
+						.filter(e -> e instanceof ItemEntry)
+						.map(e -> ((ItemEntry) e).item).collect(Collectors.toList()));
+			}
+
+		}
+		return items;
 	}
 
 }

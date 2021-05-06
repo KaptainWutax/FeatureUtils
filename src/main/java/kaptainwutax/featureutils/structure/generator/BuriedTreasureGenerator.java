@@ -30,6 +30,11 @@ public class BuriedTreasureGenerator extends Generator {
 		return Collections.singletonList(new Pair<>(LootType.BURIED_CHEST, cPos.toBlockPos().add(9, 90, 9)));
 	}
 
+	@Override
+	public ILootType[] getLootTypes() {
+		return LootType.values();
+	}
+
 	public enum LootType implements ILootType {
 		BURIED_CHEST(MCLootTables.BURIED_TREASURE_CHEST),
 		;

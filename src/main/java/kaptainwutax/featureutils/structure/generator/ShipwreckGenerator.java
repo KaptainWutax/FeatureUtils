@@ -144,6 +144,10 @@ public class ShipwreckGenerator extends Generator {
 		return rotation;
 	}
 
+	@Override
+	public ILootType[] getLootTypes() {
+		return EndCityGenerator.LootType.values();
+	}
 
 	public enum LootType implements ILootType {
 		SUPPLY_CHEST(MCLootTables.SHIPWRECK_SUPPLY_CHEST),

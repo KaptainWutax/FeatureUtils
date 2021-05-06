@@ -454,6 +454,11 @@ public class FortressGenerator extends Generator {
 		return null;
 	}
 
+	@Override
+	public ILootType[] getLootTypes() {
+		return new ILootType[0];
+	}
+
 	@FunctionalInterface
 	private interface Creator {
 		PieceInfo create(int x, int y, int z, int depth, int facing);

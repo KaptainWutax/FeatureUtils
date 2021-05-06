@@ -278,4 +278,8 @@ public class StrongholdGenerator extends Generator {
 		return flag;
 	}
 
+	@Override
+	public ILootType[] getLootTypes() {
+		return new ILootType[0];
+	}
 }

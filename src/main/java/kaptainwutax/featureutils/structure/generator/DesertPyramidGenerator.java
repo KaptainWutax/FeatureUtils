@@ -41,6 +41,11 @@ public class DesertPyramidGenerator extends Generator {
 		return res;
 	}
 
+	@Override
+	public ILootType[] getLootTypes() {
+		return BuriedTreasureGenerator.LootType.values();
+	}
+
 	public enum LootType implements ILootType {
 		CHEST_1(MCLootTables.DESERT_PYRAMID_CHEST),
 		CHEST_2(MCLootTables.DESERT_PYRAMID_CHEST),

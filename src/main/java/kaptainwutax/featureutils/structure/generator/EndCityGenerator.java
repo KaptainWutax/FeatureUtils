@@ -339,6 +339,10 @@ public class EndCityGenerator extends Generator {
 		boolean generate(int depth, Template current, BPos pos, List<Template> pieces, ChunkRand rand);
 	}
 
+	@Override
+	public ILootType[] getLootTypes() {
+		return LootType.values();
+	}
 
 	public enum LootType implements ILootType {
 		BASE_FLOOR_SENTRY_1(null, Items.SHULKER_SHELL),
