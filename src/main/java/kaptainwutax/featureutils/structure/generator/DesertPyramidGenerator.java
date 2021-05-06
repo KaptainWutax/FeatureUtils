@@ -33,6 +33,7 @@ public class DesertPyramidGenerator extends Generator{
 	public List<Pair<ILootType, BPos>> getChestsPos() {
 		//piece.getInside(...,...);
 		List<Pair<ILootType, BPos>> res= new ArrayList<>();
+		if (temp==null) return res;
 		res.add(new Pair<>(LootType.CHEST_1,temp.toBlockPos()));
 		res.add(new Pair<>(LootType.CHEST_2,temp.toBlockPos()));
 		res.add(new Pair<>(LootType.CHEST_3,temp.toBlockPos()));

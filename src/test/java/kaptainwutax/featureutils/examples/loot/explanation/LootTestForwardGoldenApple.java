@@ -1,4 +1,4 @@
-package kaptainwutax.featureutils;
+package kaptainwutax.featureutils.examples.loot.explanation;
 
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.source.BiomeSource;

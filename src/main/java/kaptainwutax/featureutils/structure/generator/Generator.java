@@ -1,5 +1,6 @@
 package kaptainwutax.featureutils.structure.generator;
 
+import com.sun.tools.javac.jvm.Gen;
 import kaptainwutax.featureutils.loot.LootTable;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.util.data.Pair;
@@ -46,4 +47,10 @@ public abstract class Generator {
 	public interface ILootType {
 		LootTable getLootTable();
 	}
+
+	@FunctionalInterface
+	public interface GeneratorFactory<T extends Generator> {
+		T create(MCVersion version);
+	}
+
 }
