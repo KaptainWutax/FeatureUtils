@@ -146,7 +146,7 @@ public class ShipwreckGenerator extends Generator {
 
 	@Override
 	public ILootType[] getLootTypes() {
-		return EndCityGenerator.LootType.values();
+		return LootType.values();
 	}
 
 	public enum LootType implements ILootType {

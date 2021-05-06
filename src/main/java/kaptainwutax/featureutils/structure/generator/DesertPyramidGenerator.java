@@ -43,7 +43,7 @@ public class DesertPyramidGenerator extends Generator {
 
 	@Override
 	public ILootType[] getLootTypes() {
-		return BuriedTreasureGenerator.LootType.values();
+		return LootType.values();
 	}
 
 	public enum LootType implements ILootType {
