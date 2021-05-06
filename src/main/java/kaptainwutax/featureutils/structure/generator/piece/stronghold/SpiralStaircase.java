@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SpiralStaircase extends Stronghold.Piece {
 
-	private boolean isStructureStart;
+	private final boolean isStructureStart;
 
 	public SpiralStaircase(int pieceType, JRand rand, int x, int z) {
 		super(pieceType);

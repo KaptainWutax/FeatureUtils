@@ -1,7 +1,6 @@
 package kaptainwutax.featureutils.loot;
 
 import kaptainwutax.featureutils.loot.item.ItemStack;
-import kaptainwutax.featureutils.structure.generator.EndCityGenerator;
 import kaptainwutax.featureutils.structure.generator.Generator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.util.data.Pair;
@@ -13,8 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.function.Function;
 
 public interface ILoot {
 
@@ -36,7 +33,7 @@ public interface ILoot {
 			// FIXME index will be wrong I need to use the bpos this is for now a hacky fix
 			int index = 0;
 			for (Pair<Generator.ILootType, BPos> lootType : lootTypes) {
-				chestDataHashMap.computeIfAbsent( lootType.getFirst(), k -> new ArrayList<>()).add(new ChestData(index, cPos, lootType.getSecond(), lootTypes.size()));
+				chestDataHashMap.computeIfAbsent(lootType.getFirst(), k -> new ArrayList<>()).add(new ChestData(index, cPos, lootType.getSecond(), lootTypes.size()));
 				index += 1;
 			}
 		}
@@ -45,9 +42,9 @@ public interface ILoot {
 			List<ChestData> chests = chestDataHashMap.get(lootType);
 			for (ChestData chestData : chests) {
 				CPos chunkChestPos = chestData.getcPos();
-				rand.setDecoratorSeed(structureSeed,chunkChestPos.getX() * 16, chunkChestPos.getZ() * 16, this.getDecorationSalt(), this.getVersion());
-				SpecificCalls calls=this.getSpecificCalls();
-				if (calls!=null) calls.run(generator,rand);
+				rand.setDecoratorSeed(structureSeed, chunkChestPos.getX() * 16, chunkChestPos.getZ() * 16, this.getDecorationSalt(), this.getVersion());
+				SpecificCalls calls = this.getSpecificCalls();
+				if (calls != null) calls.run(generator, rand);
 				if (shouldAdvanceInChunks()) rand.advance(chestData.getNumberInChunk() * 2L);
 				rand.advance(chestData.getIndex() * 2L);
 				LootContext context = new LootContext(rand.nextLong(), this.getVersion());
@@ -61,9 +58,10 @@ public interface ILoot {
 	/**
 	 * Sets the mode to advance for the number of feature in that chunk, this account for template doing twice the loot table seed,
 	 * normal structure don't, be sure to override
+	 *
 	 * @return if should advance in that chunk twice
 	 */
-	default boolean shouldAdvanceInChunks(){
+	default boolean shouldAdvanceInChunks() {
 		return true;
 	}
 
@@ -117,7 +115,7 @@ public interface ILoot {
 	}
 
 	@FunctionalInterface
-	interface SpecificCalls{
+	interface SpecificCalls {
 		void run(Generator generator, ChunkRand rand);
 	}
 }

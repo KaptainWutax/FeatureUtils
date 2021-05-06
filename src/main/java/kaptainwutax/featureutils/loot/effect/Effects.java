@@ -10,10 +10,10 @@ import java.util.LinkedHashMap;
 public class Effects {
 	public static final HashMap<Pair<Integer, String>, Effect> EFFECTS = new LinkedHashMap<>();
 
-	public static final Effect MOVEMENT_SPEED = register(1, "speed", (new Effect(Effect.EffectType.BENEFICIAL, 8171462)).addAttributeModifier(Attributes.MOVEMENT_SPEED, "91AEAA56-376B-4498-935B-2F7F68070635", (double) 0.2F, AttributeModifier.Operation.MULTIPLY_TOTAL));
-	public static final Effect MOVEMENT_SLOWDOWN = register(2, "slowness", (new Effect(Effect.EffectType.HARMFUL, 5926017)).addAttributeModifier(Attributes.MOVEMENT_SPEED, "7107DE5E-7CE8-4030-940E-514C1F160890", (double) -0.15F, AttributeModifier.Operation.MULTIPLY_TOTAL));
-	public static final Effect DIG_SPEED = register(3, "haste", (new Effect(Effect.EffectType.BENEFICIAL, 14270531)).addAttributeModifier(Attributes.ATTACK_SPEED, "AF8B6E3F-3328-4C0A-AA36-5BA2BB9DBEF3", (double) 0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL));
-	public static final Effect DIG_SLOWDOWN = register(4, "mining_fatigue", (new Effect(Effect.EffectType.HARMFUL, 4866583)).addAttributeModifier(Attributes.ATTACK_SPEED, "55FCED67-E92A-486E-9800-B47F202C4386", (double) -0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL));
+	public static final Effect MOVEMENT_SPEED = register(1, "speed", (new Effect(Effect.EffectType.BENEFICIAL, 8171462)).addAttributeModifier(Attributes.MOVEMENT_SPEED, "91AEAA56-376B-4498-935B-2F7F68070635", 0.2F, AttributeModifier.Operation.MULTIPLY_TOTAL));
+	public static final Effect MOVEMENT_SLOWDOWN = register(2, "slowness", (new Effect(Effect.EffectType.HARMFUL, 5926017)).addAttributeModifier(Attributes.MOVEMENT_SPEED, "7107DE5E-7CE8-4030-940E-514C1F160890", -0.15F, AttributeModifier.Operation.MULTIPLY_TOTAL));
+	public static final Effect DIG_SPEED = register(3, "haste", (new Effect(Effect.EffectType.BENEFICIAL, 14270531)).addAttributeModifier(Attributes.ATTACK_SPEED, "AF8B6E3F-3328-4C0A-AA36-5BA2BB9DBEF3", 0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL));
+	public static final Effect DIG_SLOWDOWN = register(4, "mining_fatigue", (new Effect(Effect.EffectType.HARMFUL, 4866583)).addAttributeModifier(Attributes.ATTACK_SPEED, "55FCED67-E92A-486E-9800-B47F202C4386", -0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL));
 	public static final Effect DAMAGE_BOOST = register(5, "strength", (new Effect.AttackDamageEffect(Effect.EffectType.BENEFICIAL, 9643043, 3.0D)).addAttributeModifier(Attributes.ATTACK_DAMAGE, "648D7064-6A60-4F59-8ABE-C2C23A6DD7A9", 0.0D, AttributeModifier.Operation.ADDITION));
 	public static final Effect HEAL = register(6, "instant_health", new Effect.InstantEffect(Effect.EffectType.BENEFICIAL, 16262179));
 	public static final Effect HARM = register(7, "instant_damage", new Effect.InstantEffect(Effect.EffectType.HARMFUL, 4393481));

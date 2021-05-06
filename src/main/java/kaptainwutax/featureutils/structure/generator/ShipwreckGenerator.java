@@ -5,7 +5,6 @@ import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.loot.LootTable;
 import kaptainwutax.featureutils.loot.MCLootTables;
-import kaptainwutax.featureutils.structure.Shipwreck;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.util.block.BlockBox;
 import kaptainwutax.mcutils.util.block.BlockMirror;
@@ -16,7 +15,10 @@ import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.terrainutils.ChunkGenerator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class ShipwreckGenerator extends Generator {
 	private ChunkRand random = null; // this is an internal one as it will be updated on a need to know basis
@@ -66,7 +68,7 @@ public class ShipwreckGenerator extends Generator {
 		for (LootType lootType : lootPos.keySet()) {
 			BPos offset = lootPos.get(lootType);
 			BPos chestPos = piece.getInside(offset, rotation);
-			res.add(new Pair<>(lootType,chestPos));
+			res.add(new Pair<>(lootType, chestPos));
 		}
 		return res;
 	}

@@ -68,7 +68,7 @@ public abstract class Decorator<C extends Decorator.Config, D extends Decorator.
 		public final int step;
 		public final int salt;
 
-		private Map<Biome, Config> overrides = new HashMap<>();
+		private final Map<Biome, Config> overrides = new HashMap<>();
 
 		public Config(int index, int step) {
 			this.index = index;

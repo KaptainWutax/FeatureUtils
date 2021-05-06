@@ -6,7 +6,7 @@ public abstract class LootRoll {
 
 	public abstract int getCount(LootContext context);
 
-	public float getFloat(LootContext context){
+	public float getFloat(LootContext context) {
 		return 0.0F;
 	}
 

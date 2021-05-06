@@ -64,7 +64,7 @@ public class Effect {
 	public enum EffectType {
 		BENEFICIAL,
 		HARMFUL,
-		NEUTRAL;
+		NEUTRAL
 	}
 
 	public static class InstantEffect extends Effect {

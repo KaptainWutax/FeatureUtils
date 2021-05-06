@@ -11,14 +11,12 @@ import kaptainwutax.mcutils.util.block.BlockMirror;
 import kaptainwutax.mcutils.util.block.BlockRotation;
 import kaptainwutax.mcutils.util.data.Pair;
 import kaptainwutax.mcutils.util.pos.BPos;
-import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.terrainutils.ChunkGenerator;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-@SuppressWarnings({"EmptyClassInitializer","unused"})
+@SuppressWarnings({"EmptyClassInitializer", "unused"})
 public class EndCityGenerator extends Generator {
 	private final List<Template> globalPieces = new ArrayList<>();
 
@@ -26,7 +24,7 @@ public class EndCityGenerator extends Generator {
 		super(version);
 	}
 
-	public void reset(){
+	public void reset() {
 		this.globalPieces.clear();
 	}
 
@@ -46,30 +44,31 @@ public class EndCityGenerator extends Generator {
 
 	/**
 	 * Get the chest block pos, should always be called after generate else will return an empty list
+	 *
 	 * @return list of lootype (warning some might not be loot, like Sentry) and bpos
 	 */
 	public List<Pair<ILootType, BPos>> getChestsPos() {
 		List<Pair<ILootType, BPos>> res = new ArrayList<>();
-		for (Template template:globalPieces){
-			LinkedHashMap<LootType, List<BPos>> loot=STRUCTURE_TO_LOOT.get(template.getName());
-			if (loot==null){
-				System.err.println("Missing loot for "+template.getName());
+		for (Template template : globalPieces) {
+			LinkedHashMap<LootType, List<BPos>> loot = STRUCTURE_TO_LOOT.get(template.getName());
+			if (loot == null) {
+				System.err.println("Missing loot for " + template.getName());
 				continue;
 			}
-			for (Map.Entry<LootType,List<BPos>> entry:loot.entrySet()){
-				LootType lootType=entry.getKey();
-				for (BPos offset:entry.getValue()){
+			for (Map.Entry<LootType, List<BPos>> entry : loot.entrySet()) {
+				LootType lootType = entry.getKey();
+				for (BPos offset : entry.getValue()) {
 					// we know for a fact that the pos is below the box size so we don't do the check
 					BPos lootPos = template.box.getRotated(template.getRotation()).getInside(offset, template.getRotation());
-					res.add(new Pair<>(lootType,lootPos));
+					res.add(new Pair<>(lootType, lootPos));
 				}
 			}
 		}
 		return res;
 	}
 
-	public boolean hasShip(){
-		return globalPieces.stream().anyMatch(e-> e.getName().equals("ship"));
+	public boolean hasShip() {
+		return globalPieces.stream().anyMatch(e -> e.getName().equals("ship"));
 	}
 
 	private static Template calculateTemplate(Template previous, BPos pos, String name, BlockRotation rotation, boolean overwrite) {
@@ -362,9 +361,8 @@ public class EndCityGenerator extends Generator {
 		SHIP_CHEST_1(MCLootTables.END_CITY_TREASURE_CHEST, Items.SHULKER_SHELL),
 		SHIP_CHEST_2(MCLootTables.END_CITY_TREASURE_CHEST, Items.SHULKER_SHELL),
 
-		SHIP_ELYTRA(null, Items.ELYTRA)
-		;
-		
+		SHIP_ELYTRA(null, Items.ELYTRA);
+
 		public final LootTable lootTable;
 		public final Item item;
 

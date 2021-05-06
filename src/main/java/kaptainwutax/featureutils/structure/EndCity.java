@@ -3,24 +3,14 @@ package kaptainwutax.featureutils.structure;
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.featureutils.loot.ILoot;
-import kaptainwutax.featureutils.loot.LootContext;
-import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.featureutils.structure.generator.EndCityGenerator;
 import kaptainwutax.featureutils.structure.generator.Generator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.util.block.BlockRotation;
-import kaptainwutax.mcutils.util.data.Pair;
-import kaptainwutax.mcutils.util.pos.BPos;
-import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
 import kaptainwutax.terrainutils.ChunkGenerator;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 public class EndCity extends TriangularStructure<EndCity> implements ILoot {
 

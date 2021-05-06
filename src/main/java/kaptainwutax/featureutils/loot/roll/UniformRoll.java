@@ -23,7 +23,7 @@ public class UniformRoll extends LootRoll {
 	}
 
 	@Override
-	public float getFloat(LootContext context){
+	public float getFloat(LootContext context) {
 		return this.min >= this.max ? this.min : context.nextFloat() * (this.max - this.min) + this.min;
 	}
 }

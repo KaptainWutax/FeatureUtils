@@ -17,20 +17,20 @@ public abstract class LootEntry extends LootGenerator {
 	}
 
 	public LootEntry(int weight) {
-		this(weight,0);
+		this(weight, 0);
 	}
 
-	public LootEntry(int weight,int quality) {
+	public LootEntry(int weight, int quality) {
 		this.weight = weight;
-		this.quality=quality;
+		this.quality = quality;
 	}
 
 	public int getWeight(LootContext context) {
 		return this.weight;
 	}
 
-	public int getEffectiveWeight(LootContext context){
-		return Math.max(MathHelper.floor((float)this.weight + (float)this.quality * context.getLuck()), 0);
+	public int getEffectiveWeight(LootContext context) {
+		return Math.max(MathHelper.floor((float) this.weight + (float) this.quality * context.getLuck()), 0);
 	}
 
 	public LootEntry apply(LootFunction... lootFunctions) {

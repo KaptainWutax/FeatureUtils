@@ -20,11 +20,11 @@ public class AttributeModifier {
 		this(uuid, () -> name, amount, operation);
 	}
 
-	public AttributeModifier(UUID uuid, Supplier<String> name, double amount, AttributeModifier.Operation p_i50377_5_) {
+	public AttributeModifier(UUID uuid, Supplier<String> name, double amount, AttributeModifier.Operation operation) {
 		this.uuid = uuid;
 		this.nameGetter = name;
 		this.amount = amount;
-		this.operation = p_i50377_5_;
+		this.operation = operation;
 	}
 
 	public static UUID createInsecureUUID(JRand rand) {
@@ -65,7 +65,7 @@ public class AttributeModifier {
 	}
 
 	public String toString() {
-		return "AttributeModifier{amount=" + this.amount + ", operation=" + this.operation + ", name='" + (String) this.nameGetter.get() + '\'' + ", id=" + this.uuid + '}';
+		return "AttributeModifier{amount=" + this.amount + ", operation=" + this.operation + ", name='" + this.nameGetter.get() + '\'' + ", id=" + this.uuid + '}';
 	}
 
 
@@ -77,8 +77,8 @@ public class AttributeModifier {
 		private static final AttributeModifier.Operation[] OPERATIONS = new AttributeModifier.Operation[] {ADDITION, MULTIPLY_BASE, MULTIPLY_TOTAL};
 		private final int value;
 
-		private Operation(int p_i50050_3_) {
-			this.value = p_i50050_3_;
+		Operation(int operation) {
+			this.value = operation;
 		}
 
 		public static AttributeModifier.Operation fromValue(int opId) {

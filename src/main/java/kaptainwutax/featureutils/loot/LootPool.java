@@ -41,11 +41,11 @@ public class LootPool extends LootGenerator {
 	}
 
 	private void generatePool(LootContext context, Consumer<ItemStack> stackConsumer) {
-		if (context.getVersion().isNewerOrEqualTo(MCVersion.v1_14)){
+		if (context.getVersion().isNewerOrEqualTo(MCVersion.v1_14)) {
 			// unchecked for 1.14 and 1.15 (1.16 seems right)
-			generatePool14(context,stackConsumer);
-		}else{
-			generatePool13(context,stackConsumer);
+			generatePool14(context, stackConsumer);
+		} else {
+			generatePool13(context, stackConsumer);
 		}
 	}
 
@@ -54,29 +54,29 @@ public class LootPool extends LootGenerator {
 		List<LootEntry> entries = new ArrayList<>();
 		for (LootEntry lootEntry : this.lootEntries) {
 			// we assume no conditions here
-			int weight=lootEntry.getEffectiveWeight(context);
-			if (weight>0){
+			int weight = lootEntry.getEffectiveWeight(context);
+			if (weight > 0) {
 				entries.add(lootEntry);
-				totalWeight +=weight ;
+				totalWeight += weight;
 			}
 		}
 
-		if (totalWeight!=0 && !entries.isEmpty()){
-			int count=context.nextInt(totalWeight);
-			for (LootEntry entry:entries){
-				count-=entry.getEffectiveWeight(context);
-				if (count<0){
-					entry.generate(context,stackConsumer);
+		if (totalWeight != 0 && !entries.isEmpty()) {
+			int count = context.nextInt(totalWeight);
+			for (LootEntry entry : entries) {
+				count -= entry.getEffectiveWeight(context);
+				if (count < 0) {
+					entry.generate(context, stackConsumer);
 					return;
 				}
 			}
 		}
 	}
 
-	private void generatePool14(LootContext context, Consumer<ItemStack> stackConsumer){
+	private void generatePool14(LootContext context, Consumer<ItemStack> stackConsumer) {
 		int totalWeight = 0;
 		for (LootEntry lootEntry : this.lootEntries) {
-			totalWeight +=lootEntry.getEffectiveWeight(context);
+			totalWeight += lootEntry.getEffectiveWeight(context);
 		}
 
 		if (this.lootEntries.length == 1) {

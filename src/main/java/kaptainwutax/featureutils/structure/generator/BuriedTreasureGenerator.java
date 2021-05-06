@@ -12,7 +12,7 @@ import kaptainwutax.terrainutils.ChunkGenerator;
 import java.util.Collections;
 import java.util.List;
 
-public class BuriedTreasureGenerator extends Generator{
+public class BuriedTreasureGenerator extends Generator {
 	private CPos cPos;
 
 	public BuriedTreasureGenerator(MCVersion version) {
@@ -21,13 +21,13 @@ public class BuriedTreasureGenerator extends Generator{
 
 	@Override
 	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
-		cPos=new CPos(chunkX,chunkZ);
+		cPos = new CPos(chunkX, chunkZ);
 		return true;
 	}
 
 	@Override
 	public List<Pair<ILootType, BPos>> getChestsPos() {
-		return Collections.singletonList(new Pair<>(LootType.BURIED_CHEST,cPos.toBlockPos().add(9,90,9)));
+		return Collections.singletonList(new Pair<>(LootType.BURIED_CHEST, cPos.toBlockPos().add(9, 90, 9)));
 	}
 
 	public enum LootType implements ILootType {

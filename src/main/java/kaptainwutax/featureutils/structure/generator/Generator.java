@@ -1,6 +1,5 @@
 package kaptainwutax.featureutils.structure.generator;
 
-import com.sun.tools.javac.jvm.Gen;
 import kaptainwutax.featureutils.loot.LootTable;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.util.data.Pair;
@@ -15,8 +14,8 @@ import java.util.stream.Collectors;
 public abstract class Generator {
 	protected final MCVersion version;
 
-	public Generator(MCVersion version){
-		this.version=version;
+	public Generator(MCVersion version) {
+		this.version = version;
 	}
 
 	public MCVersion getVersion() {
@@ -41,7 +40,7 @@ public abstract class Generator {
 	public abstract List<Pair<ILootType, BPos>> getChestsPos();
 
 	public List<Pair<ILootType, CPos>> getChestsChunkPos() {
-		return this.getChestsPos().stream().map(e-> new Pair<>(e.getFirst(), e.getSecond().toChunkPos())).collect(Collectors.toList());
+		return this.getChestsPos().stream().map(e -> new Pair<>(e.getFirst(), e.getSecond().toChunkPos())).collect(Collectors.toList());
 	}
 
 	public interface ILootType {

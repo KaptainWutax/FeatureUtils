@@ -32,8 +32,7 @@ public class Village extends OldStructure<Village> {
 	public boolean isValidBiome(Biome biome) {
 		if (biome == Biomes.PLAINS || biome == Biomes.DESERT || biome == Biomes.SAVANNA) return true;
 		if (biome == Biomes.TAIGA && this.getVersion().isNewerOrEqualTo(MCVersion.v1_10)) return true;
-		if (biome == Biomes.SNOWY_TUNDRA && this.getVersion().isNewerOrEqualTo(MCVersion.v1_14)) return true;
-		return false;
+		return biome == Biomes.SNOWY_TUNDRA && this.getVersion().isNewerOrEqualTo(MCVersion.v1_14);
 	}
 
 }

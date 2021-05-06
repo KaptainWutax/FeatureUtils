@@ -13,8 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class FortressGenerator extends Generator{
-// TODO FIXME use the generator
+public class FortressGenerator extends Generator {
+	// TODO FIXME use the generator
 	private static final Random rand = new Random();
 
 	private static final int NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3;
