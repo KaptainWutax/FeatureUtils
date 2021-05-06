@@ -23,6 +23,10 @@ public class SlimeChunk extends Feature<SlimeChunk.Config, SlimeChunk.Data> {
 
 	@Override
 	public String getName() {
+		return name();
+	}
+
+	public static String name() {
 		return "slime_chunk";
 	}
 

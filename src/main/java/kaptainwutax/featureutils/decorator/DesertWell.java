@@ -24,6 +24,10 @@ public class DesertWell extends BiomelessDecorator<DesertWell.Config, DesertWell
 
 	@Override
 	public String getName() {
+		return name();
+	}
+
+	public static String name() {
 		return "desert_well";
 	}
 

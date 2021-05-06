@@ -24,6 +24,10 @@ public class EndGateway extends BiomelessDecorator<EndGateway.Config, EndGateway
 
 	@Override
 	public String getName() {
+		return name();
+	}
+
+	public static String name() {
 		return "end_gateway";
 	}
 
