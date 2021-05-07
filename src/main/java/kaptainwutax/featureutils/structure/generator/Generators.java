@@ -1,10 +1,7 @@
 package kaptainwutax.featureutils.structure.generator;
 
 import kaptainwutax.featureutils.Feature;
-import kaptainwutax.featureutils.structure.BuriedTreasure;
-import kaptainwutax.featureutils.structure.DesertPyramid;
-import kaptainwutax.featureutils.structure.EndCity;
-import kaptainwutax.featureutils.structure.Shipwreck;
+import kaptainwutax.featureutils.structure.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +14,7 @@ public class Generators {
 		register(BuriedTreasure.class, BuriedTreasureGenerator::new);
 		register(Shipwreck.class, ShipwreckGenerator::new);
 		register(EndCity.class, EndCityGenerator::new);
+		register(RuinedPortal.class, RuinedPortalGenerator::new);
 	}
 
 	public static <T extends Feature<?, ?>> void register(Class<T> clazz, Generator.GeneratorFactory<?> lootFactory) {

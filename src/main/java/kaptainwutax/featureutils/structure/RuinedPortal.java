@@ -2,11 +2,14 @@ package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
+import kaptainwutax.featureutils.loot.ILoot;
+import kaptainwutax.featureutils.structure.generator.Generator;
+import kaptainwutax.featureutils.structure.generator.RuinedPortalGenerator;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
 
-public class RuinedPortal extends UniformStructure<RuinedPortal> {
+public class RuinedPortal extends UniformStructure<RuinedPortal> implements ILoot {
 
 	public static final VersionMap<RegionStructure.Config> OVERWORLD_CONFIGS = new VersionMap<RegionStructure.Config>()
 			.add(MCVersion.v1_16, new RegionStructure.Config(40, 15, 34222645));
@@ -54,4 +57,23 @@ public class RuinedPortal extends UniformStructure<RuinedPortal> {
 		return biome != Biomes.THE_VOID && biome.getCategory() != Biome.Category.THE_END;
 	}
 
+	@Override
+	public int getDecorationSalt() {
+		return 40005;
+	}
+
+	@Override
+	public boolean isCorrectGenerator(Generator generator) {
+		return generator instanceof RuinedPortalGenerator;
+	}
+
+	@Override
+	public SpecificCalls getSpecificCalls() {
+		return null;
+	}
+
+	@Override
+	public boolean shouldAdvanceInChunks() {
+		return false;
+	}
 }
