@@ -1,10 +1,11 @@
-package kaptainwutax.featureutils.structure.generator;
+package kaptainwutax.featureutils.structure.generator.structure;
 
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.loot.LootTable;
 import kaptainwutax.featureutils.loot.MCLootTables;
+import kaptainwutax.featureutils.structure.generator.Generator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.util.block.BlockBox;
 import kaptainwutax.mcutils.util.block.BlockMirror;

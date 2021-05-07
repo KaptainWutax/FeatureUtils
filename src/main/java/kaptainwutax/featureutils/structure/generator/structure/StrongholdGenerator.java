@@ -1,6 +1,7 @@
-package kaptainwutax.featureutils.structure.generator;
+package kaptainwutax.featureutils.structure.generator.structure;
 
 import kaptainwutax.featureutils.structure.Stronghold;
+import kaptainwutax.featureutils.structure.generator.Generator;
 import kaptainwutax.featureutils.structure.generator.piece.stronghold.*;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.util.block.BlockBox;
