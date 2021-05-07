@@ -19,13 +19,15 @@ import java.util.*;
 
 @SuppressWarnings({"EmptyClassInitializer", "unused"})
 public class EndCityGenerator extends Generator {
-	private final List<Template> globalPieces = new ArrayList<>();
+	private final List<Template> globalPieces;
 
 	public EndCityGenerator(MCVersion version) {
 		super(version);
+		globalPieces = new ArrayList<>();
 	}
 
 	public void reset() {
+		TOWER_BRIDGE_GENERATOR.init();
 		this.globalPieces.clear();
 	}
 

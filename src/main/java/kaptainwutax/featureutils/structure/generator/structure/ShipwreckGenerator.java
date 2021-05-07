@@ -22,7 +22,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class ShipwreckGenerator extends Generator {
-	private ChunkRand random = null; // this is an internal one as it will be updated on a need to know basis
 	private Boolean isBeached = null;
 	private BlockRotation rotation = null;
 	private String type = null;
@@ -32,6 +31,15 @@ public class ShipwreckGenerator extends Generator {
 		super(version);
 	}
 
+	/**
+	 * Reset the internal state, should be called if you reuse that same structure
+	 */
+	public void reset() {
+		this.isBeached = null;
+		this.rotation = null;
+		this.type = null;
+		this.piece = null;
+	}
 
 	@Override
 	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
@@ -43,11 +51,10 @@ public class ShipwreckGenerator extends Generator {
 			biome = source.getBiomeForNoiseGen((chunkX << 2) + 2, 0, (chunkZ << 2) + 2);
 		}
 		isBeached = biome == Biomes.BEACH || biome == Biomes.SNOWY_BEACH;
-		random = new ChunkRand();
-		random.setCarverSeed(generator.getWorldSeed(), chunkX, chunkZ, this.getVersion());
-		rotation = BlockRotation.getRandom(random);
+		rand.setCarverSeed(generator.getWorldSeed(), chunkX, chunkZ, this.getVersion());
+		rotation = BlockRotation.getRandom(rand);
 		String[] arr = isBeached ? STRUCTURE_LOCATION_BEACHED : STRUCTURE_LOCATION_OCEAN;
-		type = arr[random.nextInt(arr.length)];
+		type = arr[rand.nextInt(arr.length)];
 		if (!STRUCTURE_SIZE.containsKey(type) || !STRUCTURE_TO_LOOT.containsKey(type)) {
 			System.err.println("We don't support this type yet " + type);
 			return false;
@@ -74,74 +81,15 @@ public class ShipwreckGenerator extends Generator {
 		return res;
 	}
 
-	/**
-	 * This will only work if you call canSpawn before
-	 *
-	 * @return
-	 */
 	public Boolean isBeached() {
 		return isBeached;
 	}
 
-	/**
-	 * This is a dangerous utility, we provide it on a need to know basis (don't use it)
-	 *
-	 * @return
-	 */
-	public ChunkRand getInternalRandom() {
-		return random;
-	}
-
-	/**
-	 * Reset the internal state, should be called if you reuse that same structure
-	 */
-	public void reset() {
-		this.isBeached = null;
-		this.rotation = null;
-		this.random = null;
-		this.type = null;
-	}
-
-	/**
-	 * Should be called after canspawn and getRotation
-	 *
-	 * @return the type of shipwreck (useful to determine loot order)
-	 */
 	public String getType() {
-		if (isBeached == null) return null;
-		if (rotation == null) return null;
-		if (type == null) {
-			String[] arr = isBeached ? STRUCTURE_LOCATION_BEACHED : STRUCTURE_LOCATION_OCEAN;
-			type = arr[random.nextInt(arr.length)];
-		}
 		return type;
 	}
 
-	/**
-	 * This should be called before any operation related to nbt
-	 *
-	 * @param structureSeed the 48 lower bits at least
-	 * @param chunkPos      the chunk position of that shipwreck spawn
-	 * @param version       the version to run on
-	 * @return the rotation of the shipwreck
-	 */
-	public BlockRotation getRotation(long structureSeed, CPos chunkPos, MCVersion version) {
-		// first call does the seeding the rest doesn't
-		if (rotation == null) {
-			random = new ChunkRand();
-			random.setCarverSeed(structureSeed, chunkPos.getX(), chunkPos.getZ(), version);
-			rotation = BlockRotation.getRandom(random);
-		}
-		return rotation;
-	}
-
-	public BlockRotation getRotation(long structureSeed, int chunkX, int chunkZ, MCVersion version) {
-		// first call does the seeding the rest doesn't
-		if (rotation == null) {
-			random = new ChunkRand();
-			random.setCarverSeed(structureSeed, chunkX, chunkZ, version);
-			rotation = BlockRotation.getRandom(random);
-		}
+	public BlockRotation getRotation() {
 		return rotation;
 	}
 
