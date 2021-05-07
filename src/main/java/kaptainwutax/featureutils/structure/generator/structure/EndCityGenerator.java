@@ -1,10 +1,11 @@
-package kaptainwutax.featureutils.structure.generator;
+package kaptainwutax.featureutils.structure.generator.structure;
 
 import kaptainwutax.featureutils.loot.LootTable;
 import kaptainwutax.featureutils.loot.MCLootTables;
 import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.featureutils.loot.item.Items;
 import kaptainwutax.featureutils.structure.EndCity;
+import kaptainwutax.featureutils.structure.generator.Generator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.util.block.BlockBox;
 import kaptainwutax.mcutils.util.block.BlockMirror;

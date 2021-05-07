@@ -2,8 +2,8 @@ package kaptainwutax.featureutils.loot;
 
 import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.featureutils.loot.item.Items;
-import kaptainwutax.featureutils.structure.generator.DesertPyramidGenerator;
-import kaptainwutax.featureutils.structure.generator.EndCityGenerator;
+import kaptainwutax.featureutils.structure.generator.structure.DesertPyramidGenerator;
+import kaptainwutax.featureutils.structure.generator.structure.EndCityGenerator;
 import kaptainwutax.mcutils.version.MCVersion;
 import org.junit.jupiter.api.Test;
 

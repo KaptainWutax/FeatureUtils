@@ -4,7 +4,7 @@ import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.featureutils.loot.ILoot;
 import kaptainwutax.featureutils.structure.generator.Generator;
-import kaptainwutax.featureutils.structure.generator.RuinedPortalGenerator;
+import kaptainwutax.featureutils.structure.generator.structure.RuinedPortalGenerator;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;

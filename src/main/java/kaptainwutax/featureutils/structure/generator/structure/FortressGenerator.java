@@ -1,6 +1,7 @@
-package kaptainwutax.featureutils.structure.generator;
+package kaptainwutax.featureutils.structure.generator.structure;
 
 
+import kaptainwutax.featureutils.structure.generator.Generator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.util.data.Pair;
 import kaptainwutax.mcutils.util.pos.BPos;

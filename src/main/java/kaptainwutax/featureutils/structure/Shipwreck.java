@@ -5,7 +5,7 @@ import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.featureutils.loot.ILoot;
 import kaptainwutax.featureutils.structure.generator.Generator;
-import kaptainwutax.featureutils.structure.generator.ShipwreckGenerator;
+import kaptainwutax.featureutils.structure.generator.structure.ShipwreckGenerator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;

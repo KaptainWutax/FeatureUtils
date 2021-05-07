@@ -3,7 +3,7 @@ package kaptainwutax.featureutils.structure;
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.featureutils.loot.ILoot;
-import kaptainwutax.featureutils.structure.generator.DesertPyramidGenerator;
+import kaptainwutax.featureutils.structure.generator.structure.DesertPyramidGenerator;
 import kaptainwutax.featureutils.structure.generator.Generator;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;

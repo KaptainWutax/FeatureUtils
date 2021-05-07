@@ -2,6 +2,7 @@ package kaptainwutax.featureutils.structure.generator;
 
 import kaptainwutax.featureutils.Feature;
 import kaptainwutax.featureutils.structure.*;
+import kaptainwutax.featureutils.structure.generator.structure.*;
 
 import java.util.HashMap;
 import java.util.Map;

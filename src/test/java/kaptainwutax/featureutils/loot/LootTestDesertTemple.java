@@ -3,10 +3,8 @@ package kaptainwutax.featureutils.loot;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.featureutils.structure.DesertPyramid;
-import kaptainwutax.featureutils.structure.Shipwreck;
-import kaptainwutax.featureutils.structure.generator.DesertPyramidGenerator;
+import kaptainwutax.featureutils.structure.generator.structure.DesertPyramidGenerator;
 import kaptainwutax.featureutils.structure.generator.Generator;
-import kaptainwutax.featureutils.structure.generator.ShipwreckGenerator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.util.data.Pair;
@@ -21,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static kaptainwutax.featureutils.structure.generator.ShipwreckGenerator.LootType.SUPPLY_CHEST;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

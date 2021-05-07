@@ -1,15 +1,13 @@
 package kaptainwutax.featureutils.examples.loot.explanation;
 
-import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.biomeutils.source.OverworldBiomeSource;
 import kaptainwutax.featureutils.loot.LootContext;
 import kaptainwutax.featureutils.loot.MCLootTables;
 import kaptainwutax.featureutils.loot.item.ItemStack;
-import kaptainwutax.featureutils.loot.item.Items;
 import kaptainwutax.featureutils.structure.DesertPyramid;
 import kaptainwutax.featureutils.structure.RegionStructure;
-import kaptainwutax.featureutils.structure.generator.DesertPyramidGenerator;
+import kaptainwutax.featureutils.structure.generator.structure.DesertPyramidGenerator;
 import kaptainwutax.featureutils.structure.generator.Generator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.rand.seed.WorldSeed;
@@ -17,11 +15,9 @@ import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.terrainutils.ChunkGenerator;
 
-import java.awt.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static kaptainwutax.featureutils.loot.item.Items.ENCHANTED_GOLDEN_APPLE;

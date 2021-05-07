@@ -3,7 +3,7 @@ package kaptainwutax.featureutils.structure;
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.biomeutils.source.BiomeSource;
-import kaptainwutax.featureutils.structure.generator.StrongholdGenerator;
+import kaptainwutax.featureutils.structure.generator.structure.StrongholdGenerator;
 import kaptainwutax.featureutils.structure.generator.piece.StructurePiece;
 import kaptainwutax.featureutils.structure.generator.piece.stronghold.Start;
 import kaptainwutax.mcutils.rand.ChunkRand;

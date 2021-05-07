@@ -1,7 +1,7 @@
 package kaptainwutax.featureutils.structure.generator.piece.stronghold;
 
 import kaptainwutax.featureutils.structure.Stronghold;
-import kaptainwutax.featureutils.structure.generator.StrongholdGenerator;
+import kaptainwutax.featureutils.structure.generator.structure.StrongholdGenerator;
 import kaptainwutax.mcutils.util.block.BlockBox;
 import kaptainwutax.mcutils.util.block.BlockDirection;
 import kaptainwutax.mcutils.util.pos.BPos;

@@ -3,7 +3,7 @@ package kaptainwutax.featureutils.loot;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.featureutils.structure.EndCity;
-import kaptainwutax.featureutils.structure.generator.EndCityGenerator;
+import kaptainwutax.featureutils.structure.generator.structure.EndCityGenerator;
 import kaptainwutax.featureutils.structure.generator.Generator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static kaptainwutax.featureutils.structure.generator.EndCityGenerator.LootType.*;
+import static kaptainwutax.featureutils.structure.generator.structure.EndCityGenerator.LootType.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
