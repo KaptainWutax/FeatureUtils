@@ -36,6 +36,7 @@ public class EndCityGenerator extends Generator {
 	}
 
 	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
+		if (generator==null) return false;
 		rand.setCarverSeed(generator.getWorldSeed(), chunkX, chunkZ, this.getVersion());
 		int y = EndCity.getAverageYPosition(generator, chunkX, chunkZ);
 		if (y < 60) return false;

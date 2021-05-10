@@ -1,7 +1,6 @@
 package kaptainwutax.featureutils.structure.generator;
 
 import kaptainwutax.featureutils.loot.LootTable;
-import kaptainwutax.featureutils.loot.MCLootTables;
 import kaptainwutax.featureutils.loot.entry.ItemEntry;
 import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.mcutils.rand.ChunkRand;
@@ -11,7 +10,10 @@ import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.terrainutils.ChunkGenerator;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

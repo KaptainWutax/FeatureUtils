@@ -43,6 +43,7 @@ public class ShipwreckGenerator extends Generator {
 
 	@Override
 	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
+		if (generator==null) return false;
 		BiomeSource source = generator.getBiomeSource();
 		Biome biome;
 		if (this.getVersion().isOlderThan(MCVersion.v1_16)) {

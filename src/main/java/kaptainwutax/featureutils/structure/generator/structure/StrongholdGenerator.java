@@ -70,6 +70,7 @@ public class StrongholdGenerator extends Generator {
 	}
 
 	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
+		if (generator==null) return false;
 		return this.generateRecursively(generator.getWorldSeed(), chunkX, chunkZ, rand, piece -> true);
 	}
 
