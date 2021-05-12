@@ -12,6 +12,8 @@ import java.util.Map;
 
 public abstract class Structure<C extends Feature.Config, D extends Feature.Data<?>> extends Feature<C, D> {
 
+	protected Biome biome;
+
 	public static Map<Class<? extends Structure>, String> CLASS_TO_NAME = new HashMap<>();
 
 	static {
@@ -52,6 +54,10 @@ public abstract class Structure<C extends Feature.Config, D extends Feature.Data
 		return getName(this.getClass());
 	}
 
+	public Biome getBiome() {
+		return biome;
+	}
+
 	@Override
 	public final boolean canSpawn(D data, BiomeSource source) {
 		return this.canSpawn(data.chunkX, data.chunkZ, source);
@@ -63,10 +69,11 @@ public abstract class Structure<C extends Feature.Config, D extends Feature.Data
 
 	public boolean canSpawn(int chunkX, int chunkZ, BiomeSource source) {
 		if (this.getVersion().isOlderThan(MCVersion.v1_16)) {
-			return this.isValidBiome(source.getBiome((chunkX << 4) + 9, 0, (chunkZ << 4) + 9));
+			this.biome = source.getBiome((chunkX << 4) + 9, 0, (chunkZ << 4) + 9);
+		} else {
+			this.biome = source.getBiomeForNoiseGen((chunkX << 2) + 2, 0, (chunkZ << 2) + 2);
 		}
-
-		return this.isValidBiome(source.getBiomeForNoiseGen((chunkX << 2) + 2, 0, (chunkZ << 2) + 2));
+		return this.isValidBiome(this.biome);
 	}
 
 	public abstract boolean isValidBiome(Biome biome);

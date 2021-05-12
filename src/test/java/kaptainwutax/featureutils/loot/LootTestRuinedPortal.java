@@ -35,9 +35,21 @@ public class LootTestRuinedPortal {
 
 	@Test
 	public void testCorrectChest1() {
+		// oh wow this one is trippy /tp @s -320 ~ 112
 		setup(123L, new BPos(-391,0,313).toChunkPos(), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
-			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_TREASURE, new BPos(-391,90,313)));
+			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-395,3,310)));
+		}};
+		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
+			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s", check.getFirst(), check.getSecond()));
+		}
+	}
+
+	@Test
+	public void testCorrectChest2() {
+		setup(1476413308176291228L, new BPos( 153,0, 121).toChunkPos(), MCVersion.v1_16_5);
+		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
+			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(150,2,128)));
 		}};
 		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s", check.getFirst(), check.getSecond()));

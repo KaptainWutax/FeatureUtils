@@ -265,7 +265,7 @@ public class ShipwreckGenerator extends Generator {
 //from pathlib import *
 //import sys
 //
-//p = Path(r'.').glob('**/*')
+//p = Path(r'.').glob('**/*.nbt')
 //files = [x for x in p if x.is_file()]
 //for file in files:
 //    print(f'STRUCTURE_TO_LOOT.put("{file.name.rstrip(".nbt")}", new LinkedHashMap<LootType, BPos>() {{{{')
@@ -284,6 +284,6 @@ public class ShipwreckGenerator extends Generator {
 //    if "size" in root.keys():
 //        print(f'STRUCTURE_SIZE.put("{file.name.rstrip(".nbt")}",new BPos({",".join(map(str,map(int,root["size"])))}));')
 //    else:
-//        print(f"Missing size key for {file.name.rstrip(".nbt")}")
+//        print(f'Missing size key for {file.name.rstrip(".nbt")}')
 //        sys.exit(1)
 }
