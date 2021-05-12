@@ -35,11 +35,11 @@ public class LootTestRuinedPortal {
 
 	@Test
 	public void testCorrectChest1() {
-		// oh wow this one is trippy /tp @s -320 ~ 112
-		setup(123L, new BPos(-391,0,313).toChunkPos(), MCVersion.v1_16_5);
+		setup(123L, new BPos(-311 ,0, 121).toChunkPos(), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
-			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-395,3,310)));
+			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-315,4,127)));
 		}};
+		System.out.println(loots);
 		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s", check.getFirst(), check.getSecond()));
 		}

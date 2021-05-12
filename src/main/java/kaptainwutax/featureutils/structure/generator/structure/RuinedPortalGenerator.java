@@ -113,13 +113,17 @@ public class RuinedPortalGenerator extends Generator {
 		} else if (SWAMP_BIOME.contains(biome)) {
 			// none
 		} else if (MOUNTAINS_BIOME.contains(biome)) {
-			rand.advance(2);
+			if (!(rand.nextFloat()<0.5F)){
+				rand.advance(1);
+			}
 		} else if (OCEAN_BIOME.contains(biome)) {
 			// none
 		} else if (NETHER_BIOME.contains(biome)) {
 			rand.advance(1);
 		} else {
-			rand.advance(2);
+			if (!(rand.nextFloat()<0.5F)){
+				rand.advance(1);
+			}
 		}
 		if (rand.nextFloat() < 0.05F) {
 			type=rand.getRandom(STRUCTURE_LOCATION_GIANT_PORTALS);
