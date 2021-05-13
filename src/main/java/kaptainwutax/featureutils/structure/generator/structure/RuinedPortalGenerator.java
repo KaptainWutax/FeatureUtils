@@ -32,6 +32,7 @@ public class RuinedPortalGenerator extends Generator {
 	private BlockBox piece = null;
 	private Location location = null;
 	private Boolean airpocket = null;
+	private BlockBox chunkBB = null;
 
 	private static final Predicate<Location> isLand = l -> l != Location.ON_OCEAN_FLOOR;
 
@@ -138,10 +139,10 @@ public class RuinedPortalGenerator extends Generator {
 			location = isInside ? Location.IN_MOUNTAIN : Location.ON_LAND_SURFACE;
 			airpocket = isInside || rand.nextFloat() < 0.5F; // warning shortcutting
 		} else if (OCEAN_BIOME.contains(biome)) {
-			location=Location.ON_OCEAN_FLOOR;
-			airpocket=false;
+			location = Location.ON_OCEAN_FLOOR;
+			airpocket = false;
 		} else if (NETHER_BIOME.contains(biome)) {
-			location=Location.IN_NETHER;
+			location = Location.IN_NETHER;
 			airpocket = rand.nextFloat() < 0.5F;
 		} else {
 			boolean isInside = rand.nextFloat() < 0.5F;
@@ -164,16 +165,30 @@ public class RuinedPortalGenerator extends Generator {
 		int y = isLand.test(location) ? generator.getHeightOnGround(center.getX(), center.getZ()) :
 				generator.getFirstHeightInColumn(center.getX(), center.getZ(), b -> b.getId() == generator.getDefaultFluid().getId());
 		y -= 1; //get the block inside the ground
-		y=findSuitableY(generator,location,airpocket,y,piece,rand);
+		y = findSuitableY(generator, location, airpocket, y, piece, rand);
 		pos = new BPos(anchor.getX(), y, anchor.getZ());
+		// this line can be replaced by the two under
+//		piece = BlockBox.getBoundingBox(pos, rotation, pivot, mirror, size);
+		piece.minY = y;
+		piece.maxY = size.getY() - 1;
 
-		// we have to modify the bb due to StructureStart
-		BlockBox chunkBB = new BlockBox(chunkX << 4, chunkZ << 4, (chunkX << 4) + 15, (chunkZ << 4) + 15);
-		piece.encompass(chunkBB);
+		// this is useless
+//		Vec3i vec3i=piece.getCenter();
+//		BPos centerPiece=new BPos(vec3i.getX(),piece.minY,vec3i.getZ());
 
+		// we have to save this bb due to StructureStart, it can be used later on for processors for instance
+		chunkBB = new BlockBox(chunkX << 4, chunkZ << 4, (chunkX << 4) + 15, (chunkZ << 4) + 15);
+		if (!piece.intersects(chunkBB)) {
+			System.err.println("The Chunk bounding box did not intersect with the structure piece, please report this bug");
+			return false;
+		}
+		chunkBB.encompass(piece);
 		return true;
 	}
 
+	public BlockBox getChunkBB() {
+		return chunkBB;
+	}
 
 	public Location getLocation() {
 		return location;
@@ -183,32 +198,32 @@ public class RuinedPortalGenerator extends Generator {
 		return airpocket;
 	}
 
-	private static int findSuitableY(ChunkGenerator generator,Location location, boolean airPocket, int height, BlockBox blockBox, ChunkRand rand) {
+	private static int findSuitableY(ChunkGenerator generator, Location location, boolean airPocket, int height, BlockBox blockBox, ChunkRand rand) {
 		int y;
 		if (location == Location.IN_NETHER) {
 			if (airPocket) {
-				y = rand.getInt( 32, 100);
+				y = rand.getInt(32, 100);
 			} else if (rand.nextFloat() < 0.5F) {
-				y = rand.getInt( 27, 29);
+				y = rand.getInt(27, 29);
 			} else {
-				y = rand.getInt( 29, 100);
+				y = rand.getInt(29, 100);
 			}
 		} else if (location == Location.IN_MOUNTAIN) {
 			int j = height - blockBox.getYSpan();
-			y = rand.getInt( 70, j);
+			y = rand.getInt(70, j);
 		} else if (location == Location.UNDERGROUND) {
 			int i1 = height - blockBox.getYSpan();
-			y = rand.getInt( 15, i1);
+			y = rand.getInt(15, i1);
 		} else if (location == Location.PARTLY_BURIED) {
-			y = height - blockBox.getYSpan() + rand.getInt( 2, 8);
+			y = height - blockBox.getYSpan() + rand.getInt(2, 8);
 		} else {
 			y = height;
 		}
 
 		List<BPos> corners = Arrays.asList(new BPos(blockBox.minX, 0, blockBox.minZ), new BPos(blockBox.maxX, 0, blockBox.minZ), new BPos(blockBox.minX, 0, blockBox.maxZ), new BPos(blockBox.maxX, 0, blockBox.maxZ));
-		List<Block[]> columns=corners.stream().map(e->generator.getColumnAt(e.getX(),e.getZ())).collect(Collectors.toList());
+		List<Block[]> columns = corners.stream().map(e -> generator.getColumnAt(e.getX(), e.getZ())).collect(Collectors.toList());
 
-		boolean useFluid=!isLand.test(location);
+		boolean useFluid = !isLand.test(location);
 
 
 		int dig;
@@ -218,8 +233,8 @@ public class RuinedPortalGenerator extends Generator {
 			for (Block[] column : columns) {
 				if (y > generator.getMaxWorldHeight() || y < generator.getMinWorldHeight())
 					continue;
-				Block block=column[dig];
-				boolean match=useFluid?block==generator.getDefaultFluid():block==generator.getDefaultBlock();
+				Block block = column[dig];
+				boolean match = useFluid ? block == generator.getDefaultFluid() : block == generator.getDefaultBlock();
 				if (match) {
 					++cornerMatch;
 					if (cornerMatch == 3) {
@@ -265,7 +280,7 @@ public class RuinedPortalGenerator extends Generator {
 			// don't forget to transform
 			offset = offset.transform(this.getMirror(), this.getRotation(), this.getPivot());
 			// warning not like shipwreck we have to use ORIENTATION=NORTH or blockrotation.NONE
-			BPos chestPos = piece.getInside(offset, BlockRotation.NONE);
+			BPos chestPos = offset.add(getPos());
 			res.add(new Pair<>(lootType, chestPos));
 		}
 		return res;

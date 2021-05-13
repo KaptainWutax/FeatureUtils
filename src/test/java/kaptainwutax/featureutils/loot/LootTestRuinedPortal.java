@@ -2,7 +2,6 @@ package kaptainwutax.featureutils.loot;
 
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.structure.generator.Generator;
-import kaptainwutax.featureutils.structure.generator.structure.DesertPyramidGenerator;
 import kaptainwutax.featureutils.structure.generator.structure.RuinedPortalGenerator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
@@ -35,11 +34,10 @@ public class LootTestRuinedPortal {
 
 	@Test
 	public void testCorrectChest1() {
-		setup(123L, new BPos(-311 ,0, 121).toChunkPos(), MCVersion.v1_16_5);
+		setup(123L, new BPos(-311, 0, 121).toChunkPos(), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
-			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-315,4,127)));
+			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-315, 81, 127)));
 		}};
-		System.out.println(loots);
 		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s", check.getFirst(), check.getSecond()));
 		}
@@ -47,9 +45,20 @@ public class LootTestRuinedPortal {
 
 	@Test
 	public void testCorrectChest2() {
-		setup(1476413308176291228L, new BPos( 153,0, 121).toChunkPos(), MCVersion.v1_16_5);
+		setup(1476413308176291228L, new BPos(153, 0, 121).toChunkPos(), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
-			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(150,2,128)));
+			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(150, 67, 128)));
+		}};
+		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
+			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s", check.getFirst(), check.getSecond()));
+		}
+	}
+
+	@Test
+	public void testCorrectChest3() {
+		setup(7948314503011477316L, new CPos(8, 10), MCVersion.v1_16_5);
+		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
+			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(128, 78, 162)));
 		}};
 		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s", check.getFirst(), check.getSecond()));
