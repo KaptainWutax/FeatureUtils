@@ -68,9 +68,9 @@ public class LootTestRuinedPortal {
 
 	@Test
 	public void testCorrectChest4() {
-		setup(Dimension.OVERWORLD,7948314503011477316L,new BPos(112 ,0, 1616).toChunkPos(), MCVersion.v1_16_5);
+		setup(Dimension.OVERWORLD,7948314503011477316L,new CPos(7,101), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
-			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(53, 28, 82)));
+			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(113, 38, 1629)));
 		}};
 		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
@@ -79,9 +79,10 @@ public class LootTestRuinedPortal {
 
 	@Test
 	public void testCorrectChest5() {
-		setup(Dimension.NETHER,7948314503011477316L,new BPos(48 ,0, 80).toChunkPos(), MCVersion.v1_16_5);
+		setup(Dimension.NETHER,7948314503011477316L,new CPos(3,5), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
-			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(113, 38, 1629)));
+			// this blocks doesn't generate (removed by lava)
+			//add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(53, 28, 82)));
 		}};
 		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
@@ -103,7 +104,7 @@ public class LootTestRuinedPortal {
 	public void testCorrectChest7() {
 		setup(Dimension.NETHER,7948314503011477316L,new CPos(25,9), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
-			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-170, 50, -192)));
+			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(405, 102, 146)));
 		}};
 		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
@@ -113,17 +114,6 @@ public class LootTestRuinedPortal {
 	@Test
 	public void testCorrectChest8() {
 		setup(Dimension.NETHER,7948314503011477316L,new CPos(-23,8), MCVersion.v1_16_5);
-		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
-			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-366, 34, 139)));
-		}};
-		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
-			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
-		}
-	}
-
-	@Test
-	public void testCorrectChest9() {
-		setup(Dimension.NETHER,7948314503011477316L,new CPos(3,5), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-366, 34, 139)));
 		}};

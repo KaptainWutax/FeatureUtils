@@ -34,6 +34,7 @@ public class RuinedPortalGenerator extends Generator {
 	private Location location = null;
 	private Boolean airpocket = null;
 	private BlockBox chunkBB = null;
+	private ChunkGenerator generator = null;
 
 	private static final Predicate<Location> isLand = l -> l != Location.ON_OCEAN_FLOOR;
 	private final HashSet<Biome> DESERT_BIOME = new HashSet<Biome>() {{
@@ -114,6 +115,8 @@ public class RuinedPortalGenerator extends Generator {
 		this.type = null;
 		this.location = null;
 		this.airpocket = null;
+		this.chunkBB=null;
+		this.generator=null;
 	}
 
 	@Override
@@ -162,10 +165,10 @@ public class RuinedPortalGenerator extends Generator {
 		piece = BlockBox.getBoundingBox(anchor, rotation, pivot, mirror, size);
 
 		Vec3i center = piece.getCenter();
-		int y = isLand.test(location) ? generator.getHeightOnGround(center.getX(), center.getZ()) :
-				generator.getFirstHeightInColumn(center.getX(), center.getZ(), b -> b.getId() == generator.getDefaultFluid().getId());
+		Predicate<Block> blockTest = isLand.test(location) ? ChunkGenerator.WORLD_SURFACE_WG : ChunkGenerator.OCEAN_FLOOR_WG;
+		int y = generator.getFirstHeightInColumn(center.getX(), center.getZ(), blockTest);
 		y -= 1; //get the block inside the ground
-		y = findSuitableY(generator, location, airpocket, y, piece, rand);
+		y = findSuitableY(generator, location,blockTest, airpocket, y, piece, rand);
 		pos = new BPos(anchor.getX(), y, anchor.getZ());
 		// this line can be replaced by the two under
 //		piece = BlockBox.getBoundingBox(pos, rotation, pivot, mirror, size);
@@ -183,6 +186,7 @@ public class RuinedPortalGenerator extends Generator {
 			return false;
 		}
 		chunkBB.encompass(piece);
+		this.generator=generator; // have to store it to check lava sadly
 		return true;
 	}
 
@@ -198,7 +202,7 @@ public class RuinedPortalGenerator extends Generator {
 		return airpocket;
 	}
 
-	private static int findSuitableY(ChunkGenerator generator, Location location, boolean airPocket, int height, BlockBox blockBox, ChunkRand rand) {
+	private static int findSuitableY(ChunkGenerator generator, Location location,Predicate<Block> blockPredicate, boolean airPocket, int height, BlockBox blockBox, ChunkRand rand) {
 		int y;
 		if (location == Location.IN_NETHER) {
 			if (airPocket) {
@@ -223,8 +227,6 @@ public class RuinedPortalGenerator extends Generator {
 		List<BPos> corners = Arrays.asList(new BPos(blockBox.minX, 0, blockBox.minZ), new BPos(blockBox.maxX, 0, blockBox.minZ), new BPos(blockBox.minX, 0, blockBox.maxZ), new BPos(blockBox.maxX, 0, blockBox.maxZ));
 		List<Block[]> columns = corners.stream().map(e -> generator.getColumnAt(e.getX(), e.getZ())).collect(Collectors.toList());
 
-		boolean useFluid = !isLand.test(location);
-
 
 		int dig;
 		for (dig = y; dig > 15; --dig) {
@@ -234,7 +236,7 @@ public class RuinedPortalGenerator extends Generator {
 				if (y > generator.getMaxWorldHeight() || y < generator.getMinWorldHeight())
 					continue;
 				Block block = column[dig];
-				boolean match = useFluid? (block==Blocks.LAVA || block==Blocks.AIR) :block!=Blocks.AIR;
+				boolean match = blockPredicate.test(block);
 				if (match) {
 					++cornerMatch;
 					if (cornerMatch == 3) {
@@ -279,9 +281,16 @@ public class RuinedPortalGenerator extends Generator {
 			BPos offset = lootPos.get(lootType);
 			// don't forget to transform
 			offset = offset.transform(this.getMirror(), this.getRotation(), this.getPivot());
-			// warning not like shipwreck we have to use ORIENTATION=NORTH or blockrotation.NONE
 			BPos chestPos = offset.add(getPos());
-			res.add(new Pair<>(lootType, chestPos));
+			if (generator!=null){
+				Block block=generator.getBlockAt(chestPos.getX(),chestPos.getY(),chestPos.getZ());
+				if (block.getId()!=Blocks.LAVA.getId()){
+					res.add(new Pair<>(lootType, chestPos));
+				}
+			}else{
+				res.add(new Pair<>(lootType, chestPos));
+			}
+
 		}
 		return res;
 	}
