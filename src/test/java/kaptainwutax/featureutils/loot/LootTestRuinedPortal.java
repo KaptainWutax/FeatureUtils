@@ -88,6 +88,18 @@ public class LootTestRuinedPortal {
 			// this blocks doesn't generate (removed by lava)
 			//add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(53, 28, 82)));
 		}};
+		assertTrue(loots.isEmpty());
+	}
+
+	@Test
+	public void testCorrectChest10() {
+		setup(Dimension.OVERWORLD,-7387955057302025707L,new CPos(9,7), MCVersion.v1_16_1);
+		// 20w27a fixed the netherrack spread that remove chest (we don't support it)
+		//assertTrue(loots.isEmpty());
+		setup(Dimension.OVERWORLD,-7387955057302025707L,new CPos(9,7), MCVersion.v1_16_2);
+		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
+			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(145, 69, 116)));
+		}};
 		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
 		}

@@ -35,6 +35,8 @@ public class RuinedPortalGenerator extends Generator {
 	private Boolean airpocket = null;
 	private BlockBox chunkBB = null;
 	private ChunkGenerator generator = null;
+	private boolean overgrown = false;
+	private boolean cold = false;
 
 	private static final Predicate<Location> isLand = l -> l != Location.ON_OCEAN_FLOOR;
 	private final HashSet<Biome> DESERT_BIOME = new HashSet<Biome>() {{
@@ -117,6 +119,8 @@ public class RuinedPortalGenerator extends Generator {
 		this.airpocket = null;
 		this.chunkBB = null;
 		this.generator = null;
+		this.overgrown = false;
+		this.cold = false;
 	}
 
 	@Override
@@ -134,6 +138,7 @@ public class RuinedPortalGenerator extends Generator {
 		} else if (JUNGLE_BIOME.contains(biome)) {
 			location = Location.ON_LAND_SURFACE;
 			airpocket = rand.nextFloat() < 0.5F;
+			overgrown = true;
 		} else if (SWAMP_BIOME.contains(biome)) {
 			location = Location.ON_OCEAN_FLOOR;
 			airpocket = false;
@@ -170,6 +175,10 @@ public class RuinedPortalGenerator extends Generator {
 		y -= 1; //get the block inside the ground
 		y = findSuitableY(generator, location, blockTest, airpocket, y, piece, rand);
 		pos = new BPos(anchor.getX(), y, anchor.getZ());
+		// this is not done because we don't support the bug (also temperatures, hell no)
+//		if (portalFeature.portalType == RuinedPortalStructure.Location.MOUNTAIN || portalFeature.portalType == RuinedPortalStructure.Location.OCEAN || portalFeature.portalType == RuinedPortalStructure.Location.STANDARD) {
+//			cold = biome.getTemperature(pos) < 0.15F;
+//		}
 		// this line can be replaced by the two under
 //		piece = BlockBox.getBoundingBox(pos, rotation, pivot, mirror, size);
 		piece.minY = y;
@@ -290,7 +299,9 @@ public class RuinedPortalGenerator extends Generator {
 			} else {
 				res.add(new Pair<>(lootType, chestPos));
 			}
-
+			if (version.isOlderOrEqualTo(MCVersion.v1_16_1)){
+				System.err.println("Warning the chest might not appear due to a bug not being blacklisted by netherrack replacement (we don't support it because it requires temperatures)");
+			}
 		}
 		return res;
 	}
@@ -359,6 +370,70 @@ public class RuinedPortalGenerator extends Generator {
 		}
 	}
 
+//	public static boolean shouldRemoveChest(ChunkGenerator generator, BPos chestPos, Location location, BlockBox piece, boolean cold, boolean overgrown, MCVersion version) {
+//		if (version.isOlderOrEqualTo(MCVersion.v1_16_1)) {
+//			// spread netherrack removed the chests
+//			if (generator == null) return false;
+//			ChunkRand rand = new ChunkRand();
+//			CPos chunkChestPos = chestPos.toChunkPos();
+//			RuinedPortal ruinedPortal = new RuinedPortal(generator.getBiomeSource().getDimension(), version);
+//			rand.setDecoratorSeed(generator.getWorldSeed(), chunkChestPos.getX() * 16, chunkChestPos.getZ() * 16, ruinedPortal.getDecorationSalt(), version);
+//			// we ignore specific calls
+//			// we advance the loot seed from postprocess
+//			rand.advance(2);
+//			boolean isOnFloor = location == Location.ON_LAND_SURFACE || location == Location.ON_OCEAN_FLOOR;
+//			Vec3i vector3i = piece.getCenter();
+//			int centerX = vector3i.getX();
+//			int centerZ = vector3i.getZ();
+//			float[] afloat = new float[] {1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 0.9F, 0.9F, 0.8F, 0.7F, 0.6F, 0.4F, 0.2F};
+//			int lenght = afloat.length;
+//			int triangularSize = (piece.getXSpan() + piece.getZSpan()) / 2;
+//			int offset = rand.nextInt(Math.max(1, 8 - triangularSize / 2));
+//			Predicate<Block> blockPredicate = isLand.test(location) ? ChunkGenerator.WORLD_SURFACE_WG : ChunkGenerator.OCEAN_FLOOR_WG;
+//			for (int x = centerX - lenght; x <= centerX + lenght; ++x) {
+//				for (int z = centerZ - lenght; z <= centerZ + lenght; ++z) {
+//					int distanceToCenter = Math.abs(x - centerX) + Math.abs(z - centerZ);
+//					int idx = Math.max(0, distanceToCenter + offset);
+//					if (idx < lenght) {
+//						float probability = afloat[idx];
+//						if (rand.nextDouble() < (double) probability) {
+//							int height = generator.getFirstHeightInColumn(x, z, blockPredicate) - 1;
+//							int y = isOnFloor ? height : Math.min(piece.minY, height);
+//							BPos pos = new BPos(x, y, z);
+//							if (Math.abs(y - piece.minY) <= 3 && canBlockBeReplacedByNetherrackOrMagma(pos)) {
+////								this.placeNetherrackOrMagma(p_237019_1_, p_237019_2_, blockpos$mutable);
+//								boolean p = !cold && rand.nextFloat() < 0.07F;
+//								if (overgrown) {
+//									boolean p2 = rand.nextFloat() < 0.5F;
+////									this.maybeAddLeavesAbove(p_237019_1_, p_237019_2_, blockpos$mutable);
+//								}
+//
+////								this.addNetherrackDripColumn(p_237019_1_, p_237019_2_, blockpos$mutable.below());
+//								BPos posDown = pos.add(0, -1, 0);
+////								this.placeNetherrackOrMagma(rand, p_237022_2_, blockpos$mutable);
+//								boolean p6 = !cold && rand.nextFloat() < 0.07F;
+//								int i = 8;
+//
+//								while (i > 0 && rand.nextFloat() < 0.5F) {
+//									posDown = posDown.add(0, -1, 0);
+//									--i;
+////									this.placeNetherrackOrMagma(rand, p_237022_2_, blockpos$mutable);
+//									boolean p7 = !cold && rand.nextFloat() < 0.07F;
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//		return false;
+//	}
+//
+//	private static boolean canBlockBeReplacedByNetherrackOrMagma(BPos pos) {
+//		BlockState blockstate = p_237010_1_.getBlockState(p_237010_2_);
+//		return !blockstate.is(Blocks.AIR) && !blockstate.is(Blocks.OBSIDIAN) && !blockstate.is(Blocks.CHEST) && (this.verticalPlacement == RuinedPortalPiece.Location.IN_NETHER || !blockstate.is(Blocks.LAVA));
+//	}
+
 	private static final String[] STRUCTURE_LOCATION_PORTALS = new String[] {"portal_1", "portal_2", "portal_3", "portal_4", "portal_5", "portal_6", "portal_7", "portal_8", "portal_9", "portal_10"};
 	private static final String[] STRUCTURE_LOCATION_GIANT_PORTALS = new String[] {"giant_portal_1", "giant_portal_2", "giant_portal_3"};
 	private static final HashMap<String, LinkedHashMap<LootType, BPos>> STRUCTURE_TO_LOOT = new HashMap<>();
@@ -420,269 +495,269 @@ public class RuinedPortalGenerator extends Generator {
 		STRUCTURE_SIZE.put("portal_9", new BPos(10, 8, 9));
 
 		STRUCTURE_TO_BLOCKS.put("giant_portal_1", new LinkedHashMap<Block, List<BPos>>() {{
-			put(Blocks.OBSIDIAN, new ArrayList<BPos>(){{
-				add(new BPos(8,1,12));
-				add(new BPos(9,1,9));
-				add(new BPos(9,1,12));
-				add(new BPos(10,1,8));
-				add(new BPos(7,2,1));
-				add(new BPos(8,2,1));
-				add(new BPos(9,2,9));
-				add(new BPos(9,2,12));
-				add(new BPos(5,3,4));
-				add(new BPos(5,3,5));
-				add(new BPos(5,3,6));
-				add(new BPos(5,3,7));
-				add(new BPos(5,3,8));
-				add(new BPos(5,3,9));
-				add(new BPos(5,3,10));
-				add(new BPos(5,3,11));
-				add(new BPos(5,4,4));
-				add(new BPos(5,4,11));
-				add(new BPos(5,5,11));
-				add(new BPos(5,6,11));
-				add(new BPos(5,7,11));
-				add(new BPos(5,8,4));
-				add(new BPos(5,8,11));
-				add(new BPos(5,9,4));
-				add(new BPos(5,9,11));
-				add(new BPos(5,10,4));
-				add(new BPos(5,11,4));
-				add(new BPos(5,12,4));
-				add(new BPos(5,12,5));
-				add(new BPos(5,12,6));
-				add(new BPos(5,12,7));
+			put(Blocks.OBSIDIAN, new ArrayList<BPos>() {{
+				add(new BPos(8, 1, 12));
+				add(new BPos(9, 1, 9));
+				add(new BPos(9, 1, 12));
+				add(new BPos(10, 1, 8));
+				add(new BPos(7, 2, 1));
+				add(new BPos(8, 2, 1));
+				add(new BPos(9, 2, 9));
+				add(new BPos(9, 2, 12));
+				add(new BPos(5, 3, 4));
+				add(new BPos(5, 3, 5));
+				add(new BPos(5, 3, 6));
+				add(new BPos(5, 3, 7));
+				add(new BPos(5, 3, 8));
+				add(new BPos(5, 3, 9));
+				add(new BPos(5, 3, 10));
+				add(new BPos(5, 3, 11));
+				add(new BPos(5, 4, 4));
+				add(new BPos(5, 4, 11));
+				add(new BPos(5, 5, 11));
+				add(new BPos(5, 6, 11));
+				add(new BPos(5, 7, 11));
+				add(new BPos(5, 8, 4));
+				add(new BPos(5, 8, 11));
+				add(new BPos(5, 9, 4));
+				add(new BPos(5, 9, 11));
+				add(new BPos(5, 10, 4));
+				add(new BPos(5, 11, 4));
+				add(new BPos(5, 12, 4));
+				add(new BPos(5, 12, 5));
+				add(new BPos(5, 12, 6));
+				add(new BPos(5, 12, 7));
 			}});
 		}});
 		STRUCTURE_TO_BLOCKS.put("giant_portal_2", new LinkedHashMap<Block, List<BPos>>() {{
-			put(Blocks.OBSIDIAN, new ArrayList<BPos>(){{
-				add(new BPos(3,2,5));
-				add(new BPos(4,2,2));
-				add(new BPos(7,2,1));
-				add(new BPos(8,2,1));
-				add(new BPos(3,3,5));
-				add(new BPos(5,3,4));
-				add(new BPos(5,3,5));
-				add(new BPos(5,3,6));
-				add(new BPos(5,3,7));
-				add(new BPos(5,3,8));
-				add(new BPos(5,3,9));
-				add(new BPos(5,3,10));
-				add(new BPos(5,3,11));
-				add(new BPos(3,4,5));
-				add(new BPos(5,4,4));
-				add(new BPos(5,4,11));
-				add(new BPos(5,5,11));
-				add(new BPos(5,6,11));
-				add(new BPos(5,7,11));
-				add(new BPos(5,8,11));
-				add(new BPos(5,9,11));
-				add(new BPos(5,10,4));
-				add(new BPos(5,10,11));
-				add(new BPos(5,11,4));
-				add(new BPos(5,11,11));
-				add(new BPos(5,12,4));
-				add(new BPos(5,12,7));
-				add(new BPos(5,12,8));
-				add(new BPos(5,12,11));
+			put(Blocks.OBSIDIAN, new ArrayList<BPos>() {{
+				add(new BPos(3, 2, 5));
+				add(new BPos(4, 2, 2));
+				add(new BPos(7, 2, 1));
+				add(new BPos(8, 2, 1));
+				add(new BPos(3, 3, 5));
+				add(new BPos(5, 3, 4));
+				add(new BPos(5, 3, 5));
+				add(new BPos(5, 3, 6));
+				add(new BPos(5, 3, 7));
+				add(new BPos(5, 3, 8));
+				add(new BPos(5, 3, 9));
+				add(new BPos(5, 3, 10));
+				add(new BPos(5, 3, 11));
+				add(new BPos(3, 4, 5));
+				add(new BPos(5, 4, 4));
+				add(new BPos(5, 4, 11));
+				add(new BPos(5, 5, 11));
+				add(new BPos(5, 6, 11));
+				add(new BPos(5, 7, 11));
+				add(new BPos(5, 8, 11));
+				add(new BPos(5, 9, 11));
+				add(new BPos(5, 10, 4));
+				add(new BPos(5, 10, 11));
+				add(new BPos(5, 11, 4));
+				add(new BPos(5, 11, 11));
+				add(new BPos(5, 12, 4));
+				add(new BPos(5, 12, 7));
+				add(new BPos(5, 12, 8));
+				add(new BPos(5, 12, 11));
 			}});
 		}});
 		STRUCTURE_TO_BLOCKS.put("giant_portal_3", new LinkedHashMap<Block, List<BPos>>() {{
-			put(Blocks.OBSIDIAN, new ArrayList<BPos>(){{
-				add(new BPos(3,1,1));
-				add(new BPos(9,1,9));
-				add(new BPos(3,2,1));
-				add(new BPos(9,2,9));
-				add(new BPos(10,2,4));
-				add(new BPos(10,2,5));
-				add(new BPos(3,3,1));
-				add(new BPos(5,3,4));
-				add(new BPos(5,3,5));
-				add(new BPos(5,3,6));
-				add(new BPos(5,3,7));
-				add(new BPos(5,3,8));
-				add(new BPos(5,3,9));
-				add(new BPos(5,3,10));
-				add(new BPos(5,3,11));
-				add(new BPos(9,3,9));
-				add(new BPos(5,4,4));
-				add(new BPos(5,4,11));
-				add(new BPos(9,4,9));
-				add(new BPos(5,5,11));
-				add(new BPos(5,6,11));
-				add(new BPos(5,7,11));
-				add(new BPos(5,8,11));
-				add(new BPos(5,9,11));
-				add(new BPos(5,12,9));
+			put(Blocks.OBSIDIAN, new ArrayList<BPos>() {{
+				add(new BPos(3, 1, 1));
+				add(new BPos(9, 1, 9));
+				add(new BPos(3, 2, 1));
+				add(new BPos(9, 2, 9));
+				add(new BPos(10, 2, 4));
+				add(new BPos(10, 2, 5));
+				add(new BPos(3, 3, 1));
+				add(new BPos(5, 3, 4));
+				add(new BPos(5, 3, 5));
+				add(new BPos(5, 3, 6));
+				add(new BPos(5, 3, 7));
+				add(new BPos(5, 3, 8));
+				add(new BPos(5, 3, 9));
+				add(new BPos(5, 3, 10));
+				add(new BPos(5, 3, 11));
+				add(new BPos(9, 3, 9));
+				add(new BPos(5, 4, 4));
+				add(new BPos(5, 4, 11));
+				add(new BPos(9, 4, 9));
+				add(new BPos(5, 5, 11));
+				add(new BPos(5, 6, 11));
+				add(new BPos(5, 7, 11));
+				add(new BPos(5, 8, 11));
+				add(new BPos(5, 9, 11));
+				add(new BPos(5, 12, 9));
 			}});
 		}});
 		STRUCTURE_TO_BLOCKS.put("portal_1", new LinkedHashMap<Block, List<BPos>>() {{
-			put(Blocks.OBSIDIAN, new ArrayList<BPos>(){{
-				add(new BPos(3,2,1));
-				add(new BPos(3,2,2));
-				add(new BPos(3,2,3));
-				add(new BPos(3,2,4));
-				add(new BPos(3,3,1));
-				add(new BPos(3,3,4));
-				add(new BPos(3,4,1));
-				add(new BPos(3,5,1));
-				add(new BPos(3,6,1));
-				add(new BPos(3,6,2));
-				add(new BPos(3,6,3));
+			put(Blocks.OBSIDIAN, new ArrayList<BPos>() {{
+				add(new BPos(3, 2, 1));
+				add(new BPos(3, 2, 2));
+				add(new BPos(3, 2, 3));
+				add(new BPos(3, 2, 4));
+				add(new BPos(3, 3, 1));
+				add(new BPos(3, 3, 4));
+				add(new BPos(3, 4, 1));
+				add(new BPos(3, 5, 1));
+				add(new BPos(3, 6, 1));
+				add(new BPos(3, 6, 2));
+				add(new BPos(3, 6, 3));
 			}});
 		}});
 		STRUCTURE_TO_BLOCKS.put("portal_10", new LinkedHashMap<Block, List<BPos>>() {{
-			put(Blocks.OBSIDIAN, new ArrayList<BPos>(){{
-				add(new BPos(3,1,3));
-				add(new BPos(3,1,4));
-				add(new BPos(3,1,5));
-				add(new BPos(3,1,6));
-				add(new BPos(5,1,6));
-				add(new BPos(6,1,3));
-				add(new BPos(7,1,3));
-				add(new BPos(7,1,6));
-				add(new BPos(8,1,3));
-				add(new BPos(8,1,4));
-				add(new BPos(8,1,5));
-				add(new BPos(8,1,6));
-				add(new BPos(3,2,3));
+			put(Blocks.OBSIDIAN, new ArrayList<BPos>() {{
+				add(new BPos(3, 1, 3));
+				add(new BPos(3, 1, 4));
+				add(new BPos(3, 1, 5));
+				add(new BPos(3, 1, 6));
+				add(new BPos(5, 1, 6));
+				add(new BPos(6, 1, 3));
+				add(new BPos(7, 1, 3));
+				add(new BPos(7, 1, 6));
+				add(new BPos(8, 1, 3));
+				add(new BPos(8, 1, 4));
+				add(new BPos(8, 1, 5));
+				add(new BPos(8, 1, 6));
+				add(new BPos(3, 2, 3));
 			}});
 		}});
 		STRUCTURE_TO_BLOCKS.put("portal_2", new LinkedHashMap<Block, List<BPos>>() {{
-			put(Blocks.OBSIDIAN, new ArrayList<BPos>(){{
-				add(new BPos(3,1,6));
-				add(new BPos(3,2,6));
-				add(new BPos(5,4,2));
-				add(new BPos(5,5,2));
-				add(new BPos(5,6,2));
-				add(new BPos(5,7,2));
-				add(new BPos(5,7,5));
-				add(new BPos(5,8,2));
-				add(new BPos(5,8,3));
-				add(new BPos(5,8,4));
-				add(new BPos(5,8,5));
+			put(Blocks.OBSIDIAN, new ArrayList<BPos>() {{
+				add(new BPos(3, 1, 6));
+				add(new BPos(3, 2, 6));
+				add(new BPos(5, 4, 2));
+				add(new BPos(5, 5, 2));
+				add(new BPos(5, 6, 2));
+				add(new BPos(5, 7, 2));
+				add(new BPos(5, 7, 5));
+				add(new BPos(5, 8, 2));
+				add(new BPos(5, 8, 3));
+				add(new BPos(5, 8, 4));
+				add(new BPos(5, 8, 5));
 			}});
 		}});
 		STRUCTURE_TO_BLOCKS.put("portal_3", new LinkedHashMap<Block, List<BPos>>() {{
-			put(Blocks.OBSIDIAN, new ArrayList<BPos>(){{
-				add(new BPos(6,2,2));
-				add(new BPos(4,3,2));
-				add(new BPos(4,3,3));
-				add(new BPos(4,3,4));
-				add(new BPos(4,3,5));
-				add(new BPos(6,3,3));
-				add(new BPos(4,4,5));
-				add(new BPos(4,5,5));
-				add(new BPos(4,6,5));
-				add(new BPos(4,7,4));
-				add(new BPos(4,7,5));
+			put(Blocks.OBSIDIAN, new ArrayList<BPos>() {{
+				add(new BPos(6, 2, 2));
+				add(new BPos(4, 3, 2));
+				add(new BPos(4, 3, 3));
+				add(new BPos(4, 3, 4));
+				add(new BPos(4, 3, 5));
+				add(new BPos(6, 3, 3));
+				add(new BPos(4, 4, 5));
+				add(new BPos(4, 5, 5));
+				add(new BPos(4, 6, 5));
+				add(new BPos(4, 7, 4));
+				add(new BPos(4, 7, 5));
 			}});
 		}});
 		STRUCTURE_TO_BLOCKS.put("portal_4", new LinkedHashMap<Block, List<BPos>>() {{
-			put(Blocks.OBSIDIAN, new ArrayList<BPos>(){{
-				add(new BPos(7,1,6));
-				add(new BPos(6,2,4));
-				add(new BPos(4,3,2));
-				add(new BPos(4,3,3));
-				add(new BPos(4,3,4));
-				add(new BPos(4,3,5));
-				add(new BPos(4,4,2));
-				add(new BPos(4,4,5));
-				add(new BPos(4,5,2));
-				add(new BPos(4,5,5));
-				add(new BPos(4,6,2));
+			put(Blocks.OBSIDIAN, new ArrayList<BPos>() {{
+				add(new BPos(7, 1, 6));
+				add(new BPos(6, 2, 4));
+				add(new BPos(4, 3, 2));
+				add(new BPos(4, 3, 3));
+				add(new BPos(4, 3, 4));
+				add(new BPos(4, 3, 5));
+				add(new BPos(4, 4, 2));
+				add(new BPos(4, 4, 5));
+				add(new BPos(4, 5, 2));
+				add(new BPos(4, 5, 5));
+				add(new BPos(4, 6, 2));
 			}});
 		}});
 		STRUCTURE_TO_BLOCKS.put("portal_5", new LinkedHashMap<Block, List<BPos>>() {{
-			put(Blocks.OBSIDIAN, new ArrayList<BPos>(){{
-				add(new BPos(2,3,1));
-				add(new BPos(2,3,2));
-				add(new BPos(2,3,3));
-				add(new BPos(2,3,4));
-				add(new BPos(5,3,1));
-				add(new BPos(6,3,1));
-				add(new BPos(7,3,1));
-				add(new BPos(8,3,1));
-				add(new BPos(8,3,2));
-				add(new BPos(8,3,3));
-				add(new BPos(2,4,4));
-				add(new BPos(2,5,4));
-				add(new BPos(2,6,4));
-				add(new BPos(2,7,4));
-				add(new BPos(2,8,4));
+			put(Blocks.OBSIDIAN, new ArrayList<BPos>() {{
+				add(new BPos(2, 3, 1));
+				add(new BPos(2, 3, 2));
+				add(new BPos(2, 3, 3));
+				add(new BPos(2, 3, 4));
+				add(new BPos(5, 3, 1));
+				add(new BPos(6, 3, 1));
+				add(new BPos(7, 3, 1));
+				add(new BPos(8, 3, 1));
+				add(new BPos(8, 3, 2));
+				add(new BPos(8, 3, 3));
+				add(new BPos(2, 4, 4));
+				add(new BPos(2, 5, 4));
+				add(new BPos(2, 6, 4));
+				add(new BPos(2, 7, 4));
+				add(new BPos(2, 8, 4));
 			}});
 		}});
 		STRUCTURE_TO_BLOCKS.put("portal_6", new LinkedHashMap<Block, List<BPos>>() {{
-			put(Blocks.OBSIDIAN, new ArrayList<BPos>(){{
-				add(new BPos(2,1,0));
-				add(new BPos(2,1,1));
-				add(new BPos(2,1,2));
-				add(new BPos(2,1,3));
-				add(new BPos(2,1,4));
-				add(new BPos(4,1,3));
-				add(new BPos(2,2,0));
-				add(new BPos(2,2,4));
-				add(new BPos(2,3,0));
-				add(new BPos(2,3,4));
-				add(new BPos(2,4,0));
-				add(new BPos(2,4,4));
-				add(new BPos(2,5,0));
-				add(new BPos(2,5,1));
-				add(new BPos(2,5,3));
-				add(new BPos(2,5,4));
+			put(Blocks.OBSIDIAN, new ArrayList<BPos>() {{
+				add(new BPos(2, 1, 0));
+				add(new BPos(2, 1, 1));
+				add(new BPos(2, 1, 2));
+				add(new BPos(2, 1, 3));
+				add(new BPos(2, 1, 4));
+				add(new BPos(4, 1, 3));
+				add(new BPos(2, 2, 0));
+				add(new BPos(2, 2, 4));
+				add(new BPos(2, 3, 0));
+				add(new BPos(2, 3, 4));
+				add(new BPos(2, 4, 0));
+				add(new BPos(2, 4, 4));
+				add(new BPos(2, 5, 0));
+				add(new BPos(2, 5, 1));
+				add(new BPos(2, 5, 3));
+				add(new BPos(2, 5, 4));
 			}});
 		}});
 		STRUCTURE_TO_BLOCKS.put("portal_7", new LinkedHashMap<Block, List<BPos>>() {{
-			put(Blocks.OBSIDIAN, new ArrayList<BPos>(){{
-				add(new BPos(3,0,2));
-				add(new BPos(3,0,3));
-				add(new BPos(3,0,4));
-				add(new BPos(3,1,2));
-				add(new BPos(3,1,5));
-				add(new BPos(5,1,6));
-				add(new BPos(3,2,2));
-				add(new BPos(3,2,5));
-				add(new BPos(3,3,2));
-				add(new BPos(3,4,2));
-				add(new BPos(3,4,3));
-				add(new BPos(3,4,4));
+			put(Blocks.OBSIDIAN, new ArrayList<BPos>() {{
+				add(new BPos(3, 0, 2));
+				add(new BPos(3, 0, 3));
+				add(new BPos(3, 0, 4));
+				add(new BPos(3, 1, 2));
+				add(new BPos(3, 1, 5));
+				add(new BPos(5, 1, 6));
+				add(new BPos(3, 2, 2));
+				add(new BPos(3, 2, 5));
+				add(new BPos(3, 3, 2));
+				add(new BPos(3, 4, 2));
+				add(new BPos(3, 4, 3));
+				add(new BPos(3, 4, 4));
 			}});
 		}});
 		STRUCTURE_TO_BLOCKS.put("portal_8", new LinkedHashMap<Block, List<BPos>>() {{
-			put(Blocks.OBSIDIAN, new ArrayList<BPos>(){{
-				add(new BPos(9,1,3));
-				add(new BPos(9,1,4));
-				add(new BPos(9,1,5));
-				add(new BPos(5,3,2));
-				add(new BPos(5,3,3));
-				add(new BPos(5,3,4));
-				add(new BPos(5,3,5));
-				add(new BPos(5,3,6));
-				add(new BPos(5,4,2));
-				add(new BPos(5,4,6));
-				add(new BPos(5,5,2));
-				add(new BPos(5,5,6));
-				add(new BPos(5,6,2));
-				add(new BPos(5,6,6));
-				add(new BPos(5,7,2));
-				add(new BPos(5,7,6));
-				add(new BPos(5,8,6));
+			put(Blocks.OBSIDIAN, new ArrayList<BPos>() {{
+				add(new BPos(9, 1, 3));
+				add(new BPos(9, 1, 4));
+				add(new BPos(9, 1, 5));
+				add(new BPos(5, 3, 2));
+				add(new BPos(5, 3, 3));
+				add(new BPos(5, 3, 4));
+				add(new BPos(5, 3, 5));
+				add(new BPos(5, 3, 6));
+				add(new BPos(5, 4, 2));
+				add(new BPos(5, 4, 6));
+				add(new BPos(5, 5, 2));
+				add(new BPos(5, 5, 6));
+				add(new BPos(5, 6, 2));
+				add(new BPos(5, 6, 6));
+				add(new BPos(5, 7, 2));
+				add(new BPos(5, 7, 6));
+				add(new BPos(5, 8, 6));
 			}});
 		}});
 		STRUCTURE_TO_BLOCKS.put("portal_9", new LinkedHashMap<Block, List<BPos>>() {{
-			put(Blocks.OBSIDIAN, new ArrayList<BPos>(){{
-				add(new BPos(4,1,3));
-				add(new BPos(4,1,4));
-				add(new BPos(4,1,5));
-				add(new BPos(4,1,6));
-				add(new BPos(7,1,3));
-				add(new BPos(4,2,3));
-				add(new BPos(4,2,6));
-				add(new BPos(4,3,6));
-				add(new BPos(4,4,6));
-				add(new BPos(4,5,4));
-				add(new BPos(4,5,5));
-				add(new BPos(4,5,6));
+			put(Blocks.OBSIDIAN, new ArrayList<BPos>() {{
+				add(new BPos(4, 1, 3));
+				add(new BPos(4, 1, 4));
+				add(new BPos(4, 1, 5));
+				add(new BPos(4, 1, 6));
+				add(new BPos(7, 1, 3));
+				add(new BPos(4, 2, 3));
+				add(new BPos(4, 2, 6));
+				add(new BPos(4, 3, 6));
+				add(new BPos(4, 4, 6));
+				add(new BPos(4, 5, 4));
+				add(new BPos(4, 5, 5));
+				add(new BPos(4, 5, 6));
 			}});
 		}});
 	}
