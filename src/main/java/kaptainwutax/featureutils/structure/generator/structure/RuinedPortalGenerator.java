@@ -7,6 +7,7 @@ import kaptainwutax.featureutils.loot.MCLootTables;
 import kaptainwutax.featureutils.structure.RuinedPortal;
 import kaptainwutax.featureutils.structure.generator.Generator;
 import kaptainwutax.mcutils.block.Block;
+import kaptainwutax.mcutils.block.Blocks;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.util.block.BlockBox;
 import kaptainwutax.mcutils.util.block.BlockMirror;
@@ -35,7 +36,6 @@ public class RuinedPortalGenerator extends Generator {
 	private BlockBox chunkBB = null;
 
 	private static final Predicate<Location> isLand = l -> l != Location.ON_OCEAN_FLOOR;
-
 	private final HashSet<Biome> DESERT_BIOME = new HashSet<Biome>() {{
 		add(Biomes.DESERT);
 		add(Biomes.DESERT_HILLS);
@@ -170,7 +170,7 @@ public class RuinedPortalGenerator extends Generator {
 		// this line can be replaced by the two under
 //		piece = BlockBox.getBoundingBox(pos, rotation, pivot, mirror, size);
 		piece.minY = y;
-		piece.maxY = size.getY() - 1;
+		piece.maxY = y + size.getY() - 1;
 
 		// this is useless
 //		Vec3i vec3i=piece.getCenter();
@@ -234,7 +234,7 @@ public class RuinedPortalGenerator extends Generator {
 				if (y > generator.getMaxWorldHeight() || y < generator.getMinWorldHeight())
 					continue;
 				Block block = column[dig];
-				boolean match = useFluid ? block == generator.getDefaultFluid() : block == generator.getDefaultBlock();
+				boolean match = useFluid? (block==Blocks.LAVA || block==Blocks.AIR) :block!=Blocks.AIR;
 				if (match) {
 					++cornerMatch;
 					if (cornerMatch == 3) {
