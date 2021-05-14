@@ -3,6 +3,8 @@ package kaptainwutax.featureutils.loot;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.structure.generator.Generator;
 import kaptainwutax.featureutils.structure.generator.structure.RuinedPortalGenerator;
+import kaptainwutax.mcutils.block.Block;
+import kaptainwutax.mcutils.block.Blocks;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.util.data.Pair;
@@ -20,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LootTestRuinedPortal {
 	private List<Pair<Generator.ILootType, BPos>> loots;
+	private List<Pair<Block, BPos>> portal;
 	private Generator structureGenerator;
 	private BiomeSource biomeSource;
 	private ChunkGenerator generator;
@@ -31,6 +34,7 @@ public class LootTestRuinedPortal {
 		ChunkRand rand = new ChunkRand().asChunkRandDebugger();
 		structureGenerator.generate(generator, cPos, rand);
 		loots = structureGenerator.getChestsPos();
+		portal = ((RuinedPortalGenerator)structureGenerator).getPortal();
 	}
 
 	@Test
@@ -119,6 +123,37 @@ public class LootTestRuinedPortal {
 		}};
 		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
+		}
+	}
+
+	@Test
+	public void testPortal() {
+		setup(Dimension.OVERWORLD,7948314503011477316L,new CPos(64,40), MCVersion.v1_16_5);
+		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
+			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(1035, 65, 642)));
+		}};
+		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
+			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
+		}
+		List<Pair<Block, BPos>> blocks = new ArrayList<Pair<Block, BPos>>() {{
+			// bottom left and clockwise (towards East)
+			add(new Pair<>(Blocks.OBSIDIAN, new BPos(1036, 65, 643)));
+			add(new Pair<>(Blocks.OBSIDIAN, new BPos(1036, 66, 643)));
+			add(new Pair<>(Blocks.OBSIDIAN, new BPos(1036, 67, 643)));
+			add(new Pair<>(Blocks.OBSIDIAN, new BPos(1036, 68, 643)));
+			add(new Pair<>(Blocks.OBSIDIAN, new BPos(1036, 69, 643)));
+			add(new Pair<>(Blocks.OBSIDIAN, new BPos(1036, 69, 644)));
+			add(new Pair<>(Blocks.CRYING_OBSIDIAN, new BPos(1036, 65, 646)));
+			add(new Pair<>(Blocks.CRYING_OBSIDIAN, new BPos(1036, 65, 645)));
+			add(new Pair<>(Blocks.CRYING_OBSIDIAN, new BPos(1036, 65, 644)));
+
+			// others
+			add(new Pair<>(Blocks.OBSIDIAN, new BPos(1038, 65, 645)));
+			add(new Pair<>(Blocks.OBSIDIAN, new BPos(1038, 64, 646)));
+
+		}};
+		for (Pair<Block, BPos> block : blocks) {
+			assertTrue(portal.contains(block), String.format("Missing loot %s at pos %s for loots: %s", block.getFirst(), block.getSecond(), Arrays.toString(portal.toArray())));
 		}
 	}
 }

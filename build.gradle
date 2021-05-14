@@ -17,7 +17,7 @@ repositories {
 dependencies {
     implementation('com.github.KaptainWutax:MathUtils:5531c4a87b0f1bb85d1dab2bdd18ce375400626a') { transitive = false }
     implementation('com.github.KaptainWutax:SeedUtils:b6a383113ce5d8d09a59e91b28ff064fb97c0709') { transitive = false }
-    implementation('com.github.KaptainWutax:MCUtils:ad9502247e18cae2ac404fafbc82d563d49f2719') { transitive = false }
+    implementation('com.github.KaptainWutax:MCUtils:c0acdac614f0b6bf3b279f83910bd345d08a6ccb') { transitive = false }
     implementation('com.github.KaptainWutax:NoiseUtils:a3954932b15a889aa51c82176942d62f291c3b12') { transitive = false }
 
     implementation('com.github.KaptainWutax:BiomeUtils:43cbdbe4319790ecdfde89cc24077e8b3faf215c') {transitive = false}
