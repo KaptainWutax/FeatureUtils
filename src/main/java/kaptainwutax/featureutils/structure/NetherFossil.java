@@ -2,9 +2,13 @@ package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
+import kaptainwutax.mcutils.block.Block;
+import kaptainwutax.mcutils.block.Blocks;
+import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
+import kaptainwutax.terrainutils.ChunkGenerator;
 
 public class NetherFossil extends UniformStructure<NetherFossil> {
 
@@ -33,4 +37,23 @@ public class NetherFossil extends UniformStructure<NetherFossil> {
 		return biome == Biomes.SOUL_SAND_VALLEY;
 	}
 
+	@Override
+	public boolean isValidTerrain(ChunkGenerator generator, int chunkX, int chunkZ) {
+		if (generator==null) return true;
+		ChunkRand rand=new ChunkRand();
+		rand.setCarverSeed(generator.getWorldSeed(),chunkX,chunkZ,this.getVersion());
+		int x=(chunkX<<4)+rand.nextInt(16);
+		int z=(chunkZ<<4)+rand.nextInt(16);
+		int seaLevel=generator.getSeaLevel();
+		int y=seaLevel+rand.nextInt(generator.getWorldHeight()-2-seaLevel);
+		Block[] column=generator.getColumnAt(x,z);
+		for (;y>seaLevel;--y) {
+			Block block=column[y];
+			Block blockDown=column[y-1];
+			if (block== Blocks.AIR && blockDown==Blocks.NETHERRACK){
+				break;
+			}
+		}
+		return y > seaLevel;
+	}
 }
