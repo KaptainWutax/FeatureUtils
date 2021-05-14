@@ -1,9 +1,11 @@
 package kaptainwutax.featureutils.structure.generator;
 
+import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.loot.LootTable;
 import kaptainwutax.featureutils.loot.entry.ItemEntry;
 import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.mcutils.rand.ChunkRand;
+import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.util.data.Pair;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.util.pos.CPos;
@@ -26,6 +28,12 @@ public abstract class Generator {
 
 	public MCVersion getVersion() {
 		return version;
+	}
+
+	public boolean generate(long worldSeed, Dimension dimension, int chunkX, int chunkZ) {
+		BiomeSource biomeSource = BiomeSource.of(dimension, this.getVersion(), worldSeed);
+		ChunkGenerator generator=ChunkGenerator.of(dimension,biomeSource);
+		return this.generate(generator,chunkX,chunkZ);
 	}
 
 	public boolean generate(ChunkGenerator generator, CPos cPos) {
@@ -64,8 +72,8 @@ public abstract class Generator {
 		Set<Item> items = new HashSet<>();
 		ILootType[] lootTypes = getLootTypes();
 		for (ILootType lootType : lootTypes) {
-			LootTable lootTable=lootType.getLootTable();
-			if (lootTable!=null){
+			LootTable lootTable = lootType.getLootTable();
+			if (lootTable != null) {
 				items.addAll(Arrays.stream(lootTable.lootPools)
 						.map(e -> e.lootEntries).flatMap(Stream::of)
 						.filter(e -> e instanceof ItemEntry)
