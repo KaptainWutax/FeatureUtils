@@ -194,7 +194,7 @@ public class RuinedPortalGenerator extends Generator {
 		// we have to save this bb due to StructureStart, it can be used later on for processors for instance
 		chunkBB = new BlockBox(chunkX << 4, chunkZ << 4, (chunkX << 4) + 15, (chunkZ << 4) + 15);
 		if (!piece.intersects(chunkBB)) {
-			System.err.println("The Chunk bounding box did not intersect with the structure piece, please report this bug");
+			System.err.println("The Chunk bounding box did not intersect with the structure piece, please report this bug to Mojang (the structure will not generate)");
 			return false;
 		}
 		chunkBB.encompass(piece);
