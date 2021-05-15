@@ -4,6 +4,7 @@ import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.featureutils.loot.LootTable;
 import kaptainwutax.featureutils.loot.MCLootTables;
+import kaptainwutax.featureutils.structure.RegionStructure;
 import kaptainwutax.featureutils.structure.RuinedPortal;
 import kaptainwutax.featureutils.structure.generator.Generator;
 import kaptainwutax.mcutils.block.Block;
@@ -124,10 +125,12 @@ public class RuinedPortalGenerator extends Generator {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
 		RuinedPortal ruinedPortal = new RuinedPortal(generator.getBiomeSource().getDimension(), this.getVersion());
+		if (!ruinedPortal.canStart((RegionStructure.Data<RuinedPortal>) ruinedPortal.at(chunkX,chunkZ), generator.getWorldSeed(),rand)) return false;
 		// instantiate the biome type
-		ruinedPortal.canSpawn(chunkX, chunkZ, generator.getBiomeSource());
+		if (!ruinedPortal.canSpawn(chunkX, chunkZ, generator.getBiomeSource())) return false;
 		Biome biome = ruinedPortal.getBiome();
 		rand.setCarverSeed(generator.getWorldSeed(), chunkX, chunkZ, this.getVersion());
 		// air pocket // nextFloat()<0.5f
