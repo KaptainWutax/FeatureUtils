@@ -38,6 +38,8 @@ public class RuinedPortalGenerator extends Generator {
 	private ChunkGenerator generator = null;
 	private boolean overgrown = false;
 	private boolean cold = false;
+	private boolean buried = false;
+	private int height;
 
 	private static final Predicate<Location> isLand = l -> l != Location.ON_OCEAN_FLOOR;
 	private final HashSet<Biome> DESERT_BIOME = new HashSet<Biome>() {{
@@ -128,7 +130,7 @@ public class RuinedPortalGenerator extends Generator {
 	@SuppressWarnings("unchecked")
 	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
 		RuinedPortal ruinedPortal = new RuinedPortal(generator.getBiomeSource().getDimension(), this.getVersion());
-		if (!ruinedPortal.canStart((RegionStructure.Data<RuinedPortal>) ruinedPortal.at(chunkX,chunkZ), generator.getWorldSeed(),rand)) return false;
+		if (!ruinedPortal.canStart((RegionStructure.Data<RuinedPortal>) ruinedPortal.at(chunkX, chunkZ), generator.getWorldSeed(), rand)) return false;
 		// instantiate the biome type
 		if (!ruinedPortal.canSpawn(chunkX, chunkZ, generator.getBiomeSource())) return false;
 		Biome biome = ruinedPortal.getBiome();
@@ -174,9 +176,12 @@ public class RuinedPortalGenerator extends Generator {
 
 		Vec3i center = piece.getCenter();
 		Predicate<Block> blockTest = isLand.test(location) ? ChunkGenerator.WORLD_SURFACE_WG : ChunkGenerator.OCEAN_FLOOR_WG;
-		int y = generator.getFirstHeightInColumn(center.getX(), center.getZ(), blockTest);
-		y -= 1; //get the block inside the ground
-		y = findSuitableY(generator, location, blockTest, airpocket, y, piece, rand);
+		height = generator.getFirstHeightInColumn(center.getX(), center.getZ(), blockTest);
+		height -= 1; //get the block inside the ground
+		int y = findSuitableY(generator, location, blockTest, airpocket, height, piece, rand);
+		if (y < height - 5) {
+			buried = true;
+		}
 		pos = new BPos(anchor.getX(), y, anchor.getZ());
 		// this is not done because we don't support the bug (also temperatures, hell no)
 //		if (portalFeature.portalType == RuinedPortalStructure.Location.MOUNTAIN || portalFeature.portalType == RuinedPortalStructure.Location.OCEAN || portalFeature.portalType == RuinedPortalStructure.Location.STANDARD) {
@@ -212,6 +217,14 @@ public class RuinedPortalGenerator extends Generator {
 
 	public Boolean getAirpocket() {
 		return airpocket;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public boolean isBuried() {
+		return buried;
 	}
 
 	private static int findSuitableY(ChunkGenerator generator, Location location, Predicate<Block> blockPredicate, boolean airPocket, int height, BlockBox blockBox, ChunkRand rand) {
@@ -302,7 +315,7 @@ public class RuinedPortalGenerator extends Generator {
 			} else {
 				res.add(new Pair<>(lootType, chestPos));
 			}
-			if (version.isOlderOrEqualTo(MCVersion.v1_16_1)){
+			if (version.isOlderOrEqualTo(MCVersion.v1_16_1)) {
 				System.err.println("Warning the chest might not appear due to a bug not being blacklisted by netherrack replacement (we don't support it because it requires temperatures)");
 			}
 		}
