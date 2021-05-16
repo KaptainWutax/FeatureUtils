@@ -180,7 +180,18 @@ public class RuinedPortalGenerator extends Generator {
 		height -= 1; //get the block inside the ground
 		int y = findSuitableY(generator, location, blockTest, airpocket, height, piece, rand);
 		if (y < height - 5) {
-			buried = true;
+			if (location==Location.IN_NETHER){
+				Block[] blocks=generator.getColumnAt(center.getX(),center.getZ());
+				buried=true;
+				for (int i = 0;i<5; i++) {
+					if (blocks[y+i]==Blocks.AIR){
+						buried=false;
+						break;
+					}
+				}
+			}else{
+				buried = true;
+			}
 		}
 		pos = new BPos(anchor.getX(), y, anchor.getZ());
 		// this is not done because we don't support the bug (also temperatures, hell no)

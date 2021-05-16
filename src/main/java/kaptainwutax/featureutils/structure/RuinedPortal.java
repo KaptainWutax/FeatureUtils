@@ -8,6 +8,7 @@ import kaptainwutax.featureutils.structure.generator.structure.RuinedPortalGener
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
+import kaptainwutax.terrainutils.ChunkGenerator;
 
 public class RuinedPortal extends UniformStructure<RuinedPortal> implements ILoot {
 
@@ -55,6 +56,12 @@ public class RuinedPortal extends UniformStructure<RuinedPortal> implements ILoo
 	@Override
 	public boolean isValidBiome(Biome biome) {
 		return biome != Biomes.THE_VOID && biome.getCategory() != Biome.Category.THE_END;
+	}
+
+	@Override
+	public boolean isValidTerrain(ChunkGenerator generator, int chunkX, int chunkZ) {
+		RuinedPortalGenerator ruinedPortalGenerator=new RuinedPortalGenerator(this.getVersion());
+		return ruinedPortalGenerator.generate(generator,chunkX,chunkZ);
 	}
 
 	@Override
