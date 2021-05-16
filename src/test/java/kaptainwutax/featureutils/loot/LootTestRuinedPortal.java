@@ -1,6 +1,8 @@
 package kaptainwutax.featureutils.loot;
 
 import kaptainwutax.biomeutils.source.BiomeSource;
+import kaptainwutax.featureutils.loot.item.ItemStack;
+import kaptainwutax.featureutils.structure.RuinedPortal;
 import kaptainwutax.featureutils.structure.generator.Generator;
 import kaptainwutax.featureutils.structure.generator.structure.RuinedPortalGenerator;
 import kaptainwutax.mcutils.block.Block;
@@ -16,8 +18,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LootTestRuinedPortal {
@@ -136,6 +140,26 @@ public class LootTestRuinedPortal {
 		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
 		}
+	}
+
+	@Test
+	public void testCorrectChest11() {
+		setup(Dimension.NETHER,-7002427602017045587L,new BPos(-400,0,1632).toChunkPos(), MCVersion.v1_16_5);
+		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
+			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-399, 28, 1634)));
+		}};
+		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
+			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
+		}
+		RuinedPortal ruinedPortal=new RuinedPortal(this.biomeSource.getDimension(),this.biomeSource.getVersion());
+		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypeListHashMap= ruinedPortal.getLoot(this.biomeSource.getWorldSeed(),this.structureGenerator,new ChunkRand(),false);
+		assertTrue(lootTypeListHashMap.containsKey(RuinedPortalGenerator.LootType.RUINED_PORTAL));
+		List<List<ItemStack>> l=lootTypeListHashMap.get(RuinedPortalGenerator.LootType.RUINED_PORTAL);
+		assertEquals(1, l.size());
+		List<ItemStack> loot=l.get(0);
+		long hashcode=0;
+		for (ItemStack stack : loot) hashcode+=stack.hashCode();
+		assertEquals(-910440243,hashcode,"Something changed in loot");
 	}
 
 	@Test

@@ -92,7 +92,7 @@ public class LootTestEndCity {
 				for (ItemStack stack : loot) hash += stack.hashCode();
 			}
 		}
-		assertEquals(-2289062442L, hash, "Items changed maybe?");
+		assertEquals(-1486925666L, hash, "Items changed maybe?");
 	}
 
 	@Test

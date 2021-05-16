@@ -100,6 +100,7 @@ public class Enchantments {
 	public final static HashSet<String> DIGGER = new HashSet<String>() {{
 		addAll(HOES);
 		addAll(PICKAXES);
+		addAll(AXES);
 		addAll(SHOVELS);
 		addAll(BOOKS);
 	}};
@@ -113,11 +114,16 @@ public class Enchantments {
 		addAll(AXES);
 		addAll(BOOKS);
 	}};
+	public final static HashSet<String> THORNS =new HashSet<String>() {{
+		addAll(ARMOR);
+		remove("ELYTRA");
+		removeAll(BOOKS);
+	}};
 	public final static HashSet<String> VANISHABLE = new HashSet<String>() {{
 		addAll(BREAKABLE);
 	}};
 	public final static HashSet<String> SingleEnchants = new HashSet<>(Arrays.asList("aqua_affinity", "binding_curse", "channeling", "silk_touch", "flame", "infinity", "multishot", "quick_charge", "mending", "vanishing_curse"));
-	public final static List<HashSet<String>> allCategories = new ArrayList<>(Arrays.asList(ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_FEET, BOW, BREAKABLE, CROSSBOW, DIGGER, DAMAGE, FISHING_ROD, TRIDENT, WEAPON, VANISHABLE));
+	public final static List<HashSet<String>> allCategories = new ArrayList<>(Arrays.asList(ARMOR, ARMOR_HEAD, ARMOR_CHEST, ARMOR_FEET, BOW, BREAKABLE, CROSSBOW, DIGGER, DAMAGE, FISHING_ROD, TRIDENT, WEAPON, VANISHABLE,THORNS));
 	// @formatter:on
 	private final static Integer COMMON = 10;
 	private final static Integer UNCOMMON = 5;
@@ -135,7 +141,7 @@ public class Enchantments {
 				new Enchantment("projectile_protection", UNCOMMON, ARMOR, 1, 4, (i, n) -> (n < 3 + (i - 1) * 6), (i, n) -> (n > 3 + (i - 1) * 6 + 6), new HashSet<>(Arrays.asList("protection", "fire_protection", "projectile_protection", "blast_protection"))),
 				new Enchantment("respiration", RARE, ARMOR_HEAD, 1, 3, (i, n) -> (n < 10 * i), (i, n) -> (n > 10 * i + 30), new HashSet<>(Collections.singletonList("respiration"))),
 				new Enchantment("aqua_affinity", RARE, ARMOR_HEAD, 1, 1, (i, n) -> (n < 1), (i, n) -> (n > 41), new HashSet<>(Collections.singletonList("aqua_affinity"))),
-				new Enchantment("thorns", VERY_RARE, ARMOR_CHEST, 1, 3, (i, n) -> (n < 10 + (20 * (i - 1))), (i, n) -> (n > 10 + (20 * (i - 1)) + 50), new HashSet<>(Arrays.asList("thorns"))),
+				new Enchantment("thorns", VERY_RARE, THORNS, 1, 3, (i, n) -> (n < 10 + (20 * (i - 1))), (i, n) -> (n > 10 + (20 * (i - 1)) + 50), new HashSet<>(Arrays.asList("thorns"))),
 				(Version.isNewerOrEqualTo(MCVersion.v1_8) ? new Enchantment("depth_strider", RARE, ARMOR_FEET, 1, 3, (i, n) -> (n < i * 10), (i, n) -> (n > i * 10 + 15), new HashSet<>(Arrays.asList("frost_walker", "depth_strider"))) : null),
 				(Version.isNewerOrEqualTo(MCVersion.v1_9) ? new Enchantment("frost_walker", RARE, ARMOR_FEET, 1, 2, (i, n) -> (n < i * 10), (i, n) -> (n > i * 10 + 15), new HashSet<>(Arrays.asList("frost_walker", "depth_strider")), true) : null),
 				(Version.isNewerOrEqualTo(MCVersion.v1_11) ? new Enchantment("binding_curse", VERY_RARE, ARMOR, 1, 1, (i, n) -> (n < 25), (i, n) -> (n > 50), new HashSet<>(Arrays.asList("binding_curse")), true) : null),

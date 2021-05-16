@@ -7,6 +7,8 @@ import kaptainwutax.mcutils.util.data.Pair;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
+import kaptainwutax.seedutils.lcg.LCG;
+import kaptainwutax.seedutils.rand.JRand;
 
 import java.util.ArrayList;
 import java.util.HashMap;

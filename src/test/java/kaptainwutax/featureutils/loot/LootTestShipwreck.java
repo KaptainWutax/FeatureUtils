@@ -101,7 +101,7 @@ public class LootTestShipwreck {
 				}
 			}
 		}
-		assertEquals(525870592500L, hash, "Items changed maybe?");
+		assertEquals(12552439300L, hash, "Items changed maybe?");
 	}
 
 }
