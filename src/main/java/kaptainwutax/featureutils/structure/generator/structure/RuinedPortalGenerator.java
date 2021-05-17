@@ -348,6 +348,11 @@ public class RuinedPortalGenerator extends Generator {
 		}
 		return res;
 	}
+
+	/**
+	 * @return all the obsidian blocks part of the structure as a list of pair with
+	 * either crying or normal obsidian and their position
+	 */
 	public List<Pair<Block, BPos>> getObsidian() {
 		HashMap<Block, List<BPos>> blocks = STRUCTURE_TO_BLOCKS.get(type);
 		List<BPos> obsidianPos = blocks.entrySet().stream()
@@ -358,6 +363,10 @@ public class RuinedPortalGenerator extends Generator {
 		return processBlocks(obsidianPos);
 	}
 
+	/**
+	 * @return all the obsidian blocks part only of the portal as a list of pair with
+	 * either crying or normal obsidian and their position
+	 */
 	public List<Pair<Block, BPos>> getPortal() {
 		HashMap<Block, List<BPos>> blocks = STRUCTURE_TO_BLOCKS.get(type);
 		List<BPos> obsidianPos = blocks.entrySet().stream()
@@ -368,6 +377,10 @@ public class RuinedPortalGenerator extends Generator {
 		return processBlocks(obsidianPos);
 	}
 
+	/**
+	 * @return all the obsidian blocks part of the minimal portal (maximum usable part to make a portal)
+	 * as a list of pair with either crying or normal obsidian and their position
+	 */
 	public List<Pair<Block, BPos>> getMinimalPortal() {
 		HashMap<Block, List<BPos>> blocks = STRUCTURE_TO_BLOCKS.get(type);
 		List<BPos> obsidianPos = blocks.get(MINIMAL_OBSIDIAN_FRAME);
