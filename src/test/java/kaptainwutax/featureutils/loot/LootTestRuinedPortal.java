@@ -182,14 +182,16 @@ public class LootTestRuinedPortal {
 			add(new Pair<>(Blocks.CRYING_OBSIDIAN, new BPos(1036, 65, 646)));
 			add(new Pair<>(Blocks.CRYING_OBSIDIAN, new BPos(1036, 65, 645)));
 			add(new Pair<>(Blocks.CRYING_OBSIDIAN, new BPos(1036, 65, 644)));
-
-			// others
-			add(new Pair<>(Blocks.OBSIDIAN, new BPos(1038, 65, 645)));
-			add(new Pair<>(Blocks.OBSIDIAN, new BPos(1038, 64, 646)));
-
 		}};
+		RuinedPortalGenerator ruinedPortalGenerator= (RuinedPortalGenerator) structureGenerator;
 		for (Pair<Block, BPos> block : blocks) {
 			assertTrue(portal.contains(block), String.format("Missing loot %s at pos %s for loots: %s", block.getFirst(), block.getSecond(), Arrays.toString(portal.toArray())));
 		}
+		for (Pair<Block, BPos> block : blocks) {
+			assertTrue(ruinedPortalGenerator.getObsidian().contains(block), String.format("Missing loot %s at pos %s for loots: %s", block.getFirst(), block.getSecond(), Arrays.toString(portal.toArray())));
+		}
+		// others
+		assertTrue(ruinedPortalGenerator.getObsidian().contains(new Pair<>(Blocks.OBSIDIAN, new BPos(1038, 65, 645))));
+		assertTrue(ruinedPortalGenerator.getObsidian().contains(new Pair<>(Blocks.OBSIDIAN, new BPos(1038, 64, 646))));
 	}
 }
