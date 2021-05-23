@@ -19,7 +19,7 @@ public interface ILoot {
 
 	default HashMap<Generator.ILootType, List<List<ItemStack>>> getLoot(long structureSeed, Generator generator, ChunkRand rand, boolean indexed) {
 		if (!isCorrectGenerator(generator)) return null;
-		List<Pair<Generator.ILootType, BPos>> lootPositions = generator.getChestsPos();
+		List<Pair<Generator.ILootType, BPos>> lootPositions = generator.getLootPos();
 
 		HashMap<CPos, LinkedList<Pair<Generator.ILootType, BPos>>> posLinkedListHashMap = new HashMap<>();
 		for (Pair<Generator.ILootType, BPos> lootPos : lootPositions) {

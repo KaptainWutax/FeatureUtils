@@ -40,6 +40,7 @@ public class RuinedPortalGenerator extends Generator {
 	private boolean cold = false;
 	private boolean buried = false;
 	private int height;
+	private CPos cPos;
 
 	private static final Predicate<Location> isLand = l -> l != Location.ON_OCEAN_FLOOR;
 	private final HashSet<Biome> DESERT_BIOME = new HashSet<Biome>() {{
@@ -124,11 +125,17 @@ public class RuinedPortalGenerator extends Generator {
 		this.generator = null;
 		this.overgrown = false;
 		this.cold = false;
+		this.cPos=null;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+
 	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
+		return this.generateStructure(generator,chunkX,chunkZ,rand);
+	}
+
+	@SuppressWarnings("unchecked")
+	public boolean generateStructure(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand){
 		RuinedPortal ruinedPortal = new RuinedPortal(generator.getBiomeSource().getDimension(), this.getVersion());
 		if (!ruinedPortal.canStart((RegionStructure.Data<RuinedPortal>) ruinedPortal.at(chunkX, chunkZ), generator.getWorldSeed(), rand)) return false;
 		// instantiate the biome type
@@ -215,6 +222,7 @@ public class RuinedPortalGenerator extends Generator {
 		}
 		chunkBB.encompass(piece);
 		this.generator = generator; // have to store it to check lava sadly
+		this.cPos=new CPos(chunkX,chunkZ);
 		return true;
 	}
 
@@ -262,7 +270,6 @@ public class RuinedPortalGenerator extends Generator {
 
 		List<BPos> corners = Arrays.asList(new BPos(blockBox.minX, 0, blockBox.minZ), new BPos(blockBox.maxX, 0, blockBox.minZ), new BPos(blockBox.minX, 0, blockBox.maxZ), new BPos(blockBox.maxX, 0, blockBox.maxZ));
 		List<Block[]> columns = corners.stream().map(e -> generator.getColumnAt(e.getX(), e.getZ())).collect(Collectors.toList());
-
 
 		int dig;
 		for (dig = y; dig > 15; --dig) {
@@ -329,6 +336,16 @@ public class RuinedPortalGenerator extends Generator {
 			if (version.isOlderOrEqualTo(MCVersion.v1_16_1)) {
 				//System.err.println("Warning the chest might not appear due to a bug not being blacklisted by netherrack replacement (we don't support it because it requires temperatures)");
 			}
+		}
+		return res;
+	}
+
+	@Override
+	public List<Pair<ILootType, BPos>> getLootPos() {
+		HashMap<LootType, BPos> lootPos = STRUCTURE_TO_LOOT.get(type);
+		List<Pair<ILootType, BPos>> res = new ArrayList<>();
+		for (LootType lootType : lootPos.keySet()) {
+			res.add(new Pair<>(lootType,this.cPos.toBlockPos()));
 		}
 		return res;
 	}

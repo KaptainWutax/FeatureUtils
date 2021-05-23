@@ -30,6 +30,12 @@ public class DesertPyramidGenerator extends Generator {
 		return true;
 	}
 
+
+	@Override
+	public List<Pair<ILootType, BPos>> getLootPos() {
+		return getChestsPos();
+	}
+
 	@Override
 	public List<Pair<ILootType, BPos>> getChestsPos() {
 		//piece.getInside(...,...);

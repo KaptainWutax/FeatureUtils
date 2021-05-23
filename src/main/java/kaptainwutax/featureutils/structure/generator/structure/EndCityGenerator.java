@@ -46,6 +46,12 @@ public class EndCityGenerator extends Generator {
 		return true;
 	}
 
+
+	@Override
+	public List<Pair<ILootType, BPos>> getLootPos() {
+		return getChestsPos();
+	}
+
 	/**
 	 * Get the chest block pos, should always be called after generate else will return an empty list
 	 *

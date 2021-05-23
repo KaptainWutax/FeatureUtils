@@ -27,6 +27,11 @@ public class BuriedTreasureGenerator extends Generator {
 	}
 
 	@Override
+	public List<Pair<ILootType, BPos>> getLootPos() {
+		return getChestsPos();
+	}
+
+	@Override
 	public List<Pair<ILootType, BPos>> getChestsPos() {
 		return Collections.singletonList(new Pair<>(LootType.BURIED_CHEST, cPos.toBlockPos().add(9, 90, 9)));
 	}

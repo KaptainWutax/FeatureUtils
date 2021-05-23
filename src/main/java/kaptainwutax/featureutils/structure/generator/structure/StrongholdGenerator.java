@@ -75,6 +75,11 @@ public class StrongholdGenerator extends Generator {
 	}
 
 	@Override
+	public List<Pair<ILootType, BPos>> getLootPos() {
+		return getChestsPos();
+	}
+
+	@Override
 	public List<Pair<ILootType, BPos>> getChestsPos() {
 		return null;
 	}

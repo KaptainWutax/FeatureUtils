@@ -456,6 +456,11 @@ public class FortressGenerator extends Generator {
 	}
 
 	@Override
+	public List<Pair<ILootType, BPos>> getLootPos() {
+		return getChestsPos();
+	}
+
+	@Override
 	public ILootType[] getLootTypes() {
 		return new ILootType[0];
 	}

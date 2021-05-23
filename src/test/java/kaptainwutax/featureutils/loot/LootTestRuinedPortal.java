@@ -31,19 +31,19 @@ public class LootTestRuinedPortal {
 	private BiomeSource biomeSource;
 	private ChunkGenerator generator;
 
-	public void setup(Dimension dimension,long worldseed, CPos cPos, MCVersion version) {
+	public void setup(Dimension dimension, long worldseed, CPos cPos, MCVersion version) {
 		biomeSource = BiomeSource.of(dimension, version, worldseed);
 		generator = ChunkGenerator.of(dimension, biomeSource);
 		structureGenerator = new RuinedPortalGenerator(version);
 		ChunkRand rand = new ChunkRand().asChunkRandDebugger();
 		structureGenerator.generate(generator, cPos, rand);
 		loots = structureGenerator.getChestsPos();
-		portal = ((RuinedPortalGenerator)structureGenerator).getPortal();
+		portal = ((RuinedPortalGenerator) structureGenerator).getPortal();
 	}
 
 	@Test
 	public void testCorrectChest1() {
-		setup(Dimension.OVERWORLD,123L, new BPos(-311, 0, 121).toChunkPos(), MCVersion.v1_16_5);
+		setup(Dimension.OVERWORLD, 123L, new BPos(-311, 0, 121).toChunkPos(), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-315, 81, 127)));
 		}};
@@ -54,7 +54,7 @@ public class LootTestRuinedPortal {
 
 	@Test
 	public void testCorrectChest2() {
-		setup(Dimension.OVERWORLD,1476413308176291228L, new BPos(153, 0, 121).toChunkPos(), MCVersion.v1_16_5);
+		setup(Dimension.OVERWORLD, 1476413308176291228L, new BPos(153, 0, 121).toChunkPos(), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(150, 67, 128)));
 		}};
@@ -65,7 +65,7 @@ public class LootTestRuinedPortal {
 
 	@Test
 	public void testCorrectChest3() {
-		setup(Dimension.OVERWORLD,7948314503011477316L, new CPos(8, 10), MCVersion.v1_16_5);
+		setup(Dimension.OVERWORLD, 7948314503011477316L, new CPos(8, 10), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(128, 78, 162)));
 		}};
@@ -76,7 +76,7 @@ public class LootTestRuinedPortal {
 
 	@Test
 	public void testCorrectChest4() {
-		setup(Dimension.OVERWORLD,7948314503011477316L,new CPos(7,101), MCVersion.v1_16_5);
+		setup(Dimension.OVERWORLD, 7948314503011477316L, new CPos(7, 101), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(113, 38, 1629)));
 		}};
@@ -87,7 +87,7 @@ public class LootTestRuinedPortal {
 
 	@Test
 	public void testCorrectChest5() {
-		setup(Dimension.NETHER,7948314503011477316L,new CPos(3,5), MCVersion.v1_16_5);
+		setup(Dimension.NETHER, 7948314503011477316L, new CPos(3, 5), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			// this blocks doesn't generate (removed by lava)
 			//add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(53, 28, 82)));
@@ -97,10 +97,10 @@ public class LootTestRuinedPortal {
 
 	@Test
 	public void testCorrectChest10() {
-		setup(Dimension.OVERWORLD,-7387955057302025707L,new CPos(9,7), MCVersion.v1_16_1);
+		setup(Dimension.OVERWORLD, -7387955057302025707L, new CPos(9, 7), MCVersion.v1_16_1);
 		// 20w27a fixed the netherrack spread that remove chest (we don't support it)
 		//assertTrue(loots.isEmpty());
-		setup(Dimension.OVERWORLD,-7387955057302025707L,new CPos(9,7), MCVersion.v1_16_2);
+		setup(Dimension.OVERWORLD, -7387955057302025707L, new CPos(9, 7), MCVersion.v1_16_2);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(145, 69, 116)));
 		}};
@@ -111,7 +111,7 @@ public class LootTestRuinedPortal {
 
 	@Test
 	public void testCorrectChest6() {
-		setup(Dimension.NETHER,7948314503011477316L,new CPos(-11,-13), MCVersion.v1_16_5);
+		setup(Dimension.NETHER, 7948314503011477316L, new CPos(-11, -13), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-170, 50, -192)));
 		}};
@@ -122,7 +122,7 @@ public class LootTestRuinedPortal {
 
 	@Test
 	public void testCorrectChest7() {
-		setup(Dimension.NETHER,7948314503011477316L,new CPos(25,9), MCVersion.v1_16_5);
+		setup(Dimension.NETHER, 7948314503011477316L, new CPos(25, 9), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(405, 102, 146)));
 		}};
@@ -133,7 +133,7 @@ public class LootTestRuinedPortal {
 
 	@Test
 	public void testCorrectChest8() {
-		setup(Dimension.NETHER,7948314503011477316L,new CPos(-23,8), MCVersion.v1_16_5);
+		setup(Dimension.NETHER, 7948314503011477316L, new CPos(-23, 8), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-366, 34, 139)));
 		}};
@@ -143,28 +143,47 @@ public class LootTestRuinedPortal {
 	}
 
 	@Test
+	public void testCorrectChest12() {
+		setup(Dimension.OVERWORLD, 239648, new BPos(64, 0, 112).toChunkPos(), MCVersion.v1_16_5);
+		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
+			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-366, 34, 139)));
+		}};
+		RuinedPortal ruinedPortal = new RuinedPortal(this.biomeSource.getDimension(), this.biomeSource.getVersion());
+		ChunkRand rand=new ChunkRand();
+		ChunkRand rand1=rand.asChunkRandDebugger();
+		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypeListHashMap = ruinedPortal.getLoot(this.biomeSource.getWorldSeed(), this.structureGenerator, rand1, false);
+		assertTrue(lootTypeListHashMap.containsKey(RuinedPortalGenerator.LootType.RUINED_PORTAL));
+		List<List<ItemStack>> l = lootTypeListHashMap.get(RuinedPortalGenerator.LootType.RUINED_PORTAL);
+		assertEquals(1, l.size());
+		List<ItemStack> loot = l.get(0);
+		long hashcode = 0;
+		for (ItemStack stack : loot) hashcode += stack.hashCode();
+		assertEquals(-1138008234, hashcode, "Something changed in loot");
+	}
+
+	@Test
 	public void testCorrectChest11() {
-		setup(Dimension.NETHER,-7002427602017045587L,new BPos(-400,0,1632).toChunkPos(), MCVersion.v1_16_5);
+		setup(Dimension.NETHER, -7002427602017045587L, new BPos(-400, 0, 1632).toChunkPos(), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-399, 28, 1634)));
 		}};
 		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
 		}
-		RuinedPortal ruinedPortal=new RuinedPortal(this.biomeSource.getDimension(),this.biomeSource.getVersion());
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypeListHashMap= ruinedPortal.getLoot(this.biomeSource.getWorldSeed(),this.structureGenerator,new ChunkRand(),false);
+		RuinedPortal ruinedPortal = new RuinedPortal(this.biomeSource.getDimension(), this.biomeSource.getVersion());
+		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypeListHashMap = ruinedPortal.getLoot(this.biomeSource.getWorldSeed(), this.structureGenerator, new ChunkRand(), false);
 		assertTrue(lootTypeListHashMap.containsKey(RuinedPortalGenerator.LootType.RUINED_PORTAL));
-		List<List<ItemStack>> l=lootTypeListHashMap.get(RuinedPortalGenerator.LootType.RUINED_PORTAL);
+		List<List<ItemStack>> l = lootTypeListHashMap.get(RuinedPortalGenerator.LootType.RUINED_PORTAL);
 		assertEquals(1, l.size());
-		List<ItemStack> loot=l.get(0);
-		long hashcode=0;
-		for (ItemStack stack : loot) hashcode+=stack.hashCode();
-		assertEquals(-910440243,hashcode,"Something changed in loot");
+		List<ItemStack> loot = l.get(0);
+		long hashcode = 0;
+		for (ItemStack stack : loot) hashcode += stack.hashCode();
+		assertEquals(-910440243, hashcode, "Something changed in loot");
 	}
 
 	@Test
 	public void testPortal() {
-		setup(Dimension.OVERWORLD,7948314503011477316L,new CPos(64,40), MCVersion.v1_16_5);
+		setup(Dimension.OVERWORLD, 7948314503011477316L, new CPos(64, 40), MCVersion.v1_16_5);
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(1035, 65, 642)));
 		}};
@@ -183,7 +202,7 @@ public class LootTestRuinedPortal {
 			add(new Pair<>(Blocks.CRYING_OBSIDIAN, new BPos(1036, 65, 645)));
 			add(new Pair<>(Blocks.CRYING_OBSIDIAN, new BPos(1036, 65, 644)));
 		}};
-		RuinedPortalGenerator ruinedPortalGenerator= (RuinedPortalGenerator) structureGenerator;
+		RuinedPortalGenerator ruinedPortalGenerator = (RuinedPortalGenerator) structureGenerator;
 		for (Pair<Block, BPos> block : blocks) {
 			assertTrue(portal.contains(block), String.format("Missing loot %s at pos %s for loots: %s", block.getFirst(), block.getSecond(), Arrays.toString(portal.toArray())));
 		}

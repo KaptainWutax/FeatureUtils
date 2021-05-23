@@ -50,8 +50,9 @@ public abstract class Generator {
 
 	public abstract boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand);
 
-
 	public abstract List<Pair<ILootType, BPos>> getChestsPos();
+
+	public abstract List<Pair<ILootType, BPos>> getLootPos();
 
 	public List<Pair<ILootType, CPos>> getChestsChunkPos() {
 		return this.getChestsPos().stream().map(e -> new Pair<>(e.getFirst(), e.getSecond().toChunkPos())).collect(Collectors.toList());
