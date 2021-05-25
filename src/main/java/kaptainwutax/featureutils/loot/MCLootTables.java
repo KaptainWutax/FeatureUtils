@@ -16,7 +16,7 @@ import static kaptainwutax.featureutils.loot.function.SetCountFunction.uniform;
 public class MCLootTables {
 	
 	public static final LootTable NULL = new LootTable();
-	
+
 	public static final LootTable ABANDONED_MINESHAFT_CHEST = new LootTable(
 			new LootPool(new ConstantRoll(1),
 					new ItemEntry(Items.GOLDEN_APPLE, 20),
@@ -326,7 +326,7 @@ public class MCLootTables {
 
 	public static final LootTable SHIPWRECK_MAP_CHEST = new LootTable(
 			new LootPool(new ConstantRoll(1),
-					new ItemEntry(Items.MAP)),
+					new ItemEntry(Items.FILLED_MAP)),
 			new LootPool(new ConstantRoll(3),
 					new ItemEntry(Items.COMPASS),
 					new ItemEntry(Items.MAP),
@@ -343,7 +343,16 @@ public class MCLootTables {
 					new ItemEntry(Items.POISONOUS_POTATO, 7).apply(uniform(2.0F, 6.0F)),
 					new ItemEntry(Items.CARROT, 7).apply(uniform(4.0F, 8.0F)),
 					new ItemEntry(Items.WHEAT, 7).apply(uniform(8.0F, 21.0F)),
-					new ItemEntry(Items.SUSPICIOUS_STEW, 10).apply(new setStewEffectFunction()),
+					new ItemEntry(Items.SUSPICIOUS_STEW, 10).apply(
+							// order matters, this was obtained through a fabric mod, albeit it will be completly platform dependant
+							EffectFunction.builder()
+									.apply(Effects.BLINDNESS, 5.0F, 7.0F)
+									.apply(Effects.SATURATION, 7.0F, 10.0F)
+									.apply(Effects.NIGHT_VISION, 7.0F, 10.0F)
+									.apply(Effects.JUMP, 7.0F, 10.0F)
+									.apply(Effects.POISON, 10.0F, 20.0F)
+									.apply(Effects.WEAKNESS, 6.0F, 8.0F)
+					),
 					new ItemEntry(Items.COAL, 6).apply(uniform(2.0F, 8.0F)),
 					new ItemEntry(Items.ROTTEN_FLESH, 5).apply(uniform(5.0F, 24.0F)),
 					new ItemEntry(Items.PUMPKIN, 2).apply(uniform(1.0F, 3.0F)),
