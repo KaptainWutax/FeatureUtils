@@ -6,13 +6,9 @@ import kaptainwutax.featureutils.loot.MCLootTables;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.featureutils.structure.BuriedTreasure;
 import kaptainwutax.featureutils.structure.RegionStructure;
-import kaptainwutax.mathutils.util.Mth;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.rand.seed.WorldSeed;
 import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.seedutils.lcg.LCG;
-import kaptainwutax.terrainutils.utils.MathHelper;
-import mjtb49.hashreversals.ChunkRandomReverser;
 
 import java.util.Arrays;
 import java.util.List;

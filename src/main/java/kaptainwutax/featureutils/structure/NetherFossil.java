@@ -8,7 +8,7 @@ import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
 public class NetherFossil extends UniformStructure<NetherFossil> {
 
@@ -28,8 +28,8 @@ public class NetherFossil extends UniformStructure<NetherFossil> {
 	}
 
 	@Override
-	public boolean isValidDimension(Dimension dimension) {
-		return dimension == Dimension.NETHER;
+  public Dimension getValidDimension() {
+		return  Dimension.NETHER;
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class NetherFossil extends UniformStructure<NetherFossil> {
 	}
 
 	@Override
-	public boolean isValidTerrain(ChunkGenerator generator, int chunkX, int chunkZ) {
+	public boolean isValidTerrain(TerrainGenerator generator, int chunkX, int chunkZ) {
 		if (generator==null) return true;
 		ChunkRand rand=new ChunkRand();
 		rand.setCarverSeed(generator.getWorldSeed(),chunkX,chunkZ,this.getVersion());

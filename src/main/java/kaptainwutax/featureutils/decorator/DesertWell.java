@@ -6,7 +6,7 @@ import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
 public class DesertWell extends BiomelessDecorator<DesertWell.Config, DesertWell.Data> {
 
@@ -45,13 +45,13 @@ public class DesertWell extends BiomelessDecorator<DesertWell.Config, DesertWell
 	}
 
 	@Override
-	public boolean canGenerate(Data data, ChunkGenerator generator) {
+	public boolean canGenerate(Data data, TerrainGenerator generator) {
 		return true;
 	}
 
 	@Override
-	public boolean isValidDimension(Dimension dimension) {
-		return dimension == Dimension.OVERWORLD;
+  public Dimension getValidDimension() {
+		return  Dimension.OVERWORLD;
 	}
 
 	@Override

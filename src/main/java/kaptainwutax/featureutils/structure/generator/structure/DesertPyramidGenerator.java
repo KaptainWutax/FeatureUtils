@@ -1,5 +1,6 @@
 package kaptainwutax.featureutils.structure.generator.structure;
 
+import kaptainwutax.featureutils.loot.ChestContent;
 import kaptainwutax.featureutils.loot.LootTable;
 import kaptainwutax.featureutils.loot.MCLootTables;
 import kaptainwutax.featureutils.structure.generator.Generator;
@@ -9,7 +10,7 @@ import kaptainwutax.mcutils.util.data.Pair;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class DesertPyramidGenerator extends Generator {
 	}
 
 	@Override
-	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
+	public boolean generate(TerrainGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
 		// fixme actually compute the BPos
 		temp = new CPos(chunkX, chunkZ);
 		piece = new BlockBox(temp, temp.add(1, 1));
@@ -53,21 +54,30 @@ public class DesertPyramidGenerator extends Generator {
 		return LootType.values();
 	}
 
+
 	public enum LootType implements ILootType {
-		CHEST_1(MCLootTables.DESERT_PYRAMID_CHEST),
-		CHEST_2(MCLootTables.DESERT_PYRAMID_CHEST),
-		CHEST_3(MCLootTables.DESERT_PYRAMID_CHEST),
-		CHEST_4(MCLootTables.DESERT_PYRAMID_CHEST),
+		CHEST_1(MCLootTables.DESERT_PYRAMID_CHEST, ChestContent.ChestType.SINGLE_CHEST),
+		CHEST_2(MCLootTables.DESERT_PYRAMID_CHEST, ChestContent.ChestType.SINGLE_CHEST),
+		CHEST_3(MCLootTables.DESERT_PYRAMID_CHEST, ChestContent.ChestType.SINGLE_CHEST),
+		CHEST_4(MCLootTables.DESERT_PYRAMID_CHEST, ChestContent.ChestType.SINGLE_CHEST),
 		;
 
 		public final LootTable lootTable;
+		public final ChestContent.ChestType chestType;
 
-		LootType(LootTable lootTable) {
+		LootType(LootTable lootTable, ChestContent.ChestType chestType) {
 			this.lootTable = lootTable;
+			this.chestType = chestType;
 		}
 
+		@Override
 		public LootTable getLootTable() {
 			return lootTable;
+		}
+
+		@Override
+		public ChestContent.ChestType getChestType() {
+			return chestType;
 		}
 	}
 

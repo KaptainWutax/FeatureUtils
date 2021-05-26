@@ -148,8 +148,8 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 	}
 
 	@Override
-	public boolean isValidDimension(Dimension dimension) {
-		return dimension == Dimension.OVERWORLD;
+  public Dimension getValidDimension() {
+		return  Dimension.OVERWORLD;
 	}
 
 	private Set<Biome> getValidBiomes() {

@@ -3,6 +3,7 @@ package kaptainwutax.featureutils.structure.generator.structure;
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.biomeutils.source.BiomeSource;
+import kaptainwutax.featureutils.loot.ChestContent;
 import kaptainwutax.featureutils.loot.LootTable;
 import kaptainwutax.featureutils.loot.MCLootTables;
 import kaptainwutax.featureutils.structure.generator.Generator;
@@ -14,7 +15,7 @@ import kaptainwutax.mcutils.util.data.Pair;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,8 +43,8 @@ public class ShipwreckGenerator extends Generator {
 	}
 
 	@Override
-	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
-		if (generator==null) return false;
+	public boolean generate(TerrainGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
+		if (generator == null) return false;
 		BiomeSource source = generator.getBiomeSource();
 		Biome biome;
 		if (this.getVersion().isOlderThan(MCVersion.v1_16)) {
@@ -104,18 +105,26 @@ public class ShipwreckGenerator extends Generator {
 	}
 
 	public enum LootType implements ILootType {
-		SUPPLY_CHEST(MCLootTables.SHIPWRECK_SUPPLY_CHEST),
-		TREASURE_CHEST(MCLootTables.SHIPWRECK_TREASURE_CHEST),
-		MAP_CHEST(MCLootTables.SHIPWRECK_MAP_CHEST);
-		private final LootTable lootTable;
+		SUPPLY_CHEST(MCLootTables.SHIPWRECK_SUPPLY_CHEST, ChestContent.ChestType.SINGLE_CHEST),
+		TREASURE_CHEST(MCLootTables.SHIPWRECK_TREASURE_CHEST, ChestContent.ChestType.SINGLE_CHEST),
+		MAP_CHEST(MCLootTables.SHIPWRECK_MAP_CHEST, ChestContent.ChestType.SINGLE_CHEST);
 
-		LootType(LootTable lootTable) {
+		public final LootTable lootTable;
+		public final ChestContent.ChestType chestType;
+
+		LootType(LootTable lootTable, ChestContent.ChestType chestType) {
 			this.lootTable = lootTable;
+			this.chestType = chestType;
 		}
 
 		@Override
 		public LootTable getLootTable() {
 			return lootTable;
+		}
+
+		@Override
+		public ChestContent.ChestType getChestType() {
+			return chestType;
 		}
 	}
 

@@ -45,8 +45,8 @@ public class BuriedTreasure extends RegionStructure<BuriedTreasure.Config, Regio
 	}
 
 	@Override
-	public boolean isValidDimension(Dimension dimension) {
-		return dimension == Dimension.OVERWORLD;
+  public Dimension getValidDimension() {
+		return  Dimension.OVERWORLD;
 	}
 
 	@Override

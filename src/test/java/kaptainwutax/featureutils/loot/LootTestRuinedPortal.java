@@ -13,7 +13,7 @@ import kaptainwutax.mcutils.util.data.Pair;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -29,11 +29,11 @@ public class LootTestRuinedPortal {
 	private List<Pair<Block, BPos>> portal;
 	private Generator structureGenerator;
 	private BiomeSource biomeSource;
-	private ChunkGenerator generator;
+	private TerrainGenerator generator;
 
 	public void setup(Dimension dimension, long worldseed, CPos cPos, MCVersion version) {
 		biomeSource = BiomeSource.of(dimension, version, worldseed);
-		generator = ChunkGenerator.of(dimension, biomeSource);
+		generator = TerrainGenerator.of(dimension, biomeSource);
 		structureGenerator = new RuinedPortalGenerator(version);
 		ChunkRand rand = new ChunkRand().asChunkRandDebugger();
 		structureGenerator.generate(generator, cPos, rand);
@@ -151,7 +151,7 @@ public class LootTestRuinedPortal {
 		RuinedPortal ruinedPortal = new RuinedPortal(this.biomeSource.getDimension(), this.biomeSource.getVersion());
 		ChunkRand rand=new ChunkRand();
 		ChunkRand rand1=rand.asChunkRandDebugger();
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypeListHashMap = ruinedPortal.getLoot(this.biomeSource.getWorldSeed(), this.structureGenerator, rand1, false);
+		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypeListHashMap = ruinedPortal.getLootEx(this.biomeSource.getWorldSeed(), this.structureGenerator, rand1, false);
 		assertTrue(lootTypeListHashMap.containsKey(RuinedPortalGenerator.LootType.RUINED_PORTAL));
 		List<List<ItemStack>> l = lootTypeListHashMap.get(RuinedPortalGenerator.LootType.RUINED_PORTAL);
 		assertEquals(1, l.size());
@@ -171,7 +171,7 @@ public class LootTestRuinedPortal {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
 		}
 		RuinedPortal ruinedPortal = new RuinedPortal(this.biomeSource.getDimension(), this.biomeSource.getVersion());
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypeListHashMap = ruinedPortal.getLoot(this.biomeSource.getWorldSeed(), this.structureGenerator, new ChunkRand(), false);
+		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypeListHashMap = ruinedPortal.getLootEx(this.biomeSource.getWorldSeed(), this.structureGenerator, new ChunkRand(), false);
 		assertTrue(lootTypeListHashMap.containsKey(RuinedPortalGenerator.LootType.RUINED_PORTAL));
 		List<List<ItemStack>> l = lootTypeListHashMap.get(RuinedPortalGenerator.LootType.RUINED_PORTAL);
 		assertEquals(1, l.size());

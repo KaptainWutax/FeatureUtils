@@ -8,7 +8,7 @@ import kaptainwutax.featureutils.structure.generator.structure.RuinedPortalGener
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
 public class RuinedPortal extends UniformStructure<RuinedPortal> implements ILoot {
 
@@ -44,13 +44,9 @@ public class RuinedPortal extends UniformStructure<RuinedPortal> implements ILoo
 		return new VersionMap<>();
 	}
 
-	public Dimension getDimension() {
-		return this.dimension;
-	}
-
 	@Override
-	public boolean isValidDimension(Dimension dimension) {
-		return dimension == this.getDimension();
+	public Dimension getValidDimension() {
+		return this.dimension;
 	}
 
 	@Override
@@ -59,9 +55,9 @@ public class RuinedPortal extends UniformStructure<RuinedPortal> implements ILoo
 	}
 
 	@Override
-	public boolean isValidTerrain(ChunkGenerator generator, int chunkX, int chunkZ) {
-		RuinedPortalGenerator ruinedPortalGenerator=new RuinedPortalGenerator(this.getVersion());
-		return ruinedPortalGenerator.generate(generator,chunkX,chunkZ);
+	public boolean isValidTerrain(TerrainGenerator generator, int chunkX, int chunkZ) {
+		RuinedPortalGenerator ruinedPortalGenerator = new RuinedPortalGenerator(this.getVersion());
+		return ruinedPortalGenerator.generate(generator, chunkX, chunkZ);
 	}
 
 	@Override

@@ -15,7 +15,7 @@ import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.util.pos.RPos;
 import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
 import java.util.HashMap;
 import java.util.List;
@@ -49,8 +49,8 @@ public class GetLoot {
 		assert structureGenerator instanceof DesertPyramidGenerator;
 		// Generate my biome source
 		BiomeSource source = BiomeSource.of(Dimension.OVERWORLD, version, worldSeed);
-		// Generate my ChunkGenerator
-		ChunkGenerator chunkGenerator = ChunkGenerator.of(Dimension.OVERWORLD, source);
+		// Generate my TerrainGenerator
+		TerrainGenerator terrainGenerator = TerrainGenerator.of(Dimension.OVERWORLD, source);
 
 		// Choose a valid chunk position for my structure
 		// here we chose 24 and 49 as the region coordinates, remember region are structure dependant
@@ -71,21 +71,21 @@ public class GetLoot {
 
 		// Verify that this chunk position is a valid spot to generate terrain wise
 		// (not all structure have this check, desert pyramid doesn't need it for instance)
-		assertTrue(desertPyramid.canGenerate(pos, chunkGenerator));
+		assertTrue(desertPyramid.canGenerate(pos, terrainGenerator));
 		// Alternatively if you had a data
-		assertTrue(desertPyramid.canGenerate(data, chunkGenerator));
+		assertTrue(desertPyramid.canGenerate(data, terrainGenerator));
 
 		// Generate the chest position for that structure at that valid chunk position (rand is optional but encouraged)
-		assertTrue(structureGenerator.generate(chunkGenerator, pos, rand));
+		assertTrue(structureGenerator.generate(terrainGenerator, pos, rand));
 		// Alternatively if you had a data
-		assertTrue(structureGenerator.generate(chunkGenerator, data.chunkX, data.chunkZ, rand));
+		assertTrue(structureGenerator.generate(terrainGenerator, data.chunkX, data.chunkZ, rand));
 
 		// You can chest the chest positions here
 		System.out.println(structureGenerator.getChestsPos());
 		assertTrue(structureGenerator.getChestsPos().size() == 4);
 
 		// Get the loot that generated in those chest positions (indexed allow to create a chest as in Minecraft with randomized slots and EMPTY_ITEM)
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = desertPyramid.getLoot(worldSeed, structureGenerator, rand, false);
+		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = desertPyramid.getLootEx(worldSeed, structureGenerator, rand, false);
 		// the result is a hashmap with each possible type of chest (there could be multiple instance of that type of chest)
 		// with a list of chest content attached to each.
 
@@ -118,8 +118,8 @@ public class GetLoot {
 		assert structureGenerator instanceof BuriedTreasureGenerator;
 		// Generate my biome source
 		BiomeSource source = BiomeSource.of(Dimension.OVERWORLD, version, worldSeed);
-		// Generate my ChunkGenerator
-		ChunkGenerator chunkGenerator = ChunkGenerator.of(Dimension.OVERWORLD, source);
+		// Generate my TerrainGenerator
+		TerrainGenerator terrainGenerator = TerrainGenerator.of(Dimension.OVERWORLD, source);
 
 		// Choose a valid chunk position for my structure
 		// here we chose -25, -20 as the region coordinates, remember region are structure dependant
@@ -139,21 +139,21 @@ public class GetLoot {
 
 		// Verify that this chunk position is a valid spot to generate terrain wise
 		// (not all structure have this check, buried treasure doesn't need it for instance)
-		assertTrue(buriedTreasure.canGenerate(pos, chunkGenerator));
+		assertTrue(buriedTreasure.canGenerate(pos, terrainGenerator));
 		// Alternatively if you had a data
-		assertTrue(buriedTreasure.canGenerate(data, chunkGenerator));
+		assertTrue(buriedTreasure.canGenerate(data, terrainGenerator));
 
 		// Generate the chest position for that structure at that valid chunk position (rand is optional but encouraged)
-		assertTrue(structureGenerator.generate(chunkGenerator, pos, rand));
+		assertTrue(structureGenerator.generate(terrainGenerator, pos, rand));
 		// Alternatively if you had a data
-		assertTrue(structureGenerator.generate(chunkGenerator, data.chunkX, data.chunkZ, rand));
+		assertTrue(structureGenerator.generate(terrainGenerator, data.chunkX, data.chunkZ, rand));
 
 		// You can chest the chest positions here
 		System.out.println(structureGenerator.getChestsPos());
 		assertTrue(structureGenerator.getChestsPos().size() == 1);
 
 		// Get the loot that generated in those chest positions (indexed allow to create a chest as in Minecraft with randomized slots and EMPTY_ITEM)
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = buriedTreasure.getLoot(worldSeed, structureGenerator, rand, false);
+		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = buriedTreasure.getLootEx(worldSeed, structureGenerator, rand, false);
 		// the result is a hashmap with each possible type of chest (there could be multiple instance of that type of chest)
 		// with a list of chest content attached to each.
 
@@ -177,8 +177,8 @@ public class GetLoot {
 		assert structureGenerator instanceof ShipwreckGenerator;
 		// Generate my biome source
 		BiomeSource source = BiomeSource.of(Dimension.OVERWORLD, version, worldSeed);
-		// Generate my ChunkGenerator
-		ChunkGenerator chunkGenerator = ChunkGenerator.of(Dimension.OVERWORLD, source);
+		// Generate my TerrainGenerator
+		TerrainGenerator terrainGenerator = TerrainGenerator.of(Dimension.OVERWORLD, source);
 
 		// Choose a valid chunk position for my structure
 		// here we chose the blockpos -615,9 that we convert to region
@@ -200,21 +200,21 @@ public class GetLoot {
 
 		// Verify that this chunk position is a valid spot to generate terrain wise
 		// (not all structure have this check, shipwreck doesn't need it for instance)
-		assertTrue(shipwreck.canGenerate(pos, chunkGenerator));
+		assertTrue(shipwreck.canGenerate(pos, terrainGenerator));
 		// Alternatively if you had a data
-		assertTrue(shipwreck.canGenerate(data, chunkGenerator));
+		assertTrue(shipwreck.canGenerate(data, terrainGenerator));
 
 		// Generate the chest position for that structure at that valid chunk position (rand is optional but encouraged)
-		assertTrue(structureGenerator.generate(chunkGenerator, pos, rand));
+		assertTrue(structureGenerator.generate(terrainGenerator, pos, rand));
 		// Alternatively if you had a data
-		assertTrue(structureGenerator.generate(chunkGenerator, data.chunkX, data.chunkZ, rand));
+		assertTrue(structureGenerator.generate(terrainGenerator, data.chunkX, data.chunkZ, rand));
 
 		// You can chest the chest positions here
 		System.out.println(structureGenerator.getChestsPos());
 		assertTrue(structureGenerator.getChestsPos().size() == 1);
 
 		// Get the loot that generated in those chest positions (indexed allow to create a chest as in Minecraft with randomized slots and EMPTY_ITEM)
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = shipwreck.getLoot(worldSeed, structureGenerator, rand, false);
+		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = shipwreck.getLootEx(worldSeed, structureGenerator, rand, false);
 		// the result is a hashmap with each possible type of chest (there could be multiple instance of that type of chest)
 		// with a list of chest content attached to each.
 

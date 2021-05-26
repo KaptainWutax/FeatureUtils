@@ -1,34 +1,46 @@
 plugins {
-    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+    id "idea"
+    id "jacoco"
+    id 'org.jetbrains.kotlin.jvm' version '1.5.0-RC'
 }
 
-defaultTasks 'clean', 'test'
+group = 'com.seedfinding'
+archivesBaseName = project.name
+
+defaultTasks 'clean', 'test', 'install'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+    withJavadocJar()
+    withSourcesJar()
 }
 
 repositories {
     mavenCentral()
-    maven {url "https://jitpack.io"}
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
     implementation('com.github.KaptainWutax:MathUtils:5531c4a87b0f1bb85d1dab2bdd18ce375400626a') { transitive = false }
     implementation('com.github.KaptainWutax:SeedUtils:b6a383113ce5d8d09a59e91b28ff064fb97c0709') { transitive = false }
-    implementation('com.github.KaptainWutax:MCUtils:424f9dd6ed25672c314ab8fd2101f9634f0e2707') { transitive = false }
-    implementation('com.github.KaptainWutax:NoiseUtils:a3954932b15a889aa51c82176942d62f291c3b12') { transitive = false }
+    implementation('com.github.KaptainWutax:MCUtils:11e3c70867968877233630797741f6cd47777e41') { transitive = false }
+    implementation('com.github.KaptainWutax:NoiseUtils:288e1b60e0f427bead80f001d19565ad1adcbd73') { transitive = false }
 
-    implementation('com.github.KaptainWutax:BiomeUtils:43cbdbe4319790ecdfde89cc24077e8b3faf215c') {transitive = false}
-    implementation('com.github.KaptainWutax:TerrainUtils:21b6d72b7798403abf620f736d0f1972daf822ed') {transitive = false}
+    implementation('com.github.KaptainWutax:BiomeUtils:8588e0eb9f433162fe8744147f56bbbf424f25de') { transitive = false }
+    implementation('com.github.KaptainWutax:TerrainUtils:322c2405600be7e87ded65f7bc6f2c4f042a5472') { transitive = false }
 
     testImplementation('com.github.KaptainWutax:ChunkRandomReversal:6b76fb5cf2cd438de56e6a46cea2a83985831834') {transitive = false}
-    testImplementation('org.junit.jupiter:junit-jupiter-api:5.7.1')
-    testImplementation('org.junit.jupiter:junit-jupiter-params:5.7.1')
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${jupiterVersion}")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:${jupiterVersion}")
     testImplementation('org.junit-pioneer:junit-pioneer:1.3.8')
 
-    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.7.1')
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${jupiterVersion}")
     testRuntimeOnly('org.junit.platform:junit-platform-console:1.7.1')
 }
 
@@ -39,6 +51,19 @@ compileJava {
 compileTestJava {
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
+
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
 
 test {
     useJUnitPlatform {
@@ -52,5 +77,62 @@ test {
         showExceptions true
         showCauses true
         showStackTraces true
+    }
+    finalizedBy(jacocoTestReport)
+}
+
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = "$project.name"
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = "$project.name"
+                description = 'An efficient library to simulate Minecraft Terrain Generation for all dimension'
+                url = 'http://www.kaptainwutax.seedfinding.com'
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://opensource.org/licenses/MIT'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'hube12'
+                        name = 'Neil'
+                    }
+                    developer {
+                        id = 'Kap'
+                        name = 'KaptainWutax'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/kaptainwutax/TerrainUtils.git'
+                    url = 'https://github.com/kaptainwutax/TerrainUtils.git'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            def releasesRepoUrl = "https://jitpack.io/com/github/kaptainwutax/terrainutils/latest"
+            def snapshotsRepoUrl = "https://jitpack.io/com/github/kaptainwutax/terrainutils/snapshots"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+        }
+    }
+}
+
+javadoc {
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
     }
 }

@@ -5,7 +5,7 @@ import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.Feature;
 import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -80,19 +80,19 @@ public abstract class Structure<C extends Feature.Config, D extends Feature.Data
 
 
 	@Override
-	public final boolean canGenerate(D data, ChunkGenerator generator) {
+	public final boolean canGenerate(D data, TerrainGenerator generator) {
 		return this.canGenerate(data.chunkX, data.chunkZ, generator);
 	}
 
-	public boolean canGenerate(CPos cPos, ChunkGenerator generator) {
+	public boolean canGenerate(CPos cPos, TerrainGenerator generator) {
 		return this.canGenerate(cPos.getX(), cPos.getZ(), generator);
 	}
 
-	public boolean canGenerate(int chunkX, int chunkZ, ChunkGenerator generator) {
+	public boolean canGenerate(int chunkX, int chunkZ, TerrainGenerator generator) {
 		return this.isValidTerrain(generator, chunkX, chunkZ);
 	}
 
-	public boolean isValidTerrain(ChunkGenerator generator, int chunkX, int chunkZ) {
+	public boolean isValidTerrain(TerrainGenerator generator, int chunkX, int chunkZ) {
 		return true;
 	}
 

@@ -5,7 +5,7 @@ import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.util.data.Pair;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class VillageGenerator extends Generator {
 	}
 
 	@Override
-	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
+	public boolean generate(TerrainGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
 		return true;
 	}
 

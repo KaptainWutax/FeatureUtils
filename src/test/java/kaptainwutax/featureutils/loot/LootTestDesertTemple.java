@@ -11,7 +11,7 @@ import kaptainwutax.mcutils.util.data.Pair;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -26,11 +26,11 @@ public class LootTestDesertTemple {
 	private List<Pair<Generator.ILootType, BPos>> loots;
 	private Generator structureGenerator;
 	private BiomeSource biomeSource;
-	private ChunkGenerator generator;
+	private TerrainGenerator generator;
 
 	public void setup(long worldseed, CPos cPos, MCVersion version) {
 		biomeSource = BiomeSource.of(Dimension.OVERWORLD, version, worldseed);
-		generator = ChunkGenerator.of(Dimension.OVERWORLD, biomeSource);
+		generator = TerrainGenerator.of(Dimension.OVERWORLD, biomeSource);
 		structureGenerator = new DesertPyramidGenerator(version);
 		ChunkRand rand = new ChunkRand().asChunkRandDebugger();
 		structureGenerator.generate(generator, cPos, rand);
@@ -56,7 +56,7 @@ public class LootTestDesertTemple {
 	public void testChestLoot() {
 		setup(123L, new BPos(2777,60,-1159).toChunkPos(), MCVersion.v1_16_5);
 		DesertPyramid desertPyramid = new DesertPyramid(MCVersion.v1_16_5);
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = desertPyramid.getLoot(123L, structureGenerator, new ChunkRand(), false);
+		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = desertPyramid.getLootEx(123L, structureGenerator, new ChunkRand(), false);
 		long hash = 0;
 		for (Map.Entry<Generator.ILootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
 			for (List<ItemStack> loot : loots.getValue()) {

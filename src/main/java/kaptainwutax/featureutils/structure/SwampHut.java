@@ -25,8 +25,8 @@ public class SwampHut extends OldStructure<SwampHut> {
 	}
 
 	@Override
-	public boolean isValidDimension(Dimension dimension) {
-		return dimension == Dimension.OVERWORLD;
+  public Dimension getValidDimension() {
+		return  Dimension.OVERWORLD;
 	}
 
 	@Override

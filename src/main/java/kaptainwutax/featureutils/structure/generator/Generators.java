@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.structure.generator;
 
 import kaptainwutax.featureutils.Feature;
+import kaptainwutax.featureutils.loot.ILoot;
 import kaptainwutax.featureutils.structure.*;
 import kaptainwutax.featureutils.structure.generator.structure.*;
 

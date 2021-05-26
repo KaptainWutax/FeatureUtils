@@ -1,5 +1,6 @@
 package kaptainwutax.featureutils.structure.generator.structure;
 
+import kaptainwutax.featureutils.loot.ChestContent;
 import kaptainwutax.featureutils.loot.LootTable;
 import kaptainwutax.featureutils.loot.MCLootTables;
 import kaptainwutax.featureutils.structure.generator.Generator;
@@ -8,7 +9,7 @@ import kaptainwutax.mcutils.util.data.Pair;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +22,7 @@ public class BuriedTreasureGenerator extends Generator {
 	}
 
 	@Override
-	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
+	public boolean generate(TerrainGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
 		cPos = new CPos(chunkX, chunkZ);
 		return true;
 	}
@@ -42,17 +43,25 @@ public class BuriedTreasureGenerator extends Generator {
 	}
 
 	public enum LootType implements ILootType {
-		BURIED_CHEST(MCLootTables.BURIED_TREASURE_CHEST),
+		BURIED_CHEST(MCLootTables.BURIED_TREASURE_CHEST, ChestContent.ChestType.SINGLE_CHEST),
 		;
 
 		public final LootTable lootTable;
+		public final ChestContent.ChestType chestType;
 
-		LootType(LootTable lootTable) {
+		LootType(LootTable lootTable,ChestContent.ChestType chestType) {
 			this.lootTable = lootTable;
+			this.chestType=chestType;
 		}
 
+		@Override
 		public LootTable getLootTable() {
 			return lootTable;
+		}
+
+		@Override
+		public ChestContent.ChestType getChestType() {
+			return chestType;
 		}
 	}
 

@@ -1,14 +1,15 @@
 package kaptainwutax.featureutils.loot;
 
+import kaptainwutax.featureutils.Feature;
+import kaptainwutax.featureutils.GenerationContext;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.featureutils.structure.generator.Generator;
+import kaptainwutax.featureutils.structure.generator.Generators;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.util.data.Pair;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.seedutils.lcg.LCG;
-import kaptainwutax.seedutils.rand.JRand;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public interface ILoot {
 
-	default HashMap<Generator.ILootType, List<List<ItemStack>>> getLoot(long structureSeed, Generator generator, ChunkRand rand, boolean indexed) {
+	default List<ChestContent> getLoot(long structureSeed, Generator generator, ChunkRand rand, boolean indexed) {
 		if (!isCorrectGenerator(generator)) return null;
 		List<Pair<Generator.ILootType, BPos>> lootPositions = generator.getLootPos();
 
@@ -39,11 +40,11 @@ public interface ILoot {
 				index += 1;
 			}
 		}
-		HashMap<Generator.ILootType, List<List<ItemStack>>> result = new HashMap<>();
+		List<ChestContent> result = new ArrayList<>();
 		for (Generator.ILootType lootType : chestDataHashMap.keySet()) {
 			List<ChestData> chests = chestDataHashMap.get(lootType);
 			for (ChestData chestData : chests) {
-				CPos chunkChestPos = chestData.getcPos();
+				CPos chunkChestPos = chestData.getChunkPos();
 				rand.setDecoratorSeed(structureSeed, chunkChestPos.getX() * 16, chunkChestPos.getZ() * 16, this.getDecorationSalt(), this.getVersion());
 				SpecificCalls calls = this.getSpecificCalls();
 				if (calls != null) calls.run(generator, rand);
@@ -51,10 +52,50 @@ public interface ILoot {
 				rand.advance(chestData.getIndex() * 2L);
 				LootContext context = new LootContext(rand.nextLong(), this.getVersion());
 				List<ItemStack> loot = indexed ? lootType.getLootTable().generateIndexed(context) : lootType.getLootTable().generate(context);
-				result.computeIfAbsent(lootType, k -> new ArrayList<>()).add(loot);
+				result.add(new ChestContent(lootType,loot,chestData.getPos(),indexed));
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * This utility will provide the loot for a valid feature position (we don't check it tho)
+	 * You don't have to provide anything else than
+	 * @param worldSeed the world seed
+	 * @param pos the position of the structure (must be a valid one)
+	 * @param rand the rand object, used for being fast
+	 * @param indexed if loot should be indexed
+	 * @return a list of chestcontent
+	 */
+	default List<ChestContent> getLootAtPos(long worldSeed,CPos pos, ChunkRand rand, boolean indexed) {
+		if (!(this instanceof Feature<?,?>)) return null;
+		Feature<?,?> feature= (Feature<?, ?>) this;
+		Generator.GeneratorFactory<?> factory= Generators.get(feature.getClass());
+		if (factory==null) return null;
+		Generator generator=factory.create(this.getVersion());
+		if (generator==null) return null;
+		GenerationContext.Context context=feature.getContext(worldSeed);
+		if (context==null) return null;
+		if (!generator.generate(context.getGenerator(),pos)) return null;
+		return this.getLoot(worldSeed,generator,rand,indexed);
+	}
+
+	/**
+	 * Old method
+	 * @param structureSeed
+	 * @param generator
+	 * @param rand
+	 * @param indexed
+	 * @return
+	 */
+	@Deprecated
+	default HashMap<Generator.ILootType, List<List<ItemStack>>> getLootEx(long structureSeed, Generator generator, ChunkRand rand, boolean indexed) {
+		HashMap<Generator.ILootType, List<List<ItemStack>>> res=new HashMap<>();
+		for (ChestContent chestContent:this.getLoot(structureSeed,generator,rand,indexed)){
+			res.computeIfAbsent(chestContent.getLootType(),e-> new ArrayList<>())
+					.add(chestContent.getItems());
+		}
+		return res;
 	}
 
 	/**
@@ -77,24 +118,24 @@ public interface ILoot {
 	SpecificCalls getSpecificCalls();
 
 	class ChestData {
-		int index;
-		CPos cPos;
-		BPos bpos;
-		int numberInChunk;
+		private final int index;
+		private final CPos chunkPos;
+		private final BPos pos;
+		private final int numberInChunk;
 
-		public ChestData(int index, CPos cPos, BPos bPos, int numberInChunk) {
+		public ChestData(int index, CPos chunkPos, BPos pos, int numberInChunk) {
 			this.index = index;
-			this.cPos = cPos;
-			this.bpos = bPos;
+			this.chunkPos = chunkPos;
+			this.pos = pos;
 			this.numberInChunk = numberInChunk;
 		}
 
-		public BPos getBpos() {
-			return bpos;
+		public BPos getPos() {
+			return pos;
 		}
 
-		public CPos getcPos() {
-			return cPos;
+		public CPos getChunkPos() {
+			return chunkPos;
 		}
 
 		public int getIndex() {
@@ -109,8 +150,8 @@ public interface ILoot {
 		public String toString() {
 			return "ChestData{" +
 					"index=" + index +
-					", cPos=" + cPos +
-					", bpos=" + bpos +
+					", cPos=" + chunkPos +
+					", bpos=" + pos +
 					", numberInChunk=" + numberInChunk +
 					'}';
 		}

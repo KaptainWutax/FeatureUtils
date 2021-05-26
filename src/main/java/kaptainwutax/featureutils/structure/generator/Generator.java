@@ -1,6 +1,7 @@
 package kaptainwutax.featureutils.structure.generator;
 
 import kaptainwutax.biomeutils.source.BiomeSource;
+import kaptainwutax.featureutils.loot.ChestContent;
 import kaptainwutax.featureutils.loot.LootTable;
 import kaptainwutax.featureutils.loot.entry.ItemEntry;
 import kaptainwutax.featureutils.loot.item.Item;
@@ -10,7 +11,7 @@ import kaptainwutax.mcutils.util.data.Pair;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -32,23 +33,23 @@ public abstract class Generator {
 
 	public boolean generate(long worldSeed, Dimension dimension, int chunkX, int chunkZ) {
 		BiomeSource biomeSource = BiomeSource.of(dimension, this.getVersion(), worldSeed);
-		ChunkGenerator generator=ChunkGenerator.of(dimension,biomeSource);
+		TerrainGenerator generator=TerrainGenerator.of(dimension,biomeSource);
 		return this.generate(generator,chunkX,chunkZ);
 	}
 
-	public boolean generate(ChunkGenerator generator, CPos cPos) {
+	public boolean generate(TerrainGenerator generator, CPos cPos) {
 		return this.generate(generator, cPos, new ChunkRand());
 	}
 
-	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ) {
+	public boolean generate(TerrainGenerator generator, int chunkX, int chunkZ) {
 		return this.generate(generator, chunkX, chunkZ, new ChunkRand());
 	}
 
-	public boolean generate(ChunkGenerator generator, CPos cPos, ChunkRand rand) {
+	public boolean generate(TerrainGenerator generator, CPos cPos, ChunkRand rand) {
 		return this.generate(generator, cPos.getX(), cPos.getZ(), rand);
 	}
 
-	public abstract boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand);
+	public abstract boolean generate(TerrainGenerator generator, int chunkX, int chunkZ, ChunkRand rand);
 
 	public abstract List<Pair<ILootType, BPos>> getChestsPos();
 
@@ -60,6 +61,7 @@ public abstract class Generator {
 
 	public interface ILootType {
 		LootTable getLootTable();
+		ChestContent.ChestType getChestType();
 	}
 
 	@FunctionalInterface

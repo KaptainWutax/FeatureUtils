@@ -1,5 +1,6 @@
 package kaptainwutax.featureutils.structure.generator.structure;
 
+import kaptainwutax.featureutils.loot.ChestContent;
 import kaptainwutax.featureutils.loot.LootTable;
 import kaptainwutax.featureutils.loot.MCLootTables;
 import kaptainwutax.featureutils.loot.item.Item;
@@ -13,7 +14,7 @@ import kaptainwutax.mcutils.util.block.BlockRotation;
 import kaptainwutax.mcutils.util.data.Pair;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
 import java.util.*;
 
@@ -35,8 +36,8 @@ public class EndCityGenerator extends Generator {
 		return globalPieces;
 	}
 
-	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
-		if (generator==null) return false;
+	public boolean generate(TerrainGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
+		if (generator == null) return false;
 		rand.setCarverSeed(generator.getWorldSeed(), chunkX, chunkZ, this.getVersion());
 		int y = EndCity.getAverageYPosition(generator, chunkX, chunkZ);
 		if (y < 60) return false;
@@ -355,38 +356,47 @@ public class EndCityGenerator extends Generator {
 	}
 
 	public enum LootType implements ILootType {
-		BASE_FLOOR_SENTRY_1(null, Items.SHULKER_SHELL),
-		BASE_FLOOR_SENTRY_2(null, Items.SHULKER_SHELL),
-		FAT_TOWER_MIDDLE_SENTRY_1(null, Items.SHULKER_SHELL),
-		FAT_TOWER_MIDDLE_SENTRY_2(null, Items.SHULKER_SHELL),
-		FAT_TOWER_MIDDLE_SENTRY_3(null, Items.SHULKER_SHELL),
-		FAT_TOWER_MIDDLE_SENTRY_4(null, Items.SHULKER_SHELL),
-		SECOND_FLOOR_SENTRY(null, Items.SHULKER_SHELL),
-		SHIP_SENTRY_1(null, Items.SHULKER_SHELL),
-		SHIP_SENTRY_2(null, Items.SHULKER_SHELL),
-		SHIP_SENTRY_3(null, Items.SHULKER_SHELL),
-		THIRD_FLOOR_SENTRY_1(null, Items.SHULKER_SHELL),
-		THIRD_FLOOR_SENTRY_2(null, Items.SHULKER_SHELL),
-		TOWER_TOP_SENTRY(null, Items.SHULKER_SHELL),
+		BASE_FLOOR_SENTRY_1(null, Items.SHULKER_SHELL, ChestContent.ChestType.UNKNOWN),
+		BASE_FLOOR_SENTRY_2(null, Items.SHULKER_SHELL, ChestContent.ChestType.UNKNOWN),
+		FAT_TOWER_MIDDLE_SENTRY_1(null, Items.SHULKER_SHELL, ChestContent.ChestType.UNKNOWN),
+		FAT_TOWER_MIDDLE_SENTRY_2(null, Items.SHULKER_SHELL, ChestContent.ChestType.UNKNOWN),
+		FAT_TOWER_MIDDLE_SENTRY_3(null, Items.SHULKER_SHELL, ChestContent.ChestType.UNKNOWN),
+		FAT_TOWER_MIDDLE_SENTRY_4(null, Items.SHULKER_SHELL, ChestContent.ChestType.UNKNOWN),
+		SECOND_FLOOR_SENTRY(null, Items.SHULKER_SHELL, ChestContent.ChestType.UNKNOWN),
+		SHIP_SENTRY_1(null, Items.SHULKER_SHELL, ChestContent.ChestType.UNKNOWN),
+		SHIP_SENTRY_2(null, Items.SHULKER_SHELL, ChestContent.ChestType.UNKNOWN),
+		SHIP_SENTRY_3(null, Items.SHULKER_SHELL, ChestContent.ChestType.UNKNOWN),
+		THIRD_FLOOR_SENTRY_1(null, Items.SHULKER_SHELL, ChestContent.ChestType.UNKNOWN),
+		THIRD_FLOOR_SENTRY_2(null, Items.SHULKER_SHELL, ChestContent.ChestType.UNKNOWN),
+		TOWER_TOP_SENTRY(null, Items.SHULKER_SHELL, ChestContent.ChestType.UNKNOWN),
 
-		FAT_TOWER_TOP_CHEST_1(MCLootTables.END_CITY_TREASURE_CHEST, Items.SHULKER_SHELL),
-		FAT_TOWER_TOP_CHEST_2(MCLootTables.END_CITY_TREASURE_CHEST, Items.SHULKER_SHELL),
-		THIRD_FLOOR_CHEST(MCLootTables.END_CITY_TREASURE_CHEST, Items.SHULKER_SHELL),
-		SHIP_CHEST_1(MCLootTables.END_CITY_TREASURE_CHEST, Items.SHULKER_SHELL),
-		SHIP_CHEST_2(MCLootTables.END_CITY_TREASURE_CHEST, Items.SHULKER_SHELL),
+		FAT_TOWER_TOP_CHEST_1(MCLootTables.END_CITY_TREASURE_CHEST, Items.CHEST, ChestContent.ChestType.SINGLE_CHEST),
+		FAT_TOWER_TOP_CHEST_2(MCLootTables.END_CITY_TREASURE_CHEST, Items.CHEST, ChestContent.ChestType.SINGLE_CHEST),
+		THIRD_FLOOR_CHEST(MCLootTables.END_CITY_TREASURE_CHEST, Items.CHEST, ChestContent.ChestType.SINGLE_CHEST),
+		SHIP_CHEST_1(MCLootTables.END_CITY_TREASURE_CHEST, Items.CHEST, ChestContent.ChestType.SINGLE_CHEST),
+		SHIP_CHEST_2(MCLootTables.END_CITY_TREASURE_CHEST, Items.CHEST, ChestContent.ChestType.SINGLE_CHEST),
 
-		SHIP_ELYTRA(null, Items.ELYTRA);
+		SHIP_ELYTRA(null, Items.ELYTRA, ChestContent.ChestType.UNKNOWN),
+		;
 
 		public final LootTable lootTable;
 		public final Item item;
+		public final ChestContent.ChestType chestType;
 
-		LootType(LootTable lootTable, Item item) {
+		LootType(LootTable lootTable, Item item, ChestContent.ChestType chestType) {
 			this.lootTable = lootTable;
 			this.item = item;
+			this.chestType = chestType;
 		}
 
+		@Override
 		public LootTable getLootTable() {
 			return lootTable;
+		}
+
+		@Override
+		public ChestContent.ChestType getChestType() {
+			return chestType;
 		}
 	}
 

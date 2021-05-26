@@ -13,7 +13,7 @@ import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.rand.seed.WorldSeed;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -39,7 +39,7 @@ public class LootTestForwardGoldenApple {
 		// warning this will not work in old version, please stick to 1.14+
 		MCVersion version = MCVersion.v1_16;
 		BiomeSource source = BiomeSource.of(Dimension.OVERWORLD,version,worldSeed);
-		ChunkGenerator generator = ChunkGenerator.of(Dimension.OVERWORLD,source);
+		TerrainGenerator generator = TerrainGenerator.of(Dimension.OVERWORLD,source);
 		DesertPyramidGenerator desertPyramidGenerator=new DesertPyramidGenerator(version);
 		for (int chunkX = -2000; chunkX < 2000; chunkX++) {
 			for (int chunkZ = -2000; chunkZ < 2000; chunkZ++) {
@@ -49,12 +49,12 @@ public class LootTestForwardGoldenApple {
 				if (!desertPyramidData.testStart(WorldSeed.toStructureSeed(worldSeed), rand)) continue;
 				// test if the biomes are correct at that place
 				if (!desertPyramidData.testBiome(source)) continue;
-				// must generate the chest position (you can pass null as the ChunkGenerator for
+				// must generate the chest position (you can pass null as the TerrainGenerator for
 				// this specific one since it doesn't use it
 				desertPyramidGenerator.generate(generator,chunkX,chunkZ,rand);
 				//desertPyramidGenerator.generate(null,chunkX,chunkZ,rand);
 				// get the loot
-				HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes= DESERT_TEMPLE.getLoot(worldSeed,desertPyramidGenerator,rand,false);
+				HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes= DESERT_TEMPLE.getLootEx(worldSeed,desertPyramidGenerator,rand,false);
 				// flat map the loot types
 				List<List<ItemStack>> loots=lootTypes.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
 				// calculate the number of chest with at least an enchanted golden apple

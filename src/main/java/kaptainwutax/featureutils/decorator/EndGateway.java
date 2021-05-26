@@ -6,7 +6,7 @@ import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
 public class EndGateway extends BiomelessDecorator<EndGateway.Config, EndGateway.Data> {
 
@@ -46,13 +46,13 @@ public class EndGateway extends BiomelessDecorator<EndGateway.Config, EndGateway
 	}
 
 	@Override
-	public boolean canGenerate(Data data, ChunkGenerator generator) {
+	public boolean canGenerate(Data data, TerrainGenerator generator) {
 		return true;
 	}
 
 	@Override
-	public boolean isValidDimension(Dimension dimension) {
-		return dimension == Dimension.END;
+  public Dimension getValidDimension() {
+		return  Dimension.END;
 	}
 
 	@Override

@@ -13,7 +13,7 @@ import kaptainwutax.mcutils.util.block.BlockRotation;
 import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
 public class EndCity extends TriangularStructure<EndCity> implements ILoot {
 
@@ -38,8 +38,8 @@ public class EndCity extends TriangularStructure<EndCity> implements ILoot {
 	}
 
 	@Override
-	public boolean isValidDimension(Dimension dimension) {
-		return dimension == Dimension.END;
+  public Dimension getValidDimension() {
+		return  Dimension.END;
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class EndCity extends TriangularStructure<EndCity> implements ILoot {
 	}
 
 	@Override
-	public boolean isValidTerrain(ChunkGenerator generator, int chunkX, int chunkZ) {
+	public boolean isValidTerrain(TerrainGenerator generator, int chunkX, int chunkZ) {
 		return getAverageYPosition(generator, chunkX, chunkZ) >= 60;
 	}
 
@@ -81,7 +81,7 @@ public class EndCity extends TriangularStructure<EndCity> implements ILoot {
 		return null;
 	}
 
-	public static int getAverageYPosition(ChunkGenerator generator, int chunkX, int chunkZ) {
+	public static int getAverageYPosition(TerrainGenerator generator, int chunkX, int chunkZ) {
 		@SuppressWarnings("IntegerMultiplicationImplicitCastToLong")
 		ChunkRand random = new ChunkRand(chunkX + chunkZ * 10387313);
 		BlockRotation rotation = BlockRotation.getRandom(random);

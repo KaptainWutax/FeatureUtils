@@ -39,8 +39,8 @@ public class BastionRemnant extends UniformStructure<BastionRemnant> {
 	}
 
 	@Override
-	public boolean isValidDimension(Dimension dimension) {
-		return dimension == Dimension.NETHER;
+  public Dimension getValidDimension() {
+		return  Dimension.NETHER;
 	}
 
 	@Override

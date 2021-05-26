@@ -10,7 +10,7 @@ import kaptainwutax.mcutils.util.data.Pair;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.seedutils.rand.JRand;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +69,7 @@ public class StrongholdGenerator extends Generator {
 		return piece;
 	}
 
-	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
+	public boolean generate(TerrainGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
 		if (generator==null) return false;
 		return this.generateRecursively(generator.getWorldSeed(), chunkX, chunkZ, rand, piece -> true);
 	}

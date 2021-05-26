@@ -4,10 +4,10 @@ import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
-public abstract class Feature<C extends Feature.Config, D extends Feature.Data<?>> {
-
+public abstract class Feature<C extends Feature.Config, D extends Feature.Data<?>> implements GenerationContext {
+	private Context context = null;
 	private final C config;
 	private final MCVersion version;
 
@@ -26,7 +26,7 @@ public abstract class Feature<C extends Feature.Config, D extends Feature.Data<?
 
 	public abstract String getName();
 
-	public static String name(){
+	public static String name() {
 		return "unknown";
 	}
 
@@ -34,9 +34,29 @@ public abstract class Feature<C extends Feature.Config, D extends Feature.Data<?
 
 	public abstract boolean canSpawn(D data, BiomeSource source);
 
-	public abstract boolean canGenerate(D data, ChunkGenerator generator);
+	public abstract boolean canGenerate(D data, TerrainGenerator generator);
 
-	public abstract boolean isValidDimension(Dimension dimension);
+	public boolean isValidDimension(Dimension dimension) {
+		return this.getValidDimension() == dimension;
+	}
+
+	public abstract Dimension getValidDimension();
+
+	@Override
+	public Context getContext(long worldSeed) {
+		if (this.getContext() == null) {
+			this.setContext(GenerationContext.super.getContext(worldSeed));
+		}
+		return this.getContext();
+	}
+
+	public void setContext(Context context) {
+		this.context = context;
+	}
+
+	public Context getContext() {
+		return context;
+	}
 
 	public static class Config {
 
@@ -64,7 +84,7 @@ public abstract class Feature<C extends Feature.Config, D extends Feature.Data<?
 		}
 
 		@SuppressWarnings("unchecked")
-		public boolean testGenerate(ChunkGenerator generator) {
+		public boolean testGenerate(TerrainGenerator generator) {
 			return this.feature.canGenerate(this, generator);
 		}
 	}

@@ -2,6 +2,7 @@ package kaptainwutax.featureutils.structure.generator.structure;
 
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
+import kaptainwutax.featureutils.loot.ChestContent;
 import kaptainwutax.featureutils.loot.LootTable;
 import kaptainwutax.featureutils.loot.MCLootTables;
 import kaptainwutax.featureutils.structure.RegionStructure;
@@ -18,7 +19,7 @@ import kaptainwutax.mcutils.util.math.Vec3i;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -35,7 +36,7 @@ public class RuinedPortalGenerator extends Generator {
 	private Location location = null;
 	private Boolean airpocket = null;
 	private BlockBox chunkBB = null;
-	private ChunkGenerator generator = null;
+	private TerrainGenerator generator = null;
 	private boolean overgrown = false;
 	private boolean cold = false;
 	private boolean buried = false;
@@ -125,17 +126,17 @@ public class RuinedPortalGenerator extends Generator {
 		this.generator = null;
 		this.overgrown = false;
 		this.cold = false;
-		this.cPos=null;
+		this.cPos = null;
 	}
 
 	@Override
 
-	public boolean generate(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
-		return this.generateStructure(generator,chunkX,chunkZ,rand);
+	public boolean generate(TerrainGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
+		return this.generateStructure(generator, chunkX, chunkZ, rand);
 	}
 
 	@SuppressWarnings("unchecked")
-	public boolean generateStructure(ChunkGenerator generator, int chunkX, int chunkZ, ChunkRand rand){
+	public boolean generateStructure(TerrainGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
 		RuinedPortal ruinedPortal = new RuinedPortal(generator.getBiomeSource().getDimension(), this.getVersion());
 		if (!ruinedPortal.canStart((RegionStructure.Data<RuinedPortal>) ruinedPortal.at(chunkX, chunkZ), generator.getWorldSeed(), rand)) return false;
 		// instantiate the biome type
@@ -182,21 +183,21 @@ public class RuinedPortalGenerator extends Generator {
 		piece = BlockBox.getBoundingBox(anchor, rotation, pivot, mirror, size);
 
 		Vec3i center = piece.getCenter();
-		Predicate<Block> blockTest = isLand.test(location) ? ChunkGenerator.WORLD_SURFACE_WG : ChunkGenerator.OCEAN_FLOOR_WG;
+		Predicate<Block> blockTest = isLand.test(location) ? TerrainGenerator.WORLD_SURFACE_WG : TerrainGenerator.OCEAN_FLOOR_WG;
 		height = generator.getFirstHeightInColumn(center.getX(), center.getZ(), blockTest);
 		height -= 1; //get the block inside the ground
 		int y = findSuitableY(generator, location, blockTest, airpocket, height, piece, rand);
 		if (y < height - 5) {
-			if (location==Location.IN_NETHER){
-				Block[] blocks=generator.getColumnAt(center.getX(),center.getZ());
-				buried=true;
-				for (int i = 0;i<5; i++) {
-					if (blocks[y+i]==Blocks.AIR){
-						buried=false;
+			if (location == Location.IN_NETHER) {
+				Block[] blocks = generator.getColumnAt(center.getX(), center.getZ());
+				buried = true;
+				for (int i = 0; i < 5; i++) {
+					if (blocks[y + i] == Blocks.AIR) {
+						buried = false;
 						break;
 					}
 				}
-			}else{
+			} else {
 				buried = true;
 			}
 		}
@@ -222,7 +223,7 @@ public class RuinedPortalGenerator extends Generator {
 		}
 		chunkBB.encompass(piece);
 		this.generator = generator; // have to store it to check lava sadly
-		this.cPos=new CPos(chunkX,chunkZ);
+		this.cPos = new CPos(chunkX, chunkZ);
 		return true;
 	}
 
@@ -246,7 +247,7 @@ public class RuinedPortalGenerator extends Generator {
 		return buried;
 	}
 
-	private static int findSuitableY(ChunkGenerator generator, Location location, Predicate<Block> blockPredicate, boolean airPocket, int height, BlockBox blockBox, ChunkRand rand) {
+	private static int findSuitableY(TerrainGenerator generator, Location location, Predicate<Block> blockPredicate, boolean airPocket, int height, BlockBox blockBox, ChunkRand rand) {
 		int y;
 		if (location == Location.IN_NETHER) {
 			if (airPocket) {
@@ -345,12 +346,12 @@ public class RuinedPortalGenerator extends Generator {
 		HashMap<LootType, BPos> lootPos = STRUCTURE_TO_LOOT.get(type);
 		List<Pair<ILootType, BPos>> res = new ArrayList<>();
 		for (LootType lootType : lootPos.keySet()) {
-			res.add(new Pair<>(lootType,this.cPos.toBlockPos()));
+			res.add(new Pair<>(lootType, this.cPos.toBlockPos()));
 		}
 		return res;
 	}
 
-	private List<Pair<Block, BPos>> processBlocks(List<BPos> obsidianPos){
+	private List<Pair<Block, BPos>> processBlocks(List<BPos> obsidianPos) {
 		List<Pair<Block, BPos>> res = new ArrayList<>();
 		ChunkRand rand = new ChunkRand();
 		for (BPos pos : obsidianPos) {
@@ -373,7 +374,7 @@ public class RuinedPortalGenerator extends Generator {
 	public List<Pair<Block, BPos>> getObsidian() {
 		HashMap<Block, List<BPos>> blocks = STRUCTURE_TO_BLOCKS.get(type);
 		List<BPos> obsidianPos = blocks.entrySet().stream()
-				.filter(e->e.getKey().getId()==Blocks.OBSIDIAN.getId())
+				.filter(e -> e.getKey().getId() == Blocks.OBSIDIAN.getId())
 				.map(Map.Entry::getValue)
 				.flatMap(Collection::stream)
 				.collect(Collectors.toList());
@@ -387,7 +388,7 @@ public class RuinedPortalGenerator extends Generator {
 	public List<Pair<Block, BPos>> getPortal() {
 		HashMap<Block, List<BPos>> blocks = STRUCTURE_TO_BLOCKS.get(type);
 		List<BPos> obsidianPos = blocks.entrySet().stream()
-				.filter(e->e.getKey().getName().contains("obsidian_frame"))
+				.filter(e -> e.getKey().getName().contains("obsidian_frame"))
 				.map(Map.Entry::getValue)
 				.flatMap(Collection::stream)
 				.collect(Collectors.toList());
@@ -401,7 +402,7 @@ public class RuinedPortalGenerator extends Generator {
 	public List<Pair<Block, BPos>> getMinimalPortal() {
 		HashMap<Block, List<BPos>> blocks = STRUCTURE_TO_BLOCKS.get(type);
 		List<BPos> obsidianPos = blocks.get(MINIMAL_OBSIDIAN_FRAME);
-		if (obsidianPos==null) return new ArrayList<>();
+		if (obsidianPos == null) return new ArrayList<>();
 		return processBlocks(obsidianPos);
 	}
 
@@ -411,17 +412,25 @@ public class RuinedPortalGenerator extends Generator {
 	}
 
 	public enum LootType implements ILootType {
-		RUINED_PORTAL(MCLootTables.RUINED_PORTAL_CHEST),
+		RUINED_PORTAL(MCLootTables.RUINED_PORTAL_CHEST, ChestContent.ChestType.SINGLE_CHEST),
 		;
 
 		public final LootTable lootTable;
+		public final ChestContent.ChestType chestType;
 
-		LootType(LootTable lootTable) {
+		LootType(LootTable lootTable, ChestContent.ChestType chestType) {
 			this.lootTable = lootTable;
+			this.chestType = chestType;
 		}
 
+		@Override
 		public LootTable getLootTable() {
 			return lootTable;
+		}
+
+		@Override
+		public ChestContent.ChestType getChestType() {
+			return chestType;
 		}
 	}
 
@@ -449,7 +458,7 @@ public class RuinedPortalGenerator extends Generator {
 		}
 	}
 
-//	public static boolean shouldRemoveChest(ChunkGenerator generator, BPos chestPos, Location location, BlockBox piece, boolean cold, boolean overgrown, MCVersion version) {
+//	public static boolean shouldRemoveChest(TerrainGenerator generator, BPos chestPos, Location location, BlockBox piece, boolean cold, boolean overgrown, MCVersion version) {
 //		if (version.isOlderOrEqualTo(MCVersion.v1_16_1)) {
 //			// spread netherrack removed the chests
 //			if (generator == null) return false;
@@ -468,7 +477,7 @@ public class RuinedPortalGenerator extends Generator {
 //			int lenght = afloat.length;
 //			int triangularSize = (piece.getXSpan() + piece.getZSpan()) / 2;
 //			int offset = rand.nextInt(Math.max(1, 8 - triangularSize / 2));
-//			Predicate<Block> blockPredicate = isLand.test(location) ? ChunkGenerator.WORLD_SURFACE_WG : ChunkGenerator.OCEAN_FLOOR_WG;
+//			Predicate<Block> blockPredicate = isLand.test(location) ? TerrainGenerator.WORLD_SURFACE_WG : TerrainGenerator.OCEAN_FLOOR_WG;
 //			for (int x = centerX - lenght; x <= centerX + lenght; ++x) {
 //				for (int z = centerZ - lenght; z <= centerZ + lenght; ++z) {
 //					int distanceToCenter = Math.abs(x - centerX) + Math.abs(z - centerZ);
@@ -519,8 +528,8 @@ public class RuinedPortalGenerator extends Generator {
 	public static final HashMap<String, LinkedHashMap<Block, List<BPos>>> STRUCTURE_TO_BLOCKS = new HashMap<>();
 	public static final HashMap<String, BPos> STRUCTURE_SIZE = new HashMap<>();
 
-	public static final Block MINIMAL_OBSIDIAN_FRAME=new Block(Blocks.OBSIDIAN.getVersion(),Blocks.OBSIDIAN.getId(),"minimal_obsidian_frame");
-	public static final Block OBSIDIAN_FRAME=new Block(Blocks.OBSIDIAN.getVersion(),Blocks.OBSIDIAN.getId(),"obsidian_frame");
+	public static final Block MINIMAL_OBSIDIAN_FRAME = new Block(Blocks.OBSIDIAN.getVersion(), Blocks.OBSIDIAN.getId(), "minimal_obsidian_frame");
+	public static final Block OBSIDIAN_FRAME = new Block(Blocks.OBSIDIAN.getVersion(), Blocks.OBSIDIAN.getId(), "obsidian_frame");
 
 	static {
 		STRUCTURE_TO_LOOT.put("giant_portal_1", new LinkedHashMap<LootType, BPos>() {{
@@ -712,7 +721,7 @@ public class RuinedPortalGenerator extends Generator {
 				add(new BPos(3, 1, 5));
 				add(new BPos(3, 2, 3));
 			}});
-			put(Blocks.OBSIDIAN, new ArrayList<BPos>(){{
+			put(Blocks.OBSIDIAN, new ArrayList<BPos>() {{
 				add(new BPos(5, 1, 6));
 				add(new BPos(6, 1, 3));
 				add(new BPos(7, 1, 3));
@@ -785,7 +794,7 @@ public class RuinedPortalGenerator extends Generator {
 		STRUCTURE_TO_BLOCKS.put("portal_5", new LinkedHashMap<Block, List<BPos>>() {{
 			put(OBSIDIAN_FRAME, new ArrayList<BPos>() {{
 				add(new BPos(2, 3, 1));
-				add(new BPos(2, 3, 4));;
+				add(new BPos(2, 3, 4)); ;
 				add(new BPos(2, 7, 4));
 				add(new BPos(2, 8, 4));
 			}});

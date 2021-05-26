@@ -6,7 +6,7 @@ import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
-import kaptainwutax.terrainutils.ChunkGenerator;
+import kaptainwutax.terrainutils.TerrainGenerator;
 
 public class SlimeChunk extends Feature<SlimeChunk.Config, SlimeChunk.Data> {
 
@@ -46,13 +46,13 @@ public class SlimeChunk extends Feature<SlimeChunk.Config, SlimeChunk.Data> {
 	}
 
 	@Override
-	public boolean canGenerate(Data data, ChunkGenerator generator) {
+	public boolean canGenerate(Data data, TerrainGenerator generator) {
 		return true;
 	}
 
 	@Override
-	public boolean isValidDimension(Dimension dimension) {
-		return dimension == Dimension.OVERWORLD;
+  public Dimension getValidDimension() {
+		return  Dimension.OVERWORLD;
 	}
 
 	public SlimeChunk.Data at(int chunkX, int chunkZ, boolean isSlime) {
