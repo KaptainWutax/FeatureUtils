@@ -3,8 +3,8 @@ package kaptainwutax.featureutils.structure;
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.featureutils.loot.ILoot;
-import kaptainwutax.featureutils.structure.generator.structure.BuriedTreasureGenerator;
 import kaptainwutax.featureutils.structure.generator.Generator;
+import kaptainwutax.featureutils.structure.generator.structure.BuriedTreasureGenerator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.util.pos.CPos;
@@ -45,8 +45,8 @@ public class BuriedTreasure extends RegionStructure<BuriedTreasure.Config, Regio
 	}
 
 	@Override
-  public Dimension getValidDimension() {
-		return  Dimension.OVERWORLD;
+	public Dimension getValidDimension() {
+		return Dimension.OVERWORLD;
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class BuriedTreasure extends RegionStructure<BuriedTreasure.Config, Regio
 
 	@Override
 	public int getDecorationSalt() {
-		return 30001;
+		return this.getVersion().isOlderOrEqualTo(MCVersion.v1_13_2)?20002:30001;
 	}
 
 	@Override
