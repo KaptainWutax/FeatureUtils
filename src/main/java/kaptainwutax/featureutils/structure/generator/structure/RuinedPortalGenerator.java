@@ -424,8 +424,8 @@ public class RuinedPortalGenerator extends Generator {
 		}
 
 		@Override
-		public LootTable getLootTable() {
-			return lootTable;
+		public LootTable getLootTable(MCVersion version) {
+			return lootTable.apply(version);
 		}
 
 		@Override
@@ -528,8 +528,8 @@ public class RuinedPortalGenerator extends Generator {
 	public static final HashMap<String, LinkedHashMap<Block, List<BPos>>> STRUCTURE_TO_BLOCKS = new HashMap<>();
 	public static final HashMap<String, BPos> STRUCTURE_SIZE = new HashMap<>();
 
-	public static final Block MINIMAL_OBSIDIAN_FRAME = new Block(Blocks.OBSIDIAN.getVersion(), Blocks.OBSIDIAN.getId(), "minimal_obsidian_frame");
-	public static final Block OBSIDIAN_FRAME = new Block(Blocks.OBSIDIAN.getVersion(), Blocks.OBSIDIAN.getId(), "obsidian_frame");
+	public static final Block MINIMAL_OBSIDIAN_FRAME = new Block(Blocks.OBSIDIAN.getVersion(), Blocks.OBSIDIAN.getId(), "minimal_obsidian_frame", Blocks.OBSIDIAN.getImplementedVersion());
+	public static final Block OBSIDIAN_FRAME = new Block(Blocks.OBSIDIAN.getVersion(), Blocks.OBSIDIAN.getId(), "obsidian_frame", Blocks.OBSIDIAN.getImplementedVersion());
 
 	static {
 		STRUCTURE_TO_LOOT.put("giant_portal_1", new LinkedHashMap<LootType, BPos>() {{

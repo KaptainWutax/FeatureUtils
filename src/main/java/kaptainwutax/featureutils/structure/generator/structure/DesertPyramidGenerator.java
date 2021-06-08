@@ -71,8 +71,8 @@ public class DesertPyramidGenerator extends Generator {
 		}
 
 		@Override
-		public LootTable getLootTable() {
-			return lootTable;
+		public LootTable getLootTable(MCVersion version) {
+			return lootTable.apply(version);
 		}
 
 		@Override

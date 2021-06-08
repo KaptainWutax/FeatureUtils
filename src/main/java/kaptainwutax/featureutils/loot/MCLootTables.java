@@ -1,20 +1,23 @@
 package kaptainwutax.featureutils.loot;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import kaptainwutax.featureutils.loot.effect.Effects;
 import kaptainwutax.featureutils.loot.entry.EmptyEntry;
 import kaptainwutax.featureutils.loot.entry.ItemEntry;
-import kaptainwutax.featureutils.loot.function.*;
-import kaptainwutax.featureutils.loot.Items.Item;
+import kaptainwutax.featureutils.loot.function.ApplyDamageFunction;
+import kaptainwutax.featureutils.loot.function.EffectFunction;
+import kaptainwutax.featureutils.loot.function.EnchantRandomlyFunction;
+import kaptainwutax.featureutils.loot.function.EnchantWithLevelsFunction;
+import kaptainwutax.featureutils.loot.item.Items;
 import kaptainwutax.featureutils.loot.roll.ConstantRoll;
 import kaptainwutax.featureutils.loot.roll.UniformRoll;
+import kaptainwutax.mcutils.version.MCVersion;
 
 import static kaptainwutax.featureutils.loot.function.SetCountFunction.constant;
 import static kaptainwutax.featureutils.loot.function.SetCountFunction.uniform;
 
 @SuppressWarnings("unused")
 public class MCLootTables {
-	
+
 	public static final LootTable NULL = new LootTable();
 
 	public static final LootTable ABANDONED_MINESHAFT_CHEST = new LootTable(
@@ -33,6 +36,8 @@ public class MCLootTables {
 					new ItemEntry(Items.DIAMOND, 3).apply(uniform(1.0F, 2.0F)),
 					new ItemEntry(Items.COAL, 10).apply(uniform(3.0F, 8.0F)),
 					new ItemEntry(Items.BREAD, 15).apply(uniform(1.0F, 3.0F)),
+					new ItemEntry(Items.GLOW_BERRIES, 15).apply(uniform(3.0F, 6.0F))
+							.introducedVersion(MCVersion.v1_17),
 					new ItemEntry(Items.MELON_SEEDS, 10).apply(uniform(2.0F, 4.0F)),
 					new ItemEntry(Items.PUMPKIN_SEEDS, 10).apply(uniform(2.0F, 4.0F)),
 					new ItemEntry(Items.BEETROOT_SEEDS, 10).apply(uniform(2.0F, 4.0F))),
@@ -48,7 +53,7 @@ public class MCLootTables {
 			new LootPool(new ConstantRoll(1),
 					new ItemEntry(Items.LODESTONE).apply(constant(1))),
 			new LootPool(new UniformRoll(1.0F, 2.0F),
-					new ItemEntry(Items.CROSSBOW).apply(new ApplyDamageFunction(),new EnchantRandomlyFunction()),
+					new ItemEntry(Items.CROSSBOW).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction()),
 					new ItemEntry(Items.SPECTRAL_ARROW).apply(uniform(2.0F, 12.0F)),
 					new ItemEntry(Items.GILDED_BLACKSTONE).apply(uniform(5.0F, 8.0F)),
 					new ItemEntry(Items.CRYING_OBSIDIAN).apply(uniform(3.0F, 8.0F)),
@@ -70,7 +75,7 @@ public class MCLootTables {
 
 	public static final LootTable BASTION_HOGLIN_STABLE_CHEST = new LootTable(
 			new LootPool(new ConstantRoll(1),
-					new ItemEntry(Items.DIAMOND_SHOVEL, 5).apply(new ApplyDamageFunction(),new EnchantRandomlyFunction()),
+					new ItemEntry(Items.DIAMOND_SHOVEL, 5).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction()),
 					new ItemEntry(Items.NETHERITE_SCRAP, 2).apply(constant(1)),
 					new ItemEntry(Items.ANCIENT_DEBRIS, 3).apply(constant(1)),
 					new ItemEntry(Items.SADDLE, 10).apply(constant(1)),
@@ -94,7 +99,7 @@ public class MCLootTables {
 
 	public static final LootTable BASTION_OTHER_CHEST = new LootTable(
 			new LootPool(new ConstantRoll(1),
-					new ItemEntry(Items.CROSSBOW, 12).apply(new ApplyDamageFunction(),new EnchantRandomlyFunction()),
+					new ItemEntry(Items.CROSSBOW, 12).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction()),
 					new ItemEntry(Items.ANCIENT_DEBRIS, 2).apply(constant(1)),
 					new ItemEntry(Items.NETHERITE_SCRAP, 2).apply(constant(1)),
 					new ItemEntry(Items.SPECTRAL_ARROW, 16).apply(uniform(2.0F, 15.0F)),
@@ -133,11 +138,11 @@ public class MCLootTables {
 					new ItemEntry(Items.ANCIENT_DEBRIS, 14).apply(constant(1)),
 					new ItemEntry(Items.NETHERITE_SCRAP, 10).apply(constant(1)),
 					new ItemEntry(Items.ANCIENT_DEBRIS).apply(constant(2)),
-					new ItemEntry(Items.DIAMOND_SWORD, 10).apply(new ApplyDamageFunction(),new EnchantRandomlyFunction()),
-					new ItemEntry(Items.DIAMOND_CHESTPLATE, 6).apply(new ApplyDamageFunction(),new EnchantRandomlyFunction()),
-					new ItemEntry(Items.DIAMOND_HELMET, 6).apply(new ApplyDamageFunction(),new EnchantRandomlyFunction()),
-					new ItemEntry(Items.DIAMOND_LEGGINGS, 6).apply(new ApplyDamageFunction(),new EnchantRandomlyFunction()),
-					new ItemEntry(Items.DIAMOND_BOOTS, 6).apply(new ApplyDamageFunction(),new EnchantRandomlyFunction()),
+					new ItemEntry(Items.DIAMOND_SWORD, 10).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction()),
+					new ItemEntry(Items.DIAMOND_CHESTPLATE, 6).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction()),
+					new ItemEntry(Items.DIAMOND_HELMET, 6).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction()),
+					new ItemEntry(Items.DIAMOND_LEGGINGS, 6).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction()),
+					new ItemEntry(Items.DIAMOND_BOOTS, 6).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction()),
 					new ItemEntry(Items.DIAMOND_SWORD, 6).apply(new ApplyDamageFunction()),
 					new ItemEntry(Items.DIAMOND_CHESTPLATE, 5).apply(new ApplyDamageFunction()),
 					new ItemEntry(Items.DIAMOND_HELMET, 5).apply(new ApplyDamageFunction()),
@@ -337,14 +342,17 @@ public class MCLootTables {
 	);
 
 	public static final LootTable SHIPWRECK_SUPPLY_CHEST = new LootTable(
-			new LootPool(new UniformRoll(3.0F, 10.0F),
+			new LootPool(
+					new UniformRoll(3.0F, 10.0F),
 					new ItemEntry(Items.PAPER, 8).apply(uniform(1.0F, 12.0F)),
 					new ItemEntry(Items.POTATO, 7).apply(uniform(2.0F, 6.0F)),
+					new ItemEntry(Items.MOSS_BLOCK, 7).apply(uniform(1.0F, 4.0F))
+							.introducedVersion(MCVersion.v1_17),
 					new ItemEntry(Items.POISONOUS_POTATO, 7).apply(uniform(2.0F, 6.0F)),
 					new ItemEntry(Items.CARROT, 7).apply(uniform(4.0F, 8.0F)),
 					new ItemEntry(Items.WHEAT, 7).apply(uniform(8.0F, 21.0F)),
 					new ItemEntry(Items.SUSPICIOUS_STEW, 10).apply(
-							// order matters, this was obtained through a fabric mod, albeit it will be completly platform dependant
+							// order matters, this was obtained through a fabric mod, albeit it will be completely platform dependant
 							EffectFunction.builder()
 									.apply(Effects.BLINDNESS, 5.0F, 7.0F)
 									.apply(Effects.SATURATION, 7.0F, 10.0F)

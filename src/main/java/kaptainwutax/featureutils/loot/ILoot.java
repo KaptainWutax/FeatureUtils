@@ -24,7 +24,7 @@ public interface ILoot {
 
 		HashMap<CPos, LinkedList<Pair<Generator.ILootType, BPos>>> posLinkedListHashMap = new HashMap<>();
 		for (Pair<Generator.ILootType, BPos> lootPos : lootPositions) {
-			if (lootPos.getFirst().getLootTable() != null) {
+			if (lootPos.getFirst().getLootTable(this.getVersion()) != null) {
 				BPos pos = lootPos.getSecond();
 				CPos cPos = pos.toChunkPos();
 				posLinkedListHashMap.computeIfAbsent(cPos, k -> new LinkedList<>()).add(lootPos);
@@ -51,7 +51,7 @@ public interface ILoot {
 				if (shouldAdvanceInChunks()) rand.advance(chestData.getNumberInChunk() * 2L);
 				rand.advance(chestData.getIndex() * 2L);
 				LootContext context = new LootContext(rand.nextLong(), this.getVersion());
-				List<ItemStack> loot = indexed ? lootType.getLootTable().generateIndexed(context) : lootType.getLootTable().generate(context);
+				List<ItemStack> loot = indexed ? lootType.getLootTable(this.getVersion()).generateIndexed(context) : lootType.getLootTable(this.getVersion()).generate(context);
 				result.add(new ChestContent(lootType,loot,chestData.getPos(),indexed));
 			}
 		}

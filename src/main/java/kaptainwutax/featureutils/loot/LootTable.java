@@ -4,6 +4,7 @@ import kaptainwutax.featureutils.loot.function.LootFunction;
 import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.featureutils.loot.roll.UniformRoll;
+import kaptainwutax.mcutils.version.MCVersion;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -13,6 +14,7 @@ import java.util.stream.IntStream;
 public class LootTable extends LootGenerator {
 
 	public final LootPool[] lootPools;
+	private boolean hasVersionApplied=false;
 
 	public LootTable(LootPool... lootPools) {
 		this(Arrays.asList(lootPools), null);
@@ -21,6 +23,14 @@ public class LootTable extends LootGenerator {
 	public LootTable(Collection<LootPool> lootPools, Collection<LootFunction> lootFunctions) {
 		this.lootPools = lootPools.toArray(new LootPool[0]);
 		this.apply(lootFunctions);
+	}
+
+	public LootTable apply(MCVersion version){
+		for (LootPool lootPool:this.lootPools){
+			lootPool.apply(version);
+		}
+		hasVersionApplied=true;
+		return this;
 	}
 
 	public static LinkedList<ItemStack> shuffleItems(LootContext context, LinkedList<ItemStack> items) {
@@ -87,6 +97,11 @@ public class LootTable extends LootGenerator {
 
 	@Override
 	public void generate(LootContext context, Consumer<ItemStack> stackConsumer) {
+		if (!hasVersionApplied){
+			System.err.println("Version was not applied, we default to latest "+MCVersion.latest());
+			this.apply(MCVersion.latest());
+			hasVersionApplied=true;
+		}
 		stackConsumer = LootFunction.stack(stackConsumer, this.combinedLootFunction, context);
 
 		for (LootPool lootPool : this.lootPools) {

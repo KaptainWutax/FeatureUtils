@@ -60,7 +60,7 @@ public abstract class Generator {
 	}
 
 	public interface ILootType {
-		LootTable getLootTable();
+		LootTable getLootTable(MCVersion version);
 		ChestContent.ChestType getChestType();
 	}
 
@@ -75,7 +75,7 @@ public abstract class Generator {
 		Set<Item> items = new HashSet<>();
 		ILootType[] lootTypes = getLootTypes();
 		for (ILootType lootType : lootTypes) {
-			LootTable lootTable = lootType.getLootTable();
+			LootTable lootTable = lootType.getLootTable(this.getVersion());
 			if (lootTable != null) {
 				items.addAll(Arrays.stream(lootTable.lootPools)
 						.map(e -> e.lootEntries).flatMap(Stream::of)

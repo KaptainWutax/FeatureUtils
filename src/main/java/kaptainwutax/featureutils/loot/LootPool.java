@@ -12,11 +12,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class LootPool extends LootGenerator {
 
 	public final LootRoll rolls;
-	public final LootEntry[] lootEntries;
+	public LootEntry[] lootEntries;
 	public final LootRoll bonusRolls = new UniformRoll(0.0F, 0.0F);
 
 	public LootPool(LootRoll rolls, LootEntry... lootEntries) {
@@ -26,6 +27,23 @@ public class LootPool extends LootGenerator {
 
 	public LootPool apply(LootFunction... lootFunctions) {
 		this.apply(Arrays.asList(lootFunctions));
+		return this;
+	}
+
+	public LootPool apply(MCVersion version){
+		this.lootEntries=Arrays.stream(lootEntries).filter(lootEntry -> {
+			// remove the entry if it was not yet introduced yet (so older and not equal to the introduced version)
+			if (lootEntry.introducedVersion!=null){
+				if (version.isOlderThan(lootEntry.introducedVersion)){
+					return false;
+				}
+			}
+			// remove all newer version (or equal) to the deprecation
+			if (lootEntry.deprecatedVersion!=null){
+				return !version.isNewerOrEqualTo(lootEntry.deprecatedVersion);
+			}
+			return true;
+		}).toArray(LootEntry[]::new);
 		return this;
 	}
 
