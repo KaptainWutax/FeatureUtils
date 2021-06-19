@@ -29,7 +29,7 @@ public class EndCity extends TriangularStructure<EndCity> implements ILoot {
 	}
 
 	public static String name() {
-		return "end_city";
+		return "endcity";
 	}
 
 	@Override

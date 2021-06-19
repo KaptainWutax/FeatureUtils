@@ -20,7 +20,7 @@ public abstract class Structure<C extends Feature.Config, D extends Feature.Data
 		CLASS_TO_NAME.put(BastionRemnant.class, "bastion_remnant");
 		CLASS_TO_NAME.put(BuriedTreasure.class, "buried_treasure");
 		CLASS_TO_NAME.put(DesertPyramid.class, "desert_pyramid");
-		CLASS_TO_NAME.put(EndCity.class, "end_city");
+		CLASS_TO_NAME.put(EndCity.class, "endcity");
 		CLASS_TO_NAME.put(Fortress.class, "fortress");
 		CLASS_TO_NAME.put(Igloo.class, "igloo");
 		CLASS_TO_NAME.put(JunglePyramid.class, "jungle_pyramid");
