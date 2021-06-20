@@ -66,4 +66,19 @@ public class LootTestDesertTemple {
 		}
 		assertEquals(11777201006L, hash, "Items changed maybe?");
 	}
+
+	@Test
+	public void testChestLoot2() {
+		setup(3119024338951782547L, new BPos(761,60,-743).toChunkPos(), MCVersion.v1_16_5);
+		DesertPyramid desertPyramid = new DesertPyramid(MCVersion.v1_16_5);
+		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = desertPyramid.getLootEx(3119024338951782547L, structureGenerator, new ChunkRand(), false);
+		long hash = 0;
+		for (Map.Entry<Generator.ILootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
+			for (List<ItemStack> loot : loots.getValue()) {
+				System.out.println(loots.getKey()+" "+loot);
+				for (ItemStack stack : loot) hash += stack.hashCode();
+			}
+		}
+		assertEquals(8379442605L, hash, "Items changed maybe?");
+	}
 }

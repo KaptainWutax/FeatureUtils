@@ -1,7 +1,9 @@
 package kaptainwutax.featureutils.examples.loot.simple;
 
 import kaptainwutax.biomeutils.source.BiomeSource;
+import kaptainwutax.featureutils.loot.ChestContent;
 import kaptainwutax.featureutils.loot.item.ItemStack;
+import kaptainwutax.featureutils.loot.item.Items;
 import kaptainwutax.featureutils.structure.BuriedTreasure;
 import kaptainwutax.featureutils.structure.DesertPyramid;
 import kaptainwutax.featureutils.structure.RegionStructure;
@@ -33,8 +35,21 @@ public class GetLoot {
 		desertPyramid(version, worldSeed);
 		buriedTreasure(version, worldSeed);
 		shipwreck(version, worldSeed);
+		desert(version,1L,24,49);
 	}
 
+	public static void desert(MCVersion version,long structureSeed,int regX,int regZ){
+		ChunkRand rand = new ChunkRand();
+		DesertPyramid desertPyramid = new DesertPyramid(version);
+		DesertPyramidGenerator generator=new DesertPyramidGenerator(version);
+		CPos pos = desertPyramid.getInRegion(structureSeed, regX, regZ, rand);
+		generator.generate(null, pos, new ChunkRand());
+		List<ChestContent> chestContents=desertPyramid.getLoot(structureSeed, generator, new ChunkRand(), true);
+		chestContents.stream().filter(c-> c.getItems().get(
+				(int) (c.getChestType().getNumberRows() * ChestContent.ChestType.ITEMS_PER_ROW*0.70))
+				.getItem().getName().equals(Items.ENCHANTED_BOOK.getName())).forEach(System.out::println);
+
+	}
 
 	public static void desertPyramid(MCVersion version, long worldSeed) {
 		// For optimization we ask you to create the chunkRand, this should be done per thread
