@@ -16,7 +16,7 @@ public abstract class LootGenerator {
 	}
 
 	public LootGenerator apply(Collection<LootFunction> lootFunctions) {
-		if (lootFunctions != null) {
+		if(lootFunctions != null) {
 			this.lootFunctions = lootFunctions.toArray(new LootFunction[0]);
 			this.combinedLootFunction = LootFunction.combine(this.lootFunctions);
 		} else {

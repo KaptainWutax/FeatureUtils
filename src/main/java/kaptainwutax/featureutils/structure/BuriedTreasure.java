@@ -14,7 +14,7 @@ import kaptainwutax.mcutils.version.VersionMap;
 public class BuriedTreasure extends RegionStructure<BuriedTreasure.Config, RegionStructure.Data<BuriedTreasure>> implements ILoot {
 
 	public static final VersionMap<BuriedTreasure.Config> CONFIGS = new VersionMap<BuriedTreasure.Config>()
-			.add(MCVersion.v1_13, new BuriedTreasure.Config(0.01F, 10387320));
+		.add(MCVersion.v1_13, new BuriedTreasure.Config(0.01F, 10387320));
 
 	public BuriedTreasure(MCVersion version) {
 		this(CONFIGS.getAsOf(version), version);
@@ -61,7 +61,7 @@ public class BuriedTreasure extends RegionStructure<BuriedTreasure.Config, Regio
 
 	@Override
 	public int getDecorationSalt() {
-		return this.getVersion().isOlderOrEqualTo(MCVersion.v1_13_2)?20002:30001;
+		return this.getVersion().isOlderOrEqualTo(MCVersion.v1_13_2) ? 20002 : 30001;
 	}
 
 	@Override

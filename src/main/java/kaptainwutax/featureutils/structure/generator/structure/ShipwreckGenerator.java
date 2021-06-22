@@ -44,10 +44,10 @@ public class ShipwreckGenerator extends Generator {
 
 	@Override
 	public boolean generate(TerrainGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
-		if (generator == null) return false;
+		if(generator == null) return false;
 		BiomeSource source = generator.getBiomeSource();
 		Biome biome;
-		if (this.getVersion().isOlderThan(MCVersion.v1_16)) {
+		if(this.getVersion().isOlderThan(MCVersion.v1_16)) {
 			biome = source.getBiome((chunkX << 4) + 9, 0, (chunkZ << 4) + 9);
 		} else {
 			biome = source.getBiomeForNoiseGen((chunkX << 2) + 2, 0, (chunkZ << 2) + 2);
@@ -57,7 +57,7 @@ public class ShipwreckGenerator extends Generator {
 		rotation = BlockRotation.getRandom(rand);
 		String[] arr = isBeached ? STRUCTURE_LOCATION_BEACHED : STRUCTURE_LOCATION_OCEAN;
 		type = arr[rand.nextInt(arr.length)];
-		if (!STRUCTURE_SIZE.containsKey(type) || !STRUCTURE_TO_LOOT.containsKey(type)) {
+		if(!STRUCTURE_SIZE.containsKey(type) || !STRUCTURE_TO_LOOT.containsKey(type)) {
 			System.err.println("We don't support this type yet " + type);
 			return false;
 		}
@@ -79,7 +79,7 @@ public class ShipwreckGenerator extends Generator {
 	public List<Pair<ILootType, BPos>> getChestsPos() {
 		HashMap<LootType, BPos> lootPos = STRUCTURE_TO_LOOT.get(type);
 		List<Pair<ILootType, BPos>> res = new ArrayList<>();
-		for (LootType lootType : lootPos.keySet()) {
+		for(LootType lootType : lootPos.keySet()) {
 			BPos offset = lootPos.get(lootType);
 			BPos chestPos = piece.getInside(offset, rotation);
 			res.add(new Pair<>(lootType, chestPos));
@@ -130,39 +130,39 @@ public class ShipwreckGenerator extends Generator {
 
 
 	private static final String[] STRUCTURE_LOCATION_BEACHED = new String[] {
-			"with_mast",
-			"sideways_full",
-			"sideways_fronthalf",
-			"sideways_backhalf",
-			"rightsideup_full",
-			"rightsideup_fronthalf",
-			"rightsideup_backhalf",
-			"with_mast_degraded",
-			"rightsideup_full_degraded",
-			"rightsideup_fronthalf_degraded",
-			"rightsideup_backhalf_degraded"
+		"with_mast",
+		"sideways_full",
+		"sideways_fronthalf",
+		"sideways_backhalf",
+		"rightsideup_full",
+		"rightsideup_fronthalf",
+		"rightsideup_backhalf",
+		"with_mast_degraded",
+		"rightsideup_full_degraded",
+		"rightsideup_fronthalf_degraded",
+		"rightsideup_backhalf_degraded"
 	};
 	private static final String[] STRUCTURE_LOCATION_OCEAN = new String[] {
-			"with_mast",
-			"upsidedown_full",
-			"upsidedown_fronthalf",
-			"upsidedown_backhalf",
-			"sideways_full",
-			"sideways_fronthalf",
-			"sideways_backhalf",
-			"rightsideup_full",
-			"rightsideup_fronthalf",
-			"rightsideup_backhalf",
-			"with_mast_degraded",
-			"upsidedown_full_degraded",
-			"upsidedown_fronthalf_degraded",
-			"upsidedown_backhalf_degraded",
-			"sideways_full_degraded",
-			"sideways_fronthalf_degraded",
-			"sideways_backhalf_degraded",
-			"rightsideup_full_degraded",
-			"rightsideup_fronthalf_degraded",
-			"rightsideup_backhalf_degraded"
+		"with_mast",
+		"upsidedown_full",
+		"upsidedown_fronthalf",
+		"upsidedown_backhalf",
+		"sideways_full",
+		"sideways_fronthalf",
+		"sideways_backhalf",
+		"rightsideup_full",
+		"rightsideup_fronthalf",
+		"rightsideup_backhalf",
+		"with_mast_degraded",
+		"upsidedown_full_degraded",
+		"upsidedown_fronthalf_degraded",
+		"upsidedown_backhalf_degraded",
+		"sideways_full_degraded",
+		"sideways_fronthalf_degraded",
+		"sideways_backhalf_degraded",
+		"rightsideup_full_degraded",
+		"rightsideup_fronthalf_degraded",
+		"rightsideup_backhalf_degraded"
 	};
 	private static final HashMap<String, LinkedHashMap<LootType, BPos>> STRUCTURE_TO_LOOT = new HashMap<>();
 	private static final HashMap<String, BPos> STRUCTURE_SIZE = new HashMap<>();

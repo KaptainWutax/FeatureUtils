@@ -35,7 +35,7 @@ public class SpiralStaircase extends Stronghold.Piece {
 
 	@Override
 	public void populatePieces(StrongholdGenerator gen, Start start, List<Stronghold.Piece> pieces, JRand rand) {
-		if (this.isStructureStart) {
+		if(this.isStructureStart) {
 			gen.currentPiece = FiveWayCrossing.class;
 		}
 

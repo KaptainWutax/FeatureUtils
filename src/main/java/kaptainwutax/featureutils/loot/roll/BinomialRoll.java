@@ -16,8 +16,8 @@ public class BinomialRoll extends LootRoll {
 	public int getCount(LootContext context) {
 		int rolls = 0;
 
-		for (int j = 0; j < this.trials; j++) {
-			if (context.nextFloat() < this.probability) {
+		for(int j = 0; j < this.trials; j++) {
+			if(context.nextFloat() < this.probability) {
 				rolls++;
 			}
 		}

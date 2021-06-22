@@ -3,7 +3,12 @@ package kaptainwutax.featureutils.loot;
 import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.BiPredicate;
 
 public class LootChest {
@@ -17,10 +22,10 @@ public class LootChest {
 	public static BiPredicate<Integer, Integer> MORE_OR_EQUAL_TO = (a, b) -> a >= b;
 
 	public LootChest(LootChest.Stack... stacks) {
-		for (Stack stack : stacks) {
+		for(Stack stack : stacks) {
 			Item item = stack.item;
 
-			if (!this.stacksMap.containsKey(item)) {
+			if(!this.stacksMap.containsKey(item)) {
 				this.stacksMap.put(item, new ArrayList<>());
 			}
 
@@ -38,20 +43,20 @@ public class LootChest {
 		List<ItemStack> itemStacks = lootTable.generate(context);
 		Set<Item> foundItems = new HashSet<>();
 
-		for (ItemStack itemStack : itemStacks) {
+		for(ItemStack itemStack : itemStacks) {
 			List<Stack> stacks = this.stacksMap.get(itemStack.getItem());
-			if (stacks == null) continue;
+			if(stacks == null) continue;
 
 			boolean matches = true;
 
-			for (Stack stack : stacks) {
-				if (!stack.test(itemStack.getCount())) {
+			for(Stack stack : stacks) {
+				if(!stack.test(itemStack.getCount())) {
 					matches = false;
 					break;
 				}
 			}
 
-			if (matches) {
+			if(matches) {
 				foundItems.add(itemStack.getItem());
 			}
 		}

@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 public interface LootFunction {
 	static LootFunction combine(LootFunction[] lootFunctions) {
 		return (baseStack, context) -> {
-			for (LootFunction lootFunction : lootFunctions) {
+			for(LootFunction lootFunction : lootFunctions) {
 				baseStack = lootFunction.process(baseStack, context);
 			}
 

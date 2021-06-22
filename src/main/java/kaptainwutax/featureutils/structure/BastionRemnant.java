@@ -11,8 +11,8 @@ import kaptainwutax.mcutils.version.VersionMap;
 public class BastionRemnant extends UniformStructure<BastionRemnant> {
 
 	public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
-			.add(MCVersion.v1_16, new RegionStructure.Config(30, 4, 30084232))
-			.add(MCVersion.v1_16_1, new RegionStructure.Config(27, 4, 30084232));
+		.add(MCVersion.v1_16, new RegionStructure.Config(30, 4, 30084232))
+		.add(MCVersion.v1_16_1, new RegionStructure.Config(27, 4, 30084232));
 
 	public BastionRemnant(MCVersion version) {
 		this(CONFIGS.getAsOf(version), version);
@@ -28,7 +28,7 @@ public class BastionRemnant extends UniformStructure<BastionRemnant> {
 
 	@Override
 	public boolean canStart(Data<BastionRemnant> data, long structureSeed, ChunkRand rand) {
-		if (!super.canStart(data, structureSeed, rand)) return false;
+		if(!super.canStart(data, structureSeed, rand)) return false;
 		return rand.nextInt(5) >= 2;
 	}
 
@@ -39,14 +39,14 @@ public class BastionRemnant extends UniformStructure<BastionRemnant> {
 	}
 
 	@Override
-  public Dimension getValidDimension() {
-		return  Dimension.NETHER;
+	public Dimension getValidDimension() {
+		return Dimension.NETHER;
 	}
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
 		return biome == Biomes.NETHER_WASTES || biome == Biomes.SOUL_SAND_VALLEY || biome == Biomes.WARPED_FOREST
-				|| biome == Biomes.CRIMSON_FOREST;
+			|| biome == Biomes.CRIMSON_FOREST;
 	}
 
 }

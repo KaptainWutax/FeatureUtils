@@ -50,10 +50,10 @@ public class AttributeModifier {
 	}
 
 	public boolean equals(Object other) {
-		if (this == other) {
+		if(this == other) {
 			return true;
-		} else if (other != null && this.getClass() == other.getClass()) {
-			AttributeModifier attributemodifier = (AttributeModifier) other;
+		} else if(other != null && this.getClass() == other.getClass()) {
+			AttributeModifier attributemodifier = (AttributeModifier)other;
 			return Objects.equals(this.uuid, attributemodifier.uuid);
 		} else {
 			return false;
@@ -82,7 +82,7 @@ public class AttributeModifier {
 		}
 
 		public static AttributeModifier.Operation fromValue(int opId) {
-			if (opId >= 0 && opId < OPERATIONS.length) {
+			if(opId >= 0 && opId < OPERATIONS.length) {
 				return OPERATIONS[opId];
 			} else {
 				throw new IllegalArgumentException("No operation with value " + opId);

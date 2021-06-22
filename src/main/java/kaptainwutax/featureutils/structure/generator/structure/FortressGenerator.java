@@ -23,23 +23,23 @@ public class FortressGenerator extends Generator {
 	private static final int START = 0;
 
 	private static final int BRIDGE_FIRST = 1,
-			BRIDGE_STRAIGHT = 1,
-			BRIDGE_CROSSING = 2,
-			BRIDGE_FORTIFIED_CROSSING = 3,
-			BRIDGE_STAIRS = 4,
-			BRIDGE_SPAWNER = 5,
-			BRIDGE_CORRIDOR_ENTRANCE = 6,
-			BRIDGE_PIECES_COUNT = 6;
+		BRIDGE_STRAIGHT = 1,
+		BRIDGE_CROSSING = 2,
+		BRIDGE_FORTIFIED_CROSSING = 3,
+		BRIDGE_STAIRS = 4,
+		BRIDGE_SPAWNER = 5,
+		BRIDGE_CORRIDOR_ENTRANCE = 6,
+		BRIDGE_PIECES_COUNT = 6;
 
 	private static final int CORRIDOR_FIRST = 7,
-			CORRIDOR_STRAIGHT = 7,
-			CORRIDOR_CROSSING = 8,
-			CORRIDOR_TURN_RIGHT = 9,
-			CORRIDOR_TURN_LEFT = 10,
-			CORRIDOR_STAIRS = 11,
-			CORRIDOR_T_CROSSING = 12,
-			CORRIDOR_NETHER_WART = 13,
-			CORRIDOR_PIECES_COUNT = 7;
+		CORRIDOR_STRAIGHT = 7,
+		CORRIDOR_CROSSING = 8,
+		CORRIDOR_TURN_RIGHT = 9,
+		CORRIDOR_TURN_LEFT = 10,
+		CORRIDOR_STAIRS = 11,
+		CORRIDOR_T_CROSSING = 12,
+		CORRIDOR_NETHER_WART = 13,
+		CORRIDOR_PIECES_COUNT = 7;
 
 	private static final int END = 14;
 	private static final int PIECES_COUNT = 15;
@@ -53,36 +53,36 @@ public class FortressGenerator extends Generator {
 	private static final boolean[] CORRIDOR_ALLOW_CONSECUTIVE = {true, false, false, false, true, false, false};
 
 	private static final Creator[] CREATORS = {
-			null,
-			FortressGenerator::createBridgeStraight,
-			FortressGenerator::createBridgeCrossing,
-			FortressGenerator::createBridgeFortifiedCrossing,
-			FortressGenerator::createBridgeStairs,
-			FortressGenerator::createBridgeSpawner,
-			FortressGenerator::createBridgeCorridorEntrance,
-			FortressGenerator::createCorridorStraight,
-			FortressGenerator::createCorridorCrossing,
-			FortressGenerator::createCorridorTurnRight,
-			FortressGenerator::createCorridorTurnLeft,
-			FortressGenerator::createCorridorStairs,
-			FortressGenerator::createCorridorTCrossing,
-			FortressGenerator::createCorridorNetherWart
+		null,
+		FortressGenerator::createBridgeStraight,
+		FortressGenerator::createBridgeCrossing,
+		FortressGenerator::createBridgeFortifiedCrossing,
+		FortressGenerator::createBridgeStairs,
+		FortressGenerator::createBridgeSpawner,
+		FortressGenerator::createBridgeCorridorEntrance,
+		FortressGenerator::createCorridorStraight,
+		FortressGenerator::createCorridorCrossing,
+		FortressGenerator::createCorridorTurnRight,
+		FortressGenerator::createCorridorTurnLeft,
+		FortressGenerator::createCorridorStairs,
+		FortressGenerator::createCorridorTCrossing,
+		FortressGenerator::createCorridorNetherWart
 	};
 	private static final Runnable[] POST_CREATORS = {
-			() -> {},
-			() -> {},
-			() -> {},
-			() -> {},
-			() -> {},
-			() -> {},
-			() -> {},
-			() -> {},
-			() -> {},
-			() -> rand.nextInt(3),
-			() -> rand.nextInt(3),
-			() -> {},
-			() -> {},
-			() -> {}
+		() -> {},
+		() -> {},
+		() -> {},
+		() -> {},
+		() -> {},
+		() -> {},
+		() -> {},
+		() -> {},
+		() -> {},
+		() -> rand.nextInt(3),
+		() -> rand.nextInt(3),
+		() -> {},
+		() -> {},
+		() -> {}
 	};
 	@SuppressWarnings("unchecked")
 	private static final List<PieceInfo>[] placements = new List[PIECES_COUNT];
@@ -90,21 +90,21 @@ public class FortressGenerator extends Generator {
 	private static PieceInfo start;
 	private static int lastPlaced;
 	private static final Extender[] EXTENDERS = {
-			null,
-			FortressGenerator::extendBridgeStraight,
-			FortressGenerator::extendBridgeCrossing,
-			FortressGenerator::extendBridgeFortifiedCrossing,
-			FortressGenerator::extendBridgeStairs,
-			FortressGenerator::extendBridgeSpawner,
-			FortressGenerator::extendBridgeCorridorEntrance,
-			FortressGenerator::extendCorridorStraight,
-			FortressGenerator::extendCorridorCrossing,
-			FortressGenerator::extendCorridorTurnRight,
-			FortressGenerator::extendCorridorTurnLeft,
-			FortressGenerator::extendCorridorStairs,
-			FortressGenerator::extendCorridorTCrossing,
-			FortressGenerator::extendCorridorNetherWart,
-			FortressGenerator::extendEnd
+		null,
+		FortressGenerator::extendBridgeStraight,
+		FortressGenerator::extendBridgeCrossing,
+		FortressGenerator::extendBridgeFortifiedCrossing,
+		FortressGenerator::extendBridgeStairs,
+		FortressGenerator::extendBridgeSpawner,
+		FortressGenerator::extendBridgeCorridorEntrance,
+		FortressGenerator::extendCorridorStraight,
+		FortressGenerator::extendCorridorCrossing,
+		FortressGenerator::extendCorridorTurnRight,
+		FortressGenerator::extendCorridorTurnLeft,
+		FortressGenerator::extendCorridorStairs,
+		FortressGenerator::extendCorridorTCrossing,
+		FortressGenerator::extendCorridorNetherWart,
+		FortressGenerator::extendEnd
 	};
 
 	static {
@@ -116,13 +116,13 @@ public class FortressGenerator extends Generator {
 	}
 
 	private static void genFortress(int chunkX, int chunkZ, MCVersion version) {
-		if (version.isOlderThan(MCVersion.v1_12)) {
+		if(version.isOlderThan(MCVersion.v1_12)) {
 			throw new UnsupportedVersion(version, "fortress generator.");
 		}
 		start = createStart((chunkX << 4) + 2, 64, (chunkZ << 4) + 2);
 		placements[START].add(start);
 		extendBridgeCrossing(start);
-		while (!pieceQueue.isEmpty()) {
+		while(!pieceQueue.isEmpty()) {
 			int i = rand.nextInt(pieceQueue.size());
 
 			PieceInfo piece = pieceQueue.remove(i);
@@ -196,7 +196,7 @@ public class FortressGenerator extends Generator {
 
 	private static PieceInfo createRotated(int type, int depth, int x, int y, int z, int relXMin, int relYMin, int relZMin, int relXMax, int relYMax, int relZMax, int facing) {
 		int xMin, yMin, zMin, xMax, yMax, zMax;
-		switch (facing) {
+		switch(facing) {
 			case NORTH:
 			case SOUTH:
 				xMin = x + relXMin;
@@ -215,7 +215,7 @@ public class FortressGenerator extends Generator {
 		}
 		yMin = y + relYMin;
 		yMax = y + relYMax - 1 + relYMin;
-		switch (facing) {
+		switch(facing) {
 			case NORTH:
 				zMin = z - relZMax + 1 + relZMin;
 				zMax = z + relZMin;
@@ -292,7 +292,7 @@ public class FortressGenerator extends Generator {
 
 	private static void extendCorridorTCrossing(PieceInfo pieceInfo) {
 		int horOffset;
-		if (pieceInfo.facing == WEST || pieceInfo.facing == NORTH)
+		if(pieceInfo.facing == WEST || pieceInfo.facing == NORTH)
 			horOffset = 5;
 		else
 			horOffset = 1;
@@ -306,7 +306,7 @@ public class FortressGenerator extends Generator {
 	}
 
 	private static void extendForwards(PieceInfo pieceInfo, int horOffset, int vertOffset, boolean inCorridor) {
-		switch (pieceInfo.facing) {
+		switch(pieceInfo.facing) {
 			case NORTH:
 				extend(pieceInfo.xMin + horOffset, pieceInfo.yMin + vertOffset, pieceInfo.zMin - 1, pieceInfo.facing, pieceInfo.depth + 1, inCorridor);
 				break;
@@ -323,7 +323,7 @@ public class FortressGenerator extends Generator {
 	}
 
 	private static void extendLeft(PieceInfo pieceInfo, int horOffset, int vertOffset, boolean inCorridor) {
-		switch (pieceInfo.facing) {
+		switch(pieceInfo.facing) {
 			case NORTH:
 			case SOUTH:
 				extend(pieceInfo.xMin - 1, pieceInfo.yMin + vertOffset, pieceInfo.zMin + horOffset, WEST, pieceInfo.depth + 1, inCorridor);
@@ -336,7 +336,7 @@ public class FortressGenerator extends Generator {
 	}
 
 	private static void extendRight(PieceInfo pieceInfo, int horOffset, int vertOffset, boolean inCorridor) {
-		switch (pieceInfo.facing) {
+		switch(pieceInfo.facing) {
 			case NORTH:
 			case SOUTH:
 				extend(pieceInfo.xMax + 1, pieceInfo.yMin + vertOffset, pieceInfo.zMin + horOffset, EAST, pieceInfo.depth + 1, inCorridor);
@@ -349,13 +349,13 @@ public class FortressGenerator extends Generator {
 	}
 
 	private static void extend(int x, int y, int z, int facing, int depth, boolean inCorridor) {
-		if (Math.abs(x - start.xMin) <= 112 && Math.abs(z - start.zMin) <= 112) {
+		if(Math.abs(x - start.xMin) <= 112 && Math.abs(z - start.zMin) <= 112) {
 			int first;
 			int pieceCount;
 			int[] weights;
 			int[] maxs;
 			boolean[] allowConsecutives;
-			if (inCorridor) {
+			if(inCorridor) {
 				first = CORRIDOR_FIRST;
 				pieceCount = CORRIDOR_PIECES_COUNT;
 				weights = CORRIDOR_WEIGHTS;
@@ -371,25 +371,25 @@ public class FortressGenerator extends Generator {
 
 			boolean anyValid = false;
 			int totalWeight = 0;
-			for (int i = 0; i < pieceCount; i++) {
-				if (maxs[i] > 0 && placements[first + i].size() >= maxs[i])
+			for(int i = 0; i < pieceCount; i++) {
+				if(maxs[i] > 0 && placements[first + i].size() >= maxs[i])
 					continue;
-				if (maxs[i] > 0)
+				if(maxs[i] > 0)
 					anyValid = true;
 				totalWeight += weights[i];
 			}
-			if (anyValid && totalWeight > 0 && depth <= 30) {
+			if(anyValid && totalWeight > 0 && depth <= 30) {
 
 				int tries = 0;
-				while (tries < 5) {
+				while(tries < 5) {
 					tries++;
 					int n = rand.nextInt(totalWeight);
-					for (int i = 0; i < pieceCount; i++) {
-						if (maxs[i] > 0 && placements[first + i].size() >= maxs[i])
+					for(int i = 0; i < pieceCount; i++) {
+						if(maxs[i] > 0 && placements[first + i].size() >= maxs[i])
 							continue;
 						n -= weights[i];
-						if (n < 0) {
-							if (lastPlaced == first + i && !allowConsecutives[i]) {
+						if(n < 0) {
+							if(lastPlaced == first + i && !allowConsecutives[i]) {
 
 								break;
 
@@ -399,7 +399,7 @@ public class FortressGenerator extends Generator {
 							Creator creator = CREATORS[first + i];
 							System.out.println("Creating fortress piece " + (first + i) + " at (" + x + ", " + y + ", " + z + ") facing " + facing + " with depth " + depth + " queue size: " + pieceQueue.size() + " last placed: " + lastPlaced);
 							PieceInfo pieceInfo = creator.create(x, y, z, depth, facing);
-							if (!intersectsAny(pieceInfo.xMin, pieceInfo.yMin, pieceInfo.zMin, pieceInfo.xMax, pieceInfo.yMax, pieceInfo.zMax)) {
+							if(!intersectsAny(pieceInfo.xMin, pieceInfo.yMin, pieceInfo.zMin, pieceInfo.xMax, pieceInfo.yMax, pieceInfo.zMax)) {
 								POST_CREATORS[first + i].run();
 								lastPlaced = first + i;
 
@@ -414,7 +414,7 @@ public class FortressGenerator extends Generator {
 			}
 		}
 		PieceInfo pieceInfo = createEnd(x, y, z, depth, facing);
-		if (!intersectsAny(pieceInfo.xMin, pieceInfo.yMin, pieceInfo.zMin, pieceInfo.xMax, pieceInfo.yMax, pieceInfo.zMax)) {
+		if(!intersectsAny(pieceInfo.xMin, pieceInfo.yMin, pieceInfo.zMin, pieceInfo.xMax, pieceInfo.yMax, pieceInfo.zMax)) {
 			rand.nextInt();
 			placements[END].add(pieceInfo);
 			pieceQueue.add(pieceInfo);
@@ -422,9 +422,9 @@ public class FortressGenerator extends Generator {
 	}
 
 	private static boolean intersectsAny(int xMin, int yMin, int zMin, int xMax, int yMax, int zMax) {
-		for (List<PieceInfo> pieceInfoList : placements) {
-			for (PieceInfo pieceInfo : pieceInfoList) {
-				if (pieceInfo.xMin <= xMax && pieceInfo.xMax >= xMin && pieceInfo.zMin <= zMax && pieceInfo.zMax >= zMin && pieceInfo.yMin <= yMax && pieceInfo.yMax >= yMin)
+		for(List<PieceInfo> pieceInfoList : placements) {
+			for(PieceInfo pieceInfo : pieceInfoList) {
+				if(pieceInfo.xMin <= xMax && pieceInfo.xMax >= xMin && pieceInfo.zMin <= zMax && pieceInfo.zMax >= zMin && pieceInfo.yMin <= yMax && pieceInfo.yMax >= yMin)
 					return true;
 			}
 		}

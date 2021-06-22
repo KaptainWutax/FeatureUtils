@@ -23,7 +23,7 @@ public class EffectFunction implements LootFunction {
 
 	@SafeVarargs
 	public EffectFunction(Pair<Effect, UniformRoll>... effects) {
-		for (Pair<Effect, UniformRoll> effect : effects) {
+		for(Pair<Effect, UniformRoll> effect : effects) {
 			this.apply(effect);
 		}
 	}
@@ -34,8 +34,8 @@ public class EffectFunction implements LootFunction {
 
 	public static <T> T nthElement(Iterable<T> data, int n) {
 		int index = 0;
-		for (T element : data) {
-			if (index == n) {
+		for(T element : data) {
+			if(index == n) {
 				return element;
 			}
 			index++;
@@ -61,13 +61,13 @@ public class EffectFunction implements LootFunction {
 	@Override
 	public ItemStack process(ItemStack baseStack, LootContext context) {
 		Item newItem = new Item(baseStack.getItem().getName());
-		if (newItem.getName().equals(Items.SUSPICIOUS_STEW.getName()) && !this.getEffects().isEmpty()) {
+		if(newItem.getName().equals(Items.SUSPICIOUS_STEW.getName()) && !this.getEffects().isEmpty()) {
 			int i = context.nextInt(this.getEffects().size());
 			Map.Entry<Effect, UniformRoll> entry = nthElement(this.getEffects().entrySet(), i); // mojang why? (this is not ordered so we hardcoded the order...
 			assert entry != null;
 			Effect effect = entry.getKey();
 			int duration = entry.getValue().getCount(context);
-			if (!effect.isInstantenous()) {
+			if(!effect.isInstantenous()) {
 				duration *= 20;
 			}
 			newItem.addEffect(new Pair<>(effect, duration));

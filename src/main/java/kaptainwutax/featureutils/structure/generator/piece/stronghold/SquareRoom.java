@@ -37,7 +37,7 @@ public class SquareRoom extends Stronghold.Piece {
 		// door not random
 		// 3 not random
 		// tons of calls
-		if (type == 2) {
+		if(type == 2) {
 			// tons of calls
 			skipForChest(rand, 3, 4, 8);
 		}

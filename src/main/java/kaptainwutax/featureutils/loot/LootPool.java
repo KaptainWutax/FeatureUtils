@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 public class LootPool extends LootGenerator {
 
@@ -30,16 +29,16 @@ public class LootPool extends LootGenerator {
 		return this;
 	}
 
-	public LootPool apply(MCVersion version){
-		this.lootEntries=Arrays.stream(lootEntries).filter(lootEntry -> {
+	public LootPool apply(MCVersion version) {
+		this.lootEntries = Arrays.stream(lootEntries).filter(lootEntry -> {
 			// remove the entry if it was not yet introduced yet (so older and not equal to the introduced version)
-			if (lootEntry.introducedVersion!=null){
-				if (version.isOlderThan(lootEntry.introducedVersion)){
+			if(lootEntry.introducedVersion != null) {
+				if(version.isOlderThan(lootEntry.introducedVersion)) {
 					return false;
 				}
 			}
 			// remove all newer version (or equal) to the deprecation
-			if (lootEntry.deprecatedVersion!=null){
+			if(lootEntry.deprecatedVersion != null) {
 				return !version.isNewerOrEqualTo(lootEntry.deprecatedVersion);
 			}
 			return true;
@@ -53,13 +52,13 @@ public class LootPool extends LootGenerator {
 
 		int rolls = this.rolls.getCount(context) + MathHelper.floor(this.bonusRolls.getFloat(context) * context.getLuck());
 
-		for (int i = 0; i < rolls; i++) {
+		for(int i = 0; i < rolls; i++) {
 			this.generatePool(context, stackConsumer);
 		}
 	}
 
 	private void generatePool(LootContext context, Consumer<ItemStack> stackConsumer) {
-		if (context.getVersion().isNewerOrEqualTo(MCVersion.v1_14)) {
+		if(context.getVersion().isNewerOrEqualTo(MCVersion.v1_14)) {
 			// unchecked for 1.14 and 1.15 (1.16 seems right)
 			generatePool14(context, stackConsumer);
 		} else {
@@ -70,20 +69,20 @@ public class LootPool extends LootGenerator {
 	private void generatePool13(LootContext context, Consumer<ItemStack> stackConsumer) {
 		int totalWeight = 0;
 		List<LootEntry> entries = new ArrayList<>();
-		for (LootEntry lootEntry : this.lootEntries) {
+		for(LootEntry lootEntry : this.lootEntries) {
 			// we assume no conditions here
 			int weight = lootEntry.getEffectiveWeight(context);
-			if (weight > 0) {
+			if(weight > 0) {
 				entries.add(lootEntry);
 				totalWeight += weight;
 			}
 		}
 
-		if (totalWeight != 0 && !entries.isEmpty()) {
+		if(totalWeight != 0 && !entries.isEmpty()) {
 			int count = context.nextInt(totalWeight);
-			for (LootEntry entry : entries) {
+			for(LootEntry entry : entries) {
 				count -= entry.getEffectiveWeight(context);
-				if (count < 0) {
+				if(count < 0) {
 					entry.generate(context, stackConsumer);
 					return;
 				}
@@ -93,11 +92,11 @@ public class LootPool extends LootGenerator {
 
 	private void generatePool14(LootContext context, Consumer<ItemStack> stackConsumer) {
 		int totalWeight = 0;
-		for (LootEntry lootEntry : this.lootEntries) {
+		for(LootEntry lootEntry : this.lootEntries) {
 			totalWeight += lootEntry.getEffectiveWeight(context);
 		}
 
-		if (this.lootEntries.length == 1) {
+		if(this.lootEntries.length == 1) {
 			this.lootEntries[0].generate(context, stackConsumer);
 			return;
 		}
@@ -105,13 +104,13 @@ public class LootPool extends LootGenerator {
 		int i = context.nextInt(totalWeight);
 		LootEntry pickedEntry = null;
 
-		for (LootEntry lootEntry : this.lootEntries) {
+		for(LootEntry lootEntry : this.lootEntries) {
 			pickedEntry = lootEntry;
 			i -= lootEntry.getWeight(context);
-			if (i < 0) break;
+			if(i < 0) break;
 		}
 
-		if (pickedEntry != null) {
+		if(pickedEntry != null) {
 			pickedEntry.generate(context, stackConsumer);
 		}
 	}

@@ -13,9 +13,9 @@ import kaptainwutax.mcutils.version.VersionMap;
 
 public class Shipwreck extends UniformStructure<Shipwreck> implements ILoot {
 	public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
-			.add(MCVersion.v1_13, new RegionStructure.Config(15, 8, 165745295))
-			.add(MCVersion.v1_13_1, new RegionStructure.Config(16, 8, 165745295))
-			.add(MCVersion.v1_16, new RegionStructure.Config(24, 4, 165745295));
+		.add(MCVersion.v1_13, new RegionStructure.Config(15, 8, 165745295))
+		.add(MCVersion.v1_13_1, new RegionStructure.Config(16, 8, 165745295))
+		.add(MCVersion.v1_16, new RegionStructure.Config(24, 4, 165745295));
 
 
 	public Shipwreck(MCVersion version) {
@@ -36,8 +36,8 @@ public class Shipwreck extends UniformStructure<Shipwreck> implements ILoot {
 	}
 
 	@Override
-  public Dimension getValidDimension() {
-		return  Dimension.OVERWORLD;
+	public Dimension getValidDimension() {
+		return Dimension.OVERWORLD;
 	}
 
 	@Override
@@ -58,8 +58,8 @@ public class Shipwreck extends UniformStructure<Shipwreck> implements ILoot {
 	@Override
 	public SpecificCalls getSpecificCalls() {
 		return (generator, rand) -> {
-			if (isCorrectGenerator(generator)) {
-				if (((ShipwreckGenerator) generator).isBeached()) {
+			if(isCorrectGenerator(generator)) {
+				if(((ShipwreckGenerator)generator).isBeached()) {
 					rand.nextInt(3);
 				}
 			}

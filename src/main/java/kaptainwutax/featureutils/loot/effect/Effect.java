@@ -32,13 +32,13 @@ public class Effect {
 	}
 
 	public String getDescription() {
-		if (this.description == null) {
+		if(this.description == null) {
 			this.description = Effects.getEffects().entrySet().stream()
-					.filter(e -> e.getValue().equals(this))
-					.map(Map.Entry::getKey)
-					.map(Pair::getSecond)
-					.findFirst()
-					.orElse(null);
+				.filter(e -> e.getValue().equals(this))
+				.map(Map.Entry::getKey)
+				.map(Pair::getSecond)
+				.findFirst()
+				.orElse(null);
 		}
 		return this.description;
 	}
@@ -56,9 +56,9 @@ public class Effect {
 	@Override
 	public String toString() {
 		return "Effect{" +
-				"category=" + category +
-				", description='" + getDescription() + '\'' +
-				'}';
+			"category=" + category +
+			", description='" + getDescription() + '\'' +
+			'}';
 	}
 
 	public enum EffectType {

@@ -16,7 +16,7 @@ import java.util.List;
 public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 
 	public static final VersionMap<OldStructure.Config> CONFIGS = new VersionMap<OldStructure.Config>()
-			.add(MCVersion.v1_14, new OldStructure.Config(165745296));
+		.add(MCVersion.v1_14, new OldStructure.Config(165745296));
 
 	private final Village village;
 
@@ -43,14 +43,14 @@ public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 
 	@Override
 	public boolean canStart(Data<PillagerOutpost> data, long structureSeed, ChunkRand rand) {
-		if (!super.canStart(data, structureSeed, rand)) return false;
+		if(!super.canStart(data, structureSeed, rand)) return false;
 		rand.setWeakSeed(structureSeed, data.chunkX, data.chunkZ, this.getVersion());
 		rand.nextInt(); //Why? No one knows...
-		if (rand.nextInt(5) != 0) return false;
+		if(rand.nextInt(5) != 0) return false;
 
 		//In older versions, the nearby village checks also
 		// ran biome check so we have to ignore it here.
-		if (this.getVersion().isOlderThan(MCVersion.v1_16)) {
+		if(this.getVersion().isOlderThan(MCVersion.v1_16)) {
 			return true;
 		}
 
@@ -62,11 +62,11 @@ public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 		CPos chunkPos = super.getInRegion(structureSeed, regionX, regionZ, rand);
 		rand.setWeakSeed(structureSeed, chunkPos.getX(), chunkPos.getZ(), this.getVersion());
 		rand.nextInt();
-		if (rand.nextInt(5) != 0) return null;
+		if(rand.nextInt(5) != 0) return null;
 
 		//In older versions, the nearby village checks also
 		// ran biome check so we have to ignore it here.
-		if (this.getVersion().isOlderThan(MCVersion.v1_16)) {
+		if(this.getVersion().isOlderThan(MCVersion.v1_16)) {
 			return chunkPos;
 		}
 
@@ -75,12 +75,12 @@ public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 
 	@Override
 	public boolean canSpawn(int chunkX, int chunkZ, BiomeSource source) {
-		if (!super.canSpawn(chunkX, chunkZ, source)) return false;
+		if(!super.canSpawn(chunkX, chunkZ, source)) return false;
 
 		//Let's do the biome checks here.
-		if (this.getVersion().isOlderThan(MCVersion.v1_16)) {
-			for (CPos nearbyVillage : this.getNearbyVillages(source.getWorldSeed(), chunkX, chunkZ, new ChunkRand())) {
-				if (this.village.canSpawn(nearbyVillage.getX(), nearbyVillage.getZ(), source)) return false;
+		if(this.getVersion().isOlderThan(MCVersion.v1_16)) {
+			for(CPos nearbyVillage : this.getNearbyVillages(source.getWorldSeed(), chunkX, chunkZ, new ChunkRand())) {
+				if(this.village.canSpawn(nearbyVillage.getX(), nearbyVillage.getZ(), source)) return false;
 			}
 		}
 
@@ -88,14 +88,14 @@ public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 	}
 
 	@Override
-  public Dimension getValidDimension() {
-		return  Dimension.OVERWORLD;
+	public Dimension getValidDimension() {
+		return Dimension.OVERWORLD;
 	}
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
 		return biome == Biomes.PLAINS || biome == Biomes.DESERT || biome == Biomes.SAVANNA
-				|| biome == Biomes.TAIGA || biome == Biomes.SNOWY_TUNDRA;
+			|| biome == Biomes.TAIGA || biome == Biomes.SNOWY_TUNDRA;
 	}
 
 	public boolean hasNearbyVillage(long structureSeed, int chunkX, int chunkZ, ChunkRand rand) {
@@ -106,27 +106,27 @@ public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 
 		CPos villagePos = this.village.getInRegion(structureSeed, nw.regionX, nw.regionZ, rand);
 
-		if (villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
+		if(villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
 			return true;
 		}
 
 		//The area is contained within one region.
-		if (nw.regionX == se.regionX && nw.regionZ == se.regionZ) {
+		if(nw.regionX == se.regionX && nw.regionZ == se.regionZ) {
 			return false;
 		}
 
 		//The area intersects 4 regions.
-		if (nw.regionX != se.regionX && nw.regionZ != se.regionZ) {
+		if(nw.regionX != se.regionX && nw.regionZ != se.regionZ) {
 			villagePos = this.village.getInRegion(structureSeed, se.regionX, se.regionZ, rand);
 
-			if (villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
+			if(villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
 				return true;
 			}
 
 			Data<?> sw = this.village.at(chunkX - 10, chunkZ + 10);
 			villagePos = this.village.getInRegion(structureSeed, sw.regionX, sw.regionZ, rand);
 
-			if (villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
+			if(villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
 				return true;
 			}
 
@@ -149,34 +149,34 @@ public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 
 		CPos villagePos = this.village.getInRegion(structureSeed, nw.regionX, nw.regionZ, rand);
 
-		if (villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
+		if(villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
 			villages.add(villagePos);
 		}
 
 		//The area is contained within one region.
-		if (nw.regionX == se.regionX && nw.regionZ == se.regionZ) {
+		if(nw.regionX == se.regionX && nw.regionZ == se.regionZ) {
 			return villages;
 		}
 
 		//The area intersects 4 regions.
-		if (nw.regionX != se.regionX && nw.regionZ != se.regionZ) {
+		if(nw.regionX != se.regionX && nw.regionZ != se.regionZ) {
 			villagePos = this.village.getInRegion(structureSeed, se.regionX, se.regionZ, rand);
 
-			if (villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
+			if(villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
 				villages.add(villagePos);
 			}
 
 			Data<?> sw = this.village.at(chunkX - 10, chunkZ + 10);
 			villagePos = this.village.getInRegion(structureSeed, sw.regionX, sw.regionZ, rand);
 
-			if (villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
+			if(villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
 				villages.add(villagePos);
 			}
 
 			Data<?> ne = this.village.at(chunkX + 10, chunkZ - 10);
 			villagePos = this.village.getInRegion(structureSeed, ne.regionX, ne.regionZ, rand);
 
-			if (villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
+			if(villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
 				villages.add(villagePos);
 			}
 
@@ -186,7 +186,7 @@ public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 		//The area intersects 2 regions.
 		villagePos = this.village.getInRegion(structureSeed, se.regionX, se.regionZ, rand);
 
-		if (villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
+		if(villagePos != null && villagePos.distanceTo(outpostPos, DistanceMetric.CHEBYSHEV) <= 10) {
 			villages.add(villagePos);
 		}
 
@@ -195,9 +195,9 @@ public class PillagerOutpost extends OldStructure<PillagerOutpost> {
 
 	//More user friendly code (also about 150 times slower than the optimized version above)
 	public boolean hasNearbyVillageNaive(long structureSeed, int chunkX, int chunkZ, ChunkRand rand) {
-		for (int z = chunkZ - 10; z <= chunkZ + 10; ++z) {
-			for (int x = chunkX - 10; x <= chunkX + 10; ++x) {
-				if (this.village.at(x, z).testStart(structureSeed, rand)) {
+		for(int z = chunkZ - 10; z <= chunkZ + 10; ++z) {
+			for(int x = chunkX - 10; x <= chunkX + 10; ++x) {
+				if(this.village.at(x, z).testStart(structureSeed, rand)) {
 					return true;
 				}
 			}

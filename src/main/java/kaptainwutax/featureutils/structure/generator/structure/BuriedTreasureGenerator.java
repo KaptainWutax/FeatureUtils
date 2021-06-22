@@ -49,9 +49,9 @@ public class BuriedTreasureGenerator extends Generator {
 		public final LootTable lootTable;
 		public final ChestContent.ChestType chestType;
 
-		LootType(LootTable lootTable,ChestContent.ChestType chestType) {
+		LootType(LootTable lootTable, ChestContent.ChestType chestType) {
 			this.lootTable = lootTable;
-			this.chestType=chestType;
+			this.chestType = chestType;
 		}
 
 		@Override

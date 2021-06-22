@@ -17,9 +17,9 @@ public class ItemStack {
 	}
 
 	public boolean isEmpty() {
-		if (this == EMPTY) {
+		if(this == EMPTY) {
 			return true;
-		} else if (this.getItem() != null && this.getItem() != Items.AIR) {
+		} else if(this.getItem() != null && this.getItem() != Items.AIR) {
 			return this.count <= 0;
 		} else {
 			return true;
@@ -49,16 +49,16 @@ public class ItemStack {
 	@Override
 	public String toString() {
 		return "ItemStack{" +
-				"item=" + item +
-				", count=" + count +
-				'}';
+			"item=" + item +
+			", count=" + count +
+			'}';
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof ItemStack)) return false;
-		ItemStack itemStack = (ItemStack) o;
+		if(this == o) return true;
+		if(!(o instanceof ItemStack)) return false;
+		ItemStack itemStack = (ItemStack)o;
 		return count == itemStack.count && Objects.equals(item, itemStack.item);
 	}
 

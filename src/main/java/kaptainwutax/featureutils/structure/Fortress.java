@@ -13,10 +13,10 @@ import kaptainwutax.mcutils.version.VersionMap;
 public class Fortress extends UniformStructure<Fortress> {
 
 	public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
-			//This is there as reference, it doesn't actually use regions prior to 1.16.
-			.add(MCVersion.v1_8, new RegionStructure.Config(16, 8, -1))
-			.add(MCVersion.v1_16, new RegionStructure.Config(30, 4, 30084232))
-			.add(MCVersion.v1_16_1, new RegionStructure.Config(27, 4, 30084232));
+		//This is there as reference, it doesn't actually use regions prior to 1.16.
+		.add(MCVersion.v1_8, new RegionStructure.Config(16, 8, -1))
+		.add(MCVersion.v1_16, new RegionStructure.Config(30, 4, 30084232))
+		.add(MCVersion.v1_16_1, new RegionStructure.Config(27, 4, 30084232));
 
 	public Fortress(MCVersion version) {
 		super(CONFIGS.getAsOf(version), version);
@@ -25,7 +25,7 @@ public class Fortress extends UniformStructure<Fortress> {
 	public Fortress(RegionStructure.Config config, MCVersion version) {
 		super(config, version);
 
-		if (this.getVersion().isOlderThan(MCVersion.v1_16)) {
+		if(this.getVersion().isOlderThan(MCVersion.v1_16)) {
 			throw new UnsupportedVersion(this.getVersion(), "fortress regions");
 		}
 	}
@@ -36,12 +36,12 @@ public class Fortress extends UniformStructure<Fortress> {
 
 	@Override
 	public boolean canStart(Data<Fortress> data, long structureSeed, ChunkRand rand) {
-		if (this.getVersion().isOlderThan(MCVersion.v1_16)) {
+		if(this.getVersion().isOlderThan(MCVersion.v1_16)) {
 			rand.setWeakSeed(structureSeed, data.chunkX, data.chunkZ, this.getVersion());
 			rand.nextInt();
-			if (rand.nextInt(3) != 0) return false;
-			if (data.chunkX != (data.chunkX & ~15) + rand.nextInt(8) + 4) return false;
-			if (data.chunkZ != (data.chunkZ & ~15) + rand.nextInt(8) + 4) return false;
+			if(rand.nextInt(3) != 0) return false;
+			if(data.chunkX != (data.chunkX & ~15) + rand.nextInt(8) + 4) return false;
+			if(data.chunkZ != (data.chunkZ & ~15) + rand.nextInt(8) + 4) return false;
 			return true;
 		}
 
@@ -50,10 +50,10 @@ public class Fortress extends UniformStructure<Fortress> {
 
 	@Override
 	public CPos getInRegion(long structureSeed, int regionX, int regionZ, ChunkRand rand) {
-		if (this.getVersion().isOlderThan(MCVersion.v1_16)) {
+		if(this.getVersion().isOlderThan(MCVersion.v1_16)) {
 			rand.setWeakSeed(structureSeed, regionX << 4, regionZ << 4, this.getVersion());
 			rand.nextInt();
-			if (rand.nextInt(3) != 0) return null;
+			if(rand.nextInt(3) != 0) return null;
 			return new CPos((regionX << 4) + rand.nextInt(8) + 4, (regionZ << 4) + rand.nextInt(8) + 4);
 		}
 
@@ -66,18 +66,18 @@ public class Fortress extends UniformStructure<Fortress> {
 		int x = this.getVersion().isOlderThan(MCVersion.v1_16) ? (chunkX << 4) + 9 : (chunkX << 2) + 2;
 		int z = this.getVersion().isOlderThan(MCVersion.v1_16) ? (chunkZ << 4) + 9 : (chunkZ << 2) + 2;
 		return this.isValidBiome(this.getVersion().isOlderThan(MCVersion.v1_16)
-				? source.getBiome(x, 0, z) : source.getBiomeForNoiseGen(x, 0, z));
+			? source.getBiome(x, 0, z) : source.getBiomeForNoiseGen(x, 0, z));
 	}
 
 	@Override
-  public Dimension getValidDimension() {
-		return  Dimension.NETHER;
+	public Dimension getValidDimension() {
+		return Dimension.NETHER;
 	}
 
 	@Override
 	public boolean isValidBiome(Biome biome) {
 		return biome == Biomes.BASALT_DELTAS || biome == Biomes.CRIMSON_FOREST || biome == Biomes.NETHER_WASTES
-				|| biome == Biomes.SOUL_SAND_VALLEY || biome == Biomes.WARPED_FOREST;
+			|| biome == Biomes.SOUL_SAND_VALLEY || biome == Biomes.WARPED_FOREST;
 	}
 
 }

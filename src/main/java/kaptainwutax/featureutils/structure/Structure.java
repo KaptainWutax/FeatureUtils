@@ -68,7 +68,7 @@ public abstract class Structure<C extends Feature.Config, D extends Feature.Data
 	}
 
 	public boolean canSpawn(int chunkX, int chunkZ, BiomeSource source) {
-		if (this.getVersion().isOlderThan(MCVersion.v1_16)) {
+		if(this.getVersion().isOlderThan(MCVersion.v1_16)) {
 			this.biome = source.getBiome((chunkX << 4) + 9, 0, (chunkZ << 4) + 9);
 		} else {
 			this.biome = source.getBiomeForNoiseGen((chunkX << 2) + 2, 0, (chunkZ << 2) + 2);

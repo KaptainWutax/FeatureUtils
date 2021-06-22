@@ -12,8 +12,8 @@ public abstract class LootEntry extends LootGenerator {
 
 	public final int weight;
 	public final int quality;
-	public MCVersion introducedVersion=null;
-	public MCVersion deprecatedVersion=null;
+	public MCVersion introducedVersion = null;
+	public MCVersion deprecatedVersion = null;
 
 	public LootEntry() {
 		this(1);
@@ -28,13 +28,13 @@ public abstract class LootEntry extends LootGenerator {
 		this.quality = quality;
 	}
 
-	public LootEntry introducedVersion(MCVersion version){
-		introducedVersion=version;
+	public LootEntry introducedVersion(MCVersion version) {
+		introducedVersion = version;
 		return this;
 	}
 
-	public LootEntry deprecatedVersion(MCVersion version){
-		deprecatedVersion=version;
+	public LootEntry deprecatedVersion(MCVersion version) {
+		deprecatedVersion = version;
 		return this;
 	}
 
@@ -43,7 +43,7 @@ public abstract class LootEntry extends LootGenerator {
 	}
 
 	public int getEffectiveWeight(LootContext context) {
-		return Math.max(MathHelper.floor((float) this.weight + (float) this.quality * context.getLuck()), 0);
+		return Math.max(MathHelper.floor((float)this.weight + (float)this.quality * context.getLuck()), 0);
 	}
 
 	public LootEntry apply(LootFunction... lootFunctions) {

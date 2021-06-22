@@ -54,29 +54,29 @@ public class Item {
 	@Override
 	public String toString() {
 		return "Item{" +
-				"name='" + name + '\'' +
-				", enchantments=" + enchantments +
-				", effects=" + effects +
-				'}';
+			"name='" + name + '\'' +
+			", enchantments=" + enchantments +
+			", effects=" + effects +
+			'}';
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Item)) return false;
-		Item item = (Item) o;
+		if(this == o) return true;
+		if(!(o instanceof Item)) return false;
+		Item item = (Item)o;
 
 		boolean sameEnchantment = item.enchantments.size() == this.enchantments.size();
-		for (Pair<String, Integer> enchantment : this.enchantments) {
-			if (!item.enchantments.contains(enchantment)) {
+		for(Pair<String, Integer> enchantment : this.enchantments) {
+			if(!item.enchantments.contains(enchantment)) {
 				sameEnchantment = false;
 				break;
 			}
 		}
 
 		boolean sameEffect = item.effects.size() == this.effects.size();
-		for (Pair<Effect, Integer> effect : this.effects) {
-			if (!item.effects.contains(effect)) {
+		for(Pair<Effect, Integer> effect : this.effects) {
+			if(!item.effects.contains(effect)) {
 				sameEffect = false;
 				break;
 			}

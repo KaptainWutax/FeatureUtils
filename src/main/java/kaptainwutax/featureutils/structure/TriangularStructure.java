@@ -25,7 +25,7 @@ public abstract class TriangularStructure<T extends TriangularStructure<T>> exte
 	public boolean canStart(Data<T> data, long structureSeed, ChunkRand rand) {
 		rand.setSeed(data.baseRegionSeed + structureSeed);
 		return (rand.nextInt(this.peak) + rand.nextInt(this.peak)) / 2 == data.offsetX
-				&& (rand.nextInt(this.peak) + rand.nextInt(this.peak)) / 2 == data.offsetZ;
+			&& (rand.nextInt(this.peak) + rand.nextInt(this.peak)) / 2 == data.offsetZ;
 	}
 
 	@Override
@@ -33,8 +33,8 @@ public abstract class TriangularStructure<T extends TriangularStructure<T>> exte
 		rand.setRegionSeed(structureSeed, regionX, regionZ, this.getSalt(), this.getVersion());
 
 		return new CPos(
-				regionX * this.getSpacing() + (rand.nextInt(this.peak) + rand.nextInt(this.peak)) / 2,
-				regionZ * this.getSpacing() + (rand.nextInt(this.peak) + rand.nextInt(this.peak)) / 2
+			regionX * this.getSpacing() + (rand.nextInt(this.peak) + rand.nextInt(this.peak)) / 2,
+			regionZ * this.getSpacing() + (rand.nextInt(this.peak) + rand.nextInt(this.peak)) / 2
 		);
 	}
 

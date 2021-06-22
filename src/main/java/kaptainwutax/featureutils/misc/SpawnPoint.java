@@ -2,54 +2,60 @@ package kaptainwutax.featureutils.misc;
 
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
+import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.biomeutils.source.OverworldBiomeSource;
+import kaptainwutax.featureutils.Feature;
 import kaptainwutax.mcutils.block.Block;
 import kaptainwutax.mcutils.block.Blocks;
+import kaptainwutax.mcutils.rand.ChunkRand;
+import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.version.MCVersion;
-import kaptainwutax.mcutils.version.UnsupportedVersion;
 import kaptainwutax.seedutils.rand.JRand;
+import kaptainwutax.terrainutils.TerrainGenerator;
 import kaptainwutax.terrainutils.terrain.OverworldTerrainGenerator;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class SpawnPoint {
-	public static final List<Biome> SPAWN_BIOMES = Arrays.asList( Biomes.PLAINS,Biomes.SUNFLOWER_PLAINS, Biomes.TAIGA, Biomes.TAIGA_HILLS,Biomes.FOREST, Biomes.WOODED_HILLS, Biomes.JUNGLE, Biomes.JUNGLE_HILLS);
-	public static final List<Block> SPAWN_BLOCKS = Arrays.asList(Blocks.GRASS_BLOCK,Blocks.PODZOL); // PODZOL doesn't matter cause pregen but whatever
-	private final OverworldTerrainGenerator generator;
+public class SpawnPoint extends Feature<Feature.Config, SpawnPoint.Data> {
+	public static final List<Biome> SPAWN_BIOMES = Arrays.asList(Biomes.PLAINS, Biomes.SUNFLOWER_PLAINS, Biomes.TAIGA, Biomes.TAIGA_HILLS, Biomes.FOREST, Biomes.WOODED_HILLS, Biomes.JUNGLE, Biomes.JUNGLE_HILLS);
+	public static final List<Block> SPAWN_BLOCKS = Arrays.asList(Blocks.GRASS_BLOCK, Blocks.PODZOL); // PODZOL doesn't matter cause pregen but whatever
+
 // TODO surface noise in NoiseChunkGenerator for GIANT TAIGA (boring)
-	public SpawnPoint(OverworldTerrainGenerator generator){
-		this.generator =generator;
+
+	public SpawnPoint() {
+		super(new Config(), null);
 	}
 
-	public static BPos getSpawnPoint(OverworldTerrainGenerator generator){
-		return new SpawnPoint(generator).getSpawnPoint();
+	public static String name() {
+		return "spawn";
 	}
 
-	public BPos getSpawnPoint() {
-		return this.getSpawnPoint(SPAWN_BIOMES,true);
+
+	public BPos getSpawnPoint(OverworldTerrainGenerator generator) {
+		return this.getSpawnPoint(generator, SPAWN_BIOMES, true);
 	}
 
-	public BPos getApproximateSpawnPoint() {
-		return this.getSpawnPoint(SPAWN_BIOMES,false);
+	public BPos getApproximateSpawnPoint(OverworldTerrainGenerator generator) {
+		return this.getSpawnPoint(generator, SPAWN_BIOMES, false);
 	}
 
-	public BPos getSpawnPoint(Collection<Biome> spawnBiomes,boolean trueSpawn) {
+	public BPos getSpawnPoint(OverworldTerrainGenerator generator, Collection<Biome> spawnBiomes, boolean trueSpawn) {
 		if(this.getVersion().isOlderThan(MCVersion.v1_13)) {
-			return getSpawnPoint12(spawnBiomes, false);
+			return getSpawnPoint12(generator, spawnBiomes, false);
 		}
-		JRand rand = new JRand(this.getWorldSeed());
-		BPos spawnPos = this.getSource().locateBiome(0, 0, 0, 256, spawnBiomes, rand);
+		JRand rand = new JRand(getWorldSeed(generator));
+		BPos spawnPos = getSource(generator).locateBiome(0, 0, 0, 256, spawnBiomes, rand);
 		return spawnPos == null ? new BPos(8, 0, 8) : spawnPos.add(8, 0, 8);
 	}
 
-	public OverworldBiomeSource getSource(){
-		return (OverworldBiomeSource) generator.getBiomeSource();
+	public static OverworldBiomeSource getSource(OverworldTerrainGenerator generator) {
+		return (OverworldBiomeSource)generator.getBiomeSource();
 	}
 
-	public double getGrassStats(Biome biome) {
+	public static double getGrassStats(Biome biome) {
 		if(Biomes.PLAINS.equals(biome)) {
 			return 1.0;
 		} else if(Biomes.MOUNTAINS.equals(biome)) {
@@ -106,30 +112,30 @@ public class SpawnPoint {
 		return 0;
 	}
 
-	public boolean isValidPos(int x, int z, boolean trueSpawn) {
+	public static boolean isValidPos(OverworldTerrainGenerator generator, int x, int z, boolean trueSpawn) {
 		// TODO tricky part, check biomes valid + gen terain == GRASS
 
 		// void check not usable
 		// for now lets just do the proba tables then we can move to full terrain for true spawn (see terrainUtils)
 		if(!trueSpawn) {
-			return getGrassStats(this.getSource().getBiome(x, 0, z)) >= 0.5;
+			return getGrassStats(getSource(generator).getBiome(x, 0, z)) >= 0.5;
 		} else {
 			return false;
 			//return generator.getFirstHeightInColumn()
 		}
 	}
 
-	public long getWorldSeed(){
-		return this.getSource().getWorldSeed();
+	public static long getWorldSeed(OverworldTerrainGenerator generator) {
+		return getSource(generator).getWorldSeed();
 	}
 
-	public MCVersion getVersion(){
-		return this.getSource().getVersion();
+	public static MCVersion getVersion(OverworldTerrainGenerator generator) {
+		return getSource(generator).getVersion();
 	}
 
-	public BPos getSpawnPoint12(Collection<Biome> spawnBiomes, boolean trueSpawn) {
-		JRand rand = new JRand(this.getWorldSeed());
-		BPos spawnPos = this.getSource().locateBiome12(0, 0, 256, spawnBiomes, rand);
+	public static BPos getSpawnPoint12(OverworldTerrainGenerator generator, Collection<Biome> spawnBiomes, boolean trueSpawn) {
+		JRand rand = new JRand(getWorldSeed(generator));
+		BPos spawnPos = getSource(generator).locateBiome12(0, 0, 256, spawnBiomes, rand);
 		int x = 8;
 		int z = 8;
 		if(spawnPos != null) {
@@ -138,7 +144,7 @@ public class SpawnPoint {
 		}
 		int counter = 0;
 		// wiggle
-		while(!isValidPos(x, z, trueSpawn)) {
+		while(!isValidPos(generator, x, z, trueSpawn)) {
 			x += rand.nextInt(64) - rand.nextInt(64);
 			z += rand.nextInt(64) - rand.nextInt(64);
 			++counter;
@@ -148,4 +154,50 @@ public class SpawnPoint {
 		}
 		return new BPos(x, 64, z);
 	}
+
+
+	@Override
+	public String getName() {
+		return name();
+	}
+
+	@Override
+	public boolean canStart(SpawnPoint.Data data, long structureSeed, ChunkRand rand) {
+		throw new UnsupportedOperationException("Spawn depends on biomes!");
+	}
+
+	@Override
+	public boolean canSpawn(SpawnPoint.Data data, BiomeSource source) {
+		if(source instanceof OverworldBiomeSource) {
+			Context context = this.getContext(source.getWorldSeed());
+			if(context.getGenerator() != null) {
+				BPos spawn = getSpawnPoint((OverworldTerrainGenerator)context.getGenerator());
+				return data.blockX == spawn.getX() && data.blockZ == spawn.getZ();
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean canGenerate(Data data, TerrainGenerator generator) {
+		return true;
+	}
+
+	@Override
+	public Dimension getValidDimension() {
+		return Dimension.OVERWORLD;
+	}
+
+	public static class Data extends Feature.Data<SpawnPoint> {
+		public final int blockX;
+		public final int blockZ;
+
+		public Data(SpawnPoint feature, int blockX, int blockZ) {
+			super(feature, blockX >> 4, blockZ >> 4);
+			this.blockX = blockX;
+			this.blockZ = blockZ;
+		}
+	}
+
 }

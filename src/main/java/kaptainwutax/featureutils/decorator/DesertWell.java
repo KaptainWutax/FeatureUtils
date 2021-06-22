@@ -11,8 +11,8 @@ import kaptainwutax.terrainutils.TerrainGenerator;
 public class DesertWell extends BiomelessDecorator<DesertWell.Config, DesertWell.Data> {
 
 	public static final VersionMap<DesertWell.Config> CONFIGS = new VersionMap<DesertWell.Config>()
-			.add(MCVersion.v1_13, new DesertWell.Config(3, 1, 0.001F))
-			.add(MCVersion.v1_16, new DesertWell.Config(4, 13, 0.001F));
+		.add(MCVersion.v1_13, new DesertWell.Config(3, 1, 0.001F))
+		.add(MCVersion.v1_16, new DesertWell.Config(4, 13, 0.001F));
 
 	public DesertWell(MCVersion version) {
 		super(CONFIGS.getAsOf(version), version);
@@ -38,9 +38,9 @@ public class DesertWell extends BiomelessDecorator<DesertWell.Config, DesertWell
 	@Override
 	public boolean canStart(DesertWell.Data data, long structureSeed, ChunkRand rand) {
 		super.canStart(data, structureSeed, rand);
-		if (rand.nextFloat() >= this.getChance()) return false;
-		if (rand.nextInt(16) != data.offsetX) return false;
-		if (rand.nextInt(16) != data.offsetZ) return false;
+		if(rand.nextFloat() >= this.getChance()) return false;
+		if(rand.nextInt(16) != data.offsetX) return false;
+		if(rand.nextInt(16) != data.offsetZ) return false;
 		return true;
 	}
 
@@ -50,8 +50,8 @@ public class DesertWell extends BiomelessDecorator<DesertWell.Config, DesertWell
 	}
 
 	@Override
-  public Dimension getValidDimension() {
-		return  Dimension.OVERWORLD;
+	public Dimension getValidDimension() {
+		return Dimension.OVERWORLD;
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class DesertWell extends BiomelessDecorator<DesertWell.Config, DesertWell
 	@Override
 	public Data getData(long structureSeed, int chunkX, int chunkZ, ChunkRand rand) {
 		this.setDecoratorSeed(structureSeed, chunkX, chunkZ, rand);
-		if (rand.nextFloat() >= this.getChance()) return null;
+		if(rand.nextFloat() >= this.getChance()) return null;
 		int blockX = (chunkX << 4) + rand.nextInt(16);
 		int blockZ = (chunkZ << 4) + rand.nextInt(16);
 		return new DesertWell.Data(this, blockX, blockZ);

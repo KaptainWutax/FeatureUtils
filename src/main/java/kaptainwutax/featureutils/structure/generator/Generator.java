@@ -33,8 +33,8 @@ public abstract class Generator {
 
 	public boolean generate(long worldSeed, Dimension dimension, int chunkX, int chunkZ) {
 		BiomeSource biomeSource = BiomeSource.of(dimension, this.getVersion(), worldSeed);
-		TerrainGenerator generator=TerrainGenerator.of(dimension,biomeSource);
-		return this.generate(generator,chunkX,chunkZ);
+		TerrainGenerator generator = TerrainGenerator.of(dimension, biomeSource);
+		return this.generate(generator, chunkX, chunkZ);
 	}
 
 	public boolean generate(TerrainGenerator generator, CPos cPos) {
@@ -61,6 +61,7 @@ public abstract class Generator {
 
 	public interface ILootType {
 		LootTable getLootTable(MCVersion version);
+
 		ChestContent.ChestType getChestType();
 	}
 
@@ -74,13 +75,13 @@ public abstract class Generator {
 	public Set<Item> getPossibleLootItems() {
 		Set<Item> items = new HashSet<>();
 		ILootType[] lootTypes = getLootTypes();
-		for (ILootType lootType : lootTypes) {
+		for(ILootType lootType : lootTypes) {
 			LootTable lootTable = lootType.getLootTable(this.getVersion());
-			if (lootTable != null) {
+			if(lootTable != null) {
 				items.addAll(Arrays.stream(lootTable.lootPools)
-						.map(e -> e.lootEntries).flatMap(Stream::of)
-						.filter(e -> e instanceof ItemEntry)
-						.map(e -> ((ItemEntry) e).item).collect(Collectors.toList()));
+					.map(e -> e.lootEntries).flatMap(Stream::of)
+					.filter(e -> e instanceof ItemEntry)
+					.map(e -> ((ItemEntry)e).item).collect(Collectors.toList()));
 			}
 
 		}

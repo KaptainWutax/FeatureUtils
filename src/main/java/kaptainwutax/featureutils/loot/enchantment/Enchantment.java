@@ -94,7 +94,7 @@ public class Enchantment {
 	}
 
 	public void setIsLowerThanMinCost(
-			BiPredicate<Integer, Integer> isLowerThanMinCost) {
+		BiPredicate<Integer, Integer> isLowerThanMinCost) {
 		this.isLowerThanMinCost = isLowerThanMinCost;
 	}
 
@@ -103,7 +103,7 @@ public class Enchantment {
 	}
 
 	public void setIsHigherThanMaxCost(
-			BiPredicate<Integer, Integer> isHigherThanMaxCost) {
+		BiPredicate<Integer, Integer> isHigherThanMaxCost) {
 		this.isHigherThanMaxCost = isHigherThanMaxCost;
 	}
 

@@ -6,7 +6,14 @@ import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.featureutils.loot.roll.UniformRoll;
 import kaptainwutax.mcutils.version.MCVersion;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -14,7 +21,7 @@ import java.util.stream.IntStream;
 public class LootTable extends LootGenerator {
 
 	public final LootPool[] lootPools;
-	private boolean hasVersionApplied=false;
+	private boolean hasVersionApplied = false;
 
 	public LootTable(LootPool... lootPools) {
 		this(Arrays.asList(lootPools), null);
@@ -25,11 +32,11 @@ public class LootTable extends LootGenerator {
 		this.apply(lootFunctions);
 	}
 
-	public LootTable apply(MCVersion version){
-		for (LootPool lootPool:this.lootPools){
+	public LootTable apply(MCVersion version) {
+		for(LootPool lootPool : this.lootPools) {
 			lootPool.apply(version);
 		}
-		hasVersionApplied=true;
+		hasVersionApplied = true;
 		return this;
 	}
 
@@ -39,28 +46,28 @@ public class LootTable extends LootGenerator {
 		List<ItemStack> list = new ArrayList<>();
 		Iterator<ItemStack> iterator = items.iterator();
 		int size = container.size();
-		while (iterator.hasNext()) {
+		while(iterator.hasNext()) {
 			ItemStack itemstack = iterator.next();
-			if (itemstack.isEmpty()) {
+			if(itemstack.isEmpty()) {
 				iterator.remove();
-			} else if (itemstack.getCount() > 1) {
+			} else if(itemstack.getCount() > 1) {
 				list.add(itemstack);
 				iterator.remove();
 			}
 		}
 
-		while (size - items.size() - list.size() > 0 && !list.isEmpty()) {
+		while(size - items.size() - list.size() > 0 && !list.isEmpty()) {
 			ItemStack itemstack2 = list.remove(new UniformRoll(0, list.size() - 1).getCount(context));
 			int half = (itemstack2.getCount() / 2);
 			int i = new UniformRoll(1, half).getCount(context);
 			ItemStack itemstack1 = itemstack2.split(i);
-			if (itemstack2.getCount() > 1 && context.nextBoolean()) {
+			if(itemstack2.getCount() > 1 && context.nextBoolean()) {
 				list.add(itemstack2);
 			} else {
 				items.add(itemstack2);
 			}
 
-			if (itemstack1.getCount() > 1 && context.nextBoolean()) {
+			if(itemstack1.getCount() > 1 && context.nextBoolean()) {
 				list.add(itemstack1);
 			} else {
 				items.add(itemstack1);
@@ -71,12 +78,12 @@ public class LootTable extends LootGenerator {
 		context.shuffle(items);
 		HashMap<Integer, ItemStack> positions = new HashMap<>();
 		int len = container.size();
-		for (ItemStack itemstack : items) {
-			if (container.isEmpty()) {
+		for(ItemStack itemstack : items) {
+			if(container.isEmpty()) {
 				return items; // that's an exception but better return something than nothing
 			}
 
-			if (itemstack.isEmpty()) {
+			if(itemstack.isEmpty()) {
 				positions.put(container.remove(container.size() - 1), ItemStack.EMPTY);
 			} else {
 				positions.put(container.remove(container.size() - 1), itemstack);
@@ -84,7 +91,7 @@ public class LootTable extends LootGenerator {
 		}
 
 		LinkedList<ItemStack> result = new LinkedList<>();
-		for (int i = 0; i < len; i++) {
+		for(int i = 0; i < len; i++) {
 			result.add(positions.getOrDefault(i, ItemStack.EMPTY));
 		}
 		return result;
@@ -97,14 +104,14 @@ public class LootTable extends LootGenerator {
 
 	@Override
 	public void generate(LootContext context, Consumer<ItemStack> stackConsumer) {
-		if (!hasVersionApplied){
-			System.err.println("Version was not applied, we default to latest "+MCVersion.latest());
+		if(!hasVersionApplied) {
+			System.err.println("Version was not applied, we default to latest " + MCVersion.latest());
 			this.apply(MCVersion.latest());
-			hasVersionApplied=true;
+			hasVersionApplied = true;
 		}
 		stackConsumer = LootFunction.stack(stackConsumer, this.combinedLootFunction, context);
 
-		for (LootPool lootPool : this.lootPools) {
+		for(LootPool lootPool : this.lootPools) {
 			lootPool.generate(context, stackConsumer);
 		}
 	}
@@ -124,7 +131,7 @@ public class LootTable extends LootGenerator {
 			itemCounts.put(stack.getItem(), oldCount + stack.getCount());
 		});
 
-		for (Map.Entry<Item, Integer> e : itemCounts.entrySet()) {
+		for(Map.Entry<Item, Integer> e : itemCounts.entrySet()) {
 			itemStacks.add(new ItemStack(e.getKey(), e.getValue()));
 		}
 

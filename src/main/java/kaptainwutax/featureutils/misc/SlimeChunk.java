@@ -11,7 +11,7 @@ import kaptainwutax.terrainutils.TerrainGenerator;
 public class SlimeChunk extends Feature<SlimeChunk.Config, SlimeChunk.Data> {
 
 	public static final VersionMap<SlimeChunk.Config> CONFIGS = new VersionMap<SlimeChunk.Config>()
-			.add(MCVersion.v1_8, new SlimeChunk.Config(10));
+		.add(MCVersion.v1_8, new SlimeChunk.Config(10));
 
 	public SlimeChunk(MCVersion version) {
 		this(CONFIGS.getAsOf(version), version);
@@ -51,8 +51,8 @@ public class SlimeChunk extends Feature<SlimeChunk.Config, SlimeChunk.Data> {
 	}
 
 	@Override
-  public Dimension getValidDimension() {
-		return  Dimension.OVERWORLD;
+	public Dimension getValidDimension() {
+		return Dimension.OVERWORLD;
 	}
 
 	public SlimeChunk.Data at(int chunkX, int chunkZ, boolean isSlime) {

@@ -13,7 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import static kaptainwutax.featureutils.loot.enchantment.EnchantmentInstance.getRandomItem;
-import static kaptainwutax.featureutils.loot.enchantment.Enchantments.*;
+import static kaptainwutax.featureutils.loot.enchantment.Enchantments.filterCompatibleEnchantments;
+import static kaptainwutax.featureutils.loot.enchantment.Enchantments.getApplicableEnchantments;
+import static kaptainwutax.featureutils.loot.enchantment.Enchantments.getCategories;
 
 public class EnchantWithLevelsFunction implements LootFunction {
 	private static final HashMap<String, Integer> enchantments;
@@ -104,7 +106,7 @@ public class EnchantWithLevelsFunction implements LootFunction {
 
 	public ItemStack enchantItem(LootContext random, ItemStack itemStack, int level, boolean isTreasure, boolean isDiscoverable) {
 		List<EnchantmentInstance> list = selectEnchantment(random, itemStack, level, isTreasure, isDiscoverable);
-		for (EnchantmentInstance enchantmentInstance : list) {
+		for(EnchantmentInstance enchantmentInstance : list) {
 			itemStack.getItem().addEnchantment(new Pair<>(enchantmentInstance.getName(), enchantmentInstance.getLevel()));
 		}
 		return itemStack;
@@ -114,20 +116,20 @@ public class EnchantWithLevelsFunction implements LootFunction {
 		ArrayList<EnchantmentInstance> res = new ArrayList<>();
 		Item item = itemStack.getItem();
 		int enchantmentValue;
-		if (enchantments.containsKey(item.getName())) {
+		if(enchantments.containsKey(item.getName())) {
 			enchantmentValue = enchantments.get(item.getName());
 		} else {
 			return res;
 		}
 		level += 1 + lootContext.nextInt(enchantmentValue / 4 + 1) + lootContext.nextInt(enchantmentValue / 4 + 1);
 		float amplifier = (lootContext.nextFloat() + lootContext.nextFloat() - 1.0f) * 0.15f;
-		level = Mth.clamp(Math.round((float) level + (float) level * amplifier), 1, Integer.MAX_VALUE);
+		level = Mth.clamp(Math.round((float)level + (float)level * amplifier), 1, Integer.MAX_VALUE);
 		List<EnchantmentInstance> availableEnchantments = getAvailableEnchantmentResults(level, itemStack, isTreasure, isDiscoverable);
-		if (!availableEnchantments.isEmpty()) {
+		if(!availableEnchantments.isEmpty()) {
 			res.add(getRandomItem(lootContext, availableEnchantments));
-			while (lootContext.nextInt(50) <= level) {
+			while(lootContext.nextInt(50) <= level) {
 				filterCompatibleEnchantments(availableEnchantments, res.get(res.size() - 1));
-				if (availableEnchantments.isEmpty()) break;
+				if(availableEnchantments.isEmpty()) break;
 				res.add(getRandomItem(lootContext, availableEnchantments));
 				level /= 2;
 			}
@@ -138,10 +140,10 @@ public class EnchantWithLevelsFunction implements LootFunction {
 	public List<EnchantmentInstance> getAvailableEnchantmentResults(int level, ItemStack itemStack, boolean isTreasure, boolean isDiscoverable) {
 		ArrayList<EnchantmentInstance> res = new ArrayList<>();
 		List<Enchantment> list = getApplicableEnchantments(getCategories(itemStack), this.treasure, this.discoverable);
-		for (Enchantment enchantment : list) {
-			if ((!enchantment.isTreasure() || isTreasure) && enchantment.isDiscoverable() == isDiscoverable) {
-				for (int i = enchantment.getMaxLevel(); i > enchantment.getMinLevel() - 1; --i) {
-					if (!enchantment.getIsLowerThanMinCost().test(i, level) && !enchantment.getIsHigherThanMaxCost().test(i, level)) {
+		for(Enchantment enchantment : list) {
+			if((!enchantment.isTreasure() || isTreasure) && enchantment.isDiscoverable() == isDiscoverable) {
+				for(int i = enchantment.getMaxLevel(); i > enchantment.getMinLevel() - 1; --i) {
+					if(!enchantment.getIsLowerThanMinCost().test(i, level) && !enchantment.getIsHigherThanMaxCost().test(i, level)) {
 						res.add(new EnchantmentInstance(enchantment, i));
 						break;
 					}
@@ -152,7 +154,7 @@ public class EnchantWithLevelsFunction implements LootFunction {
 	}
 
 	public int getRandomValueFromBounds(LootContext lootContext) {
-		if (this.minLevel == this.maxLevel) {
+		if(this.minLevel == this.maxLevel) {
 			return this.minLevel;
 		} else {
 			return lootContext.nextInt(this.maxLevel - this.minLevel + 1) + minLevel;

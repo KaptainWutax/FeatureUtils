@@ -16,7 +16,13 @@ import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.terrainutils.TerrainGenerator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @SuppressWarnings({"EmptyClassInitializer", "unused"})
 public class EndCityGenerator extends Generator {
@@ -37,10 +43,10 @@ public class EndCityGenerator extends Generator {
 	}
 
 	public boolean generate(TerrainGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
-		if (generator == null) return false;
+		if(generator == null) return false;
 		rand.setCarverSeed(generator.getWorldSeed(), chunkX, chunkZ, this.getVersion());
 		int y = EndCity.getAverageYPosition(generator, chunkX, chunkZ);
-		if (y < 60) return false;
+		if(y < 60) return false;
 		BlockRotation rotation = BlockRotation.getRandom(rand);
 		BPos start = new BPos(chunkX * 16 + 8, y, chunkZ * 16 + 8);
 		this.start(start, rotation, this.globalPieces, rand);
@@ -60,15 +66,15 @@ public class EndCityGenerator extends Generator {
 	 */
 	public List<Pair<ILootType, BPos>> getChestsPos() {
 		List<Pair<ILootType, BPos>> res = new ArrayList<>();
-		for (Template template : globalPieces) {
+		for(Template template : globalPieces) {
 			LinkedHashMap<LootType, List<BPos>> loot = STRUCTURE_TO_LOOT.get(template.getName());
-			if (loot == null) {
+			if(loot == null) {
 				System.err.println("Missing loot for " + template.getName());
 				continue;
 			}
-			for (Map.Entry<LootType, List<BPos>> entry : loot.entrySet()) {
+			for(Map.Entry<LootType, List<BPos>> entry : loot.entrySet()) {
 				LootType lootType = entry.getKey();
-				for (BPos offset : entry.getValue()) {
+				for(BPos offset : entry.getValue()) {
 					// we know for a fact that the pos is below the box size so we don't do the check
 					BPos lootPos = template.box.getRotated(template.getRotation()).getInside(offset, template.getRotation());
 					res.add(new Pair<>(lootType, lootPos));
@@ -109,21 +115,21 @@ public class EndCityGenerator extends Generator {
 	}
 
 	private static boolean generateRecursively(Generator generator, int depth, Template template, BPos pos, List<Template> pieces, ChunkRand rand) {
-		if (depth <= 8) {
+		if(depth <= 8) {
 			List<Template> localPieces = new ArrayList<>();
-			if (generator.generate(depth, template, pos, localPieces, rand)) {
+			if(generator.generate(depth, template, pos, localPieces, rand)) {
 				boolean isBlocking = false;
 				int genDepth = rand.nextInt();
 
-				for (Template piece : localPieces) {
+				for(Template piece : localPieces) {
 					piece.setGenDepth(genDepth);
 					Template collisions = piece.findCollisionPiece(pieces);
-					if (collisions != null && collisions.genDepth != template.genDepth) {
+					if(collisions != null && collisions.genDepth != template.genDepth) {
 						isBlocking = true;
 						break;
 					}
 				}
-				if (!isBlocking) {
+				if(!isBlocking) {
 					pieces.addAll(localPieces);
 					return true;
 				}
@@ -157,8 +163,8 @@ public class EndCityGenerator extends Generator {
 		}
 
 		public Template findCollisionPiece(List<Template> templates) {
-			for (Template template : templates) {
-				if (template.getBox().intersects(this.box)) {
+			for(Template template : templates) {
+				if(template.getBox().intersects(this.box)) {
 					return template;
 				}
 			}
@@ -200,10 +206,10 @@ public class EndCityGenerator extends Generator {
 	}
 
 	private static final List<Pair<BlockRotation, BPos>> FAT_TOWER_BRIDGES = Arrays.asList(
-			new Pair<>(BlockRotation.NONE, new BPos(4, -1, 0)),
-			new Pair<>(BlockRotation.CLOCKWISE_90, new BPos(12, -1, 4)),
-			new Pair<>(BlockRotation.COUNTERCLOCKWISE_90, new BPos(0, -1, 8)),
-			new Pair<>(BlockRotation.CLOCKWISE_180, new BPos(8, -1, 12))
+		new Pair<>(BlockRotation.NONE, new BPos(4, -1, 0)),
+		new Pair<>(BlockRotation.CLOCKWISE_90, new BPos(12, -1, 4)),
+		new Pair<>(BlockRotation.COUNTERCLOCKWISE_90, new BPos(0, -1, 8)),
+		new Pair<>(BlockRotation.CLOCKWISE_180, new BPos(8, -1, 12))
 	);
 
 	private static final Generator FAT_TOWER_GENERATOR = new Generator() {
@@ -217,10 +223,10 @@ public class EndCityGenerator extends Generator {
 			BlockRotation rotation = current.getRotation();
 			Template base = generateAndAdd(pieces, current, new BPos(-3, 4, -3), "fat_tower_base", rotation, true);
 			base = generateAndAdd(pieces, base, new BPos(0, 4, 0), "fat_tower_middle", rotation, true);
-			for (int floor = 0; floor < 2 && rand.nextInt(3) != 0; floor++) {
+			for(int floor = 0; floor < 2 && rand.nextInt(3) != 0; floor++) {
 				base = generateAndAdd(pieces, base, new BPos(0, 8, 0), "fat_tower_middle", rotation, true);
-				for (Pair<BlockRotation, BPos> towerBridge : FAT_TOWER_BRIDGES) {
-					if (rand.nextBoolean()) {
+				for(Pair<BlockRotation, BPos> towerBridge : FAT_TOWER_BRIDGES) {
+					if(rand.nextBoolean()) {
 						Template bridge = generateAndAdd(pieces, base, towerBridge.getSecond(), "bridge_end", rotation.getRotated(towerBridge.getFirst()), true);
 						generateRecursively(TOWER_BRIDGE_GENERATOR, depth + 1, bridge, null, pieces, rand);
 					}
@@ -239,13 +245,13 @@ public class EndCityGenerator extends Generator {
 
 		@Override
 		public boolean generate(int depth, Template current, BPos pos, List<Template> pieces, ChunkRand rand) {
-			if (depth <= 8) {
+			if(depth <= 8) {
 				BlockRotation rotation = current.getRotation();
 				Template base = generateAndAdd(pieces, current, pos, "base_floor", rotation, true);
 				int size = rand.nextInt(3);
-				if (size == 0) {
+				if(size == 0) {
 					Template roof = generateAndAdd(pieces, base, new BPos(-1, 4, -1), "base_roof", rotation, true);
-				} else if (size == 1) {
+				} else if(size == 1) {
 					Template secondFloor = generateAndAdd(pieces, base, new BPos(-1, 0, -1), "second_floor_2", rotation, false);
 					Template secondRoof = generateAndAdd(pieces, secondFloor, new BPos(-1, 8, -1), "second_roof", rotation, false);
 					generateRecursively(TOWER_GENERATOR, depth + 1, secondRoof, null, pieces, rand);
@@ -276,12 +282,12 @@ public class EndCityGenerator extends Generator {
 			Template base = generateAndAdd(pieces, current, new BPos(0, 0, -4), "bridge_piece", rotation, true);
 			base.setGenDepth(-1);
 			int y = 0;
-			for (int floor = 0; floor < size; floor++) {
-				if (rand.nextBoolean()) {
+			for(int floor = 0; floor < size; floor++) {
+				if(rand.nextBoolean()) {
 					base = generateAndAdd(pieces, base, new BPos(0, y, -4), "bridge_piece", rotation, true);
 					y = 0;
 				} else {
-					if (rand.nextBoolean()) {
+					if(rand.nextBoolean()) {
 						base = generateAndAdd(pieces, base, new BPos(0, y, -4), "bridge_steep_stairs", rotation, true);
 
 					} else {
@@ -290,10 +296,10 @@ public class EndCityGenerator extends Generator {
 					y = 4;
 				}
 			}
-			if (!this.shipCreated && rand.nextInt(10 - depth) == 0) {
+			if(!this.shipCreated && rand.nextInt(10 - depth) == 0) {
 				generateAndAdd(pieces, base, new BPos(-8 + rand.nextInt(8), y, -70 + rand.nextInt(10)), "ship", rotation, true);
 				this.shipCreated = true;
-			} else if (!generateRecursively(HOUSE_TOWER_GENERATOR, depth + 1, base, new BPos(-3, y + 1, -11), pieces, rand)) {
+			} else if(!generateRecursively(HOUSE_TOWER_GENERATOR, depth + 1, base, new BPos(-3, y + 1, -11), pieces, rand)) {
 				return false;
 			}
 			base = generateAndAdd(pieces, base, new BPos(4, y, 0), "bridge_end", rotation.getRotated(BlockRotation.CLOCKWISE_180), true);
@@ -302,10 +308,10 @@ public class EndCityGenerator extends Generator {
 		}
 	};
 	private static final List<Pair<BlockRotation, BPos>> TOWER_BRIDGES = Arrays.asList(
-			new Pair<>(BlockRotation.NONE, new BPos(1, -1, 0)),
-			new Pair<>(BlockRotation.CLOCKWISE_90, new BPos(6, -1, 1)),
-			new Pair<>(BlockRotation.COUNTERCLOCKWISE_90, new BPos(0, -1, 5)),
-			new Pair<>(BlockRotation.CLOCKWISE_180, new BPos(5, -1, 6))
+		new Pair<>(BlockRotation.NONE, new BPos(1, -1, 0)),
+		new Pair<>(BlockRotation.CLOCKWISE_90, new BPos(6, -1, 1)),
+		new Pair<>(BlockRotation.COUNTERCLOCKWISE_90, new BPos(0, -1, 5)),
+		new Pair<>(BlockRotation.CLOCKWISE_180, new BPos(5, -1, 6))
 	);
 
 	private static final Generator TOWER_GENERATOR = new Generator() {
@@ -323,20 +329,20 @@ public class EndCityGenerator extends Generator {
 			base = generateAndAdd(pieces, base, new BPos(0, 7, 0), "tower_piece", rotation, true);
 			Template currentFloor = rand.nextInt(3) == 0 ? base : null;
 			int size = rand.nextInt(3) + 1;
-			for (int floor = 0; floor < size; floor++) {
+			for(int floor = 0; floor < size; floor++) {
 				base = generateAndAdd(pieces, base, new BPos(0, 4, 0), "tower_piece", rotation, true);
-				if (floor < size - 1 && rand.nextBoolean()) {
+				if(floor < size - 1 && rand.nextBoolean()) {
 					currentFloor = base;
 				}
 			}
-			if (currentFloor != null) {
-				for (Pair<BlockRotation, BPos> towerBridge : TOWER_BRIDGES) {
-					if (rand.nextBoolean()) {
+			if(currentFloor != null) {
+				for(Pair<BlockRotation, BPos> towerBridge : TOWER_BRIDGES) {
+					if(rand.nextBoolean()) {
 						Template bridge = generateAndAdd(pieces, base, towerBridge.getSecond(), "bridge_end", rotation.getRotated(towerBridge.getFirst()), true);
 						generateRecursively(TOWER_BRIDGE_GENERATOR, depth + 1, bridge, null, pieces, rand);
 					}
 				}
-			} else if (depth != 7) {
+			} else if(depth != 7) {
 				return generateRecursively(FAT_TOWER_GENERATOR, depth + 1, base, null, pieces, rand);
 			}
 			generateAndAdd(pieces, base, new BPos(-1, 4, -1), "tower_top", rotation, true);
@@ -401,26 +407,26 @@ public class EndCityGenerator extends Generator {
 	}
 
 	private static final String[] TYPES = new String[] {
-			"base_floor",
-			"base_roof",
-			"bridge_end",
-			"bridge_gentle_stairs",
-			"bridge_piece",
-			"bridge_steep_stairs",
-			"fat_tower_base",
-			"fat_tower_middle",
-			"fat_tower_top",
-			"second_floor_1",
-			"second_floor_2",
-			"second_roof",
-			"ship",
-			"third_floor_1",
-			"third_floor_2",
-			"third_roof",
-			"tower_base",
-			"tower_floor",
-			"tower_piece",
-			"tower_top"
+		"base_floor",
+		"base_roof",
+		"bridge_end",
+		"bridge_gentle_stairs",
+		"bridge_piece",
+		"bridge_steep_stairs",
+		"fat_tower_base",
+		"fat_tower_middle",
+		"fat_tower_top",
+		"second_floor_1",
+		"second_floor_2",
+		"second_roof",
+		"ship",
+		"third_floor_1",
+		"third_floor_2",
+		"third_roof",
+		"tower_base",
+		"tower_floor",
+		"tower_piece",
+		"tower_top"
 	};
 
 	private static final HashMap<String, LinkedHashMap<LootType, List<BPos>>> STRUCTURE_TO_LOOT = new HashMap<>();

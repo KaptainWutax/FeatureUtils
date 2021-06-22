@@ -3,10 +3,9 @@ package kaptainwutax.featureutils.structure;
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.biomeutils.source.BiomeSource;
-import kaptainwutax.biomeutils.source.EndBiomeSource;
 import kaptainwutax.featureutils.loot.ILoot;
-import kaptainwutax.featureutils.structure.generator.structure.EndCityGenerator;
 import kaptainwutax.featureutils.structure.generator.Generator;
+import kaptainwutax.featureutils.structure.generator.structure.EndCityGenerator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.util.block.BlockRotation;
@@ -18,7 +17,7 @@ import kaptainwutax.terrainutils.TerrainGenerator;
 public class EndCity extends TriangularStructure<EndCity> implements ILoot {
 
 	public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
-			.add(MCVersion.v1_9, new RegionStructure.Config(20, 11, 10387313));
+		.add(MCVersion.v1_9, new RegionStructure.Config(20, 11, 10387313));
 
 	public EndCity(MCVersion version) {
 		this(CONFIGS.getAsOf(version), version);
@@ -38,8 +37,8 @@ public class EndCity extends TriangularStructure<EndCity> implements ILoot {
 	}
 
 	@Override
-  public Dimension getValidDimension() {
-		return  Dimension.END;
+	public Dimension getValidDimension() {
+		return Dimension.END;
 	}
 
 	@Override
@@ -59,15 +58,15 @@ public class EndCity extends TriangularStructure<EndCity> implements ILoot {
 
 	@Override
 	public boolean canSpawn(CPos cPos, BiomeSource source) {
-		return this.canSpawn(cPos.getX(),cPos.getZ(), source);
+		return this.canSpawn(cPos.getX(), cPos.getZ(), source);
 	}
 
 	@Override
 	public boolean canSpawn(int chunkX, int chunkZ, BiomeSource source) {
-		if (this.getVersion().isOlderThan(MCVersion.v1_16)) {
-			if (this.getVersion().isNewerOrEqualTo(MCVersion.v1_13)){
+		if(this.getVersion().isOlderThan(MCVersion.v1_16)) {
+			if(this.getVersion().isNewerOrEqualTo(MCVersion.v1_13)) {
 				return this.isValidBiome(source.getBiome((chunkX << 4) + 9, 0, (chunkZ << 4) + 9));
-			}else{
+			} else {
 				// back then it was isIslandChunk(chunkX,chunkZ)
 				// but since we do x>>=2 we need to counter that here
 				return this.isValidBiome(source.getBiomeForNoiseGen((chunkX << 2), 0, (chunkZ << 2)));
@@ -87,12 +86,12 @@ public class EndCity extends TriangularStructure<EndCity> implements ILoot {
 		BlockRotation rotation = BlockRotation.getRandom(random);
 		int xOffset = 5;
 		int zOffset = 5;
-		if (rotation == BlockRotation.CLOCKWISE_90) {
+		if(rotation == BlockRotation.CLOCKWISE_90) {
 			xOffset = -5;
-		} else if (rotation == BlockRotation.CLOCKWISE_180) {
+		} else if(rotation == BlockRotation.CLOCKWISE_180) {
 			xOffset = -5;
 			zOffset = -5;
-		} else if (rotation == BlockRotation.COUNTERCLOCKWISE_90) {
+		} else if(rotation == BlockRotation.COUNTERCLOCKWISE_90) {
 			zOffset = -5;
 		}
 

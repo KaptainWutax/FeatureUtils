@@ -1113,7 +1113,6 @@ public class Items {
 	public static final Item YELLOW_CANDLE = register(new Item("yellow_candle"));
 
 
-
 	public static LinkedHashMap<Integer, Item> getItems() {
 		return ITEMS;
 	}

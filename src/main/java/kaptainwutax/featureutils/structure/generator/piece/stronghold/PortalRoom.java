@@ -25,7 +25,7 @@ public class PortalRoom extends Stronghold.Piece {
 
 	@Override
 	public void populatePieces(StrongholdGenerator gen, Start start, List<Stronghold.Piece> pieces, JRand rand) {
-		if (start != null) {
+		if(start != null) {
 			start.portalRoom = this;
 		}
 	}
@@ -49,7 +49,7 @@ public class PortalRoom extends Stronghold.Piece {
 		skipWithRandomized(rand, 4, 2, 6, 6, 2, 7, false);
 		skipWithRandomized(rand, 4, 3, 7, 6, 3, 7, false);
 		// 7-4 * 3 calls not random
-		for (int i = 0; i < eyes.length; i++) {
+		for(int i = 0; i < eyes.length; i++) {
 			eyes[i] = rand.nextFloat() > 0.9f;
 		}
 		// no random after

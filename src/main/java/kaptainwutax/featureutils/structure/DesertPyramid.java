@@ -3,8 +3,8 @@ package kaptainwutax.featureutils.structure;
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.featureutils.loot.ILoot;
-import kaptainwutax.featureutils.structure.generator.structure.DesertPyramidGenerator;
 import kaptainwutax.featureutils.structure.generator.Generator;
+import kaptainwutax.featureutils.structure.generator.structure.DesertPyramidGenerator;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
@@ -12,7 +12,7 @@ import kaptainwutax.mcutils.version.VersionMap;
 public class DesertPyramid extends OldStructure<DesertPyramid> implements ILoot {
 
 	public static final VersionMap<OldStructure.Config> CONFIGS = new VersionMap<OldStructure.Config>()
-			.add(MCVersion.v1_8, new OldStructure.Config(14357617));
+		.add(MCVersion.v1_8, new OldStructure.Config(14357617));
 
 	public DesertPyramid(MCVersion version) {
 		this(CONFIGS.getAsOf(version), version);
@@ -27,8 +27,8 @@ public class DesertPyramid extends OldStructure<DesertPyramid> implements ILoot 
 	}
 
 	@Override
-  public Dimension getValidDimension() {
-		return  Dimension.OVERWORLD;
+	public Dimension getValidDimension() {
+		return Dimension.OVERWORLD;
 	}
 
 	@Override

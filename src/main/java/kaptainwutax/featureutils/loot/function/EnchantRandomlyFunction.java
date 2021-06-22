@@ -51,11 +51,11 @@ public class EnchantRandomlyFunction implements LootFunction {
 		Item newItem = new Item(baseStack.getItem().getName());
 		HashSet<HashSet<String>> applicableCategories = getCategories(baseStack);
 		List<Enchantment> applicableEnchantments = getApplicableEnchantments(applicableCategories, this.isTreasure, this.isDiscoverable);
-		if (applicableEnchantments.isEmpty()) return baseStack;
+		if(applicableEnchantments.isEmpty()) return baseStack;
 		int enchantNr = context.nextInt(applicableEnchantments.size());
 		Enchantment enchantment = applicableEnchantments.get(enchantNr);
 		int level = 1;
-		if (!(Enchantments.SingleEnchants.contains(enchantment.getName()))) {
+		if(!(Enchantments.SingleEnchants.contains(enchantment.getName()))) {
 			level = context.nextInt(enchantment.getMaxLevel()) + 1;
 		}
 		newItem.addEnchantment(new Pair<>(enchantment.getName(), level));

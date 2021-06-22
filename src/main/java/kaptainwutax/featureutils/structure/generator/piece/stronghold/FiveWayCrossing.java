@@ -38,26 +38,26 @@ public class FiveWayCrossing extends Stronghold.Piece {
 		int int_2 = 5;
 		BlockDirection facing = this.getFacing();
 
-		if (facing == BlockDirection.WEST || facing == BlockDirection.NORTH) {
+		if(facing == BlockDirection.WEST || facing == BlockDirection.NORTH) {
 			int_1 = 8 - int_1;
 			int_2 = 8 - int_2;
 		}
 
 		this.generateSmallDoorChildrenForward(gen, start, pieces, rand, 5, 1);
 
-		if (this.lowerLeftExists) {
+		if(this.lowerLeftExists) {
 			this.generateSmallDoorChildrenLeft(gen, start, pieces, rand, int_1, 1);
 		}
 
-		if (this.upperLeftExists) {
+		if(this.upperLeftExists) {
 			this.generateSmallDoorChildrenLeft(gen, start, pieces, rand, int_2, 7);
 		}
 
-		if (this.lowerRightExists) {
+		if(this.lowerRightExists) {
 			this.generateSmallDoorChildRight(gen, start, pieces, rand, int_1, 1);
 		}
 
-		if (this.upperRightExists) {
+		if(this.upperRightExists) {
 			this.generateSmallDoorChildRight(gen, start, pieces, rand, int_2, 7);
 		}
 	}

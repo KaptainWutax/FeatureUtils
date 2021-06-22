@@ -32,8 +32,8 @@ public abstract class UniformStructure<T extends UniformStructure<T>> extends Re
 		rand.setRegionSeed(structureSeed, regionX, regionZ, this.getSalt(), this.getVersion());
 
 		return new CPos(
-				regionX * this.getSpacing() + rand.nextInt(this.getOffset()),
-				regionZ * this.getSpacing() + rand.nextInt(this.getOffset())
+			regionX * this.getSpacing() + rand.nextInt(this.getOffset()),
+			regionZ * this.getSpacing() + rand.nextInt(this.getOffset())
 		);
 	}
 

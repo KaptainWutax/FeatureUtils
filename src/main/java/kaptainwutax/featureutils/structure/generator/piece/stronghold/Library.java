@@ -21,9 +21,9 @@ public class Library extends Stronghold.Piece {
 
 	public static Library createPiece(List<Stronghold.Piece> pieces, JRand rand, int x, int y, int z, BlockDirection facing, int pieceId) {
 		BlockBox box = BlockBox.rotated(x, y, z, -4, -1, 0, 14, 11, 15, facing.getRotation());
-		if (!Stronghold.Piece.isHighEnough(box) || Stronghold.Piece.getNextIntersectingPiece(pieces, box) != null) {
+		if(!Stronghold.Piece.isHighEnough(box) || Stronghold.Piece.getNextIntersectingPiece(pieces, box) != null) {
 			box = BlockBox.rotated(x, y, z, -4, -1, 0, 14, 6, 15, facing.getRotation());
-			if (!Stronghold.Piece.isHighEnough(box) || Stronghold.Piece.getNextIntersectingPiece(pieces, box) != null) {
+			if(!Stronghold.Piece.isHighEnough(box) || Stronghold.Piece.getNextIntersectingPiece(pieces, box) != null) {
 				return null;
 			}
 		}
@@ -38,7 +38,7 @@ public class Library extends Stronghold.Piece {
 		skipWithRandomizedChance(rand, 0.07f, 2, 1, 1, 11, 4, 13, false, false);
 		// tons of calls (not counting them)
 		skipForChest(rand, 3, 3, 5);
-		if (isTall) {
+		if(isTall) {
 			skipForChest(rand, 12, 8, 1);
 		}
 		return true;

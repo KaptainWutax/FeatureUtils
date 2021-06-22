@@ -13,7 +13,7 @@ import kaptainwutax.terrainutils.TerrainGenerator;
 public class NetherFossil extends UniformStructure<NetherFossil> {
 
 	public static final VersionMap<RegionStructure.Config> CONFIGS = new VersionMap<RegionStructure.Config>()
-			.add(MCVersion.v1_16, new RegionStructure.Config(2, 1, 14357921));
+		.add(MCVersion.v1_16, new RegionStructure.Config(2, 1, 14357921));
 
 	public NetherFossil(MCVersion version) {
 		this(CONFIGS.getAsOf(version), version);
@@ -28,8 +28,8 @@ public class NetherFossil extends UniformStructure<NetherFossil> {
 	}
 
 	@Override
-  public Dimension getValidDimension() {
-		return  Dimension.NETHER;
+	public Dimension getValidDimension() {
+		return Dimension.NETHER;
 	}
 
 	@Override
@@ -39,18 +39,18 @@ public class NetherFossil extends UniformStructure<NetherFossil> {
 
 	@Override
 	public boolean isValidTerrain(TerrainGenerator generator, int chunkX, int chunkZ) {
-		if (generator==null) return true;
-		ChunkRand rand=new ChunkRand();
-		rand.setCarverSeed(generator.getWorldSeed(),chunkX,chunkZ,this.getVersion());
-		int x=(chunkX<<4)+rand.nextInt(16);
-		int z=(chunkZ<<4)+rand.nextInt(16);
-		int seaLevel=generator.getSeaLevel();
-		int y=seaLevel+rand.nextInt(generator.getWorldHeight()-2-seaLevel);
-		Block[] column=generator.getColumnAt(x,z);
-		for (;y>seaLevel;--y) {
-			Block block=column[y];
-			Block blockDown=column[y-1];
-			if (block== Blocks.AIR && blockDown==Blocks.NETHERRACK){
+		if(generator == null) return true;
+		ChunkRand rand = new ChunkRand();
+		rand.setCarverSeed(generator.getWorldSeed(), chunkX, chunkZ, this.getVersion());
+		int x = (chunkX << 4) + rand.nextInt(16);
+		int z = (chunkZ << 4) + rand.nextInt(16);
+		int seaLevel = generator.getSeaLevel();
+		int y = seaLevel + rand.nextInt(generator.getWorldHeight() - 2 - seaLevel);
+		Block[] column = generator.getColumnAt(x, z);
+		for(; y > seaLevel; --y) {
+			Block block = column[y];
+			Block blockDown = column[y - 1];
+			if(block == Blocks.AIR && blockDown == Blocks.NETHERRACK) {
 				break;
 			}
 		}

@@ -13,10 +13,10 @@ import kaptainwutax.terrainutils.TerrainGenerator;
 public class RuinedPortal extends UniformStructure<RuinedPortal> implements ILoot {
 
 	public static final VersionMap<RegionStructure.Config> OVERWORLD_CONFIGS = new VersionMap<RegionStructure.Config>()
-			.add(MCVersion.v1_16, new RegionStructure.Config(40, 15, 34222645));
+		.add(MCVersion.v1_16, new RegionStructure.Config(40, 15, 34222645));
 
 	public static final VersionMap<RegionStructure.Config> NETHER_CONFIGS = new VersionMap<RegionStructure.Config>()
-			.add(MCVersion.v1_16, new RegionStructure.Config(25, 10, 34222645));
+		.add(MCVersion.v1_16, new RegionStructure.Config(25, 10, 34222645));
 
 	private final Dimension dimension;
 
@@ -34,7 +34,7 @@ public class RuinedPortal extends UniformStructure<RuinedPortal> implements ILoo
 	}
 
 	public static VersionMap<RegionStructure.Config> getConfigs(Dimension dimension) {
-		switch (dimension) {
+		switch(dimension) {
 			case OVERWORLD:
 				return OVERWORLD_CONFIGS;
 			case NETHER:

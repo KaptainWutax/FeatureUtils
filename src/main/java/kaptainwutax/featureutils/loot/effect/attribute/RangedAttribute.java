@@ -10,11 +10,11 @@ public class RangedAttribute extends Attribute {
 		super(name, value);
 		this.minValue = minValue;
 		this.maxValue = maxValue;
-		if (minValue > maxValue) {
+		if(minValue > maxValue) {
 			throw new IllegalArgumentException("Minimum value cannot be bigger than maximum value!");
-		} else if (value < minValue) {
+		} else if(value < minValue) {
 			throw new IllegalArgumentException("Default value cannot be lower than minimum value!");
-		} else if (value > maxValue) {
+		} else if(value > maxValue) {
 			throw new IllegalArgumentException("Default value cannot be bigger than maximum value!");
 		}
 	}

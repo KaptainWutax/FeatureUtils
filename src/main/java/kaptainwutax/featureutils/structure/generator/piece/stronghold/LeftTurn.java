@@ -27,7 +27,7 @@ public class LeftTurn extends Stronghold.Piece {
 	public void populatePieces(StrongholdGenerator gen, Start start, List<Stronghold.Piece> pieces, JRand rand) {
 		BlockDirection facing = this.getFacing();
 
-		if (facing != BlockDirection.NORTH && facing != BlockDirection.EAST) {
+		if(facing != BlockDirection.NORTH && facing != BlockDirection.EAST) {
 			this.generateSmallDoorChildRight(gen, start, pieces, rand, 1, 1);
 		} else {
 			this.generateSmallDoorChildrenLeft(gen, start, pieces, rand, 1, 1);

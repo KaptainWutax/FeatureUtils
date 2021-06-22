@@ -1,9 +1,16 @@
 package kaptainwutax.featureutils.structure.generator;
 
 import kaptainwutax.featureutils.Feature;
-import kaptainwutax.featureutils.loot.ILoot;
-import kaptainwutax.featureutils.structure.*;
-import kaptainwutax.featureutils.structure.generator.structure.*;
+import kaptainwutax.featureutils.structure.BuriedTreasure;
+import kaptainwutax.featureutils.structure.DesertPyramid;
+import kaptainwutax.featureutils.structure.EndCity;
+import kaptainwutax.featureutils.structure.RuinedPortal;
+import kaptainwutax.featureutils.structure.Shipwreck;
+import kaptainwutax.featureutils.structure.generator.structure.BuriedTreasureGenerator;
+import kaptainwutax.featureutils.structure.generator.structure.DesertPyramidGenerator;
+import kaptainwutax.featureutils.structure.generator.structure.EndCityGenerator;
+import kaptainwutax.featureutils.structure.generator.structure.RuinedPortalGenerator;
+import kaptainwutax.featureutils.structure.generator.structure.ShipwreckGenerator;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -24,10 +24,10 @@ public class SmallCorridor extends Stronghold.Piece {
 		BlockBox box = BlockBox.rotated(x, y, z, -1, -1, 0, 5, 5, 4, facing.getRotation());
 		Stronghold.Piece piece = Stronghold.Piece.getNextIntersectingPiece(pieces, box);
 
-		if (piece != null && piece.getBoundingBox().minY == box.minY) {
-			for (int zz = 3; zz >= 1; --zz) {
+		if(piece != null && piece.getBoundingBox().minY == box.minY) {
+			for(int zz = 3; zz >= 1; --zz) {
 				box = BlockBox.rotated(x, y, z, -1, -1, 0, 5, 5, zz - 1, facing.getRotation());
-				if (!piece.getBoundingBox().intersects(box)) {
+				if(!piece.getBoundingBox().intersects(box)) {
 					return BlockBox.rotated(x, y, z, -1, -1, 0, 5, 5, zz, facing.getRotation());
 				}
 			}

@@ -34,7 +34,7 @@ public class StructureDevice {
 
 		BitGroup entry = groups.get(0);
 
-		if (entry.bits < 48) {
+		if(entry.bits < 48) {
 			search(entry, 0, 0, onSeedFound, bits);
 			this.pool.awaitCompletion();
 			this.pool.shutdown();
@@ -48,12 +48,12 @@ public class StructureDevice {
 
 		long searchSpace = Mth.getPow2(group.bits - bits);
 
-		for (long i = 0; i < searchSpace; i++) {
+		for(long i = 0; i < searchSpace; i++) {
 			long seed = baseSeed | (i << bits);
 
-			if (!group.testSeed(seed)) continue;
+			if(!group.testSeed(seed)) continue;
 
-			if (group.next == null || group.bits >= totalBits) {
+			if(group.next == null || group.bits >= totalBits) {
 				onSeedFound.accept(seed);
 			} else {
 				this.pool.run(() -> {
@@ -68,15 +68,15 @@ public class StructureDevice {
 	private List<BitGroup> groupRestrictions() {
 		Map<Integer, BitGroup> raw = new TreeMap<>(Integer::compare);
 
-		for (Node<?> head : this.heads) {
-			for (int bitPoint : head.getLiftingPoints()) {
+		for(Node<?> head : this.heads) {
+			for(int bitPoint : head.getLiftingPoints()) {
 				raw.computeIfAbsent(bitPoint, i -> new BitGroup(i, new ArrayList<>())).heads.add(head);
 			}
 		}
 
 		List<BitGroup> result = new ArrayList<>(raw.values());
 
-		for (int i = 0; i < result.size() - 1; i++) {
+		for(int i = 0; i < result.size() - 1; i++) {
 			result.get(i).next = result.get(i + 1);
 		}
 
@@ -94,8 +94,8 @@ public class StructureDevice {
 		}
 
 		public boolean testSeed(long seed) {
-			for (Node<?> head : this.heads) {
-				if (head.test(seed, this.bits, null)) return true;
+			for(Node<?> head : this.heads) {
+				if(head.test(seed, this.bits, null)) return true;
 			}
 
 			return false;

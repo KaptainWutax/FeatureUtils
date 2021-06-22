@@ -25,7 +25,7 @@ public class EnchantmentInstance extends Enchantment {
 
 	public static int getTotalWeight(List<EnchantmentInstance> list) {
 		int weightSum = 0;
-		for (EnchantmentInstance weighedRandomInstance : list) {
+		for(EnchantmentInstance weighedRandomInstance : list) {
 			weightSum += weighedRandomInstance.getRarity();
 		}
 		return weightSum;
@@ -36,8 +36,8 @@ public class EnchantmentInstance extends Enchantment {
 	}
 
 	public static EnchantmentInstance getWeightedItem(List<EnchantmentInstance> list, int n) {
-		for (EnchantmentInstance weighedRandomItem : list) {
-			if ((n -= weighedRandomItem.getRarity()) >= 0) continue;
+		for(EnchantmentInstance weighedRandomItem : list) {
+			if((n -= weighedRandomItem.getRarity()) >= 0) continue;
 			return weighedRandomItem;
 		}
 		return null;

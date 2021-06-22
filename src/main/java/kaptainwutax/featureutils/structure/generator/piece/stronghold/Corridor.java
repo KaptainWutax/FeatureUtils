@@ -32,11 +32,11 @@ public class Corridor extends Stronghold.Piece {
 	public void populatePieces(StrongholdGenerator gen, Start start, List<Stronghold.Piece> pieces, JRand rand) {
 		this.generateSmallDoorChildrenForward(gen, start, pieces, rand, 1, 1);
 
-		if (this.leftExitExists) {
+		if(this.leftExitExists) {
 			this.generateSmallDoorChildrenLeft(gen, start, pieces, rand, 1, 2);
 		}
 
-		if (this.rightExitExists) {
+		if(this.rightExitExists) {
 			this.generateSmallDoorChildRight(gen, start, pieces, rand, 1, 2);
 		}
 	}

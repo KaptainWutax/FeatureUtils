@@ -44,7 +44,7 @@ public abstract class Feature<C extends Feature.Config, D extends Feature.Data<?
 
 	@Override
 	public Context getContext(long worldSeed) {
-		if (this.getContext() == null || this.getContext().getWorldSeed() != worldSeed) {
+		if(this.getContext() == null || this.getContext().getWorldSeed() != worldSeed) {
 			this.setContext(GenerationContext.super.getContext(worldSeed));
 		}
 		return this.getContext();
