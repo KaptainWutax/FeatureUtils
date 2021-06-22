@@ -98,7 +98,7 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 		for(int idx = 0; idx < count; ++idx) {
 			double distanceRing;
 			if(getVersion().isNewerOrEqualTo(MCVersion.v1_9)) {
-				distanceRing = (double)(4 * distance + distance * ringId * 6) + (rand.nextDouble() - 0.5D) * (double)distance * 2.5D;
+				distanceRing = (4.0D * distance + distance * ringId * 6.0D) + (rand.nextDouble() - 0.5D) * (double)distance * 2.5D;
 			} else {
 				distanceRing = (1.25D * (double)(ringId + 1) + rand.nextDouble()) * distance * (double)(ringId + 1);
 			}
