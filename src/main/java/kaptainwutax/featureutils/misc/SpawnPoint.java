@@ -10,6 +10,7 @@ import kaptainwutax.mcutils.block.Blocks;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.util.pos.BPos;
+import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.seedutils.rand.JRand;
 import kaptainwutax.terrainutils.TerrainGenerator;
@@ -20,10 +21,14 @@ import java.util.Collection;
 import java.util.List;
 
 public class SpawnPoint extends Feature<Feature.Config, SpawnPoint.Data> {
-	public static final List<Biome> SPAWN_BIOMES = Arrays.asList(Biomes.PLAINS, Biomes.SUNFLOWER_PLAINS, Biomes.TAIGA, Biomes.TAIGA_HILLS, Biomes.FOREST, Biomes.WOODED_HILLS, Biomes.JUNGLE, Biomes.JUNGLE_HILLS);
-	public static final List<Block> SPAWN_BLOCKS = Arrays.asList(Blocks.GRASS_BLOCK, Blocks.PODZOL); // PODZOL doesn't matter cause pregen but whatever
-
-// TODO surface noise in NoiseChunkGenerator for GIANT TAIGA (boring)
+	public static final List<Biome> SPAWN_BIOMES = Arrays.asList(
+		Biomes.PLAINS, Biomes.SUNFLOWER_PLAINS,
+		Biomes.TAIGA, Biomes.TAIGA_HILLS,
+		Biomes.FOREST, Biomes.WOODED_HILLS,
+		Biomes.JUNGLE, Biomes.JUNGLE_HILLS
+	);
+	public static final List<Block> SPAWN_BLOCKS = Arrays.asList(Blocks.GRASS_BLOCK, Blocks.PODZOL);
+	// PODZOL doesn't matter cause pregen/pre builders but whatever
 
 	public SpawnPoint() {
 		super(new Config(), null);
@@ -33,29 +38,147 @@ public class SpawnPoint extends Feature<Feature.Config, SpawnPoint.Data> {
 		return "spawn";
 	}
 
+	// static method
+	public static BPos getSpawn(OverworldTerrainGenerator generator) {
+		return new SpawnPoint().getSpawnPoint(generator);
+	}
+
+	// static method
+	public static BPos getApproximateSpawn(OverworldBiomeSource source) {
+		return new SpawnPoint().getApproximateSpawnPoint(source);
+	}
 
 	public BPos getSpawnPoint(OverworldTerrainGenerator generator) {
-		return this.getSpawnPoint(generator, SPAWN_BIOMES, true);
+		return this.getSpawnPoint((OverworldBiomeSource)generator.getBiomeSource(), generator, SPAWN_BIOMES, true);
 	}
 
-	public BPos getApproximateSpawnPoint(OverworldTerrainGenerator generator) {
-		return this.getSpawnPoint(generator, SPAWN_BIOMES, false);
+	public BPos getApproximateSpawnPoint(OverworldBiomeSource source) {
+		return this.getSpawnPoint(source, null, SPAWN_BIOMES, false);
 	}
 
-	public BPos getSpawnPoint(OverworldTerrainGenerator generator, Collection<Biome> spawnBiomes, boolean trueSpawn) {
-		if(this.getVersion().isOlderThan(MCVersion.v1_13)) {
-			return getSpawnPoint12(generator, spawnBiomes, false);
+	// generator can be null if truespawn is false
+	private BPos getSpawnPoint(OverworldBiomeSource source, OverworldTerrainGenerator generator, Collection<Biome> spawnBiomes, boolean trueSpawn) {
+		if(source.getVersion().isOlderThan(MCVersion.v1_13)) {
+			return getSpawnPoint12(source, generator, spawnBiomes, trueSpawn);
 		}
-		JRand rand = new JRand(getWorldSeed(generator));
-		BPos spawnPos = getSource(generator).locateBiome(0, 0, 0, 256, spawnBiomes, rand);
-		return spawnPos == null ? new BPos(8, 0, 8) : spawnPos.add(8, 0, 8);
+		JRand rand = new JRand(source.getWorldSeed());
+		BPos spawnPos = source.locateBiome(0, 0, 0, 256, spawnBiomes, rand);
+		CPos spawnCPos = spawnPos == null ? new CPos(0, 0) : spawnPos.toChunkPos();
+		// very important we set the spawnpos to something not null here
+		spawnPos = spawnPos == null ? new BPos(8, 64, 8) : spawnPos.add(8, 64, 8);
+		if(trueSpawn) {
+			int cx = 0, cz = 0;
+			int incX = 0;
+			int incZ = -1;
+			for(int l = 0; l < 1024; l++) {
+				if(cx > -16 && cx <= 16 && cz > -16 && cz <= 16) {
+					BPos newSpawnPos = getSpawnPosInChunk(generator, spawnCPos.add(cx, cz));
+					if(newSpawnPos != null) {
+						spawnPos = newSpawnPos;
+						break;
+					}
+				}
+
+				if(cx == cz || cx < 0 && cx == -cz || cx > 0 && cx == 1 - cz) {
+					int swap = incX;
+					incX = -incZ;
+					incZ = swap;
+				}
+
+				cx += incX;
+				cz += incZ;
+			}
+		}
+		return spawnPos;
 	}
 
-	public static OverworldBiomeSource getSource(OverworldTerrainGenerator generator) {
-		return (OverworldBiomeSource)generator.getBiomeSource();
+	private static BPos getSpawnPosInChunk(OverworldTerrainGenerator terrainGenerator, CPos cPos) {
+		BPos chunkStartPos = cPos.toBlockPos();
+		for(int x = chunkStartPos.getX(); x <= chunkStartPos.getX() + 15; ++x) {
+			for(int z = chunkStartPos.getZ(); z <= chunkStartPos.getZ() + 15; ++z) {
+				BPos pos = getOverworldRespawnPos(terrainGenerator, x, z);
+				if(pos != null) {
+					return pos;
+				}
+			}
+		}
+		return null;
 	}
 
-	public static double getGrassStats(Biome biome) {
+	private static BPos getOverworldRespawnPos(OverworldTerrainGenerator terrainGenerator, int x, int z) {
+		Biome biome = terrainGenerator.getBiomeSource().getBiome(x, 0, z);
+		if(!SPAWN_BLOCKS.contains(biome.getTopBlock())) {
+			return null;
+		} else {
+			// we ignore the || !fluidstate.isEmpty because we are doing pregen stuff, for
+			// respawn its important but that part is truly random so who cares.
+			int y = terrainGenerator.getFirstHeightInColumn(x, z, TerrainGenerator.OCEAN_FLOOR_WG) - 1;
+			if(y < 0) {
+				return null;
+			} else {
+				Block[] column = terrainGenerator.getColumnAt(x, z);
+				// the weird check for y and terrainY is ignored because we are pregen
+				for(int posY = y + 1; posY >= 0; --posY) {
+					if(column[posY] == Blocks.STONE) {
+						return new BPos(x, posY + 1, z);
+					}
+				}
+				return null;
+			}
+		}
+	}
+
+
+	private static boolean isValidPos(OverworldBiomeSource source, OverworldTerrainGenerator generator, int x, int z, boolean trueSpawn) {
+		if(!trueSpawn) {
+			return getGrassStats(source.getBiome(x, 0, z)) >= 0.5;
+		} else {
+			return getBlockAboveSeaLevel(generator, x, z) == Blocks.GRASS_BLOCK;
+		}
+	}
+
+	public static Block getBlockAboveSeaLevel(OverworldTerrainGenerator generator, int x, int z) {
+		Block[] column = generator.getColumnAt(x, z);
+		// could replace column length with generator.getMaxWorldHeight()
+		int y;
+		for(y = generator.getSeaLevel()+1; y < column.length; y++) {
+			if(column[y] == Blocks.AIR) break;
+		}
+		return column[y - 1];
+	}
+
+	private static long getWorldSeed(OverworldBiomeSource source) {
+		return source.getWorldSeed();
+	}
+
+	private static MCVersion getVersion(OverworldBiomeSource source) {
+		return source.getVersion();
+	}
+
+	private static BPos getSpawnPoint12(OverworldBiomeSource source, OverworldTerrainGenerator generator, Collection<Biome> spawnBiomes, boolean trueSpawn) {
+		JRand rand = new JRand(getWorldSeed(source));
+		BPos spawnPos = source.locateBiome12(0, 0, 256, spawnBiomes, rand);
+		int x = 8;
+		int z = 8;
+		if(spawnPos != null) {
+			x = spawnPos.getX();
+			z = spawnPos.getZ();
+		}
+		int counter = 0;
+		// wiggle
+		while(!isValidPos(source, generator, x, z, trueSpawn)) {
+			x += rand.nextInt(64) - rand.nextInt(64);
+			z += rand.nextInt(64) - rand.nextInt(64);
+			++counter;
+			if(counter == 1000) {
+				break;
+			}
+		}
+		return new BPos(x, 64, z);
+	}
+
+
+	private static double getGrassStats(Biome biome) {
 		if(Biomes.PLAINS.equals(biome)) {
 			return 1.0;
 		} else if(Biomes.MOUNTAINS.equals(biome)) {
@@ -111,50 +234,6 @@ public class SpawnPoint extends Feature<Feature.Config, SpawnPoint.Data> {
 		}
 		return 0;
 	}
-
-	public static boolean isValidPos(OverworldTerrainGenerator generator, int x, int z, boolean trueSpawn) {
-		// TODO tricky part, check biomes valid + gen terain == GRASS
-
-		// void check not usable
-		// for now lets just do the proba tables then we can move to full terrain for true spawn (see terrainUtils)
-		if(!trueSpawn) {
-			return getGrassStats(getSource(generator).getBiome(x, 0, z)) >= 0.5;
-		} else {
-			return false;
-			//return generator.getFirstHeightInColumn()
-		}
-	}
-
-	public static long getWorldSeed(OverworldTerrainGenerator generator) {
-		return getSource(generator).getWorldSeed();
-	}
-
-	public static MCVersion getVersion(OverworldTerrainGenerator generator) {
-		return getSource(generator).getVersion();
-	}
-
-	public static BPos getSpawnPoint12(OverworldTerrainGenerator generator, Collection<Biome> spawnBiomes, boolean trueSpawn) {
-		JRand rand = new JRand(getWorldSeed(generator));
-		BPos spawnPos = getSource(generator).locateBiome12(0, 0, 256, spawnBiomes, rand);
-		int x = 8;
-		int z = 8;
-		if(spawnPos != null) {
-			x = spawnPos.getX();
-			z = spawnPos.getZ();
-		}
-		int counter = 0;
-		// wiggle
-		while(!isValidPos(generator, x, z, trueSpawn)) {
-			x += rand.nextInt(64) - rand.nextInt(64);
-			z += rand.nextInt(64) - rand.nextInt(64);
-			++counter;
-			if(counter == 1000) {
-				break;
-			}
-		}
-		return new BPos(x, 64, z);
-	}
-
 
 	@Override
 	public String getName() {

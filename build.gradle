@@ -29,7 +29,7 @@ dependencies {
 	implementation('com.github.KaptainWutax:MCUtils:ada314031f913553ed23f3fc466082418e95b3bb') { transitive = false }
 	implementation('com.github.KaptainWutax:NoiseUtils:72e13e0e4d6ecc61c7833811718a0f2bea4629bb') { transitive = false }
 
-	implementation('com.github.KaptainWutax:BiomeUtils:3ce8582f939ae3d731311134dbc3df396e666f44') {transitive = false}
+	implementation('com.github.KaptainWutax:BiomeUtils:f9be9ce84c26f1adc397b5fa0c8ac12e14a13189') {transitive = false}
     implementation('com.github.KaptainWutax:TerrainUtils:d6287f6fbc3fafc483b2a8db5eee348ad63b0056') { transitive = false }
 
     testImplementation('com.github.KaptainWutax:ChunkRandomReversal:6b76fb5cf2cd438de56e6a46cea2a83985831834') {transitive = false}
