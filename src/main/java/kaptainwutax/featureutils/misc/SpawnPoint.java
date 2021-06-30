@@ -107,7 +107,7 @@ public class SpawnPoint extends Feature<Feature.Config, SpawnPoint.Data> {
 
 	private static BPos getOverworldRespawnPos(OverworldTerrainGenerator terrainGenerator, int x, int z) {
 		Biome biome = terrainGenerator.getBiomeSource().getBiome(x, 0, z);
-		if(!SPAWN_BLOCKS.contains(biome.getTopBlock())) {
+		if(!SPAWN_BLOCKS.contains(biome.getSurfaceConfig().getTopBlock())) {
 			return null;
 		} else {
 			// we ignore the || !fluidstate.isEmpty because we are doing pregen stuff, for

@@ -26,11 +26,11 @@ repositories {
 dependencies {
 	implementation('com.github.KaptainWutax:MathUtils:5531c4a87b0f1bb85d1dab2bdd18ce375400626a') { transitive = false }
 	implementation('com.github.KaptainWutax:SeedUtils:b6a383113ce5d8d09a59e91b28ff064fb97c0709') { transitive = false }
-	implementation('com.github.KaptainWutax:MCUtils:ada314031f913553ed23f3fc466082418e95b3bb') { transitive = false }
-	implementation('com.github.KaptainWutax:NoiseUtils:72e13e0e4d6ecc61c7833811718a0f2bea4629bb') { transitive = false }
+	implementation('com.github.KaptainWutax:MCUtils:131e865ad577d1e572cd4878b569b65c166f8e30') { transitive = false }
+	implementation('com.github.KaptainWutax:NoiseUtils:5c1373c9c56e280163a49a34d18290971f6e16ea') { transitive = false }
 
-	implementation('com.github.KaptainWutax:BiomeUtils:f9be9ce84c26f1adc397b5fa0c8ac12e14a13189') {transitive = false}
-    implementation('com.github.KaptainWutax:TerrainUtils:d6287f6fbc3fafc483b2a8db5eee348ad63b0056') { transitive = false }
+	implementation('com.github.KaptainWutax:BiomeUtils:280f8b165c4c6a048f6c7cf4b0a6cc5d60ec5499') {transitive = false}
+    implementation('com.github.KaptainWutax:TerrainUtils:a61decfc9189958bc76273cf0d97bff17a2267d9') { transitive = false }
 
     testImplementation('com.github.KaptainWutax:ChunkRandomReversal:6b76fb5cf2cd438de56e6a46cea2a83985831834') {transitive = false}
 
