@@ -6,7 +6,6 @@ import kaptainwutax.featureutils.structure.generator.Generator;
 import kaptainwutax.mcutils.util.pos.BPos;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
 
 public class ChestContent {
@@ -53,7 +52,7 @@ public class ChestContent {
 	}
 
 	public int getCount(Predicate<Item> predicate) {
-		return this.items.stream().filter(Objects::nonNull).filter(e -> predicate.test(e.getItem())).mapToInt(ItemStack::getCount).sum();
+		return this.items.stream().filter(e -> e != null && e.getItem() != null).filter(e -> predicate.test(e.getItem())).mapToInt(ItemStack::getCount).sum();
 	}
 
 	public Generator.ILootType getLootType() {
