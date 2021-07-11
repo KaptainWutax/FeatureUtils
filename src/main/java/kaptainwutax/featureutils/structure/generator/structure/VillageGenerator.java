@@ -5,15 +5,23 @@ import kaptainwutax.biomeutils.biome.Biomes;
 import kaptainwutax.featureutils.structure.RegionStructure;
 import kaptainwutax.featureutils.structure.Village;
 import kaptainwutax.featureutils.structure.generator.Generator;
-import kaptainwutax.mcutils.gen.StructurePiece;
+import kaptainwutax.featureutils.structure.generator.piece.StructurePiece;
+import kaptainwutax.featureutils.structure.generator.piece.village.DesertVillageJigsawBlocks;
+import kaptainwutax.featureutils.structure.generator.piece.village.PlainsVillageJigsawBlocks;
+import kaptainwutax.featureutils.structure.generator.piece.village.SavannaVillageJigsawBlocks;
+import kaptainwutax.featureutils.structure.generator.piece.village.SnowyVillageJigsawBlocks;
+import kaptainwutax.featureutils.structure.generator.piece.village.TaigaVillageJigsawBlocks;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.util.block.BlockBox;
+import kaptainwutax.mcutils.util.block.BlockDirection;
 import kaptainwutax.mcutils.util.block.BlockMirror;
 import kaptainwutax.mcutils.util.block.BlockRotation;
 import kaptainwutax.mcutils.util.data.Pair;
+import kaptainwutax.mcutils.util.data.Quad;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
+import kaptainwutax.seedutils.rand.JRand;
 import kaptainwutax.terrainutils.TerrainGenerator;
 
 import java.util.ArrayDeque;
@@ -34,22 +42,25 @@ public class VillageGenerator extends Generator {
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean generate(TerrainGenerator generator, int chunkX, int chunkZ, ChunkRand rand) {
-		BPos bPos = new CPos(chunkX, chunkZ).toBlockPos(0);
-		rand.setCarverSeed(generator.getWorldSeed(), chunkX, chunkZ, generator.getVersion());
-		BlockRotation rotation = BlockRotation.getRandom(rand);
-
+		rand=rand.asChunkRandDebugger();
+		// check the structure
 		Village village = new Village(this.getVersion());
 		if(!village.canStart((RegionStructure.Data<Village>)village.at(chunkX, chunkZ), generator.getWorldSeed(), rand)) return false;
 		// instantiate the biome type
 		if(!village.canSpawn(chunkX, chunkZ, generator.getBiomeSource())) return false;
 		Biome biome = village.getBiome();
 		VillageType villageType = VillageType.getType(biome, generator.getVersion());
-		String start = STARTS.get(villageType);
-		Pair<List<Pair<String, Integer>>,PlacementBehaviour> templates = VILLAGE_POOLS.get(start);
-		assert templates != null;
-		JigSawPool jigSawPool=new JigSawPool(templates.getFirst());
+		// compute the rotation
+		rand.setCarverSeed(generator.getWorldSeed(), chunkX, chunkZ, generator.getVersion());
+		BlockRotation rotation = BlockRotation.getRandom(rand);
+
+		// compute the template
+		JigSawPool jigSawPool= STARTS.get(villageType);
 		String template=rand.getRandom(jigSawPool.getTemplates());
+
+		// get the information about the structure
 		BPos size=STRUCTURE_SIZE.get(template);
+		BPos bPos = new CPos(chunkX, chunkZ).toBlockPos(0);
 		BlockBox box=BlockBox.getBoundingBox(bPos,rotation,BPos.ORIGIN, BlockMirror.NONE,size);
 		int centerX=(box.minX+box.maxX)/2;
 		int centerZ=(box.minZ+box.maxZ)/2;
@@ -57,15 +68,18 @@ public class VillageGenerator extends Generator {
 		int y= bPos.getY()+generator.getHeightOnGround(centerX,centerZ);
 		int centerY=box.minY+1;
 
-		Piece piece=new Piece(template,bPos,box,rotation,templates.getSecond());
+		// create the first piece (always rigid)
+		Piece piece=new Piece(template,bPos,box,rotation,PlacementBehaviour.RIGID);
 		piece.move(0,y-centerY,0);
 		piece.setBoundsTop(y+80);
+
+		// make the other connected ones
 		// config maxDepth=6
 		BlockBox fullBox=new BlockBox(centerX-80,y-80,centerZ-80,centerX+80+1,y+80+1,centerZ+80+1);
 		Assembler assembler=new Assembler(6,generator);
 		assembler.placing.addLast(piece);
 		while(!assembler.placing.isEmpty()){
-			assembler.tryPlacing(assembler.placing.removeFirst(),true);
+			assembler.tryPlacing(villageType,assembler.placing.removeFirst(),rand,true);
 		}
 		return true;
 	}
@@ -90,6 +104,31 @@ public class VillageGenerator extends Generator {
 		public void setBoundsTop(int boundsTop) {
 			this.boundsTop = boundsTop;
 		}
+
+		public ArrayList<BlockJigsawInfo > getShuffledJigsawBlocks(VillageType villageType,BPos offset,JRand rand){
+			List<Pair<Quad<String,String,String,String>,BPos>> blocks= villageType.getJigsawBlocks().get(this.name);
+			assert blocks!=null;
+			ArrayList<BlockJigsawInfo > list=new ArrayList<>(blocks.size());
+			for (Pair<Quad<String,String,String,String>,BPos> block:blocks){
+				BPos pos=block.getSecond().transform(BlockMirror.NONE,rotation,BPos.ORIGIN).add(offset);
+				list.add(new BlockJigsawInfo(block.getFirst(),pos,rotation));
+			}
+			rand.shuffle(list);
+			return list;
+
+		}
+	}
+
+	public static class BlockJigsawInfo{
+		Quad<String,String,String,String> nbt;
+		BPos pos;
+		BlockRotation rotation;
+
+		public BlockJigsawInfo(Quad<String, String, String, String> nbt, BPos pos, BlockRotation rotation) {
+			this.nbt = nbt;
+			this.pos = pos;
+			this.rotation = rotation;
+		}
 	}
 
 	public class Assembler{
@@ -101,14 +140,16 @@ public class VillageGenerator extends Generator {
 			this.generator=generator;
 		}
 
-		public void tryPlacing(Piece piece, boolean expansionHack){
+		public void tryPlacing(VillageType villageType,Piece piece,JRand rand, boolean expansionHack){
 			BPos pos=piece.pos;
 			BlockRotation rotation=piece.rotation;
 			PlacementBehaviour placementBehaviour=piece.placementBehaviour;
 			boolean isRigid=placementBehaviour==PlacementBehaviour.RIGID;
 			BlockBox box=piece.box;
 			int minY=box.minY;
-
+			for (BlockJigsawInfo blockJigsawInfo:piece.getShuffledJigsawBlocks(villageType,pos,rand)){
+				BlockDirection direction;
+			}
 		}
 	}
 
@@ -127,13 +168,7 @@ public class VillageGenerator extends Generator {
 		return new ILootType[0];
 	}
 
-	public static final Map<VillageType, String> STARTS = new HashMap<VillageType, String>() {{
-		put(VillageType.DESERT, "desert/town_centers");
-		put(VillageType.LEGACY, "");
-		put(VillageType.PLAINS, "");
-		put(VillageType.SAVANNA, "");
-		put(VillageType.SNOWY, "");
-	}};
+
 	public enum PlacementBehaviour{
 		RIGID,
 		TERRAIN_MATCHING,
@@ -767,13 +802,13 @@ public class VillageGenerator extends Generator {
 		this.put("taiga/zombie/villagers/unemployed",new BPos(1,3,1));
 	}};
 
-
-	public class JigSawPool{
+	// TODO optimize the hell out of this (with indexes)
+	public static class JigSawPool{
 		private final LinkedList<String> templates=new LinkedList<>();
 		JigSawPool(List<Pair<String, Integer>> templates){
 			for (Pair<String,Integer> template:templates){
 				for(int i = 0; i < template.getSecond(); i++) {
-					this.templates.push(template.getFirst());
+					this.templates.addLast(template.getFirst());
 				}
 			}
 		}
@@ -782,6 +817,8 @@ public class VillageGenerator extends Generator {
 			return templates;
 		}
 	}
+
+
 
 	public enum VillageType {
 		DESERT,
@@ -810,5 +847,26 @@ public class VillageGenerator extends Generator {
 			}
 			return PLAINS;
 		}
+
+		public HashMap<String, List<Pair<Quad<String, String, String, String>, BPos>>> getJigsawBlocks(){
+			switch(this){
+				case DESERT:return DesertVillageJigsawBlocks.JIGSAW_BLOCKS;
+				case PLAINS:return PlainsVillageJigsawBlocks.JIGSAW_BLOCKS;
+				case SAVANNA:return SavannaVillageJigsawBlocks.JIGSAW_BLOCKS;
+				case SNOWY:return SnowyVillageJigsawBlocks.JIGSAW_BLOCKS;
+				case TAIGA: return TaigaVillageJigsawBlocks.JIGSAW_BLOCKS;
+				case LEGACY:
+			}
+			return null;
+		}
 	}
+
+	public static final Map<VillageType, JigSawPool> STARTS = new HashMap<VillageType, JigSawPool>() {{
+		put(VillageType.DESERT, new JigSawPool(VILLAGE_POOLS.get("desert/town_centers").getFirst()));
+		put(VillageType.LEGACY, null);
+		put(VillageType.PLAINS, null);
+		put(VillageType.TAIGA, null);
+		put(VillageType.SAVANNA, null);
+		put(VillageType.SNOWY, null);
+	}};
 }

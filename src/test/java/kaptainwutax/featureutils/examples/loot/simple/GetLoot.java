@@ -32,22 +32,21 @@ public class GetLoot {
 		// For now stick to 1.14+ and especially 1.16.5
 		MCVersion version = MCVersion.v1_16;
 		long worldSeed = 1L;
-		desertPyramid(version, worldSeed);
-		buriedTreasure(version, worldSeed);
-		shipwreck(version, worldSeed);
-		desert(version,1L,24,49);
+//		desertPyramid(version, worldSeed);
+//		buriedTreasure(version, worldSeed);
+//		shipwreck(version, worldSeed);
+		buriedTreasure(version,1L,3,4);
 	}
 
-	public static void desert(MCVersion version,long structureSeed,int regX,int regZ){
+	public static void buriedTreasure(MCVersion version,long structureSeed,int regX,int regZ){
 		ChunkRand rand = new ChunkRand();
-		DesertPyramid desertPyramid = new DesertPyramid(version);
-		DesertPyramidGenerator generator=new DesertPyramidGenerator(version);
-		CPos pos = desertPyramid.getInRegion(structureSeed, regX, regZ, rand);
+		BuriedTreasure buriedTreasure = new BuriedTreasure(version);
+		BuriedTreasureGenerator generator=new BuriedTreasureGenerator(version);
+		CPos pos = buriedTreasure.getInRegion(structureSeed, regX, regZ, rand);
+		if (pos==null) return;
 		generator.generate(null, pos, new ChunkRand());
-		List<ChestContent> chestContents=desertPyramid.getLoot(structureSeed, generator, new ChunkRand(), true);
-		chestContents.stream().filter(c-> c.getItems().get(
-				(int) (c.getChestType().getNumberRows() * ChestContent.ChestType.ITEMS_PER_ROW*0.70))
-				.getItem().getName().equals(Items.ENCHANTED_BOOK.getName())).forEach(System.out::println);
+		List<ChestContent> chestContents=buriedTreasure.getLoot(structureSeed, generator, new ChunkRand(), true);
+		chestContents.stream().map(ChestContent::getItems).forEach(System.out::println);
 
 	}
 
