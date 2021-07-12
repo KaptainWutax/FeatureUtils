@@ -30,6 +30,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -335,8 +336,8 @@ public class RuinedPortalGenerator extends Generator {
 			offset = offset.transform(this.getMirror(), this.getRotation(), this.getPivot());
 			BPos chestPos = offset.add(getPos());
 			if(generator != null) {
-				Block block = generator.getBlockAt(chestPos.getX(), chestPos.getY(), chestPos.getZ());
-				if(block.getId() != Blocks.LAVA.getId()) {
+				Optional<Block> block = generator.getBlockAt(chestPos.getX(), chestPos.getY(), chestPos.getZ());
+				if(block.isPresent() && block.get().getId() != Blocks.LAVA.getId()) {
 					res.add(new Pair<>(lootType, chestPos));
 				}
 			} else {
