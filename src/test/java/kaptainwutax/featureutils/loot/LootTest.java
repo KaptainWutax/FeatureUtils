@@ -42,7 +42,7 @@ public class LootTest {
 			add(Items.IRON_PICKAXE);
 			add(Items.IRON_SHOVEL);
 		}};
-		for (Item item:items){
+		for(Item item : items) {
 			assertTrue(itemList.remove(item));
 		}
 		assertTrue(itemList.isEmpty());
@@ -72,10 +72,10 @@ public class LootTest {
 			add(Items.STRING);
 			add(Items.SAND);
 		}};
-		for (Item item:items){
-			assertTrue(itemList.remove(item),item +" was not in the list");
+		for(Item item : items) {
+			assertTrue(itemList.remove(item), item + " was not in the list");
 		}
-		assertTrue(itemList.isEmpty(),"All the items were not removed");
+		assertTrue(itemList.isEmpty(), "All the items were not removed");
 
 	}
 }

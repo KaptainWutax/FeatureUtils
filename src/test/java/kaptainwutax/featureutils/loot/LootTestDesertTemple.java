@@ -3,8 +3,8 @@ package kaptainwutax.featureutils.loot;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.featureutils.structure.DesertPyramid;
-import kaptainwutax.featureutils.structure.generator.structure.DesertPyramidGenerator;
 import kaptainwutax.featureutils.structure.generator.Generator;
+import kaptainwutax.featureutils.structure.generator.structure.DesertPyramidGenerator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.util.data.Pair;
@@ -39,14 +39,14 @@ public class LootTestDesertTemple {
 
 	@Test
 	public void testCorrectChest1() {
-		setup(123L, new BPos(2777,60,-1159).toChunkPos(), MCVersion.v1_16_5);
+		setup(123L, new BPos(2777, 60, -1159).toChunkPos(), MCVersion.v1_16_5);
 		List<Pair<DesertPyramidGenerator.LootType, BPos>> checks = new ArrayList<Pair<DesertPyramidGenerator.LootType, BPos>>() {{
 			add(new Pair<>(DesertPyramidGenerator.LootType.CHEST_1, new BPos(2768, 0, -1168)));
 			add(new Pair<>(DesertPyramidGenerator.LootType.CHEST_2, new BPos(2768, 0, -1168)));
 			add(new Pair<>(DesertPyramidGenerator.LootType.CHEST_3, new BPos(2768, 0, -1168)));
 			add(new Pair<>(DesertPyramidGenerator.LootType.CHEST_4, new BPos(2768, 0, -1168)));
 		}};
-		for (Pair<DesertPyramidGenerator.LootType, BPos> check : checks) {
+		for(Pair<DesertPyramidGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s", check.getFirst(), check.getSecond()));
 		}
 	}
@@ -54,14 +54,14 @@ public class LootTestDesertTemple {
 
 	@Test
 	public void testChestLoot() {
-		setup(123L, new BPos(2777,60,-1159).toChunkPos(), MCVersion.v1_16_5);
+		setup(123L, new BPos(2777, 60, -1159).toChunkPos(), MCVersion.v1_16_5);
 		DesertPyramid desertPyramid = new DesertPyramid(MCVersion.v1_16_5);
 		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = desertPyramid.getLootEx(123L, structureGenerator, new ChunkRand(), false);
 		long hash = 0;
-		for (Map.Entry<Generator.ILootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
-			for (List<ItemStack> loot : loots.getValue()) {
-				System.out.println(loots.getKey()+" "+loot);
-				for (ItemStack stack : loot) hash += stack.hashCode();
+		for(Map.Entry<Generator.ILootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
+			for(List<ItemStack> loot : loots.getValue()) {
+				System.out.println(loots.getKey() + " " + loot);
+				for(ItemStack stack : loot) hash += stack.hashCode();
 			}
 		}
 		assertEquals(11777201006L, hash, "Items changed maybe?");
@@ -69,14 +69,14 @@ public class LootTestDesertTemple {
 
 	@Test
 	public void testChestLoot2() {
-		setup(3119024338951782547L, new BPos(761,60,-743).toChunkPos(), MCVersion.v1_16_5);
+		setup(3119024338951782547L, new BPos(761, 60, -743).toChunkPos(), MCVersion.v1_16_5);
 		DesertPyramid desertPyramid = new DesertPyramid(MCVersion.v1_16_5);
 		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = desertPyramid.getLootEx(3119024338951782547L, structureGenerator, new ChunkRand(), false);
 		long hash = 0;
-		for (Map.Entry<Generator.ILootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
-			for (List<ItemStack> loot : loots.getValue()) {
-				System.out.println(loots.getKey()+" "+loot);
-				for (ItemStack stack : loot) hash += stack.hashCode();
+		for(Map.Entry<Generator.ILootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
+			for(List<ItemStack> loot : loots.getValue()) {
+				System.out.println(loots.getKey() + " " + loot);
+				for(ItemStack stack : loot) hash += stack.hashCode();
 			}
 		}
 		assertEquals(8379442605L, hash, "Items changed maybe?");

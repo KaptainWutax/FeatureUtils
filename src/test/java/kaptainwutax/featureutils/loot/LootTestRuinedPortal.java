@@ -38,7 +38,7 @@ public class LootTestRuinedPortal {
 		ChunkRand rand = new ChunkRand().asChunkRandDebugger();
 		structureGenerator.generate(generator, cPos, rand);
 		loots = structureGenerator.getChestsPos();
-		portal = ((RuinedPortalGenerator) structureGenerator).getPortal();
+		portal = ((RuinedPortalGenerator)structureGenerator).getPortal();
 	}
 
 	@Test
@@ -47,7 +47,7 @@ public class LootTestRuinedPortal {
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-315, 81, 127)));
 		}};
-		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
+		for(Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
 		}
 	}
@@ -58,7 +58,7 @@ public class LootTestRuinedPortal {
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(150, 67, 128)));
 		}};
-		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
+		for(Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
 		}
 	}
@@ -69,7 +69,7 @@ public class LootTestRuinedPortal {
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(128, 78, 162)));
 		}};
-		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
+		for(Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
 		}
 	}
@@ -80,7 +80,7 @@ public class LootTestRuinedPortal {
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(113, 38, 1629)));
 		}};
-		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
+		for(Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
 		}
 	}
@@ -104,7 +104,7 @@ public class LootTestRuinedPortal {
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(145, 69, 116)));
 		}};
-		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
+		for(Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
 		}
 	}
@@ -115,7 +115,7 @@ public class LootTestRuinedPortal {
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-170, 50, -192)));
 		}};
-		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
+		for(Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
 		}
 	}
@@ -126,7 +126,7 @@ public class LootTestRuinedPortal {
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(405, 102, 146)));
 		}};
-		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
+		for(Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
 		}
 	}
@@ -137,7 +137,7 @@ public class LootTestRuinedPortal {
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-366, 34, 139)));
 		}};
-		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
+		for(Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
 		}
 	}
@@ -149,15 +149,15 @@ public class LootTestRuinedPortal {
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-366, 34, 139)));
 		}};
 		RuinedPortal ruinedPortal = new RuinedPortal(this.biomeSource.getDimension(), this.biomeSource.getVersion());
-		ChunkRand rand=new ChunkRand();
-		ChunkRand rand1=rand.asChunkRandDebugger();
+		ChunkRand rand = new ChunkRand();
+		ChunkRand rand1 = rand.asChunkRandDebugger();
 		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypeListHashMap = ruinedPortal.getLootEx(this.biomeSource.getWorldSeed(), this.structureGenerator, rand1, false);
 		assertTrue(lootTypeListHashMap.containsKey(RuinedPortalGenerator.LootType.RUINED_PORTAL));
 		List<List<ItemStack>> l = lootTypeListHashMap.get(RuinedPortalGenerator.LootType.RUINED_PORTAL);
 		assertEquals(1, l.size());
 		List<ItemStack> loot = l.get(0);
 		long hashcode = 0;
-		for (ItemStack stack : loot) hashcode += stack.hashCode();
+		for(ItemStack stack : loot) hashcode += stack.hashCode();
 		assertEquals(-1138008234, hashcode, "Something changed in loot");
 	}
 
@@ -167,7 +167,7 @@ public class LootTestRuinedPortal {
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(-399, 28, 1634)));
 		}};
-		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
+		for(Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
 		}
 		RuinedPortal ruinedPortal = new RuinedPortal(this.biomeSource.getDimension(), this.biomeSource.getVersion());
@@ -177,7 +177,7 @@ public class LootTestRuinedPortal {
 		assertEquals(1, l.size());
 		List<ItemStack> loot = l.get(0);
 		long hashcode = 0;
-		for (ItemStack stack : loot) hashcode += stack.hashCode();
+		for(ItemStack stack : loot) hashcode += stack.hashCode();
 		assertEquals(-910440243, hashcode, "Something changed in loot");
 	}
 
@@ -187,7 +187,7 @@ public class LootTestRuinedPortal {
 		List<Pair<RuinedPortalGenerator.LootType, BPos>> checks = new ArrayList<Pair<RuinedPortalGenerator.LootType, BPos>>() {{
 			add(new Pair<>(RuinedPortalGenerator.LootType.RUINED_PORTAL, new BPos(1035, 65, 642)));
 		}};
-		for (Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
+		for(Pair<RuinedPortalGenerator.LootType, BPos> check : checks) {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
 		}
 		List<Pair<Block, BPos>> blocks = new ArrayList<Pair<Block, BPos>>() {{
@@ -202,11 +202,11 @@ public class LootTestRuinedPortal {
 			add(new Pair<>(Blocks.CRYING_OBSIDIAN, new BPos(1036, 65, 645)));
 			add(new Pair<>(Blocks.CRYING_OBSIDIAN, new BPos(1036, 65, 644)));
 		}};
-		RuinedPortalGenerator ruinedPortalGenerator = (RuinedPortalGenerator) structureGenerator;
-		for (Pair<Block, BPos> block : blocks) {
+		RuinedPortalGenerator ruinedPortalGenerator = (RuinedPortalGenerator)structureGenerator;
+		for(Pair<Block, BPos> block : blocks) {
 			assertTrue(portal.contains(block), String.format("Missing loot %s at pos %s for loots: %s", block.getFirst(), block.getSecond(), Arrays.toString(portal.toArray())));
 		}
-		for (Pair<Block, BPos> block : blocks) {
+		for(Pair<Block, BPos> block : blocks) {
 			assertTrue(ruinedPortalGenerator.getObsidian().contains(block), String.format("Missing loot %s at pos %s for loots: %s", block.getFirst(), block.getSecond(), Arrays.toString(portal.toArray())));
 		}
 		// others

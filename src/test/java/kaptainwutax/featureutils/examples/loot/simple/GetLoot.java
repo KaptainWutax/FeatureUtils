@@ -3,12 +3,12 @@ package kaptainwutax.featureutils.examples.loot.simple;
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.loot.ChestContent;
 import kaptainwutax.featureutils.loot.item.ItemStack;
-import kaptainwutax.featureutils.loot.item.Items;
 import kaptainwutax.featureutils.structure.BuriedTreasure;
 import kaptainwutax.featureutils.structure.DesertPyramid;
 import kaptainwutax.featureutils.structure.RegionStructure;
 import kaptainwutax.featureutils.structure.Shipwreck;
-import kaptainwutax.featureutils.structure.generator.*;
+import kaptainwutax.featureutils.structure.generator.Generator;
+import kaptainwutax.featureutils.structure.generator.Generators;
 import kaptainwutax.featureutils.structure.generator.structure.BuriedTreasureGenerator;
 import kaptainwutax.featureutils.structure.generator.structure.DesertPyramidGenerator;
 import kaptainwutax.featureutils.structure.generator.structure.ShipwreckGenerator;
@@ -35,17 +35,17 @@ public class GetLoot {
 //		desertPyramid(version, worldSeed);
 //		buriedTreasure(version, worldSeed);
 //		shipwreck(version, worldSeed);
-		buriedTreasure(version,1L,3,4);
+		buriedTreasure(version, 1L, 3, 4);
 	}
 
-	public static void buriedTreasure(MCVersion version,long structureSeed,int regX,int regZ){
+	public static void buriedTreasure(MCVersion version, long structureSeed, int regX, int regZ) {
 		ChunkRand rand = new ChunkRand();
 		BuriedTreasure buriedTreasure = new BuriedTreasure(version);
-		BuriedTreasureGenerator generator=new BuriedTreasureGenerator(version);
+		BuriedTreasureGenerator generator = new BuriedTreasureGenerator(version);
 		CPos pos = buriedTreasure.getInRegion(structureSeed, regX, regZ, rand);
-		if (pos==null) return;
+		if(pos == null) return;
 		generator.generate(null, pos, new ChunkRand());
-		List<ChestContent> chestContents=buriedTreasure.getLoot(structureSeed, generator, new ChunkRand(), true);
+		List<ChestContent> chestContents = buriedTreasure.getLoot(structureSeed, generator, new ChunkRand(), true);
 		chestContents.stream().map(ChestContent::getItems).forEach(System.out::println);
 
 	}
@@ -75,7 +75,7 @@ public class GetLoot {
 		// Alternatively you can get the data at a specific chunk position, however you will need to check canStart then
 		// We don't recommend this as you usually never know the chunk position beforehand...
 		@SuppressWarnings("unchecked")
-		RegionStructure.Data<DesertPyramid> data = (RegionStructure.Data<DesertPyramid>) desertPyramid.at(782, 1584);
+		RegionStructure.Data<DesertPyramid> data = (RegionStructure.Data<DesertPyramid>)desertPyramid.at(782, 1584);
 		assertTrue(desertPyramid.canStart(data, worldSeed, rand));
 
 		// Verify that this chunk position is a valid spot to spawn
@@ -199,12 +199,12 @@ public class GetLoot {
 		// as the region coordinates, remember region are structure dependant
 		// so use structure#getSpacing() to change base
 		// getInRegion guarantee that in that region that structure canStart
-		CPos pos = shipwreck.getInRegion(worldSeed, -615/16/shipwreck.getSpacing(), 9/16/shipwreck.getSpacing(), rand);
+		CPos pos = shipwreck.getInRegion(worldSeed, -615 / 16 / shipwreck.getSpacing(), 9 / 16 / shipwreck.getSpacing(), rand);
 		assertTrue(pos.toRegionPos(shipwreck.getSpacing()).equals(new RPos(-1, 0, shipwreck.getSpacing())));
 		// Alternatively you can get the data at a specific chunk position, however you will need to check canStart then
 		// We don't recommend this as you usually never know the chunk position beforehand...
 		@SuppressWarnings("unchecked")
-		RegionStructure.Data<Shipwreck> data = (RegionStructure.Data<Shipwreck>) shipwreck.at(-39, 0);
+		RegionStructure.Data<Shipwreck> data = (RegionStructure.Data<Shipwreck>)shipwreck.at(-39, 0);
 		assertTrue(shipwreck.canStart(data, worldSeed, rand));
 
 		// Verify that this chunk position is a valid spot to spawn

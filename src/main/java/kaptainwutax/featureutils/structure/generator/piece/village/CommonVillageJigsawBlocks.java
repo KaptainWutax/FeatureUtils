@@ -51,67 +51,67 @@ public class CommonVillageJigsawBlocks {
 	//
 	public static final HashMap<String, List<Pair<Quad<String, String, String, String>, BPos>>> JIGSAW_BLOCKS = new HashMap<String, List<Pair<Quad<String, String, String, String>, BPos>>>() {{
 		this.put("common/iron_golem", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/well_bottom", Collections.singletonList(
-			new Pair<>(new Quad<>("village/common/well_bottoms","bottom","bottom","cobblestone"),new BPos(3,2,0))
+			new Pair<>(new Quad<>("village/common/well_bottoms", "bottom", "bottom", "cobblestone"), new BPos(3, 2, 0))
 		));
 		this.put("common/animals/cat_black", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/cat_british", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/cat_calico", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/cat_jellie", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/cat_persia", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/cat_ragdoll", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/cat_red", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/cat_siamese", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/cat_tabby", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/cat_white", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/cows_1", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/horses_1", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/horses_2", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/horses_3", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/horses_4", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","hay_block"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "hay_block"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/horses_5", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/pigs_1", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/sheep_1", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("common/animals/sheep_2", Collections.singletonList(
-			new Pair<>(new Quad<>("empty","bottom","bottom","structure_void"),new BPos(0,0,0))
+			new Pair<>(new Quad<>("empty", "bottom", "bottom", "structure_void"), new BPos(0, 0, 0))
 		));
 		this.put("decays/grass_11x13", Arrays.asList(
 		));

@@ -141,7 +141,7 @@ public class SpawnPoint extends Feature<Feature.Config, SpawnPoint.Data> {
 		Block[] column = generator.getColumnAt(x, z);
 		// could replace column length with generator.getMaxWorldHeight()
 		int y;
-		for(y = generator.getSeaLevel()+1; y < column.length; y++) {
+		for(y = generator.getSeaLevel() + 1; y < column.length; y++) {
 			if(column[y] == Blocks.AIR) break;
 		}
 		return column[y - 1];

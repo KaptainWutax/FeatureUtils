@@ -20,12 +20,13 @@ public interface ILoot {
 
 	/**
 	 * Utility to get the loot from all the chests in a structure
+	 *
 	 * @param structureSeed the structure seed (lower 48 bits)
-	 * @param generator the structure generator used to generate the structure
-	 * @param rand a chunkrand instance (for optimization, can be in any state)
-	 * @param indexed a boolean to indicate if the chest content should be spread or not,
-	 *                WARNING, if you put is a true then you will have null items, we
-	 *                recommend to have it to false for any checking
+	 * @param generator     the structure generator used to generate the structure
+	 * @param rand          a chunkrand instance (for optimization, can be in any state)
+	 * @param indexed       a boolean to indicate if the chest content should be spread or not,
+	 *                      WARNING, if you put is a true then you will have null items, we
+	 *                      recommend to have it to false for any checking
 	 * @return list of chestContent that can be used to refine the search
 	 */
 	default List<ChestContent> getLoot(long structureSeed, Generator generator, ChunkRand rand, boolean indexed) {

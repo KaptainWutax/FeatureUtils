@@ -3,7 +3,6 @@ package kaptainwutax.featureutils.decorator.ore;
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.mcutils.block.Blocks;
 import kaptainwutax.mcutils.state.Dimension;
-import kaptainwutax.mcutils.util.math.DistanceMetric;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.noiseutils.utils.MathHelper;

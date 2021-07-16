@@ -25,7 +25,6 @@ public abstract class SphereOreDecorator<C extends OreDecorator.Config, D extend
 	}
 
 
-
 	@Override
 	protected List<BPos> generateOrePositions(BPos bPos, Biome biome, TerrainGenerator generator, JRand rand) {
 		// we abuse the getSize as the halfHeight (to avoid a weird definition in OreDecorator
