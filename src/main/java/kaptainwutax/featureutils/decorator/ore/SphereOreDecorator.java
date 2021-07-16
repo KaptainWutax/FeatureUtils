@@ -11,7 +11,6 @@ import kaptainwutax.terrainutils.TerrainGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public abstract class SphereOreDecorator<C extends OreDecorator.Config, D extends OreDecorator.Data<?>> extends OreDecorator<C, D> {
 
@@ -38,12 +37,9 @@ public abstract class SphereOreDecorator<C extends OreDecorator.Config, D extend
 				if(DistanceMetric.EUCLIDEAN_SQ.getDistance(distanceCenterX, 0, distanceCenterZ) <= radius * radius) {
 					for(int y = bPos.getY() - this.getSize(biome); y <= bPos.getY() + this.getSize(biome); y++) {
 						BPos currentPos = new BPos(x, y, z);
-						Optional<Block> current = generator.getBlockAt(currentPos);
-						if(!current.isPresent()) {
-							continue;
-						}
+						Block current = generator.getBiomeColumnAt(x, z)[y];
 						for(Block block : this.getReplaceBlocks(biome)) {
-							if(current.get().equals(block)) {
+							if(current.equals(block)) {
 								poses.add(currentPos);
 							}
 						}
