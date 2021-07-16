@@ -7,12 +7,12 @@ import kaptainwutax.mcutils.block.Blocks;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
 
-public class DiskSand extends SphereOreDecorator<SphereOreDecorator.Config, SphereOreDecorator.Data<DiskSand>> {
+public class SandDisk extends SphereOreDecorator<SphereOreDecorator.Config, SphereOreDecorator.Data<SandDisk>> {
 	public static final VersionMap<Config> CONFIGS = new VersionMap<Config>()
 		.add(MCVersion.v1_16, new Config(11, 6, 2, 3, HeightProvider.spreadRange(2, 4), Blocks.SAND, DIRT_GRASS))
 		.add(MCVersion.v1_17, new Config(14, 6, 2, 3, HeightProvider.spreadRange(2, 4), Blocks.SAND, DIRT_GRASS));
 
-	public DiskSand(MCVersion version) {
+	public SandDisk(MCVersion version) {
 		super(CONFIGS.getAsOf(version), version);
 	}
 
