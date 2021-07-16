@@ -20,12 +20,20 @@ public interface HeightProvider {
 
 	//>=1.17
 	static HeightProvider uniformRange(int minOffset, int maxOffset) {
-		return rand -> nextBetween(rand, minOffset, maxOffset);
+		return rand -> {
+			if(minOffset > maxOffset) {
+				return minOffset;
+			}
+			return nextBetween(rand, minOffset, maxOffset);
+		};
 	}
 
 	//>=1.17
 	static HeightProvider triangleRange(int minOffset, int maxOffset) {
 		return rand -> {
+			if(minOffset > maxOffset) {
+				return minOffset;
+			}
 			int range = maxOffset - minOffset;
 			if(range <= 0) {
 				return nextBetween(rand, minOffset, maxOffset);
