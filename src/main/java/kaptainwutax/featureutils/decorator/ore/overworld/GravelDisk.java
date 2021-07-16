@@ -27,6 +27,6 @@ public class GravelDisk extends SphereOreDecorator<SphereOreDecorator.Config, Sp
 	}
 
 	public static String name() {
-		return "disk_clay";
+		return "disk_gravel";
 	}
 }
