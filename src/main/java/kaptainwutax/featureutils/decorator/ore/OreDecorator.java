@@ -18,18 +18,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@SuppressWarnings("unused")
 public abstract class OreDecorator<C extends OreDecorator.Config, D extends OreDecorator.Data<?>> extends Decorator<C, D> {
-
 	protected static final Set<Block> BASE_STONE_OVERWORLD = new HashSet<>();
 	protected static final Set<Block> BASE_STONE_NETHER = new HashSet<>();
 	protected static final Set<Block> STONE = new HashSet<>();
 	protected static final Set<Block> NETHERRACK = new HashSet<>();
+	protected static final Set<Block> DIRT_CLAY = new HashSet<>();
+	protected static final Set<Block> DIRT_GRASS = new HashSet<>();
 
 	static {
 		BASE_STONE_OVERWORLD.addAll(Arrays.asList(Blocks.STONE, Blocks.GRANITE, Blocks.DIORITE, Blocks.ANDESITE, Blocks.DEEPSLATE, Blocks.TUFF));
 		BASE_STONE_NETHER.addAll(Arrays.asList(Blocks.NETHERRACK, Blocks.BASALT, Blocks.BLACKSTONE));
 		STONE.addAll(Collections.singletonList(Blocks.STONE));
 		NETHERRACK.addAll(Collections.singletonList(Blocks.NETHERRACK));
+		DIRT_CLAY.addAll(Arrays.asList(Blocks.DIRT, Blocks.CLAY));
+		DIRT_GRASS.addAll(Arrays.asList(Blocks.DIRT, Blocks.GRASS_BLOCK));
 	}
 
 	public OreDecorator(C config, MCVersion version) {

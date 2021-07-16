@@ -61,7 +61,7 @@ public class EffectFunction implements LootFunction {
 	@Override
 	public ItemStack process(ItemStack baseStack, LootContext context) {
 		Item newItem = new Item(baseStack.getItem().getName());
-		if(newItem.getName().equals(Items.SUSPICIOUS_STEW.getName()) && !this.getEffects().isEmpty()) {
+		if(newItem.equalsName(Items.SUSPICIOUS_STEW) && !this.getEffects().isEmpty()) {
 			int i = context.nextInt(this.getEffects().size());
 			Map.Entry<Effect, UniformRoll> entry = nthElement(this.getEffects().entrySet(), i); // mojang why? (this is not ordered so we hardcoded the order...
 			assert entry != null;

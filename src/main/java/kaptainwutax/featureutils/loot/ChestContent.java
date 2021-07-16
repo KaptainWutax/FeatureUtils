@@ -40,7 +40,7 @@ public class ChestContent {
 	}
 
 	public boolean containsAtLeast(Item item, int count) {
-		return this.getCount(e -> e.getName().equals(item.getName())) >= count;
+		return this.getCount(e -> e.equalsName(item)) >= count;
 	}
 
 	public boolean containsExact(Item item) {

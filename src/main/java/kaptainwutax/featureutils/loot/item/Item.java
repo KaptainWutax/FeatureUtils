@@ -60,6 +60,19 @@ public class Item {
 			'}';
 	}
 
+	/**
+	 * Utility to check if two items share the same unique identifier regardless of their
+	 * enchantments or effects
+	 * @param o the other item
+	 * @return a boolean
+	 */
+	public boolean equalsName(Object o){
+		if(this == o) return true;
+		if(!(o instanceof Item)) return false;
+		Item item = (Item)o;
+		return Objects.equals(name, item.name);
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if(this == o) return true;
@@ -82,7 +95,7 @@ public class Item {
 			}
 		}
 
-		return Objects.equals(name, item.name) && sameEnchantment && sameEffect;
+		return this.equalsName(o) && sameEnchantment && sameEffect;
 	}
 
 	@Override

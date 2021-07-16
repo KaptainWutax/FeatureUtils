@@ -45,6 +45,10 @@ public interface HeightProvider {
 		};
 	}
 
+	static HeightProvider spreadRange(int baseValue,int spread){
+		return rand -> spread==0?baseValue:baseValue+rand.nextInt(spread+1);
+	}
+
 	static HeightProvider custom(Function<JRand, Integer> func) {
 		return func::apply;
 	}
