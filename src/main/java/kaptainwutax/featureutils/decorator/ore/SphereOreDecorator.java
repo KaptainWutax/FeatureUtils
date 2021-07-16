@@ -28,8 +28,9 @@ public abstract class SphereOreDecorator<C extends OreDecorator.Config, D extend
 	@Override
 	protected List<BPos> generateOrePositions(BPos bPos, Biome biome, TerrainGenerator generator, JRand rand) {
 		// we abuse the getSize as the halfHeight (to avoid a weird definition in OreDecorator
+		// and the heightProvider is used for the radius (basically transform it 90deg)
 		List<BPos> poses = new ArrayList<>();
-		int radius = this.getSize(biome);
+		int radius = this.getHeightProvider(biome).getY(rand);
 		for(int x = bPos.getX() - radius; x <= bPos.getX() + radius; x++) {
 			for(int z = bPos.getZ() - radius; z <= bPos.getZ() + radius; z++) {
 				int distanceCenterX = x - bPos.getX();
