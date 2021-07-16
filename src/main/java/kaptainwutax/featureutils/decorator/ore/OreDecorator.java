@@ -28,8 +28,8 @@ public abstract class OreDecorator<C extends OreDecorator.Config, D extends OreD
 	static {
 		BASE_STONE_OVERWORLD.addAll(Arrays.asList(Blocks.STONE, Blocks.GRANITE, Blocks.DIORITE, Blocks.ANDESITE, Blocks.DEEPSLATE, Blocks.TUFF));
 		BASE_STONE_NETHER.addAll(Arrays.asList(Blocks.NETHERRACK, Blocks.BASALT, Blocks.BLACKSTONE));
-		STONE.addAll(Arrays.asList(Blocks.STONE));
-		NETHERRACK.addAll(Arrays.asList(Blocks.NETHERRACK));
+		STONE.addAll(Collections.singletonList(Blocks.STONE));
+		NETHERRACK.addAll(Collections.singletonList(Blocks.NETHERRACK));
 	}
 
 	public OreDecorator(C config, MCVersion version) {

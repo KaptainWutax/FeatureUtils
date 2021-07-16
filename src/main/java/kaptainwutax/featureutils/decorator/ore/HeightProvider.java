@@ -10,29 +10,29 @@ public interface HeightProvider {
 
 	//<=1.16.5
 	static HeightProvider range(int bottomOffset, int topOffset, int maximumY) {
-		return r -> r.nextInt(maximumY - topOffset) + bottomOffset;
+		return rand -> rand.nextInt(maximumY - topOffset) + bottomOffset;
 	}
 
 	//<=1.16.5
 	static HeightProvider depthAverage(int baseline, int spread) {
-		return r -> r.nextInt(spread) + r.nextInt(spread) - spread + baseline;
+		return rand -> rand.nextInt(spread) + rand.nextInt(spread) - spread + baseline;
 	}
 
 	//>=1.17
 	static HeightProvider uniformRange(int minOffset, int maxOffset) {
-		return r -> nextBetween(r, minOffset, maxOffset);
+		return rand -> nextBetween(rand, minOffset, maxOffset);
 	}
 
 	//>=1.17
 	static HeightProvider triangleRange(int minOffset, int maxOffset) {
-		return r -> {
-			int k = maxOffset - minOffset;
-			if(0 >= k) {
-				return nextBetween(r, minOffset, maxOffset);
+		return rand -> {
+			int range = maxOffset - minOffset;
+			if(range <= 0) {
+				return nextBetween(rand, minOffset, maxOffset);
 			} else {
-				int l = k / 2;
-				int m = k - l;
-				return minOffset + nextBetween(r, 0, m) + nextBetween(r, 0, l);
+				int midPoint = range / 2;
+				int midPoint2 = range - midPoint;
+				return minOffset + nextBetween(rand, 0, midPoint2) + nextBetween(rand, 0, midPoint);
 			}
 		};
 	}

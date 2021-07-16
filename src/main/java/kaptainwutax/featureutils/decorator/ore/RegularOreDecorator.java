@@ -3,6 +3,7 @@ package kaptainwutax.featureutils.decorator.ore;
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.mcutils.block.Blocks;
 import kaptainwutax.mcutils.state.Dimension;
+import kaptainwutax.mcutils.util.math.DistanceMetric;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.noiseutils.utils.MathHelper;
@@ -27,25 +28,26 @@ public abstract class RegularOreDecorator<C extends OreDecorator.Config, D exten
 
 	@Override
 	protected List<BPos> generateOrePositions(BPos bPos, Biome biome, TerrainGenerator generator, JRand rand) {
-		float f = rand.nextFloat() * (float)Math.PI;
-		float g = (float)this.getSize(biome) / 8.0F;
-		int i = ceil(((float)this.getSize(biome) / 16.0F * 2.0F + 1.0F) / 2.0F);
-		double d = (double)bPos.getX() + Math.sin(f) * (double)g;
-		double e = (double)bPos.getX() - Math.sin(f) * (double)g;
-		double h = (double)bPos.getZ() + Math.cos(f) * (double)g;
-		double j = (double)bPos.getZ() - Math.cos(f) * (double)g;
-		double l = bPos.getY() + rand.nextInt(3) - 2;
-		double m = bPos.getY() + rand.nextInt(3) - 2;
-		int n = bPos.getX() - ceil(g) - i;
-		int o = bPos.getY() - 2 - i;
-		int p = bPos.getZ() - ceil(g) - i;
-		int q = 2 * (ceil(g) + i);
-		int r = 2 * (2 + i);
+		float angle = rand.nextFloat() * (float)Math.PI;
+		float size = (float)this.getSize(biome) / 8.0F;
+		int amortizedSize = ceil(((float)this.getSize(biome) / 16.0F * 2.0F + 1.0F) / 2.0F);
+		// this is just a way to compute a circle 4 points centered on X,Z
+		double offsetXPos = (double)bPos.getX() + Math.sin(angle) * (double)size;
+		double offsetXNeg = (double)bPos.getX() - Math.sin(angle) * (double)size;
+		double offsetZPos = (double)bPos.getZ() + Math.cos(angle) * (double)size;
+		double offsetZNeg = (double)bPos.getZ() - Math.cos(angle) * (double)size;
+		double offsetYPos = bPos.getY() + rand.nextInt(3) - 2;
+		double offsetYNeg = bPos.getY() + rand.nextInt(3) - 2;
+		int startX = bPos.getX() - ceil(size) - amortizedSize;
+		int startY = bPos.getY() - 2 - amortizedSize;
+		int startZ = bPos.getZ() - ceil(size) - amortizedSize;
+		int oreSize = 2 * (ceil(size) + amortizedSize);
+		int radius = 2 * (2 + amortizedSize);
 
-		for(int s = n; s <= n + q; ++s) {
-			for(int t = p; t <= p + q; ++t) {
-				if(o <= generator.getFirstHeightInColumn(s, t, TerrainGenerator.OCEAN_FLOOR_WG)) {
-					return this.generateVeinPart(generator, biome, rand, d, e, h, j, l, m, n, o, p, q, r);
+		for(int x = startX; x <= startX + oreSize; ++x) {
+			for(int z = startZ; z <= startZ + oreSize; ++z) {
+				if(startY <= generator.getFirstHeightInColumn(x, z, TerrainGenerator.OCEAN_FLOOR_WG)) {
+					return this.generateVeinPart(generator, biome, rand, offsetXPos, offsetXNeg, offsetZPos, offsetZNeg, offsetYPos, offsetYNeg, startX, startY, startZ, oreSize, radius);
 				}
 			}
 		}
@@ -53,43 +55,39 @@ public abstract class RegularOreDecorator<C extends OreDecorator.Config, D exten
 		return Collections.emptyList();
 	}
 
-	private List<BPos> generateVeinPart(TerrainGenerator generator, Biome biome, JRand rand, double startX, double endX, double startZ, double endZ, double startY, double endY, int x, int y, int z, int size, int i) {
+	private List<BPos> generateVeinPart(TerrainGenerator generator, Biome biome, JRand rand, double offsetXPos, double offsetXNeg, double offsetZPos, double offsetZNeg, double offsetYPos, double offsetYNeg, int startX, int startY, int startZ, int oreSize, int radius) {
 		List<BPos> poses = new ArrayList<>();
-		BitSet bitSet = new BitSet(size * i * size);
-		int k = this.getSize(biome);
-		double[] ds = new double[k * 4];
+		BitSet bitSet = new BitSet(oreSize * radius * oreSize);
+		int size = this.getSize(biome);
+		double[] store = new double[size * 4];
 
-		int n;
-		double p;
-		double q;
-		double r;
-		double s;
-		for(n = 0; n < k; ++n) {
-			float f = (float)n / (float)k;
-			p = MathHelper.lerp(f, startX, endX);
-			q = MathHelper.lerp(f, startY, endY);
-			r = MathHelper.lerp(f, startZ, endZ);
-			s = rand.nextDouble() * (double)k / 16.0D;
-			double m = ((Math.sin((float)Math.PI * f) + 1.0F) * s + 1.0D) / 2.0D;
-			ds[n * 4] = p;
-			ds[n * 4 + 1] = q;
-			ds[n * 4 + 2] = r;
-			ds[n * 4 + 3] = m;
+
+		for(int i = 0; i < size; ++i) {
+			float percent = (float)i / (float)size;
+			double x = MathHelper.lerp(percent, offsetXPos, offsetXNeg);
+			double y = MathHelper.lerp(percent, offsetYPos, offsetYNeg);
+			double z = MathHelper.lerp(percent, offsetZPos, offsetZNeg);
+			double length = rand.nextDouble() * (double)size / 16.0D;
+			double offset = ((Math.sin((float)Math.PI * percent) + 1.0F) * length + 1.0D) / 2.0D;
+			store[i * 4] = x;
+			store[i * 4 + 1] = y;
+			store[i * 4 + 2] = z;
+			store[i * 4 + 3] = offset;
 		}
 
-		for(n = 0; n < k - 1; ++n) {
-			if(ds[n * 4 + 3] > 0.0D) {
-				for(int o = n + 1; o < k; ++o) {
-					if(ds[o * 4 + 3] > 0.0D) {
-						p = ds[n * 4] - ds[o * 4];
-						q = ds[n * 4 + 1] - ds[o * 4 + 1];
-						r = ds[n * 4 + 2] - ds[o * 4 + 2];
-						s = ds[n * 4 + 3] - ds[o * 4 + 3];
-						if(s * s > p * p + q * q + r * r) {
-							if(s > 0.0D) {
-								ds[o * 4 + 3] = -1.0D;
+		for(int i = 0; i < size - 1; ++i) {
+			if(store[i * 4 + 3] > 0.0D) {
+				for(int j = i + 1; j < size; ++j) {
+					if(store[j * 4 + 3] > 0.0D) {
+						double diffX = store[i * 4] - store[j * 4];
+						double diffY = store[i * 4 + 1] - store[j * 4 + 1];
+						double diffZ = store[i * 4 + 2] - store[j * 4 + 2];
+						double offset = store[i * 4 + 3] - store[j * 4 + 3];
+						if(offset * offset > diffX * diffX + diffY * diffY + diffZ * diffZ) {
+							if(offset > 0.0D) {
+								store[j * 4 + 3] = -1.0D;
 							} else {
-								ds[n * 4 + 3] = -1.0D;
+								store[i * 4 + 3] = -1.0D;
 							}
 						}
 					}
@@ -97,32 +95,34 @@ public abstract class RegularOreDecorator<C extends OreDecorator.Config, D exten
 			}
 		}
 
-		for(n = 0; n < k; ++n) {
-			double u = ds[n * 4 + 3];
-			if(u >= 0.0D) {
-				double v = ds[n * 4];
-				double w = ds[n * 4 + 1];
-				double aa = ds[n * 4 + 2];
-				int ab = Math.max(MathHelper.floor(v - u), x);
-				int ac = Math.max(MathHelper.floor(w - u), y);
-				int ad = Math.max(MathHelper.floor(aa - u), z);
-				int ae = Math.max(MathHelper.floor(v + u), ab);
-				int af = Math.max(MathHelper.floor(w + u), ac);
-				int ag = Math.max(MathHelper.floor(aa + u), ad);
+		for(int i = 0; i < size; ++i) {
+			double offset = store[i * 4 + 3];
+			if(offset >= 0.0D) {
+				double x = store[i * 4];
+				double y = store[i * 4 + 1];
+				double z = store[i * 4 + 2];
 
-				for(int ah = ab; ah <= ae; ++ah) {
-					double ai = ((double)ah + 0.5D - v) / u;
-					if(ai * ai < 1.0D) {
-						for(int aj = ac; aj <= af; ++aj) {
-							double ak = ((double)aj + 0.5D - w) / u;
-							if(ai * ai + ak * ak < 1.0D) {
-								for(int al = ad; al <= ag; ++al) {
-									double am = ((double)al + 0.5D - aa) / u;
-									if(ai * ai + ak * ak + am * am < 1.0D) {
-										int an = ah - x + (aj - y) * size + (al - z) * size * i;
-										if(!bitSet.get(an)) {
-											bitSet.set(an);
-											BPos pos = new BPos(ah, aj, al);
+				int minX = Math.max(MathHelper.floor(x - offset), startX);
+				int minY = Math.max(MathHelper.floor(y - offset), startY);
+				int minZ = Math.max(MathHelper.floor(z - offset), startZ);
+
+				int maxX = Math.max(MathHelper.floor(x + offset), minX);
+				int maxY = Math.max(MathHelper.floor(y + offset), minY);
+				int maxZ = Math.max(MathHelper.floor(z + offset), minZ);
+
+				for(int X = minX; X <= maxX; ++X) {
+					double xSlide = ((double)X + 0.5D - x) / offset;
+					if(xSlide * xSlide < 1.0D) {
+						for(int Y = minY; Y <= maxY; ++Y) {
+							double ySlide = ((double)Y + 0.5D - y) / offset;
+							if(xSlide * xSlide + ySlide * ySlide < 1.0D) {
+								for(int Z = minZ; Z <= maxZ; ++Z) {
+									double zSlide = ((double)Z + 0.5D - z) / offset;
+									if(xSlide * xSlide + ySlide * ySlide + zSlide * zSlide < 1.0D) {
+										int area = X - startX + (Y - startY) * oreSize + (Z - startZ) * oreSize * radius;
+										if(!bitSet.get(area)) {
+											bitSet.set(area);
+											BPos pos = new BPos(X, Y, Z);
 											if(generator.getDefaultBlock().equals(generator.getBlockAt(pos).orElse(Blocks.AIR))) {
 												poses.add(pos);
 											}
