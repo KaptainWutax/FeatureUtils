@@ -10,7 +10,7 @@ import kaptainwutax.mcutils.version.VersionMap;
 public class ClayDisk extends SphereOreDecorator<SphereOreDecorator.Config, SphereOreDecorator.Data<ClayDisk>> {
 	public static final VersionMap<Config> CONFIGS = new VersionMap<Config>()
 		.add(MCVersion.v1_13, new Config(12,4,2,1, HeightProvider.spreadRange(2, 1), Blocks.CLAY, DIRT_CLAY)
-			.add(11, 6, Biomes.SWAMP, Biomes.SWAMP_HILLS))
+			.add(11, 4, Biomes.SWAMP, Biomes.SWAMP_HILLS))
 		.add(MCVersion.v1_16, new Config(12, 6, 2, 1, HeightProvider.spreadRange(2, 1), Blocks.CLAY, DIRT_CLAY)
 			.add(11, 6, Biomes.SWAMP, Biomes.SWAMP_HILLS))
 		.add(MCVersion.v1_17, new Config(15, 6, 2, 1, HeightProvider.spreadRange(2, 1), Blocks.CLAY, DIRT_CLAY)
