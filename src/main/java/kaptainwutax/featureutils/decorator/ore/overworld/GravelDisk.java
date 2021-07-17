@@ -9,6 +9,7 @@ import kaptainwutax.mcutils.version.VersionMap;
 
 public class GravelDisk extends SphereOreDecorator<SphereOreDecorator.Config, SphereOreDecorator.Data<GravelDisk>> {
 	public static final VersionMap<Config> CONFIGS = new VersionMap<Config>()
+		.add(MCVersion.v1_13, new Config(13, 4, 2, 1, HeightProvider.spreadRange(2, 3), Blocks.GRAVEL, DIRT_GRASS))
 		.add(MCVersion.v1_16, new Config(13, 6, 2, 1, HeightProvider.spreadRange(2, 3), Blocks.GRAVEL, DIRT_GRASS))
 		.add(MCVersion.v1_17, new Config(16, 6, 2, 1, HeightProvider.spreadRange(2, 3), Blocks.GRAVEL, DIRT_GRASS));
 
