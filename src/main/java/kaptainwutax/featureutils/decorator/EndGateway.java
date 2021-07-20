@@ -38,7 +38,12 @@ public class EndGateway extends BiomelessDecorator<EndGateway.Config, EndGateway
 	@Override
 	public boolean canStart(EndGateway.Data data, long structureSeed, ChunkRand rand) {
 		if(!super.canStart(data, structureSeed, rand)) return false;
-		if(rand.nextInt(this.getRarity()) != 0) return false;
+		if (this.getVersion().isNewerOrEqualTo(MCVersion.v1_17)){
+			if (rand.nextFloat()>=1.0f/(float)this.getRarity()) return false;
+		}else{
+			if(rand.nextInt(this.getRarity()) != 0) return false;
+		}
+
 		if(rand.nextInt(16) != data.offsetX) return false;
 		if(rand.nextInt(16) != data.offsetZ) return false;
 		if(rand.nextInt(7) != data.height - 3) return false;
