@@ -23,6 +23,7 @@ public class LootTable extends LootGenerator {
 
 	public final LootPool[] lootPools;
 	private boolean hasVersionApplied = false;
+	private Integer luck=null;
 
 	public LootTable(LootPool... lootPools) {
 		this(Arrays.asList(lootPools), null);
@@ -33,16 +34,25 @@ public class LootTable extends LootGenerator {
 		this.apply(lootFunctions);
 	}
 
-	public LootTable apply(MCVersion version){
-		return apply(version, 1);
+	public LootTable apply(MCVersion version) {
+		return apply(version, LootContext.DEFAULT_LUCK);
 	}
 
 	public LootTable apply(MCVersion version, int luck) {
 		for(LootPool lootPool : this.lootPools) {
-			lootPool.apply(version, luck);
+			lootPool.apply(version).processWeights(luck);
 		}
 		Enchantments.apply(version);
-		hasVersionApplied = true;
+		this.hasVersionApplied = true;
+		this.luck=luck;
+		return this;
+	}
+
+	private LootTable apply(int luck){
+		for(LootPool lootPool : this.lootPools) {
+			lootPool.processWeights(luck);
+		}
+		this.luck=luck;
 		return this;
 	}
 
@@ -108,12 +118,21 @@ public class LootTable extends LootGenerator {
 		return this;
 	}
 
+	/**
+	 * Generate the loot items, this has 2 side effect, in case {@link #apply(MCVersion)}
+	 * was not called, then we apply the lootcontext version and luck.
+	 * If the context got a different luck then this luck is applied instead
+	 * @param context the lootContext with the seed and the luck
+	 * @param stackConsumer a consumer to send the item to
+	 */
 	@Override
 	public void generate(LootContext context, Consumer<ItemStack> stackConsumer) {
 		if(!hasVersionApplied) {
-			System.err.println("Version was not applied, we default to latest " + MCVersion.latest());
-			this.apply(MCVersion.latest(), context.getLuck());
+			System.err.println("Version was not applied, we default to latest " + context.getVersion());
+			this.apply(context.getVersion(), context.getLuck());
 			hasVersionApplied = true;
+		}else if(luck==null || luck!=context.getLuck()){
+			this.apply(context.getLuck());
 		}
 		stackConsumer = LootFunction.stack(stackConsumer, this.combinedLootFunction, context);
 

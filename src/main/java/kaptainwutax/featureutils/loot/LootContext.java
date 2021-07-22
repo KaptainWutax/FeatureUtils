@@ -5,12 +5,13 @@ import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.version.MCVersion;
 
 public class LootContext extends ChunkRand {
+	public static final int DEFAULT_LUCK=1;
 	private final MCVersion version;
-	private int luck = 1;
+	private int luck = DEFAULT_LUCK;
 
 	public LootContext(long lootTableSeed) {
 		super(lootTableSeed);
-		this.version = MCVersion.v1_16;
+		this.version = MCVersion.latest();
 	}
 
 	public LootContext(long lootTableSeed, MCVersion version) {
