@@ -26,6 +26,6 @@ public class ClayDisk extends SphereOreDecorator<SphereOreDecorator.Config, Sphe
 	}
 
 	public static String name() {
-		return "disk_clay";
+		return "clay_disk";
 	}
 }

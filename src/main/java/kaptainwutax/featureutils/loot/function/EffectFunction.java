@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class EffectFunction implements LootFunction {
 	private final LinkedHashMap<Effect, UniformRoll> effects = new LinkedHashMap<>();
-	private final HashMap<Effect, UniformRoll> random_effect = new HashMap<>(); // this is in case minecraft change it
+	private final HashMap<Effect, UniformRoll> randomEffects = new HashMap<>(); // this is in case minecraft change it
 
 	public EffectFunction() {
 
@@ -47,9 +47,8 @@ public class EffectFunction implements LootFunction {
 		return this.apply(new Pair<>(effect, new UniformRoll(min, max)));
 	}
 
-	@SuppressWarnings("unchecked")
 	public EffectFunction apply(Pair<Effect, UniformRoll> effect) {
-		this.random_effect.put(effect.getFirst(), effect.getSecond());
+		this.randomEffects.put(effect.getFirst(), effect.getSecond());
 		this.effects.put(effect.getFirst(), effect.getSecond());
 		return this;
 	}

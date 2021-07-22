@@ -12,7 +12,7 @@ import kaptainwutax.mcutils.util.data.Pair;
 public class EnchantRandomlyFunction implements LootFunction {
 	private boolean isTreasure;
 	private boolean isDiscoverable;
-	private List<Enchantment> applicableEnchantments;
+	private final List<Enchantment> applicableEnchantments;
 
 	public EnchantRandomlyFunction(Item item) {
 		this(item, true, true);

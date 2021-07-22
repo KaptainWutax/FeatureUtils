@@ -28,6 +28,6 @@ public class SandDisk extends SphereOreDecorator<SphereOreDecorator.Config, Sphe
 	}
 
 	public static String name() {
-		return "disk_sand";
+		return "sand_disk";
 	}
 }
