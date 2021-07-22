@@ -42,8 +42,8 @@ public abstract class LootEntry extends LootGenerator {
 		return this.weight;
 	}
 
-	public int getEffectiveWeight(LootContext context) {
-		return Math.max(MathHelper.floor((float)this.weight + (float)this.quality * context.getLuck()), 0);
+	public int getEffectiveWeight(int luck) {
+		return Math.max(MathHelper.floor((float)this.weight + (float)this.quality * luck), 0);
 	}
 
 	public LootEntry apply(LootFunction... lootFunctions) {

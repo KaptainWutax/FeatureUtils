@@ -32,7 +32,7 @@ public class LootPool extends LootGenerator {
 		return this;
 	}
 
-	public LootPool apply(MCVersion version) {
+	public LootPool apply(MCVersion version, int luck) {
 		this.lootEntries = Arrays.stream(lootEntries).filter(lootEntry -> {
 			// remove the entry if it was not yet introduced yet (so older and not equal to the introduced version)
 			if(lootEntry.introducedVersion != null) {
@@ -50,14 +50,14 @@ public class LootPool extends LootGenerator {
 		totalWeight = 0;
 
 		for (LootEntry entry : this.lootEntries) {
-			totalWeight += Math.max(entry.weight + entry.quality, 0);
+			totalWeight += entry.getEffectiveWeight(luck);
 		}
 
 		optimizationArray = new LootEntry[totalWeight];
 
 		int k = 0;
 		for (LootEntry entry : this.lootEntries) {
-			int weight = Math.max(entry.weight + entry.quality, 0);
+			int weight =  entry.getEffectiveWeight(luck);
 			for (int i = 0; i < weight; i++) {
 				optimizationArray[k + i] = entry;
 			}
