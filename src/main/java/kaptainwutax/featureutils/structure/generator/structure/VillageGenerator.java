@@ -10,6 +10,7 @@ import kaptainwutax.featureutils.structure.generator.piece.village.PlainsVillage
 import kaptainwutax.featureutils.structure.generator.piece.village.SavannaVillageJigsawBlocks;
 import kaptainwutax.featureutils.structure.generator.piece.village.SnowyVillageJigsawBlocks;
 import kaptainwutax.featureutils.structure.generator.piece.village.TaigaVillageJigsawBlocks;
+import kaptainwutax.mcutils.block.Block;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.util.block.BlockBox;
 import kaptainwutax.mcutils.util.block.BlockDirection;
@@ -17,6 +18,7 @@ import kaptainwutax.mcutils.util.block.BlockMirror;
 import kaptainwutax.mcutils.util.block.BlockRotation;
 import kaptainwutax.mcutils.util.data.Pair;
 import kaptainwutax.mcutils.util.data.Quad;
+import kaptainwutax.mcutils.util.data.Triplet;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
@@ -26,6 +28,7 @@ import kaptainwutax.terrainutils.TerrainGenerator;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -109,10 +112,10 @@ public class VillageGenerator extends Generator {
 		}
 
 		public ArrayList<BlockJigsawInfo> getShuffledJigsawBlocks(VillageType villageType, BPos offset, JRand rand) {
-			List<Pair<Quad<String, String, String, String>, BPos>> blocks = villageType.getJigsawBlocks().get(this.name);
+			List<Pair<Quad<String, String, String, Block>, BPos>> blocks = villageType.getJigsawBlocks().get(this.name);
 			assert blocks != null;
 			ArrayList<BlockJigsawInfo> list = new ArrayList<>(blocks.size());
-			for(Pair<Quad<String, String, String, String>, BPos> block : blocks) {
+			for(Pair<Quad<String, String, String, Block>, BPos> block : blocks) {
 				BPos pos = block.getSecond().transform(BlockMirror.NONE, rotation, BPos.ORIGIN).add(offset);
 				list.add(new BlockJigsawInfo(block.getFirst(), pos, rotation));
 			}
@@ -123,14 +126,23 @@ public class VillageGenerator extends Generator {
 	}
 
 	public static class BlockJigsawInfo {
-		Quad<String, String, String, String> nbt;
+		Quad<String, String, String, Block> nbt;
 		BPos pos;
 		BlockRotation rotation;
 
-		public BlockJigsawInfo(Quad<String, String, String, String> nbt, BPos pos, BlockRotation rotation) {
+		public BlockJigsawInfo(Quad<String, String, String, Block> nbt, BPos pos, BlockRotation rotation) {
+			// nbt is stored as pool,name,orientation,final_state
 			this.nbt = nbt;
 			this.pos = pos;
 			this.rotation = rotation;
+		}
+
+		public BlockDirection getFront() {
+			return BlockDirection.fromString(this.nbt.getThird().split("_")[0]);
+		}
+
+		public Triplet<String,List<Pair<String, Integer>>, PlacementBehaviour> getPool() {
+			return VILLAGE_POOLS.get(this.nbt.getFirst());
 		}
 	}
 
@@ -153,7 +165,22 @@ public class VillageGenerator extends Generator {
 			BlockBox box = piece.box;
 			int minY = box.minY;
 			for(BlockJigsawInfo blockJigsawInfo : piece.getShuffledJigsawBlocks(villageType, pos, rand)) {
-				BlockDirection direction;
+				BlockDirection blockDirection = blockJigsawInfo.getFront();
+				BPos blockPos = blockJigsawInfo.pos;
+				BPos relativeBlockPos = blockPos.relative(blockDirection);
+				int y = blockPos.getY() - minY;
+				int state = -1;
+				Triplet<String,List<Pair<String, Integer>>, PlacementBehaviour> pool = blockJigsawInfo.getPool();
+				if (pool!=null && pool.getSecond().size()!=0){
+					String fallbackLocation=pool.getFirst();
+					Triplet<String,List<Pair<String, Integer>>, PlacementBehaviour> fallbackPool=VILLAGE_POOLS.get(fallbackLocation);
+					if (fallbackPool!=null && fallbackPool.getSecond().size()!=0){
+						boolean isInside=box.contains(relativeBlockPos);
+
+					}
+				}
+
+
 			}
 		}
 	}
@@ -179,8 +206,8 @@ public class VillageGenerator extends Generator {
 		TERRAIN_MATCHING,
 	}
 
-	public static final Map<String, Pair<List<Pair<String, Integer>>, PlacementBehaviour>> VILLAGE_POOLS = new HashMap<String, Pair<List<Pair<String, Integer>>, PlacementBehaviour>>() {{
-		put("desert/town_centers", new Pair<>(Arrays.asList(
+	public static final Map<String, Triplet<String, List<Pair<String, Integer>>, PlacementBehaviour>> VILLAGE_POOLS = new HashMap<String, Triplet<String, List<Pair<String, Integer>>, PlacementBehaviour>>() {{
+		put("desert/town_centers", new Triplet<>("empty", Arrays.asList(
 			new Pair<>("desert/town_centers/desert_meeting_point_1", 98),
 			new Pair<>("desert/town_centers/desert_meeting_point_2", 98),
 			new Pair<>("desert/town_centers/desert_meeting_point_3", 49),
@@ -188,7 +215,7 @@ public class VillageGenerator extends Generator {
 			new Pair<>("desert/zombie/town_centers/desert_meeting_point_2", 2),
 			new Pair<>("desert/zombie/town_centers/desert_meeting_point_3", 1)
 		), PlacementBehaviour.RIGID));
-		put("desert/streets", new Pair<>(Arrays.asList(
+		put("desert/streets", new Triplet<>("desert/terminators", Arrays.asList(
 			new Pair<>("desert/streets/corner_01", 3),
 			new Pair<>("desert/streets/corner_02", 3),
 			new Pair<>("desert/streets/straight_01", 4),
@@ -201,7 +228,7 @@ public class VillageGenerator extends Generator {
 			new Pair<>("desert/streets/square_02", 3),
 			new Pair<>("desert/streets/turn_01", 3)
 		), PlacementBehaviour.TERRAIN_MATCHING));
-		put("desert/zombie/streets", new Pair<>(Arrays.asList(
+		put("desert/zombie/streets", new Triplet<>("desert/zombie/terminators", Arrays.asList(
 			new Pair<>("desert/zombie/streets/corner_01", 3),
 			new Pair<>("desert/zombie/streets/corner_02", 3),
 			new Pair<>("desert/zombie/streets/straight_01", 4),
@@ -214,7 +241,7 @@ public class VillageGenerator extends Generator {
 			new Pair<>("desert/zombie/streets/square_02", 3),
 			new Pair<>("desert/zombie/streets/turn_01", 3)
 		), PlacementBehaviour.TERRAIN_MATCHING));
-		put("desert/houses", new Pair<>(Arrays.asList(
+		put("desert/houses", new Triplet<>("desert/terminators", Arrays.asList(
 			new Pair<>("desert/houses/desert_small_house_1", 2),
 			new Pair<>("desert/houses/desert_small_house_2", 2),
 			new Pair<>("desert/houses/desert_small_house_3", 2),
@@ -245,7 +272,7 @@ public class VillageGenerator extends Generator {
 			new Pair<>("desert/houses/desert_animal_pen_2", 2),
 			new Pair<>("empty", 5)
 		), PlacementBehaviour.RIGID));
-		put("desert/zombie/houses", new Pair<>(Arrays.asList(
+		put("desert/zombie/houses", new Triplet<>("desert/zombie/terminators", Arrays.asList(
 			new Pair<>("desert/zombie/houses/desert_small_house_1", 2),
 			new Pair<>("desert/zombie/houses/desert_small_house_2", 2),
 			new Pair<>("desert/zombie/houses/desert_small_house_3", 2),
@@ -276,34 +303,224 @@ public class VillageGenerator extends Generator {
 			new Pair<>("desert/houses/desert_animal_pen_2", 2),
 			new Pair<>("empty", 5)
 		), PlacementBehaviour.RIGID));
-		put("desert/terminators", new Pair<>(Arrays.asList(
+		put("desert/terminators", new Triplet<>("empty", Arrays.asList(
 			new Pair<>("desert/terminators/terminator_01", 1),
 			new Pair<>("desert/terminators/terminator_02", 1)
 		), PlacementBehaviour.TERRAIN_MATCHING));
-		put("desert/zombie/terminators", new Pair<>(Arrays.asList(
+		put("desert/zombie/terminators", new Triplet<>("empty", Arrays.asList(
 			new Pair<>("desert/terminators/terminator_01", 1),
 			new Pair<>("desert/zombie/terminators/terminator_02", 1)
 		), PlacementBehaviour.TERRAIN_MATCHING));
-		put("desert/decor", new Pair<>(Arrays.asList(
+		put("desert/decor", new Triplet<>("empty", Arrays.asList(
 			new Pair<>("desert/desert_lamp_1", 10),
 			new Pair<>("patch_cactus", 4),
 			new Pair<>("pile_hay", 4),
 			new Pair<>("empty", 10)
 		), PlacementBehaviour.RIGID));
-		put("desert/zombie/decor", new Pair<>(Arrays.asList(
+		put("desert/zombie/decor", new Triplet<>("empty", Arrays.asList(
 			new Pair<>("desert/desert_lamp_1", 10),
 			new Pair<>("patch_cactus", 4),
 			new Pair<>("pile_hay", 4),
 			new Pair<>("empty", 10)
 		), PlacementBehaviour.RIGID));
-		put("desert/villagers", new Pair<>(Arrays.asList(
+		put("desert/villagers", new Triplet<>("empty", Arrays.asList(
 			new Pair<>("desert/villagers/nitwit", 1),
 			new Pair<>("desert/villagers/baby", 1),
 			new Pair<>("desert/villagers/unemployed", 10)
 		), PlacementBehaviour.RIGID));
-		put("desert/zombie/villagers", new Pair<>(Arrays.asList(
+		put("desert/zombie/villagers", new Triplet<>("empty", Arrays.asList(
 			new Pair<>("desert/zombie/villagers/nitwit", 1),
 			new Pair<>("desert/zombie/villagers/unemployed", 10)
+		), PlacementBehaviour.RIGID));
+
+		put("plains/streets", new Triplet<>("plains/terminators", Arrays.asList(
+			new Pair<>("village/plains/streets/corner_01", 2),
+			new Pair<>("village/plains/streets/corner_02", 2),
+			new Pair<>("village/plains/streets/corner_03", 2),
+			new Pair<>("village/plains/streets/straight_01", 4),
+			new Pair<>("village/plains/streets/straight_02", 4),
+			new Pair<>("village/plains/streets/straight_03", 7),
+			new Pair<>("village/plains/streets/straight_04", 7),
+			new Pair<>("village/plains/streets/straight_05", 3),
+			new Pair<>("village/plains/streets/straight_06", 4),
+			new Pair<>("village/plains/streets/crossroad_01", 2),
+			new Pair<>("village/plains/streets/crossroad_02", 1),
+			new Pair<>("village/plains/streets/crossroad_03", 2),
+			new Pair<>("village/plains/streets/crossroad_04", 2),
+			new Pair<>("village/plains/streets/crossroad_05", 2),
+			new Pair<>("village/plains/streets/crossroad_06", 2),
+			new Pair<>("village/plains/streets/turn_01", 3)
+		), PlacementBehaviour.TERRAIN_MATCHING));
+		put("plains/zombie/streets", new Triplet<>("plains/terminators", Arrays.asList(
+			new Pair<>("village/plains/zombie/streets/corner_01", 2),
+			new Pair<>("village/plains/zombie/streets/corner_02", 2),
+			new Pair<>("village/plains/zombie/streets/corner_03", 2),
+			new Pair<>("village/plains/zombie/streets/straight_01", 4),
+			new Pair<>("village/plains/zombie/streets/straight_02", 4),
+			new Pair<>("village/plains/zombie/streets/straight_03", 7),
+			new Pair<>("village/plains/zombie/streets/straight_04", 7),
+			new Pair<>("village/plains/zombie/streets/straight_05", 3),
+			new Pair<>("village/plains/zombie/streets/straight_06", 4),
+			new Pair<>("village/plains/zombie/streets/crossroad_01", 2),
+			new Pair<>("village/plains/zombie/streets/crossroad_02", 1),
+			new Pair<>("village/plains/zombie/streets/crossroad_03", 2),
+			new Pair<>("village/plains/zombie/streets/crossroad_04", 2),
+			new Pair<>("village/plains/zombie/streets/crossroad_05", 2),
+			new Pair<>("village/plains/zombie/streets/crossroad_06", 2),
+			new Pair<>("village/plains/zombie/streets/turn_01", 3)
+		), PlacementBehaviour.TERRAIN_MATCHING));
+		put("plains/houses", new Triplet<>("plains/terminators", Arrays.asList(
+			new Pair<>("village/plains/houses/plains_small_house_1", 2),
+			new Pair<>("village/plains/houses/plains_small_house_2", 2),
+			new Pair<>("village/plains/houses/plains_small_house_3", 2),
+			new Pair<>("village/plains/houses/plains_small_house_4", 2),
+			new Pair<>("village/plains/houses/plains_small_house_5", 2),
+			new Pair<>("village/plains/houses/plains_small_house_6", 1),
+			new Pair<>("village/plains/houses/plains_small_house_7", 2),
+			new Pair<>("village/plains/houses/plains_small_house_8", 3),
+			new Pair<>("village/plains/houses/plains_medium_house_1", 2),
+			new Pair<>("village/plains/houses/plains_medium_house_2", 2),
+			new Pair<>("village/plains/houses/plains_big_house_1", 2),
+			new Pair<>("village/plains/houses/plains_butcher_shop_1", 2),
+			new Pair<>("village/plains/houses/plains_butcher_shop_2", 2),
+			new Pair<>("village/plains/houses/plains_tool_smith_1", 2),
+			new Pair<>("village/plains/houses/plains_fletcher_house_1", 2),
+			new Pair<>("village/plains/houses/plains_shepherds_house_1", 2),
+			new Pair<>("village/plains/houses/plains_armorer_house_1", 2),
+			new Pair<>("village/plains/houses/plains_fisher_cottage_1", 2),
+			new Pair<>("village/plains/houses/plains_tannery_1", 2),
+			new Pair<>("village/plains/houses/plains_cartographer_1", 1),
+			new Pair<>("village/plains/houses/plains_library_1", 5),
+			new Pair<>("village/plains/houses/plains_library_2", 1),
+			new Pair<>("village/plains/houses/plains_masons_house_1", 2),
+			new Pair<>("village/plains/houses/plains_weaponsmith_1", 2),
+			new Pair<>("village/plains/houses/plains_temple_3", 2),
+			new Pair<>("village/plains/houses/plains_temple_4", 2),
+			new Pair<>("village/plains/houses/plains_stable_1", 2),
+			new Pair<>("village/plains/houses/plains_stable_2", 2),
+			new Pair<>("village/plains/houses/plains_large_farm_1", 4),
+			new Pair<>("village/plains/houses/plains_small_farm_1", 4),
+			new Pair<>("village/plains/houses/plains_animal_pen_1", 1),
+			new Pair<>("village/plains/houses/plains_animal_pen_2", 1),
+			new Pair<>("village/plains/houses/plains_animal_pen_3", 5),
+			new Pair<>("village/plains/houses/plains_accessory_1", 1),
+			new Pair<>("village/plains/houses/plains_meeting_point_4", 3),
+			new Pair<>("village/plains/houses/plains_meeting_point_5", 1),
+			new Pair<>("empty", 10)
+		), PlacementBehaviour.RIGID));
+		put("plains/zombie/houses", new Triplet<>("plains/terminators", Arrays.asList(
+			new Pair<>("village/plains/zombie/houses/plains_small_house_1", 2),
+			new Pair<>("village/plains/zombie/houses/plains_small_house_2", 2),
+			new Pair<>("village/plains/zombie/houses/plains_small_house_3", 2),
+			new Pair<>("village/plains/zombie/houses/plains_small_house_4", 2),
+			new Pair<>("village/plains/zombie/houses/plains_small_house_5", 2),
+			new Pair<>("village/plains/zombie/houses/plains_small_house_6", 1),
+			new Pair<>("village/plains/zombie/houses/plains_small_house_7", 2),
+			new Pair<>("village/plains/zombie/houses/plains_small_house_8", 2),
+			new Pair<>("village/plains/zombie/houses/plains_medium_house_1", 2),
+			new Pair<>("village/plains/zombie/houses/plains_medium_house_2", 2),
+			new Pair<>("village/plains/zombie/houses/plains_big_house_1", 2),
+			new Pair<>("village/plains/houses/plains_butcher_shop_1", 2),
+			new Pair<>("village/plains/zombie/houses/plains_butcher_shop_2", 2),
+			new Pair<>("village/plains/houses/plains_tool_smith_1", 2),
+			new Pair<>("village/plains/zombie/houses/plains_fletcher_house_1", 2),
+			new Pair<>("village/plains/zombie/houses/plains_shepherds_house_1", 2),
+			new Pair<>("village/plains/houses/plains_armorer_house_1", 2),
+			new Pair<>("village/plains/houses/plains_fisher_cottage_1", 2),
+			new Pair<>("village/plains/houses/plains_tannery_1", 2),
+			new Pair<>("village/plains/houses/plains_cartographer_1", 1),
+			new Pair<>("village/plains/houses/plains_library_1", 3),
+			new Pair<>("village/plains/houses/plains_library_2", 1),
+			new Pair<>("village/plains/houses/plains_masons_house_1", 2),
+			new Pair<>("village/plains/houses/plains_weaponsmith_1", 2),
+			new Pair<>("village/plains/houses/plains_temple_3", 2),
+			new Pair<>("village/plains/houses/plains_temple_4", 2),
+			new Pair<>("village/plains/zombie/houses/plains_stable_1", 2),
+			new Pair<>("village/plains/houses/plains_stable_2", 2),
+			new Pair<>("village/plains/houses/plains_large_farm_1", 4),
+			new Pair<>("village/plains/houses/plains_small_farm_1", 4),
+			new Pair<>("village/plains/houses/plains_animal_pen_1", 1),
+			new Pair<>("village/plains/houses/plains_animal_pen_2", 1),
+			new Pair<>("village/plains/zombie/houses/plains_animal_pen_3", 5),
+			new Pair<>("village/plains/zombie/houses/plains_meeting_point_4", 3),
+			new Pair<>("village/plains/zombie/houses/plains_meeting_point_5", 1),
+			new Pair<>("empty", 10)
+		), PlacementBehaviour.RIGID));
+		put("plains/terminators", new Triplet<>("empty", Arrays.asList(
+			new Pair<>("village/plains/terminators/terminator_01", 1),
+			new Pair<>("village/plains/terminators/terminator_02", 1),
+			new Pair<>("village/plains/terminators/terminator_03", 1),
+			new Pair<>("village/plains/terminators/terminator_04", 1)
+		), PlacementBehaviour.TERRAIN_MATCHING));
+		put("plains/trees", new Triplet<>("empty", Collections.singletonList(
+			new Pair<>("oak", 1)
+		), PlacementBehaviour.RIGID));
+		put("plains/decor", new Triplet<>("empty", Arrays.asList(
+			new Pair<>("plains/plains_lamp_1", 2),
+			new Pair<>("oak", 1),
+			new Pair<>("flower_plain", 1),
+			new Pair<>("pile_hay", 1),
+			new Pair<>("empty", 2)
+		), PlacementBehaviour.RIGID));
+		put("plains/zombie/decor", new Triplet<>("empty", Arrays.asList(
+			new Pair<>("plains/plains_lamp_1", 1),
+			new Pair<>("oak", 1),
+			new Pair<>("flower_plain", 1),
+			new Pair<>("pile_hay", 1),
+			new Pair<>("empty", 2)
+		), PlacementBehaviour.RIGID));
+		put("plains/villagers", new Triplet<>("empty", Arrays.asList(
+			new Pair<>("plains/villagers/nitwit", 1),
+			new Pair<>("plains/villagers/baby", 1),
+			new Pair<>("plains/villagers/unemployed", 10)
+		), PlacementBehaviour.RIGID));
+		put("plains/zombie/villagers", new Triplet<>("empty", Arrays.asList(
+			new Pair<>("plains/zombie/villagers/nitwit", 1),
+			new Pair<>("plains/zombie/villagers/unemployed", 10)
+		), PlacementBehaviour.RIGID));
+		put("common/animals", new Triplet<>("empty", Arrays.asList(
+			new Pair<>("common/animals/cows_1", 7),
+			new Pair<>("common/animals/pigs_1", 7),
+			new Pair<>("common/animals/horses_1", 1),
+			new Pair<>("common/animals/horses_2", 1),
+			new Pair<>("common/animals/horses_3", 1),
+			new Pair<>("common/animals/horses_4", 1),
+			new Pair<>("common/animals/horses_5", 1),
+			new Pair<>("common/animals/sheep_1", 1),
+			new Pair<>("common/animals/sheep_2", 1),
+			new Pair<>("empty", 5)
+		), PlacementBehaviour.RIGID));
+		put("common/sheep", new Triplet<>("empty", Arrays.asList(
+			new Pair<>("common/animals/sheep_1", 1),
+			new Pair<>("common/animals/sheep_2", 1)
+		), PlacementBehaviour.RIGID));
+		put("common/cats", new Triplet<>("empty", Arrays.asList(
+			new Pair<>("common/animals/cat_black", 1),
+			new Pair<>("common/animals/cat_british", 1),
+			new Pair<>("common/animals/cat_calico", 1),
+			new Pair<>("common/animals/cat_persian", 1),
+			new Pair<>("common/animals/cat_ragdoll", 1),
+			new Pair<>("common/animals/cat_red", 1),
+			new Pair<>("common/animals/cat_siamese", 1),
+			new Pair<>("common/animals/cat_tabby", 1),
+			new Pair<>("common/animals/cat_white", 1),
+			new Pair<>("common/animals/cat_jellie", 1),
+			new Pair<>("empty", 3)
+		), PlacementBehaviour.RIGID));
+		put("common/butcher_animals", new Triplet<>("empty", Arrays.asList(
+			new Pair<>("village/common/animals/cows_1", 3),
+			new Pair<>("village/common/animals/pigs_1", 3),
+			new Pair<>("village/common/animals/sheep_1", 1),
+			new Pair<>("village/common/animals/sheep_2", 1)
+		), PlacementBehaviour.RIGID));
+		put("common/iron_golem", new Triplet<>("empty", Collections.singletonList(
+			new Pair<>("common/iron_golem", 1)
+		), PlacementBehaviour.RIGID));
+		put("common/well_bottoms", new Triplet<>("empty", Collections.singletonList(
+			new Pair<>("common/well_bottom", 1)
+		), PlacementBehaviour.RIGID));
+		put("empty", new Triplet<>("empty",Collections.singletonList(
+			new Pair<>("empty", 0)
 		), PlacementBehaviour.RIGID));
 	}};
 
@@ -853,7 +1070,7 @@ public class VillageGenerator extends Generator {
 			return PLAINS;
 		}
 
-		public HashMap<String, List<Pair<Quad<String, String, String, String>, BPos>>> getJigsawBlocks() {
+		public HashMap<String, List<Pair<Quad<String, String, String, Block>, BPos>>> getJigsawBlocks() {
 			switch(this) {
 				case DESERT:
 					return DesertVillageJigsawBlocks.JIGSAW_BLOCKS;
@@ -872,7 +1089,7 @@ public class VillageGenerator extends Generator {
 	}
 
 	public static final Map<VillageType, JigSawPool> STARTS = new HashMap<VillageType, JigSawPool>() {{
-		put(VillageType.DESERT, new JigSawPool(VILLAGE_POOLS.get("desert/town_centers").getFirst()));
+		put(VillageType.DESERT, new JigSawPool(VILLAGE_POOLS.get("desert/town_centers").getSecond()));
 		put(VillageType.LEGACY, null);
 		put(VillageType.PLAINS, null);
 		put(VillageType.TAIGA, null);
