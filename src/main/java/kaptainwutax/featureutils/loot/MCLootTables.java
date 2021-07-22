@@ -1,5 +1,11 @@
 package kaptainwutax.featureutils.loot;
 
+import static kaptainwutax.featureutils.loot.function.SetCountFunction.constant;
+import static kaptainwutax.featureutils.loot.function.SetCountFunction.uniform;
+
+
+import kaptainwutax.featureutils.loot.LootPool;
+import kaptainwutax.featureutils.loot.LootTable;
 import kaptainwutax.featureutils.loot.effect.Effects;
 import kaptainwutax.featureutils.loot.entry.EmptyEntry;
 import kaptainwutax.featureutils.loot.entry.ItemEntry;
@@ -12,9 +18,6 @@ import kaptainwutax.featureutils.loot.roll.ConstantRoll;
 import kaptainwutax.featureutils.loot.roll.UniformRoll;
 import kaptainwutax.mcutils.version.MCVersion;
 
-import static kaptainwutax.featureutils.loot.function.SetCountFunction.constant;
-import static kaptainwutax.featureutils.loot.function.SetCountFunction.uniform;
-
 @SuppressWarnings("unused")
 public class MCLootTables {
 
@@ -25,7 +28,7 @@ public class MCLootTables {
 			new ItemEntry(Items.GOLDEN_APPLE, 20),
 			new ItemEntry(Items.ENCHANTED_GOLDEN_APPLE),
 			new ItemEntry(Items.NAME_TAG, 30),
-			new ItemEntry(Items.ENCHANTED_BOOK, 10).apply(new EnchantRandomlyFunction()),
+			new ItemEntry(Items.ENCHANTED_BOOK, 10).apply(new EnchantRandomlyFunction(Items.ENCHANTED_BOOK)),
 			new ItemEntry(Items.IRON_PICKAXE, 5),
 			new EmptyEntry(5)),
 		new LootPool(new UniformRoll(2.0F, 4.0F),
@@ -53,7 +56,7 @@ public class MCLootTables {
 		new LootPool(new ConstantRoll(1),
 			new ItemEntry(Items.LODESTONE).apply(constant(1))),
 		new LootPool(new UniformRoll(1.0F, 2.0F),
-			new ItemEntry(Items.CROSSBOW).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction()),
+			new ItemEntry(Items.CROSSBOW).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction(Items.CROSSBOW)),
 			new ItemEntry(Items.SPECTRAL_ARROW).apply(uniform(2.0F, 12.0F)),
 			new ItemEntry(Items.GILDED_BLACKSTONE).apply(uniform(5.0F, 8.0F)),
 			new ItemEntry(Items.CRYING_OBSIDIAN).apply(uniform(3.0F, 8.0F)),
@@ -61,10 +64,10 @@ public class MCLootTables {
 			new ItemEntry(Items.GOLD_INGOT).apply(uniform(2.0F, 8.0F)),
 			new ItemEntry(Items.IRON_INGOT).apply(uniform(2.0F, 8.0F)),
 			new ItemEntry(Items.GOLDEN_SWORD).apply(constant(1)),
-			new ItemEntry(Items.GOLDEN_CHESTPLATE).apply(constant(1)).apply(new EnchantRandomlyFunction()),
-			new ItemEntry(Items.GOLDEN_HELMET).apply(constant(1)).apply(new EnchantRandomlyFunction()),
-			new ItemEntry(Items.GOLDEN_LEGGINGS).apply(constant(1)).apply(new EnchantRandomlyFunction()),
-			new ItemEntry(Items.GOLDEN_BOOTS).apply(constant(1)).apply(new EnchantRandomlyFunction())),
+			new ItemEntry(Items.GOLDEN_CHESTPLATE).apply(constant(1)).apply(new EnchantRandomlyFunction(Items.GOLDEN_CHESTPLATE)),
+			new ItemEntry(Items.GOLDEN_HELMET).apply(constant(1)).apply(new EnchantRandomlyFunction(Items.GOLDEN_HELMET)),
+			new ItemEntry(Items.GOLDEN_LEGGINGS).apply(constant(1)).apply(new EnchantRandomlyFunction(Items.GOLDEN_LEGGINGS)),
+			new ItemEntry(Items.GOLDEN_BOOTS).apply(constant(1)).apply(new EnchantRandomlyFunction(Items.GOLDEN_BOOTS))),
 		new LootPool(new UniformRoll(2.0F, 4.0F),
 			new ItemEntry(Items.STRING).apply(uniform(1.0F, 6.0F)),
 			new ItemEntry(Items.LEATHER).apply(uniform(1.0F, 3.0F)),
@@ -75,12 +78,12 @@ public class MCLootTables {
 
 	public static final LootTable BASTION_HOGLIN_STABLE_CHEST = new LootTable(
 		new LootPool(new ConstantRoll(1),
-			new ItemEntry(Items.DIAMOND_SHOVEL, 5).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction()),
+			new ItemEntry(Items.DIAMOND_SHOVEL, 5).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction(Items.DIAMOND_SHOVEL)),
 			new ItemEntry(Items.NETHERITE_SCRAP, 2).apply(constant(1)),
 			new ItemEntry(Items.ANCIENT_DEBRIS, 3).apply(constant(1)),
 			new ItemEntry(Items.SADDLE, 10).apply(constant(1)),
 			new ItemEntry(Items.GOLD_BLOCK, 25).apply(uniform(2.0F, 4.0F)),
-			new ItemEntry(Items.GOLDEN_HOE, 15).apply(constant(1)).apply(new EnchantRandomlyFunction()),
+			new ItemEntry(Items.GOLDEN_HOE, 15).apply(constant(1)).apply(new EnchantRandomlyFunction(Items.GOLDEN_HOE)),
 			new EmptyEntry(45)),
 		new LootPool(new UniformRoll(3.0F, 4.0F),
 			new ItemEntry(Items.GLOWSTONE).apply(uniform(1.0F, 5.0F)),
@@ -99,16 +102,16 @@ public class MCLootTables {
 
 	public static final LootTable BASTION_OTHER_CHEST = new LootTable(
 		new LootPool(new ConstantRoll(1),
-			new ItemEntry(Items.CROSSBOW, 12).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction()),
+			new ItemEntry(Items.CROSSBOW, 12).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction(Items.CROSSBOW)),
 			new ItemEntry(Items.ANCIENT_DEBRIS, 2).apply(constant(1)),
 			new ItemEntry(Items.NETHERITE_SCRAP, 2).apply(constant(1)),
 			new ItemEntry(Items.SPECTRAL_ARROW, 16).apply(uniform(2.0F, 15.0F)),
 			new ItemEntry(Items.PIGLIN_BANNER_PATTERN, 5).apply(constant(1)),
 			new ItemEntry(Items.MUSIC_DISC_PIGSTEP, 3).apply(constant(1)),
-			new ItemEntry(Items.ENCHANTED_BOOK, 10).apply(new EnchantRandomlyFunction(true, false)),
+			new ItemEntry(Items.ENCHANTED_BOOK, 10).apply(new EnchantRandomlyFunction(Items.ENCHANTED_BOOK, true, false)),
 			new EmptyEntry(50)),
 		new LootPool(new ConstantRoll(2),
-			new ItemEntry(Items.GOLDEN_BOOTS).apply(constant(1)).apply(new EnchantRandomlyFunction(true, false)),
+			new ItemEntry(Items.GOLDEN_BOOTS).apply(constant(1)).apply(new EnchantRandomlyFunction(Items.GOLDEN_BOOTS, true, false)),
 			new ItemEntry(Items.GOLD_BLOCK).apply(constant(1)),
 			new ItemEntry(Items.CROSSBOW).apply(constant(1)),
 			new ItemEntry(Items.GOLD_INGOT).apply(uniform(1.0F, 6.0F)),
@@ -138,11 +141,11 @@ public class MCLootTables {
 			new ItemEntry(Items.ANCIENT_DEBRIS, 14).apply(constant(1)),
 			new ItemEntry(Items.NETHERITE_SCRAP, 10).apply(constant(1)),
 			new ItemEntry(Items.ANCIENT_DEBRIS).apply(constant(2)),
-			new ItemEntry(Items.DIAMOND_SWORD, 10).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction()),
-			new ItemEntry(Items.DIAMOND_CHESTPLATE, 6).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction()),
-			new ItemEntry(Items.DIAMOND_HELMET, 6).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction()),
-			new ItemEntry(Items.DIAMOND_LEGGINGS, 6).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction()),
-			new ItemEntry(Items.DIAMOND_BOOTS, 6).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction()),
+			new ItemEntry(Items.DIAMOND_SWORD, 10).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction(Items.DIAMOND_SWORD)),
+			new ItemEntry(Items.DIAMOND_CHESTPLATE, 6).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction(Items.DIAMOND_CHESTPLATE)),
+			new ItemEntry(Items.DIAMOND_HELMET, 6).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction(Items.DIAMOND_HELMET)),
+			new ItemEntry(Items.DIAMOND_LEGGINGS, 6).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction(Items.DIAMOND_LEGGINGS)),
+			new ItemEntry(Items.DIAMOND_BOOTS, 6).apply(new ApplyDamageFunction(), new EnchantRandomlyFunction(Items.DIAMOND_BOOTS)),
 			new ItemEntry(Items.DIAMOND_SWORD, 6).apply(new ApplyDamageFunction()),
 			new ItemEntry(Items.DIAMOND_CHESTPLATE, 5).apply(new ApplyDamageFunction()),
 			new ItemEntry(Items.DIAMOND_HELMET, 5).apply(new ApplyDamageFunction()),
@@ -193,7 +196,7 @@ public class MCLootTables {
 			new ItemEntry(Items.IRON_HORSE_ARMOR, 15),
 			new ItemEntry(Items.GOLDEN_HORSE_ARMOR, 10),
 			new ItemEntry(Items.DIAMOND_HORSE_ARMOR, 5),
-			new ItemEntry(Items.ENCHANTED_BOOK, 20).apply(new EnchantRandomlyFunction()),
+			new ItemEntry(Items.ENCHANTED_BOOK, 20).apply(new EnchantRandomlyFunction(Items.ENCHANTED_BOOK)),
 			new ItemEntry(Items.GOLDEN_APPLE, 20),
 			new ItemEntry(Items.ENCHANTED_GOLDEN_APPLE, 2),
 			new EmptyEntry(15)),
@@ -216,20 +219,20 @@ public class MCLootTables {
 			new ItemEntry(Items.IRON_HORSE_ARMOR),
 			new ItemEntry(Items.GOLDEN_HORSE_ARMOR),
 			new ItemEntry(Items.DIAMOND_HORSE_ARMOR),
-			new ItemEntry(Items.DIAMOND_SWORD, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
-			new ItemEntry(Items.DIAMOND_BOOTS, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
-			new ItemEntry(Items.DIAMOND_CHESTPLATE, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
-			new ItemEntry(Items.DIAMOND_LEGGINGS, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
-			new ItemEntry(Items.DIAMOND_HELMET, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
-			new ItemEntry(Items.DIAMOND_PICKAXE, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
-			new ItemEntry(Items.DIAMOND_SHOVEL, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
-			new ItemEntry(Items.IRON_SWORD, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
-			new ItemEntry(Items.IRON_BOOTS, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
-			new ItemEntry(Items.IRON_CHESTPLATE, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
-			new ItemEntry(Items.IRON_LEGGINGS, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
-			new ItemEntry(Items.IRON_HELMET, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
-			new ItemEntry(Items.IRON_PICKAXE, 3).apply(new EnchantWithLevelsFunction(20, 39, true)),
-			new ItemEntry(Items.IRON_SHOVEL, 3).apply(new EnchantWithLevelsFunction(20, 39, true)))
+			new ItemEntry(Items.DIAMOND_SWORD, 3).apply(new EnchantWithLevelsFunction(Items.DIAMOND_SWORD,20, 39, true)),
+			new ItemEntry(Items.DIAMOND_BOOTS, 3).apply(new EnchantWithLevelsFunction(Items.DIAMOND_BOOTS, 20, 39, true)),
+			new ItemEntry(Items.DIAMOND_CHESTPLATE, 3).apply(new EnchantWithLevelsFunction(Items.DIAMOND_CHESTPLATE, 20, 39, true)),
+			new ItemEntry(Items.DIAMOND_LEGGINGS, 3).apply(new EnchantWithLevelsFunction(Items.DIAMOND_LEGGINGS, 20, 39, true)),
+			new ItemEntry(Items.DIAMOND_HELMET, 3).apply(new EnchantWithLevelsFunction(Items.DIAMOND_HELMET, 20, 39, true)),
+			new ItemEntry(Items.DIAMOND_PICKAXE, 3).apply(new EnchantWithLevelsFunction(Items.DIAMOND_PICKAXE, 20, 39, true)),
+			new ItemEntry(Items.DIAMOND_SHOVEL, 3).apply(new EnchantWithLevelsFunction(Items.DIAMOND_SHOVEL, 20, 39, true)),
+			new ItemEntry(Items.IRON_SWORD, 3).apply(new EnchantWithLevelsFunction(Items.IRON_SWORD, 20, 39, true)),
+			new ItemEntry(Items.IRON_BOOTS, 3).apply(new EnchantWithLevelsFunction(Items.IRON_BOOTS, 20, 39, true)),
+			new ItemEntry(Items.IRON_CHESTPLATE, 3).apply(new EnchantWithLevelsFunction(Items.IRON_CHESTPLATE, 20, 39, true)),
+			new ItemEntry(Items.IRON_LEGGINGS, 3).apply(new EnchantWithLevelsFunction(Items.IRON_LEGGINGS, 20, 39, true)),
+			new ItemEntry(Items.IRON_HELMET, 3).apply(new EnchantWithLevelsFunction(Items.IRON_HELMET, 20, 39, true)),
+			new ItemEntry(Items.IRON_PICKAXE, 3).apply(new EnchantWithLevelsFunction(Items.IRON_PICKAXE, 20, 39, true)),
+			new ItemEntry(Items.IRON_SHOVEL, 3).apply(new EnchantWithLevelsFunction(Items.IRON_SHOVEL, 20, 39, true)))
 	);
 
 	public static final LootTable IGLOO_CHEST_CHEST = new LootTable(
@@ -258,7 +261,7 @@ public class MCLootTables {
 			new ItemEntry(Items.IRON_HORSE_ARMOR),
 			new ItemEntry(Items.GOLDEN_HORSE_ARMOR),
 			new ItemEntry(Items.DIAMOND_HORSE_ARMOR),
-			new ItemEntry(Items.BOOK).apply(new EnchantWithLevelsFunction(30, 30, true)))
+			new ItemEntry(Items.BOOK).apply(new EnchantWithLevelsFunction(Items.BOOK, 30, 30, true)))
 	);
 
 	public static final LootTable JUNGLE_TEMPLE_DISPENSER_CHEST = new LootTable(
@@ -297,7 +300,7 @@ public class MCLootTables {
 			new ItemEntry(Items.ARROW, 4).apply(uniform(2.0F, 7.0F)),
 			new ItemEntry(Items.TRIPWIRE_HOOK, 3).apply(uniform(1.0F, 3.0F)),
 			new ItemEntry(Items.IRON_INGOT, 3).apply(uniform(1.0F, 3.0F)),
-			new ItemEntry(Items.ENCHANTED_BOOK).apply(new EnchantRandomlyFunction()))
+			new ItemEntry(Items.ENCHANTED_BOOK).apply(new EnchantRandomlyFunction(Items.ENCHANTED_BOOK)))
 	);
 
 	public static final LootTable RUINED_PORTAL_CHEST = new LootTable(
@@ -309,15 +312,15 @@ public class MCLootTables {
 			new ItemEntry(Items.FIRE_CHARGE, 40),
 			new ItemEntry(Items.GOLDEN_APPLE, 15),
 			new ItemEntry(Items.GOLD_NUGGET, 15).apply(uniform(4.0F, 24.0F)),
-			new ItemEntry(Items.GOLDEN_SWORD, 15).apply(new EnchantRandomlyFunction(true)),
-			new ItemEntry(Items.GOLDEN_AXE, 15).apply(new EnchantRandomlyFunction(true)),
-			new ItemEntry(Items.GOLDEN_HOE, 15).apply(new EnchantRandomlyFunction(true)),
-			new ItemEntry(Items.GOLDEN_SHOVEL, 15).apply(new EnchantRandomlyFunction(true)),
-			new ItemEntry(Items.GOLDEN_PICKAXE, 15).apply(new EnchantRandomlyFunction(true)),
-			new ItemEntry(Items.GOLDEN_BOOTS, 15).apply(new EnchantRandomlyFunction(true)),
-			new ItemEntry(Items.GOLDEN_CHESTPLATE, 15).apply(new EnchantRandomlyFunction(true)),
-			new ItemEntry(Items.GOLDEN_HELMET, 15).apply(new EnchantRandomlyFunction(true)),
-			new ItemEntry(Items.GOLDEN_LEGGINGS, 15).apply(new EnchantRandomlyFunction(true)),
+			new ItemEntry(Items.GOLDEN_SWORD, 15).apply(new EnchantRandomlyFunction(Items.GOLDEN_SWORD,true)),
+			new ItemEntry(Items.GOLDEN_AXE, 15).apply(new EnchantRandomlyFunction(Items.GOLDEN_AXE, true)),
+			new ItemEntry(Items.GOLDEN_HOE, 15).apply(new EnchantRandomlyFunction(Items.GOLDEN_HOE, true)),
+			new ItemEntry(Items.GOLDEN_SHOVEL, 15).apply(new EnchantRandomlyFunction(Items.GOLDEN_SHOVEL, true)),
+			new ItemEntry(Items.GOLDEN_PICKAXE, 15).apply(new EnchantRandomlyFunction(Items.GOLDEN_PICKAXE, true)),
+			new ItemEntry(Items.GOLDEN_BOOTS, 15).apply(new EnchantRandomlyFunction(Items.GOLDEN_BOOTS, true)),
+			new ItemEntry(Items.GOLDEN_CHESTPLATE, 15).apply(new EnchantRandomlyFunction(Items.GOLDEN_CHESTPLATE, true)),
+			new ItemEntry(Items.GOLDEN_HELMET, 15).apply(new EnchantRandomlyFunction(Items.GOLDEN_HELMET, true)),
+			new ItemEntry(Items.GOLDEN_LEGGINGS, 15).apply(new EnchantRandomlyFunction(Items.GOLDEN_LEGGINGS, true)),
 			new ItemEntry(Items.GLISTERING_MELON_SLICE, 5).apply(uniform(4.0F, 12.0F)),
 			new ItemEntry(Items.GOLDEN_HORSE_ARMOR, 5),
 			new ItemEntry(Items.LIGHT_WEIGHTED_PRESSURE_PLATE, 5),
@@ -367,10 +370,10 @@ public class MCLootTables {
 			new ItemEntry(Items.BAMBOO, 2).apply(uniform(1.0F, 3.0F)),
 			new ItemEntry(Items.GUNPOWDER, 3).apply(uniform(1.0F, 5.0F)),
 			new ItemEntry(Items.TNT).apply(uniform(1.0F, 2.0F)),
-			new ItemEntry(Items.LEATHER_HELMET, 3).apply(new EnchantRandomlyFunction()),
-			new ItemEntry(Items.LEATHER_CHESTPLATE, 3).apply(new EnchantRandomlyFunction()),
-			new ItemEntry(Items.LEATHER_LEGGINGS, 3).apply(new EnchantRandomlyFunction()),
-			new ItemEntry(Items.LEATHER_BOOTS, 3).apply(new EnchantRandomlyFunction()))
+			new ItemEntry(Items.LEATHER_HELMET, 3).apply(new EnchantRandomlyFunction(Items.LEATHER_HELMET)),
+			new ItemEntry(Items.LEATHER_CHESTPLATE, 3).apply(new EnchantRandomlyFunction(Items.LEATHER_CHESTPLATE)),
+			new ItemEntry(Items.LEATHER_LEGGINGS, 3).apply(new EnchantRandomlyFunction(Items.LEATHER_LEGGINGS)),
+			new ItemEntry(Items.LEATHER_BOOTS, 3).apply(new EnchantRandomlyFunction(Items.LEATHER_BOOTS)))
 	);
 
 	public static final LootTable SHIPWRECK_TREASURE_CHEST = new LootTable(
@@ -397,7 +400,7 @@ public class MCLootTables {
 			new ItemEntry(Items.GOLDEN_HORSE_ARMOR, 10),
 			new ItemEntry(Items.IRON_HORSE_ARMOR, 15),
 			new ItemEntry(Items.DIAMOND_HORSE_ARMOR, 5),
-			new ItemEntry(Items.ENCHANTED_BOOK, 10).apply(new EnchantRandomlyFunction())),
+			new ItemEntry(Items.ENCHANTED_BOOK, 10).apply(new EnchantRandomlyFunction(Items.ENCHANTED_BOOK))),
 		new LootPool(new UniformRoll(1.0F, 4.0F),
 			new ItemEntry(Items.IRON_INGOT, 10).apply(uniform(1.0F, 4.0F)),
 			new ItemEntry(Items.GOLD_INGOT, 5).apply(uniform(1.0F, 4.0F)),
@@ -458,7 +461,7 @@ public class MCLootTables {
 			new ItemEntry(Items.IRON_HORSE_ARMOR),
 			new ItemEntry(Items.GOLDEN_HORSE_ARMOR),
 			new ItemEntry(Items.DIAMOND_HORSE_ARMOR),
-			new ItemEntry(Items.BOOK).apply(new EnchantWithLevelsFunction(30, 30, true)))
+			new ItemEntry(Items.BOOK).apply(new EnchantWithLevelsFunction(Items.BOOK, 30, 30, true)))
 	);
 
 	public static final LootTable STRONGHOLD_CROSSING_CHEST = new LootTable(
@@ -470,7 +473,7 @@ public class MCLootTables {
 			new ItemEntry(Items.BREAD, 15).apply(uniform(1.0F, 3.0F)),
 			new ItemEntry(Items.APPLE, 15).apply(uniform(1.0F, 3.0F)),
 			new ItemEntry(Items.IRON_PICKAXE),
-			new ItemEntry(Items.BOOK).apply(new EnchantWithLevelsFunction(30, 30, true)))
+			new ItemEntry(Items.BOOK).apply(new EnchantWithLevelsFunction(Items.BOOK, 30, 30, true)))
 	);
 
 	public static final LootTable STRONGHOLD_LIBRARY_CHEST = new LootTable(
@@ -479,7 +482,7 @@ public class MCLootTables {
 			new ItemEntry(Items.PAPER, 20).apply(uniform(2.0F, 7.0F)),
 			new ItemEntry(Items.MAP),
 			new ItemEntry(Items.COMPASS),
-			new ItemEntry(Items.BOOK, 10).apply(new EnchantWithLevelsFunction(30, 30, true)))
+			new ItemEntry(Items.BOOK, 10).apply(new EnchantWithLevelsFunction(Items.BOOK, 30, 30, true)))
 	);
 
 	public static final LootTable UNDERWATER_RUIN_BIG_CHEST = new LootTable(
@@ -490,10 +493,10 @@ public class MCLootTables {
 			new ItemEntry(Items.WHEAT, 10).apply(uniform(2.0F, 3.0F))),
 		new LootPool(new ConstantRoll(1),
 			new ItemEntry(Items.GOLDEN_APPLE),
-			new ItemEntry(Items.ENCHANTED_BOOK, 5).apply(new EnchantRandomlyFunction()),
+			new ItemEntry(Items.ENCHANTED_BOOK, 5).apply(new EnchantRandomlyFunction(Items.ENCHANTED_BOOK)),
 			new ItemEntry(Items.LEATHER_CHESTPLATE),
 			new ItemEntry(Items.GOLDEN_HELMET),
-			new ItemEntry(Items.FISHING_ROD, 5).apply(new EnchantRandomlyFunction()),
+			new ItemEntry(Items.FISHING_ROD, 5).apply(new EnchantRandomlyFunction(Items.FISHING_ROD)),
 			new ItemEntry(Items.MAP, 10))
 	);
 
@@ -507,7 +510,7 @@ public class MCLootTables {
 		new LootPool(new ConstantRoll(1),
 			new ItemEntry(Items.LEATHER_CHESTPLATE),
 			new ItemEntry(Items.GOLDEN_HELMET),
-			new ItemEntry(Items.FISHING_ROD, 5).apply(new EnchantRandomlyFunction()),
+			new ItemEntry(Items.FISHING_ROD, 5).apply(new EnchantRandomlyFunction(Items.FISHING_ROD)),
 			new ItemEntry(Items.MAP, 5))
 	);
 
@@ -719,7 +722,7 @@ public class MCLootTables {
 			new ItemEntry(Items.CHAINMAIL_CHESTPLATE, 10),
 			new ItemEntry(Items.DIAMOND_HOE, 15),
 			new ItemEntry(Items.DIAMOND_CHESTPLATE, 5),
-			new ItemEntry(Items.ENCHANTED_BOOK, 10).apply(new EnchantRandomlyFunction())),
+			new ItemEntry(Items.ENCHANTED_BOOK, 10).apply(new EnchantRandomlyFunction(Items.ENCHANTED_BOOK))),
 		new LootPool(new UniformRoll(1.0F, 4.0F),
 			new ItemEntry(Items.IRON_INGOT, 10).apply(uniform(1.0F, 4.0F)),
 			new ItemEntry(Items.GOLD_INGOT, 5).apply(uniform(1.0F, 4.0F)),

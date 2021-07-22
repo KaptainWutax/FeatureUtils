@@ -1,5 +1,6 @@
 package kaptainwutax.featureutils.loot;
 
+import kaptainwutax.featureutils.loot.enchantment.Enchantments;
 import kaptainwutax.featureutils.loot.function.LootFunction;
 import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.featureutils.loot.item.ItemStack;
@@ -36,6 +37,7 @@ public class LootTable extends LootGenerator {
 		for(LootPool lootPool : this.lootPools) {
 			lootPool.apply(version);
 		}
+		Enchantments.apply(version);
 		hasVersionApplied = true;
 		return this;
 	}
