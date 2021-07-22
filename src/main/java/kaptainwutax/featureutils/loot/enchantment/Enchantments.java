@@ -248,12 +248,7 @@ public class Enchantments {
 	}
 
 	public static void filterCompatibleEnchantments(ArrayList<EnchantmentInstance> list, EnchantmentInstance instance) {
-		ArrayList<EnchantmentInstance> deepCopy = (ArrayList) list.clone();
-		for(EnchantmentInstance enchantmentInstance : deepCopy) {
-			if(enchantmentInstance.getIncompatible().contains(instance.getName()) || instance.getIncompatible().contains(enchantmentInstance.getName())) {
-				list.remove(enchantmentInstance);
-			}
-		}
+		list.removeIf(e->e.getIncompatible().contains(instance.getName()) || instance.getIncompatible().contains(e.getName()));
 	}
 
 	public Enchantment getEnchantment(String name) {
