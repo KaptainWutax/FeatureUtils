@@ -1,5 +1,6 @@
 package kaptainwutax.featureutils.loot;
 
+import kaptainwutax.featureutils.loot.entry.ItemEntry;
 import kaptainwutax.featureutils.loot.entry.LootEntry;
 import kaptainwutax.featureutils.loot.function.LootFunction;
 import kaptainwutax.featureutils.loot.item.ItemStack;
@@ -17,6 +18,8 @@ public class LootPool extends LootGenerator {
 
 	public final LootRoll rolls;
 	public LootEntry[] lootEntries;
+	public int totalWeight;
+	public LootEntry[] optimizationArray;
 	public final LootRoll bonusRolls = new UniformRoll(0.0F, 0.0F);
 
 	public LootPool(LootRoll rolls, LootEntry... lootEntries) {
@@ -29,7 +32,7 @@ public class LootPool extends LootGenerator {
 		return this;
 	}
 
-	public LootPool apply(MCVersion version) {
+	public LootPool apply(MCVersion version, int luck) {
 		this.lootEntries = Arrays.stream(lootEntries).filter(lootEntry -> {
 			// remove the entry if it was not yet introduced yet (so older and not equal to the introduced version)
 			if(lootEntry.introducedVersion != null) {
@@ -43,6 +46,24 @@ public class LootPool extends LootGenerator {
 			}
 			return true;
 		}).toArray(LootEntry[]::new);
+
+		totalWeight = 0;
+
+		for (LootEntry entry : this.lootEntries) {
+			totalWeight += entry.getEffectiveWeight(luck);
+		}
+
+		optimizationArray = new LootEntry[totalWeight];
+
+		int k = 0;
+		for (LootEntry entry : this.lootEntries) {
+			int weight =  entry.getEffectiveWeight(luck);
+			for (int i = 0; i < weight; i++) {
+				optimizationArray[k + i] = entry;
+			}
+			k += weight;
+		}
+
 		return this;
 	}
 
@@ -67,51 +88,14 @@ public class LootPool extends LootGenerator {
 	}
 
 	private void generatePool13(LootContext context, Consumer<ItemStack> stackConsumer) {
-		int totalWeight = 0;
-		List<LootEntry> entries = new ArrayList<>();
-		for(LootEntry lootEntry : this.lootEntries) {
-			// we assume no conditions here
-			int weight = lootEntry.getEffectiveWeight(context);
-			if(weight > 0) {
-				entries.add(lootEntry);
-				totalWeight += weight;
-			}
-		}
-
-		if(totalWeight != 0 && !entries.isEmpty()) {
-			int count = context.nextInt(totalWeight);
-			for(LootEntry entry : entries) {
-				count -= entry.getEffectiveWeight(context);
-				if(count < 0) {
-					entry.generate(context, stackConsumer);
-					return;
-				}
-			}
-		}
+		this.optimizationArray[context.nextInt(totalWeight)].generate(context, stackConsumer);
 	}
 
 	private void generatePool14(LootContext context, Consumer<ItemStack> stackConsumer) {
-		int totalWeight = 0;
-		for(LootEntry lootEntry : this.lootEntries) {
-			totalWeight += lootEntry.getEffectiveWeight(context);
-		}
-
-		if(this.lootEntries.length == 1) {
+		if (this.lootEntries.length == 1) {
 			this.lootEntries[0].generate(context, stackConsumer);
-			return;
-		}
-
-		int i = context.nextInt(totalWeight);
-		LootEntry pickedEntry = null;
-
-		for(LootEntry lootEntry : this.lootEntries) {
-			pickedEntry = lootEntry;
-			i -= lootEntry.getWeight(context);
-			if(i < 0) break;
-		}
-
-		if(pickedEntry != null) {
-			pickedEntry.generate(context, stackConsumer);
+		} else {
+			this.optimizationArray[context.nextInt(this.totalWeight)].generate(context, stackConsumer);
 		}
 	}
 

@@ -1,21 +1,16 @@
 package kaptainwutax.featureutils.loot.function;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import kaptainwutax.featureutils.loot.LootContext;
 import kaptainwutax.featureutils.loot.enchantment.Enchantment;
 import kaptainwutax.featureutils.loot.enchantment.EnchantmentInstance;
+import kaptainwutax.featureutils.loot.enchantment.Enchantments;
 import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.mathutils.util.Mth;
 import kaptainwutax.mcutils.util.data.Pair;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import static kaptainwutax.featureutils.loot.enchantment.EnchantmentInstance.getRandomItem;
-import static kaptainwutax.featureutils.loot.enchantment.Enchantments.filterCompatibleEnchantments;
-import static kaptainwutax.featureutils.loot.enchantment.Enchantments.getApplicableEnchantments;
-import static kaptainwutax.featureutils.loot.enchantment.Enchantments.getCategories;
 
 public class EnchantWithLevelsFunction implements LootFunction {
 	private static final HashMap<String, Integer> enchantments;
@@ -23,6 +18,7 @@ public class EnchantWithLevelsFunction implements LootFunction {
 	private final int maxLevel;
 	private final boolean treasure;
 	private final boolean discoverable;
+	private final ArrayList<EnchantmentInstance>[] availableEnchantmentResults;
 
 	static {
 		enchantments = new HashMap<>();
@@ -85,19 +81,42 @@ public class EnchantWithLevelsFunction implements LootFunction {
 		enchantments.put("netherite_sword", 15);
 	}
 
-	public EnchantWithLevelsFunction(int minLevel, int maxLevel) {
-		this(minLevel, maxLevel, true, true);
+	public EnchantWithLevelsFunction(Item item, int minLevel, int maxLevel) {
+		this(item, minLevel, maxLevel, true, true);
 	}
 
-	public EnchantWithLevelsFunction(int minLevel, int maxLevel, boolean treasure) {
-		this(minLevel, maxLevel, treasure, true);
+	public EnchantWithLevelsFunction(Item item, int minLevel, int maxLevel, boolean treasure) {
+		this(item, minLevel, maxLevel, treasure, true);
 	}
 
-	public EnchantWithLevelsFunction(int minLevel, int maxLevel, boolean treasure, boolean discoverable) {
+	@SuppressWarnings("unchecked")
+	public EnchantWithLevelsFunction(Item item, int minLevel, int maxLevel, boolean treasure, boolean discoverable) {
 		this.minLevel = minLevel;
 		this.maxLevel = maxLevel;
 		this.treasure = treasure;
 		this.discoverable = discoverable;
+
+		int preprocessMaxLevel = ((int) (maxLevel * 2F));
+
+		this.availableEnchantmentResults = new ArrayList[preprocessMaxLevel];
+
+		for (int level = 0; level < preprocessMaxLevel; level++) {
+			ArrayList<EnchantmentInstance> res = new ArrayList<>();
+			List<Enchantment> list = Enchantments.getApplicableEnchantments(Enchantments.getCategories(new ItemStack(item)), this.treasure, this.discoverable);
+			for(Enchantment enchantment : list) {
+				if((!enchantment.isTreasure() || treasure) && enchantment.isDiscoverable() == discoverable) {
+					for(int i = enchantment.getMaxLevel(); i > enchantment.getMinLevel() - 1; i--) {
+						if(!enchantment.getIsLowerThanMinCost().test(i, level) && !enchantment.getIsHigherThanMaxCost().test(i, level)) {
+							res.add(new EnchantmentInstance(enchantment, i));
+							break;
+						}
+					}
+				}
+			}
+
+			this.availableEnchantmentResults[level] = res;
+		}
+
 	}
 
 	public ItemStack process(ItemStack itemStack, LootContext lootContext) {
@@ -124,33 +143,22 @@ public class EnchantWithLevelsFunction implements LootFunction {
 		level += 1 + lootContext.nextInt(enchantmentValue / 4 + 1) + lootContext.nextInt(enchantmentValue / 4 + 1);
 		float amplifier = (lootContext.nextFloat() + lootContext.nextFloat() - 1.0f) * 0.15f;
 		level = Mth.clamp(Math.round((float)level + (float)level * amplifier), 1, Integer.MAX_VALUE);
-		List<EnchantmentInstance> availableEnchantments = getAvailableEnchantmentResults(level, itemStack, isTreasure, isDiscoverable);
+		ArrayList<EnchantmentInstance> availableEnchantments = getAvailableEnchantmentResults(level);
 		if(!availableEnchantments.isEmpty()) {
-			res.add(getRandomItem(lootContext, availableEnchantments));
+			res.add(EnchantmentInstance.getRandomItem(lootContext, availableEnchantments));
 			while(lootContext.nextInt(50) <= level) {
-				filterCompatibleEnchantments(availableEnchantments, res.get(res.size() - 1));
+				Enchantments.filterCompatibleEnchantments(availableEnchantments, res.get(res.size() - 1));
 				if(availableEnchantments.isEmpty()) break;
-				res.add(getRandomItem(lootContext, availableEnchantments));
+				res.add(EnchantmentInstance.getRandomItem(lootContext, availableEnchantments));
 				level /= 2;
 			}
 		}
 		return res;
 	}
 
-	public List<EnchantmentInstance> getAvailableEnchantmentResults(int level, ItemStack itemStack, boolean isTreasure, boolean isDiscoverable) {
-		ArrayList<EnchantmentInstance> res = new ArrayList<>();
-		List<Enchantment> list = getApplicableEnchantments(getCategories(itemStack), this.treasure, this.discoverable);
-		for(Enchantment enchantment : list) {
-			if((!enchantment.isTreasure() || isTreasure) && enchantment.isDiscoverable() == isDiscoverable) {
-				for(int i = enchantment.getMaxLevel(); i > enchantment.getMinLevel() - 1; --i) {
-					if(!enchantment.getIsLowerThanMinCost().test(i, level) && !enchantment.getIsHigherThanMaxCost().test(i, level)) {
-						res.add(new EnchantmentInstance(enchantment, i));
-						break;
-					}
-				}
-			}
-		}
-		return res;
+	@SuppressWarnings("unchecked")
+	public ArrayList<EnchantmentInstance> getAvailableEnchantmentResults(int level) {
+		return (ArrayList<EnchantmentInstance>) this.availableEnchantmentResults[level].clone();
 	}
 
 	public int getRandomValueFromBounds(LootContext lootContext) {
