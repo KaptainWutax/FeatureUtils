@@ -30,7 +30,7 @@ public abstract class ScatterOreDecorator<C extends OreDecorator.Config, D exten
 
 		for(int i = 0; i < count; ++i) {
 			BPos startPos = this.getStartPos(rand, bPos, Math.min(i, 7));
-			if(generator.getDefaultBlock().equals(generator.getBlockAt(startPos).orElse(Blocks.AIR)) && !this.checkAir(generator, startPos)) {
+			if(this.getReplaceBlocks(biome).contains(generator.getBlockAt(startPos).orElse(Blocks.AIR)) && !this.checkAir(generator, startPos)) {
 				poses.add(startPos);
 			}
 		}

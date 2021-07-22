@@ -122,7 +122,7 @@ public abstract class RegularOreDecorator<C extends OreDecorator.Config, D exten
 										if(!bitSet.get(area)) {
 											bitSet.set(area);
 											BPos pos = new BPos(X, Y, Z);
-											if(generator.getDefaultBlock().equals(generator.getBlockAt(pos).orElse(Blocks.AIR))) {
+											if(this.getReplaceBlocks(biome).contains(generator.getBlockAt(pos).orElse(Blocks.AIR))) {
 												poses.add(pos);
 											}
 										}

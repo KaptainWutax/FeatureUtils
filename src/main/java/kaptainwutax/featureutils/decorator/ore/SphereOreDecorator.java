@@ -38,10 +38,8 @@ public abstract class SphereOreDecorator<C extends OreDecorator.Config, D extend
 					for(int y = bPos.getY() - this.getSize(biome); y <= bPos.getY() + this.getSize(biome); y++) {
 						BPos currentPos = new BPos(x, y, z);
 						Block current = generator.getBiomeColumnAt(x, z)[y];
-						for(Block block : this.getReplaceBlocks(biome)) {
-							if(current.equals(block)) {
-								poses.add(currentPos);
-							}
+						if(this.getReplaceBlocks(biome).contains(current)) {
+							poses.add(currentPos);
 						}
 					}
 				}
