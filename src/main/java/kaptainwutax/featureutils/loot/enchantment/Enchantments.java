@@ -150,6 +150,7 @@ public class Enchantments {
 	}
 
 	public static void apply(MCVersion v) {
+		enchantmentRegistry=new ArrayList<>();
 		version = v;
 
 		enchantmentRegistry.add(new Enchantment("protection", COMMON, ARMOR, 1, 4, (i, n) -> (n < 1 + (i - 1) * 11), (i, n) -> (n > 1 + (i - 1) * 11 + 11), new HashSet<>(Arrays.asList("protection", "fire_protection", "projectile_protection", "blast_protection"))));
