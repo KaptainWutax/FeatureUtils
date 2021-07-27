@@ -13,18 +13,10 @@ public interface GenerationContext {
 	default Context getContext(long worldSeed) {
 		if(!(this instanceof Feature<?, ?>)) return null;
 		Feature<?, ?> feature = (Feature<?, ?>)this;
-		BiomeSource biomeSource = BiomeSource.of(feature.getValidDimension(), feature.getVersion(), worldSeed);
-		TerrainGenerator generator = null;
-		if(biomeSource != null) {
-			try {
-				generator = TerrainGenerator.of(feature.getValidDimension(), biomeSource);
-			} catch(UnsupportedVersion ignored) {}
-		}
-
-		return new Context(biomeSource, generator);
+		return getContext(worldSeed,feature.getValidDimension(),feature.getVersion());
 	}
 
-	default Context getContext(long worldSeed, Dimension dimension, MCVersion version) {
+	static Context getContext(long worldSeed, Dimension dimension, MCVersion version) {
 		BiomeSource biomeSource = BiomeSource.of(dimension, version, worldSeed);
 		TerrainGenerator generator = null;
 		if(biomeSource != null) {
