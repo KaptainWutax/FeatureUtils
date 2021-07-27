@@ -12,7 +12,7 @@ import java.util.function.Function;
 
 public abstract class LootGenerator {
 
-	public Function<MCVersion,LootFunction>[] supplierLootFunctions;
+	public Function<MCVersion,LootFunction>[] supplierLootFunctions=null;
 	public LootFunction[] lootFunctions;
 	public LootFunction combinedLootFunction;
 
@@ -25,7 +25,8 @@ public abstract class LootGenerator {
 		if(lootFunctions != null) {
 			this.supplierLootFunctions = lootFunctions.toArray(new Function[0]);
 		}else{
-			this.supplierLootFunctions=null;
+			this.lootFunctions = new LootFunction[0];
+			this.combinedLootFunction = (baseStack, context) -> baseStack;
 		}
 		return this;
 	}
@@ -39,9 +40,6 @@ public abstract class LootGenerator {
 				this.lootFunctions[i++]=function.apply(version);
 			}
 			this.combinedLootFunction = LootFunction.combine(this.lootFunctions);
-		} else {
-			this.lootFunctions = new LootFunction[0];
-			this.combinedLootFunction = (baseStack, context) -> baseStack;
 		}
 		return this;
 	}
