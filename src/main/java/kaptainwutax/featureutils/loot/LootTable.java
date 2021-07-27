@@ -1,5 +1,6 @@
 package kaptainwutax.featureutils.loot;
 
+import kaptainwutax.featureutils.loot.enchantment.Enchantment;
 import kaptainwutax.featureutils.loot.enchantment.Enchantments;
 import kaptainwutax.featureutils.loot.function.LootFunction;
 import kaptainwutax.featureutils.loot.item.Item;
@@ -16,6 +17,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -23,13 +26,13 @@ public class LootTable extends LootGenerator {
 
 	public final LootPool[] lootPools;
 	private boolean hasVersionApplied = false;
-	private Integer luck=null;
+	private Integer luck = null;
 
 	public LootTable(LootPool... lootPools) {
 		this(Arrays.asList(lootPools), null);
 	}
 
-	public LootTable(Collection<LootPool> lootPools, Collection<LootFunction> lootFunctions) {
+	public LootTable(Collection<LootPool> lootPools, Collection<Function<MCVersion,LootFunction>> lootFunctions) {
 		this.lootPools = lootPools.toArray(new LootPool[0]);
 		this.apply(lootFunctions);
 	}
@@ -42,17 +45,16 @@ public class LootTable extends LootGenerator {
 		for(LootPool lootPool : this.lootPools) {
 			lootPool.apply(version).processWeights(luck);
 		}
-		Enchantments.apply(version);
 		this.hasVersionApplied = true;
-		this.luck=luck;
+		this.luck = luck;
 		return this;
 	}
 
-	private LootTable apply(int luck){
+	private LootTable apply(int luck) {
 		for(LootPool lootPool : this.lootPools) {
 			lootPool.processWeights(luck);
 		}
-		this.luck=luck;
+		this.luck = luck;
 		return this;
 	}
 
@@ -113,16 +115,12 @@ public class LootTable extends LootGenerator {
 		return result;
 	}
 
-	public LootTable apply(LootFunction... lootFunctions) {
-		this.apply(Arrays.asList(lootFunctions));
-		return this;
-	}
-
 	/**
 	 * Generate the loot items, this has 2 side effect, in case {@link #apply(MCVersion)}
 	 * was not called, then we apply the lootcontext version and luck.
 	 * If the context got a different luck then this luck is applied instead
-	 * @param context the lootContext with the seed and the luck
+	 *
+	 * @param context       the lootContext with the seed and the luck
 	 * @param stackConsumer a consumer to send the item to
 	 */
 	@Override
@@ -131,7 +129,7 @@ public class LootTable extends LootGenerator {
 			System.err.println("Version was not applied, we default to latest " + context.getVersion());
 			this.apply(context.getVersion(), context.getLuck());
 			hasVersionApplied = true;
-		}else if(luck==null || luck!=context.getLuck()){
+		} else if(luck == null || luck != context.getLuck()) {
 			this.apply(context.getLuck());
 		}
 		stackConsumer = LootFunction.stack(stackConsumer, this.combinedLootFunction, context);

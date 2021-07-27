@@ -2,12 +2,12 @@ package kaptainwutax.featureutils.examples.loot.explanation;
 
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.biomeutils.source.OverworldBiomeSource;
+import kaptainwutax.featureutils.loot.ChestContent;
 import kaptainwutax.featureutils.loot.LootContext;
 import kaptainwutax.featureutils.loot.MCLootTables;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.featureutils.structure.DesertPyramid;
 import kaptainwutax.featureutils.structure.RegionStructure;
-import kaptainwutax.featureutils.structure.generator.Generator;
 import kaptainwutax.featureutils.structure.generator.structure.DesertPyramidGenerator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.rand.seed.WorldSeed;
@@ -15,10 +15,7 @@ import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.terrainutils.TerrainGenerator;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static kaptainwutax.featureutils.loot.item.Items.ENCHANTED_GOLDEN_APPLE;
 
@@ -54,14 +51,11 @@ public class LootTestForwardGoldenApple {
 				desertPyramidGenerator.generate(generator, chunkX, chunkZ, rand);
 				//desertPyramidGenerator.generate(null,chunkX,chunkZ,rand);
 				// get the loot
-				HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = DESERT_TEMPLE.getLootEx(worldSeed, desertPyramidGenerator, rand, false);
-				// flat map the loot types
-				List<List<ItemStack>> loots = lootTypes.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
+				List<ChestContent> chests = DESERT_TEMPLE.getLoot(worldSeed, desertPyramidGenerator, rand, false);
 				// calculate the number of chest with at least an enchanted golden apple
-				int count = loots.stream().mapToInt(e -> e.contains(new ItemStack(ENCHANTED_GOLDEN_APPLE)) ? 1 : 0).sum();
+				int count = chests.stream().mapToInt(chest -> chest.getCount(ENCHANTED_GOLDEN_APPLE)).sum();
 				if(count >= 3) {
 					System.out.printf("/tp @p %d 90 %d%n", chunkX * 16, +chunkZ * 16);
-					// System.out.println(Arrays.toString(loot.toArray()));
 				}
 			}
 		}
@@ -89,22 +83,22 @@ public class LootTestForwardGoldenApple {
 				int sum = 0;
 				long lootTableSeed = rand.nextLong();
 				LootContext context = new LootContext(lootTableSeed);
-				List<ItemStack> loot1 = MCLootTables.DESERT_PYRAMID_CHEST.generate(context);
+				List<ItemStack> loot1 = MCLootTables.DESERT_PYRAMID_CHEST.apply(version).generate(context);
 				boolean b1 = loot1.contains(new ItemStack(ENCHANTED_GOLDEN_APPLE));
 
 				lootTableSeed = rand.nextLong();
 				context = new LootContext(lootTableSeed);
-				List<ItemStack> loot2 = MCLootTables.DESERT_PYRAMID_CHEST.generate(context);
+				List<ItemStack> loot2 = MCLootTables.DESERT_PYRAMID_CHEST.apply(version).generate(context);
 				boolean b2 = loot2.contains(new ItemStack(ENCHANTED_GOLDEN_APPLE));
 
 				lootTableSeed = rand.nextLong();
 				context = new LootContext(lootTableSeed);
-				List<ItemStack> loot3 = MCLootTables.DESERT_PYRAMID_CHEST.generate(context);
+				List<ItemStack> loot3 = MCLootTables.DESERT_PYRAMID_CHEST.apply(version).generate(context);
 				boolean b3 = loot3.contains(new ItemStack(ENCHANTED_GOLDEN_APPLE));
 
 				lootTableSeed = rand.nextLong();
 				context = new LootContext(lootTableSeed);
-				List<ItemStack> loot4 = MCLootTables.DESERT_PYRAMID_CHEST.generate(context);
+				List<ItemStack> loot4 = MCLootTables.DESERT_PYRAMID_CHEST.apply(version).generate(context);
 				boolean b4 = loot4.contains(new ItemStack(ENCHANTED_GOLDEN_APPLE));
 				sum = (b1 ? 1 : 0) + (b2 ? 1 : 0) + (b3 ? 1 : 0) + (b4 ? 1 : 0);
 				// boolean b= loot.stream().anyMatch(itemStack -> itemStack.getItem() == Item.ENCHANTED_GOLDEN_APPLE);

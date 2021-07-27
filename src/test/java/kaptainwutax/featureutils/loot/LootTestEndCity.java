@@ -16,9 +16,7 @@ import kaptainwutax.terrainutils.TerrainGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static kaptainwutax.featureutils.structure.generator.structure.EndCityGenerator.LootType.FAT_TOWER_TOP_CHEST_1;
 import static kaptainwutax.featureutils.structure.generator.structure.EndCityGenerator.LootType.FAT_TOWER_TOP_CHEST_2;
@@ -90,12 +88,10 @@ public class LootTestEndCity {
 	public void testChestLoot() {
 		setup(1L, new BPos(-127280, 0, -30944).toChunkPos(), MCVersion.v1_16_5);
 		EndCity endCity = new EndCity(MCVersion.v1_16_5);
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = endCity.getLootEx(1L, structureGenerator, new ChunkRand(), false);
+		List<ChestContent> chests = endCity.getLoot(1L, structureGenerator, new ChunkRand(), false);
 		long hash = 0;
-		for(Map.Entry<Generator.ILootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
-			for(List<ItemStack> loot : loots.getValue()) {
-				for(ItemStack stack : loot) hash += stack.hashCode();
-			}
+		for(ChestContent chest : chests) {
+			for(ItemStack stack : chest.getItems()) hash += stack.hashCode();
 		}
 		assertEquals(-1486925666L, hash, "Items changed maybe?");
 	}
@@ -108,10 +104,10 @@ public class LootTestEndCity {
 		assertEquals(155, structureGenerator.getGlobalPieces().size(), "The end city doesn't have the proper size");
 		assertTrue(structureGenerator.hasShip());
 		EndCity endCity = new EndCity(MCVersion.v1_16_5);
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = endCity.getLootEx(worldSeed, structureGenerator, new ChunkRand(), false);
+		List<ChestContent> chests = endCity.getLoot(worldSeed, structureGenerator, new ChunkRand(), false);
 		long diamondCount = 0;
-		for(Map.Entry<Generator.ILootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
-			diamondCount += loots.getValue().stream().mapToLong(e -> e.stream().filter(f -> f.getItem().getName().contains("diamond")).mapToLong(ItemStack::getCount).sum()).sum();
+		for(ChestContent chest : chests) {
+			diamondCount += chest.getCount(f -> f.getName().contains("diamond"));
 		}
 		assertEquals(68, diamondCount, "Diamond count doesn't match");
 	}
@@ -137,12 +133,10 @@ public class LootTestEndCity {
 					if(endCity.canSpawn(pos, biomeSource)) {
 						if(endCity.canGenerate(pos, generator)) {
 							endCityGenerator.generate(generator, pos.getX(), pos.getZ(), rand);
-							HashMap<Generator.ILootType, List<List<ItemStack>>> loots = endCity.getLootEx(worldseed, endCityGenerator, rand, false);
+							List<ChestContent> chests = endCity.getLoot(worldseed, endCityGenerator, rand, false);
 							int diamond = 0;
-							for(Map.Entry<Generator.ILootType, List<List<ItemStack>>> loot : loots.entrySet()) {
-								for(List<ItemStack> l : loot.getValue()) {
-									diamond += l.stream().filter(e -> e.getItem().getName().contains("diamond")).mapToInt(ItemStack::getCount).sum();
-								}
+							for(ChestContent chest : chests) {
+								diamond += chest.getCount(e -> e.getName().contains("diamond"));
 							}
 							if(diamond > 50) {
 								System.out.printf("Diamond: %d, seed: %d, tp: /tp @p %d ~ %d%n", diamond, worldseed, pos.getX() * 16, pos.getZ() * 16);

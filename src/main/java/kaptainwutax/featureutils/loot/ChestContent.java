@@ -51,8 +51,36 @@ public class ChestContent {
 		return this.getCount(e -> e.equals(item)) >= count;
 	}
 
+	public boolean contains(Predicate<Item> predicate) {
+		return this.containsAtLeast(predicate, 1);
+	}
+
+	public boolean containsAtLeast(Predicate<Item> predicate, int count) {
+		return this.getCount(predicate) >= count;
+	}
+
+	public boolean containsExact(Predicate<Item> predicate) {
+		return this.containsExactlyAtLeast(predicate, 1);
+	}
+
+	public boolean containsExactlyAtLeast(Predicate<Item> predicate, int count) {
+		return this.getCount(predicate) >= count;
+	}
+
+	public int getCountExact(Item item) {
+		return getCount(e -> e.equals(item));
+	}
+
+	public int getCount(Item item) {
+		return getCount(e -> e.equalsName(item));
+	}
+
 	public int getCount(Predicate<Item> predicate) {
 		return this.items.stream().filter(e -> e != null && e.getItem() != null).filter(e -> predicate.test(e.getItem())).mapToInt(ItemStack::getCount).sum();
+	}
+
+	public boolean ofType(Generator.ILootType lootType){
+		return this.lootType==lootType;
 	}
 
 	public Generator.ILootType getLootType() {
@@ -103,5 +131,15 @@ public class ChestContent {
 		public int getNumberRows() {
 			return this.size * NUMBER_ROWS;
 		}
+	}
+
+	@Override public String toString() {
+		return "ChestContent{" +
+			"lootType=" + lootType +
+			", chestType=" + chestType +
+			", items=" + items +
+			", pos=" + pos +
+			", indexed=" + indexed +
+			'}';
 	}
 }

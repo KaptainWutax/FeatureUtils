@@ -71,7 +71,7 @@ public class DesertPyramidGenerator extends Generator {
 		}
 
 		@Override
-		public LootTable getLootTable(MCVersion version) {
+		public LootTable getLootTableUncached(MCVersion version) {
 			return lootTable.apply(version);
 		}
 

@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -151,11 +150,10 @@ public class LootTestRuinedPortal {
 		RuinedPortal ruinedPortal = new RuinedPortal(this.biomeSource.getDimension(), this.biomeSource.getVersion());
 		ChunkRand rand = new ChunkRand();
 		ChunkRand rand1 = rand.asChunkRandDebugger();
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypeListHashMap = ruinedPortal.getLootEx(this.biomeSource.getWorldSeed(), this.structureGenerator, rand1, false);
-		assertTrue(lootTypeListHashMap.containsKey(RuinedPortalGenerator.LootType.RUINED_PORTAL));
-		List<List<ItemStack>> l = lootTypeListHashMap.get(RuinedPortalGenerator.LootType.RUINED_PORTAL);
-		assertEquals(1, l.size());
-		List<ItemStack> loot = l.get(0);
+		List<ChestContent> chests = ruinedPortal.getLoot(this.biomeSource.getWorldSeed(), this.structureGenerator, rand1, false);
+		assertTrue(chests.stream().anyMatch(chest -> chest.ofType(RuinedPortalGenerator.LootType.RUINED_PORTAL)));
+		assertEquals(1, chests.size());
+		List<ItemStack> loot = chests.get(0).getItems();
 		long hashcode = 0;
 		for(ItemStack stack : loot) hashcode += stack.hashCode();
 		assertEquals(-1138008234, hashcode, "Something changed in loot");
@@ -171,11 +169,10 @@ public class LootTestRuinedPortal {
 			assertTrue(loots.contains(check), String.format("Missing loot %s at pos %s for loots: %s", check.getFirst(), check.getSecond(), Arrays.toString(loots.toArray())));
 		}
 		RuinedPortal ruinedPortal = new RuinedPortal(this.biomeSource.getDimension(), this.biomeSource.getVersion());
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypeListHashMap = ruinedPortal.getLootEx(this.biomeSource.getWorldSeed(), this.structureGenerator, new ChunkRand(), false);
-		assertTrue(lootTypeListHashMap.containsKey(RuinedPortalGenerator.LootType.RUINED_PORTAL));
-		List<List<ItemStack>> l = lootTypeListHashMap.get(RuinedPortalGenerator.LootType.RUINED_PORTAL);
-		assertEquals(1, l.size());
-		List<ItemStack> loot = l.get(0);
+		List<ChestContent> chests = ruinedPortal.getLoot(this.biomeSource.getWorldSeed(), this.structureGenerator, new ChunkRand(), false);
+		assertTrue(chests.stream().anyMatch(chest -> chest.ofType(RuinedPortalGenerator.LootType.RUINED_PORTAL)));
+		assertEquals(1, chests.size());
+		List<ItemStack> loot = chests.get(0).getItems();
 		long hashcode = 0;
 		for(ItemStack stack : loot) hashcode += stack.hashCode();
 		assertEquals(-910440243, hashcode, "Something changed in loot");

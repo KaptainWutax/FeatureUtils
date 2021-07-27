@@ -15,9 +15,7 @@ import kaptainwutax.terrainutils.TerrainGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -56,13 +54,10 @@ public class LootTestDesertTemple {
 	public void testChestLoot() {
 		setup(123L, new BPos(2777, 60, -1159).toChunkPos(), MCVersion.v1_16_5);
 		DesertPyramid desertPyramid = new DesertPyramid(MCVersion.v1_16_5);
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = desertPyramid.getLootEx(123L, structureGenerator, new ChunkRand(), false);
+		List<ChestContent> chests = desertPyramid.getLoot(123L, structureGenerator, new ChunkRand(), false);
 		long hash = 0;
-		for(Map.Entry<Generator.ILootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
-			for(List<ItemStack> loot : loots.getValue()) {
-				System.out.println(loots.getKey() + " " + loot);
-				for(ItemStack stack : loot) hash += stack.hashCode();
-			}
+		for(ChestContent chest : chests) {
+			for(ItemStack stack : chest.getItems()) hash += stack.hashCode();
 		}
 		assertEquals(11777201006L, hash, "Items changed maybe?");
 	}
@@ -71,13 +66,10 @@ public class LootTestDesertTemple {
 	public void testChestLoot2() {
 		setup(3119024338951782547L, new BPos(761, 60, -743).toChunkPos(), MCVersion.v1_16_5);
 		DesertPyramid desertPyramid = new DesertPyramid(MCVersion.v1_16_5);
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = desertPyramid.getLootEx(3119024338951782547L, structureGenerator, new ChunkRand(), false);
+		List<ChestContent> chests = desertPyramid.getLoot(3119024338951782547L, structureGenerator, new ChunkRand(), false);
 		long hash = 0;
-		for(Map.Entry<Generator.ILootType, List<List<ItemStack>>> loots : lootTypes.entrySet()) {
-			for(List<ItemStack> loot : loots.getValue()) {
-				System.out.println(loots.getKey() + " " + loot);
-				for(ItemStack stack : loot) hash += stack.hashCode();
-			}
+		for(ChestContent chest : chests) {
+			for(ItemStack stack : chest.getItems()) hash += stack.hashCode();
 		}
 		assertEquals(8379442605L, hash, "Items changed maybe?");
 	}

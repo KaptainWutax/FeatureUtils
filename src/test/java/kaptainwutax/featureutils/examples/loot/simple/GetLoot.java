@@ -2,7 +2,6 @@ package kaptainwutax.featureutils.examples.loot.simple;
 
 import kaptainwutax.biomeutils.source.BiomeSource;
 import kaptainwutax.featureutils.loot.ChestContent;
-import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.featureutils.structure.BuriedTreasure;
 import kaptainwutax.featureutils.structure.DesertPyramid;
 import kaptainwutax.featureutils.structure.RegionStructure;
@@ -19,8 +18,8 @@ import kaptainwutax.mcutils.util.pos.RPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.terrainutils.TerrainGenerator;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GetLoot {
 	// this is to remove dynamic dispatch
@@ -99,21 +98,21 @@ public class GetLoot {
 		assertTrue(structureGenerator.getChestsPos().size() == 4);
 
 		// Get the loot that generated in those chest positions (indexed allow to create a chest as in Minecraft with randomized slots and EMPTY_ITEM)
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = desertPyramid.getLootEx(worldSeed, structureGenerator, rand, false);
+		List<ChestContent> chests = desertPyramid.getLoot(worldSeed, structureGenerator, rand, false);
 		// the result is a hashmap with each possible type of chest (there could be multiple instance of that type of chest)
 		// with a list of chest content attached to each.
 
 		// Here desert pyramid have 4 chest with a single chest per list
-		List<List<ItemStack>> chest1 = lootTypes.get(DesertPyramidGenerator.LootType.CHEST_1);
+		List<ChestContent> chest1 = chests.stream().filter(e -> e.ofType(DesertPyramidGenerator.LootType.CHEST_1)).collect(Collectors.toList());
 		assertTrue(chest1.size() == 1);
 		System.out.println(chest1);
-		List<List<ItemStack>> chest2 = lootTypes.get(DesertPyramidGenerator.LootType.CHEST_2);
+		List<ChestContent> chest2 = chests.stream().filter(e -> e.ofType(DesertPyramidGenerator.LootType.CHEST_2)).collect(Collectors.toList());
 		assertTrue(chest2.size() == 1);
 		System.out.println(chest2);
-		List<List<ItemStack>> chest3 = lootTypes.get(DesertPyramidGenerator.LootType.CHEST_3);
+		List<ChestContent> chest3 = chests.stream().filter(e -> e.ofType(DesertPyramidGenerator.LootType.CHEST_3)).collect(Collectors.toList());
 		assertTrue(chest3.size() == 1);
 		System.out.println(chest3);
-		List<List<ItemStack>> chest4 = lootTypes.get(DesertPyramidGenerator.LootType.CHEST_4);
+		List<ChestContent> chest4 = chests.stream().filter(e -> e.ofType(DesertPyramidGenerator.LootType.CHEST_4)).collect(Collectors.toList());
 		assertTrue(chest4.size() == 1);
 		System.out.println(chest4);
 
@@ -167,13 +166,13 @@ public class GetLoot {
 		assertTrue(structureGenerator.getChestsPos().size() == 1);
 
 		// Get the loot that generated in those chest positions (indexed allow to create a chest as in Minecraft with randomized slots and EMPTY_ITEM)
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = buriedTreasure.getLootEx(worldSeed, structureGenerator, rand, false);
+		List<ChestContent> chests = buriedTreasure.getLoot(worldSeed, structureGenerator, rand, false);
 		// the result is a hashmap with each possible type of chest (there could be multiple instance of that type of chest)
 		// with a list of chest content attached to each.
 
-		// Here desert pyramid have 4 chest with a single chest per list
-		List<List<ItemStack>> chest1 = lootTypes.get(BuriedTreasureGenerator.LootType.BURIED_CHEST);
-		assertTrue(chest1.size() == 1);
+		// Here buried treasure have a single chest per list
+		assertTrue(chests.size() == 1);
+		ChestContent chest1 = chests.get(0);
 		System.out.println(chest1);
 	}
 
@@ -228,18 +227,18 @@ public class GetLoot {
 		assertTrue(structureGenerator.getChestsPos().size() == 1);
 
 		// Get the loot that generated in those chest positions (indexed allow to create a chest as in Minecraft with randomized slots and EMPTY_ITEM)
-		HashMap<Generator.ILootType, List<List<ItemStack>>> lootTypes = shipwreck.getLootEx(worldSeed, structureGenerator, rand, false);
+		List<ChestContent> chests = shipwreck.getLoot(worldSeed, structureGenerator, rand, false);
 		// the result is a hashmap with each possible type of chest (there could be multiple instance of that type of chest)
 		// with a list of chest content attached to each.
 
 		// Here shipwreck have 3 chest with a single chest per list
-		List<List<ItemStack>> treasureChest = lootTypes.get(ShipwreckGenerator.LootType.TREASURE_CHEST);
+		List<ChestContent> treasureChest = chests.stream().filter(e -> e.ofType(ShipwreckGenerator.LootType.TREASURE_CHEST)).collect(Collectors.toList());
 		assertTrue(treasureChest.size() == 1);
 		System.out.println(treasureChest);
-		List<List<ItemStack>> mapChest = lootTypes.get(ShipwreckGenerator.LootType.MAP_CHEST);
+		List<ChestContent> mapChest = chests.stream().filter(e -> e.ofType(ShipwreckGenerator.LootType.MAP_CHEST)).collect(Collectors.toList());
 		assertTrue(mapChest.size() == 1);
 		System.out.println(mapChest);
-		List<List<ItemStack>> supplyChest = lootTypes.get(ShipwreckGenerator.LootType.SUPPLY_CHEST);
+		List<ChestContent> supplyChest = chests.stream().filter(e -> e.ofType(ShipwreckGenerator.LootType.SUPPLY_CHEST)).collect(Collectors.toList());
 		assertTrue(supplyChest.size() == 1);
 		System.out.println(supplyChest);
 	}

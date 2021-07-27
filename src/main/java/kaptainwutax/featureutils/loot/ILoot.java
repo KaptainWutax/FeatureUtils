@@ -19,6 +19,19 @@ import java.util.List;
 public interface ILoot {
 
 	/**
+	 *  Utility to get the loot from all the chests in a structure
+	 *  This is not optimized as it create the chunkrand locally
+	 *
+	 * @param structureSeed
+	 * @param generator
+	 * @param indexed
+	 * @return
+	 */
+	default List<ChestContent> getLoot(long structureSeed, Generator generator, boolean indexed) {
+		return getLoot(structureSeed,generator,new ChunkRand(),indexed);
+	}
+
+	/**
 	 * Utility to get the loot from all the chests in a structure
 	 *
 	 * @param structureSeed the structure seed (lower 48 bits)
@@ -62,7 +75,8 @@ public interface ILoot {
 				if(shouldAdvanceInChunks()) rand.advance(chestData.getNumberInChunk() * 2L);
 				rand.advance(chestData.getIndex() * 2L);
 				LootContext context = new LootContext(rand.nextLong(), this.getVersion());
-				List<ItemStack> loot = indexed ? lootType.getLootTable(this.getVersion()).generateIndexed(context) : lootType.getLootTable(this.getVersion()).generate(context);
+				LootTable lootTable=lootType.getLootTable(this.getVersion());
+				List<ItemStack> loot = indexed? lootTable.generateIndexed(context):lootTable.generate(context);
 				result.add(new ChestContent(lootType, loot, chestData.getPos(), indexed));
 			}
 		}

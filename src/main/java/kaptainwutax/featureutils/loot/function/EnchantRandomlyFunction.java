@@ -1,7 +1,5 @@
 package kaptainwutax.featureutils.loot.function;
 
-import java.util.HashSet;
-import java.util.List;
 import kaptainwutax.featureutils.loot.LootContext;
 import kaptainwutax.featureutils.loot.enchantment.Enchantment;
 import kaptainwutax.featureutils.loot.enchantment.Enchantments;
@@ -9,41 +7,30 @@ import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.mcutils.util.data.Pair;
 
-public class EnchantRandomlyFunction implements LootFunction {
-	private boolean isTreasure;
-	private boolean isDiscoverable;
-	private final List<Enchantment> applicableEnchantments;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+public class EnchantRandomlyFunction extends EnchantmentFunction {
+	private List<Enchantment> applicableEnchantments = new ArrayList<>();
 
 	public EnchantRandomlyFunction(Item item) {
-		this(item, true, true);
+		super(item);
 	}
 
 	public EnchantRandomlyFunction(Item item, boolean isTreasure) {
-		this(item, isTreasure, true);
+		super(item, isTreasure);
 	}
 
 	public EnchantRandomlyFunction(Item item, boolean isTreasure, boolean isDiscoverable) {
-		this.isTreasure = isTreasure;
-		this.isDiscoverable = isDiscoverable;
+		super(item, isTreasure, isDiscoverable);
+	}
 
+
+	public EnchantmentFunction applyEnchantment(List<Enchantment> enchantments) {
 		HashSet<HashSet<String>> applicableCategories = Enchantments.getCategories(new ItemStack(item, 1));
-		this.applicableEnchantments = Enchantments.getApplicableEnchantments(applicableCategories, this.isTreasure, this.isDiscoverable);
-	}
-
-	public boolean isTreasure() {
-		return isTreasure;
-	}
-
-	public void setTreasure(boolean treasure) {
-		isTreasure = treasure;
-	}
-
-	public boolean isDiscoverable() {
-		return isDiscoverable;
-	}
-
-	public void setDiscoverable(boolean discoverable) {
-		isDiscoverable = discoverable;
+		this.applicableEnchantments = Enchantments.getApplicableEnchantments(enchantments, applicableCategories, this.isTreasure, this.isDiscoverable);
+		return this;
 	}
 
 	@Override

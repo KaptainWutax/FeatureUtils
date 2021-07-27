@@ -10,6 +10,7 @@ import kaptainwutax.noiseutils.utils.MathHelper;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class LootPool extends LootGenerator {
 
@@ -22,11 +23,6 @@ public class LootPool extends LootGenerator {
 	public LootPool(LootRoll rolls, LootEntry... lootEntries) {
 		this.rolls = rolls;
 		this.lootEntries = lootEntries;
-	}
-
-	public LootPool apply(LootFunction... lootFunctions) {
-		this.apply(Arrays.asList(lootFunctions));
-		return this;
 	}
 
 	public LootPool apply(MCVersion version) {
@@ -43,6 +39,9 @@ public class LootPool extends LootGenerator {
 			}
 			return true;
 		}).toArray(LootEntry[]::new);
+		for (LootEntry lootEntry:this.lootEntries){
+			lootEntry.apply(version);
+		}
 		return this;
 	}
 

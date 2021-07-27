@@ -4,9 +4,12 @@ import kaptainwutax.featureutils.loot.LootContext;
 import kaptainwutax.featureutils.loot.LootGenerator;
 import kaptainwutax.featureutils.loot.function.LootFunction;
 import kaptainwutax.mcutils.version.MCVersion;
+import kaptainwutax.mcutils.version.VersionMap;
 import kaptainwutax.noiseutils.utils.MathHelper;
 
 import java.util.Arrays;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public abstract class LootEntry extends LootGenerator {
 
@@ -46,8 +49,9 @@ public abstract class LootEntry extends LootGenerator {
 		return Math.max(MathHelper.floor((float)this.weight + (float)this.quality * luck), 0);
 	}
 
-	public LootEntry apply(LootFunction... lootFunctions) {
+	@SafeVarargs public final LootEntry apply(Function<MCVersion,LootFunction>... lootFunctions) {
 		this.apply(Arrays.asList(lootFunctions));
 		return this;
 	}
+
 }

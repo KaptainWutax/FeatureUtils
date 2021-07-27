@@ -14,6 +14,7 @@ import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.terrainutils.TerrainGenerator;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,6 +23,7 @@ import java.util.stream.Stream;
 
 public abstract class Generator {
 	protected final MCVersion version;
+	public static final HashMap<String, LootTable> LOOT_TABLE_CACHE = new HashMap<>();
 
 	public Generator(MCVersion version) {
 		this.version = version;
@@ -60,7 +62,13 @@ public abstract class Generator {
 	}
 
 	public interface ILootType {
-		LootTable getLootTable(MCVersion version);
+		default LootTable getLootTable(MCVersion version) {
+			String className = this.getClass().getCanonicalName();
+			String enumName = ((Enum<?>)this).name();
+			return LOOT_TABLE_CACHE.computeIfAbsent(className + enumName + version.name(), ignored -> getLootTableUncached(version));
+		}
+
+		LootTable getLootTableUncached(MCVersion version);
 
 		ChestContent.ChestType getChestType();
 	}
