@@ -118,6 +118,7 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 				++numberInRing;
 			} else {
 				angle += (Math.PI * 2.0D) * (double)(ringId + 1) / (double)numberPerRing;
+				numberInRing=idx;
 			}
 			if(numberInRing == numberPerRing) {
 				if(getVersion().isNewerOrEqualTo(MCVersion.v1_9)) {
