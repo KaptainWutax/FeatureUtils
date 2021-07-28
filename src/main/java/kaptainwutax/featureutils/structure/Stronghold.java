@@ -16,11 +16,8 @@ import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
 import kaptainwutax.seedutils.rand.JRand;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 
@@ -42,12 +39,21 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 		Biomes.MODIFIED_GRAVELLY_MOUNTAINS, Biomes.SHATTERED_SAVANNA, Biomes.SHATTERED_SAVANNA_PLATEAU,
 		Biomes.ERODED_BADLANDS, Biomes.MODIFIED_WOODED_BADLANDS_PLATEAU, Biomes.MODIFIED_BADLANDS_PLATEAU));
 	public static final Set<Biome> VALID_BIOMES_15 = new HashSet<>(Arrays.asList(Biomes.BAMBOO_JUNGLE, Biomes.BAMBOO_JUNGLE_HILLS));
+	public static final Set<Biome> VALID_BIOMES_12 = new HashSet<>();
+	public static final Set<Biome> VALID_BIOMES_0 = new HashSet<>(Arrays.asList(
+		Biomes.DESERT, Biomes.FOREST, Biomes.MOUNTAINS, Biomes.SWAMP, Biomes.TAIGA,
+		Biomes.SNOWY_TUNDRA, Biomes.SNOWY_MOUNTAINS));
+	public static final Set<Biome> VALID_BIOMES_1 = new HashSet<>(Arrays.asList(Biomes.DESERT_HILLS, Biomes.WOODED_HILLS, Biomes.MOUNTAIN_EDGE));
+	public static final Set<Biome> VALID_BIOMES_6 = new HashSet<>(Arrays.asList(Biomes.JUNGLE, Biomes.JUNGLE_HILLS));
 	public static final Set<Biome> INVALID_BIOMES = new HashSet<>(Arrays.asList(Biomes.OCEAN, Biomes.SWAMP, Biomes.RIVER, Biomes.FROZEN_OCEAN,
 		Biomes.FROZEN_RIVER, Biomes.BEACH, Biomes.DEEP_OCEAN, Biomes.SNOWY_BEACH, Biomes.WARM_OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.COLD_OCEAN,
 		Biomes.DEEP_WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_COLD_OCEAN, Biomes.DEEP_FROZEN_OCEAN, Biomes.SWAMP_HILLS));
 
 	static {
 		VALID_BIOMES_15.addAll(VALID_BIOMES_16);
+		VALID_BIOMES_12.addAll(Biomes.REGISTRY.values().stream().filter(b -> b.getVersion().isOlderOrEqualTo(MCVersion.v1_12_2)).filter(b -> b.getDepth() > 0).collect(Collectors.toList()));
+		VALID_BIOMES_1.addAll(VALID_BIOMES_0);
+		VALID_BIOMES_6.addAll(VALID_BIOMES_1);
 	}
 
 	public Stronghold(MCVersion version) {
@@ -160,9 +166,18 @@ public class Stronghold extends Structure<Stronghold.Config, Stronghold.Data> {
 	private Set<Biome> getValidBiomes() {
 		if(this.getVersion().isNewerOrEqualTo(MCVersion.v1_16)) {
 			return VALID_BIOMES_16;
-		} else {
+		} else if (this.getVersion().isNewerOrEqualTo(MCVersion.v1_14)) {
 			return VALID_BIOMES_15;
+		} else if (this.getVersion().isNewerOrEqualTo(MCVersion.v1_13)) {
+			return VALID_BIOMES_16;
+		} else if (this.getVersion().isNewerOrEqualTo(MCVersion.v1_7_2)) {
+			return VALID_BIOMES_12;
+		} else if (this.getVersion().isNewerOrEqualTo(MCVersion.v1_2_1)) {
+			return VALID_BIOMES_6;
+		} else if (this.getVersion().isNewerOrEqualTo(MCVersion.v1_1)) {
+			return VALID_BIOMES_1;
 		}
+		return VALID_BIOMES_0;
 	}
 
 	@Override
