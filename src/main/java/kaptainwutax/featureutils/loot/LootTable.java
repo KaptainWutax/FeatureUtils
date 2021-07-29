@@ -1,7 +1,5 @@
 package kaptainwutax.featureutils.loot;
 
-import kaptainwutax.featureutils.loot.enchantment.Enchantment;
-import kaptainwutax.featureutils.loot.enchantment.Enchantments;
 import kaptainwutax.featureutils.loot.function.LootFunction;
 import kaptainwutax.featureutils.loot.item.Item;
 import kaptainwutax.featureutils.loot.item.ItemStack;
@@ -18,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -51,6 +48,10 @@ public class LootTable extends LootGenerator {
 	}
 
 	private LootTable apply(int luck) {
+		if(!hasVersionApplied) {
+			System.err.println("Version was not applied, we default to latest " + MCVersion.latest());
+			return this.apply(MCVersion.latest(), luck);
+		}
 		for(LootPool lootPool : this.lootPools) {
 			lootPool.processWeights(luck);
 		}
@@ -128,7 +129,6 @@ public class LootTable extends LootGenerator {
 		if(!hasVersionApplied) {
 			System.err.println("Version was not applied, we default to latest " + context.getVersion());
 			this.apply(context.getVersion(), context.getLuck());
-			hasVersionApplied = true;
 		} else if(luck == null || luck != context.getLuck()) {
 			this.apply(context.getLuck());
 		}
