@@ -18,12 +18,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class Generator {
 	protected final MCVersion version;
-	public static final HashMap<String, LootTable> LOOT_TABLE_CACHE = new HashMap<>();
+	public static final ConcurrentHashMap<String, LootTable> LOOT_TABLE_CACHE = new ConcurrentHashMap<>();
 
 	public Generator(MCVersion version) {
 		this.version = version;

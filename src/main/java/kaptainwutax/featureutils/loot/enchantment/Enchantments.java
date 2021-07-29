@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+
 import kaptainwutax.featureutils.loot.item.ItemStack;
 import kaptainwutax.mcutils.version.MCVersion;
 
@@ -134,7 +136,7 @@ public class Enchantments {
 	private final static Integer RARE = 2;
 	private final static Integer VERY_RARE = 1;
 
-	public static final HashMap<MCVersion,List<Enchantment>> CACHE_ENCHANTMENT_REGISTRY=new HashMap<>();
+	public static final ConcurrentHashMap<MCVersion,List<Enchantment>> CACHE_ENCHANTMENT_REGISTRY=new ConcurrentHashMap<>();
 
 	public static boolean canApply(Enchantment enchantment, ItemStack item) {
 		return enchantment.getCategory().contains(item.getItem().getName().toUpperCase());
