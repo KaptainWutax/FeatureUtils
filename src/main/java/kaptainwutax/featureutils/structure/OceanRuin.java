@@ -23,7 +23,6 @@ public class OceanRuin extends UniformStructure<OceanRuin> {
 		return "ocean_ruin";
 	}
 
-
 	@Override
 	public Dimension getValidDimension() {
 		return Dimension.OVERWORLD;

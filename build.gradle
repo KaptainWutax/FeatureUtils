@@ -28,11 +28,11 @@ dependencies {
 	implementation('com.github.KaptainWutax:SeedUtils:b6a383113ce5d8d09a59e91b28ff064fb97c0709') { transitive = false }
 	implementation('com.github.KaptainWutax:MCUtils:1e5785a648a04454461ef02ee27cbc63e3599bff') { transitive = false }
 	implementation('com.github.KaptainWutax:NoiseUtils:2cf64e1d2e7e674fbf5b7247f16e8dc56ae2a31c') { transitive = false }
-	
+
 	implementation('com.github.KaptainWutax:BiomeUtils:b2065a0281342f269af31da9ef7349ffdc337534') {transitive = false}
 	implementation('com.github.KaptainWutax:TerrainUtils:605c46b94a5126df55bd347b82f277af443909c9') { transitive = false }
 
-	testImplementation('com.github.KaptainWutax:ChunkRandomReversal:6b76fb5cf2cd438de56e6a46cea2a83985831834') { transitive = false }
+	implementation('com.github.KaptainWutax:ChunkRandomReversal:6b76fb5cf2cd438de56e6a46cea2a83985831834') { transitive = false }
 
 	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 

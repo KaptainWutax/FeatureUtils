@@ -2,6 +2,9 @@ package kaptainwutax.featureutils.structure;
 
 import kaptainwutax.biomeutils.biome.Biome;
 import kaptainwutax.biomeutils.biome.Biomes;
+import kaptainwutax.featureutils.loot.ILoot;
+import kaptainwutax.featureutils.structure.generator.Generator;
+import kaptainwutax.featureutils.structure.generator.structure.VillageGenerator;
 import kaptainwutax.mcutils.rand.ChunkRand;
 import kaptainwutax.mcutils.state.Dimension;
 import kaptainwutax.mcutils.util.block.BlockRotation;
@@ -9,7 +12,7 @@ import kaptainwutax.mcutils.util.pos.CPos;
 import kaptainwutax.mcutils.version.MCVersion;
 import kaptainwutax.mcutils.version.VersionMap;
 
-public class Village extends OldStructure<Village> {
+public class Village extends OldStructure<Village> implements ILoot {
 
 	public static final VersionMap<OldStructure.Config> CONFIGS = new VersionMap<OldStructure.Config>()
 		.add(MCVersion.v1_8, new OldStructure.Config(10387312));
@@ -25,7 +28,6 @@ public class Village extends OldStructure<Village> {
 	public static String name() {
 		return "village";
 	}
-
 
 	public boolean isZombieVillage(long structureSeed, CPos cPos, ChunkRand rand) {
 		rand.setCarverSeed(structureSeed, cPos.getX(), cPos.getZ(), this.getVersion());
@@ -75,4 +77,19 @@ public class Village extends OldStructure<Village> {
 		return biome == Biomes.SNOWY_TUNDRA && this.getVersion().isNewerOrEqualTo(MCVersion.v1_14);
 	}
 
+	@Override
+	public int getDecorationSalt() {
+		return this.getVersion().isNewerOrEqualTo(MCVersion.v1_16) ? 40003 :
+			this.getVersion().isNewerOrEqualTo(MCVersion.v1_14) ? 30009 : 30000;
+	}
+
+	@Override
+	public boolean isCorrectGenerator(Generator generator) {
+		return generator instanceof VillageGenerator;
+	}
+
+	@Override
+	public SpecificCalls getSpecificCalls() {
+		return null;
+	}
 }
